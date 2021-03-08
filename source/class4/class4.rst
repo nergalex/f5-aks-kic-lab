@@ -1,4 +1,4 @@
-Class 4 - Protect Arcadia with NGINX App Protect in Kubernetes Ingress Controller
+Class 4 - [ADC] 4.1) Sécurisation des API
 #################################################################################
 
 In this class, we will deploy NGINX App Protect in KIC. To do so, we will deploy an NGINX+ instance in Kubernetes with NAP installed.

@@ -1,4 +1,4 @@
-Class 1 - Deploy modern application with modern tools
+Class 1 - [Harry] 1) Présentation générale (théorie + lab)
 #####################################################
 
 In this class, we will deploy a modern application (Arcadia Finance app) with modern tools in a modern environment.

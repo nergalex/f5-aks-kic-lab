@@ -1,5 +1,5 @@
-Class 5 - Advanced features
-###########################
+Class 5 - [Harry] 4.2)	Gestion False Positive
+##############################################
 
 In this class, we will use the NAP in Centos and will deploy advanced features offered by the latest NAP release.
 
