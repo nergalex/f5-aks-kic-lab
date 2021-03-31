@@ -7,13 +7,13 @@ Workshop Kubernetes Ingress Controller with NGINX+
 NGINX Ingress Controller, also know as NGINX Ingress Controller for Kubernetes, comes in three different versions:
 
     #. Commercial: NGINX Plus
-    #. Opensource: NGINX official mainline build available on https://github.com/nginxinc/docker-nginx
-    #. Kubernetes Community: Custom NGINX build available on https://github.com/kubernetes/ingress-nginx/tree/master/images/nginx
+    #. Opensource: NGINX official mainline `build <https://github.com/nginxinc/docker-nginx>`_
+    #. Kubernetes Community: Custom NGINX `build <https://github.com/kubernetes/ingress-nginx/tree/master/images/nginx>`_
 
-.. note:: Check out our `GitHub <https://github.com/nginxinc/kubernetes-ingress/blob/master/docs/nginx-ingress-controllers.md>`_ for a comparison of the three options.
+Check out our `GitHub <https://github.com/nginxinc/kubernetes-ingress/blob/master/docs/nginx-ingress-controllers.md>`_ for a comparison of the three options.
 
 
-.. image:: ./images/nginx_kic.svc
+.. image:: ./images/nginx_kic.png
    :align: center
 
 
