@@ -4,7 +4,7 @@ Workshop Kubernetes Ingress Controller with NGINX+
 .. warning :: For any remark or mistake in the lab, please send an email to xxxx@f5.com.
 
 
-.. image:: ./images/nginx_nic.png
+.. image:: ./images/nginx_kic.png
    :align: center
 
 
