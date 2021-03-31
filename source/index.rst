@@ -1,12 +1,10 @@
-Welcome to our Workshop
-######################################
-
-Kubernetes Ingress Controller with NGINX+
-*****************************************
+Workshop Kubernetes Ingress Controller with NGINX+
+##################################################
 
 .. warning :: For any remark or mistake in the lab, please send an email to xxxx@f5.com.
 
-.. image:: NAP_index.png
+
+.. image:: ./images/nginx_nic.png
    :align: center
 
 
@@ -29,8 +27,6 @@ Below are the key characteristics that NGINX Plus brings:
 - JWT validation
 - Optional F5 Based Web Application Firewall module (NGINX App Protect)
 
-
-
 **Dynamic reconfiguration**
 
 - Every time the number of pods of services you expose via an Ingress resource changes, the Ingress controller updates the configuration of the load balancer to reflect those changes.
@@ -48,6 +44,9 @@ The use cases are:
 
 - fssqf
 - fdsq
+
+
+
 
 
 
