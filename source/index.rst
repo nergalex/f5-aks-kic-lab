@@ -25,7 +25,7 @@ Below are the key characteristics that NGINX Plus brings:
 - Session persistence: In addition to the hash‑based session persistence supported by NGINX Open Source (the Hash and IP Hash load‑balancing methods), NGINX Plus supports cookie‑based session persistence
 - Active health checks: By default NGINX performs basic checks on responses from upstream servers, retrying failed requests where possible. NGINX Plus adds out-of-band application health checks (also known as synthetic transactions) and a slow‑start feature to gracefully add new and recovered servers into the load‑balanced group. for HTTP and Health checks can also be enabled for non-HTTP protocols, such as FastCGI, memcached, SCGI, uwsgi, and also for TCP and UDP..
 - JWT validation
-- Optional F5 Based Web Application Firewall module (NGINX App Protect)
+- Optional F5 Based Web Application Firewall module (NGINX App Protect aka NAP)
 
 **Dynamic reconfiguration**
 
@@ -42,8 +42,10 @@ Each lab will focus on a specific use case where NGINX+ can simplify or add stro
 
 The use cases are:
 
-- fssqf
-- fdsq
+- Advanced Traffic splitting and content-based routing for Canary testing
+- Support of OAuth with JWT validation and traffic redirection based on JWT claim
+- Multi Team organisation with Cross Name Space support
+- Secure API services via NAP and Open API support
 
 
 
