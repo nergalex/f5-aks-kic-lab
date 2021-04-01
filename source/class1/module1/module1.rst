@@ -29,28 +29,7 @@ Below is the description of the K8S cluster which has been deployed into AKS:
 4. fssqf
 
 
-**But you can deploy Arcadia Step by Step**
 
-If you deploy only ``Main App`` and ``Back End`` services.
-
-.. image:: ../pictures/module1/MainApp.png
-   :align: center
-
-.. note:: You can see App2 (Money Transfer) and App3 (Refer Friend) are not available. There is dynamic content showing a WARNING instead of a 404 or blank frame.
-
-|
-
-If you deploy ``Main App``, ``Back End`` and ``Money Tranfer`` services.
-
-.. image:: ../pictures/module1/app2.png
-   :align: center
-
-|
-
-If you deploy ``Main App``, ``Back End``, ``Money Tranfer`` and ``Refer Friend`` services.
-
-.. image:: ../pictures/module1/app3.png
-   :align: center
 
 
 harry@Azure:~$ kubectl get crds
