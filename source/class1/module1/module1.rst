@@ -1,15 +1,33 @@
-Architecture of Arcadia Application
-###################################
+Architecture of the Kubernetes Cluster
+######################################
 
-.. note:: This application is available in GitLab in case you want to build your own lab : 
+For simplification, we use Azure Kubernetes Service aka AKS.
 
-First of all, it is important to understand how Arcadia app is split between micro-services
+.. note:: The goal of the workshop is not to learn how to install NGINX+ as an Ingress Controller. So to gain time, we have already done the installation. All the steps are described in our `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_.
 
 
-**This is what Arcadia App looks like when the 4 microservices are up and running, and you can see how traffic is routed based on URI**
+Below is the description of the K8S cluster which has been deployed into AKS:
 
-.. image:: ../pictures/module1/arcadia-api.png
+
+
+
+| In order to be completely agnostic and not dependant of a specific K8S distribution, we will use the standard tools for managing the cluster.
+| Hence we will use the tool ``kubectl`` for all the workshop.
+
+**Let's connect and look into the K8S cluster**
+
+1. Open you browser and go to the `Azure portal <https://portal.azure.com>`_
+
+2. Use the credentials:
+
+3. On the window, open the cli window to access a shell
+
+.. image:: ../pictures/module1/_01_Azure_Portal_Open_bash.png
    :align: center
+
+
+4. fssqf
+
 
 **But you can deploy Arcadia Step by Step**
 
