@@ -12,19 +12,19 @@ For simplification, for that workshop, we use the Azure Kubernetes Service aka A
 Description of the Kubernetes Cluster
 #####################################
 
-- Name: *CloudBuilder*
+- Name: **CloudBuilder**
 - 3 NameSpaces have already been added:
 
-    - *arcadia* -> contains the pods for the application named arcadia
-    - *external-ingress-controller* -> NGINX+ Ingress Controller for external traffic
-    - *internal-ingress-controller* -> NGINX+ Ingress Controller for internal traffic
+    - **external-ingress-controller** -> NGINX+ Ingress Controller for external traffic
+    - **internal-ingress-controller** -> NGINX+ Ingress Controller for internal traffic
+    - **arcadia** -> contains the pods for the application named arcadia
 
 - Some Custom Resource Definitions have been added and will be used for the use cases of the workshop:
 
-    - *virtualservers and virtualserverroutes* -> enable use cases not supported with the Ingress resource, such as traffic splitting and advanced content-based routing.
-    - *Policies* -> allows to configure features like access control and rate-limiting.
-    - *TransportServer* -> allows to configure TCP, UDP, and TLS Passthrough load balancing.
-    - *AppProtect CRDs* -> used to configure security policies, custom attack signatures and security logs for NGINX AppProtect (F5 WAF).
+    - **virtualservers and virtualserverroutes** -> enable use cases not supported with the Ingress resource, such as traffic splitting and advanced content-based routing.
+    - **Policies** -> allows to configure features like access control and rate-limiting.
+    - **TransportServer** -> allows to configure TCP, UDP, and TLS Passthrough load balancing.
+    - **AppProtect CRDs** -> used to configure security policies, custom attack signatures and security logs for NGINX AppProtect (F5 WAF).
 
 - The external Ingress controller is linked to an Azure Public Load Balancer -> we will see the public IP later on.
 
