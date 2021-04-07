@@ -3,9 +3,16 @@ Architecture of the Kubernetes Cluster
 
 For simplification, for that workshop, we use the Azure Kubernetes Service aka AKS.
 
-    .. note:: The goal of the workshop is not to learn how to install NGINX+ as an Ingress Controller. So to gain time, we have already done the installation (the steps are described in the `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_).
+    .. note::
+        | The goal of the workshop is not to learn how to install NGINX+ as an Ingress Controller.
+        | So to gain time, we have already done the installation (steps are described in the `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_).
 
-The description of the K8S cluster is:
+    .. note::
+        | In order to be completely agnostic and not dependant of a specific K8S distribution, standard tools will be used for managing the cluster.
+        | Hence, the tool ``kubectl`` will be used during that workshop.
+
+
+**Description of the Kubernetes Cluster**
 
 - Name: ``CloudBuilder``
 - 3 NameSpaces have already been added:
@@ -22,10 +29,6 @@ The description of the K8S cluster is:
     - *AppProtect CRDs* -> used to configure security policies, custom attack signatures and security logs for NGINX AppProtect (F5 WAF).
 
 - The external Ingress controller is linked to an Azure Public Load Balancer -> we will see the public IP later on.
-
-    .. note::
-        | In order to be completely agnostic and not dependant of a specific K8S distribution, standard tools will be used for managing the cluster.
-        | Hence, the tool ``kubectl`` will be used during that workshop.
 
 
 **Let's connect and look into the K8S cluster**
