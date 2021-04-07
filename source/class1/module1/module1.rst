@@ -3,30 +3,36 @@ Architecture of the Kubernetes Cluster
 
 For simplification, for that workshop, we use the Azure Kubernetes Service aka AKS.
 
-    .. note:: The goal of the workshop is not to learn how to install NGINX+ as an Ingress Controller. So to gain time, we have already done the installation (the steps are described in our `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_).
+    .. note:: The goal of the workshop is not to learn how to install NGINX+ as an Ingress Controller. So to gain time, we have already done the installation (the steps are described in the `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_).
 
 The description of the K8S cluster is:
 
 - Name: ``CloudBuilder``
 - 3 NameSpaces have already been added:
+
     - arcadia -> contains the pods for the application named arcadia
     - external-ingress-controller -> NGINX+ Ingress Controller for external traffic
     - internal-ingress-controller -> NGINX+ Ingress Controller for internal traffic
+
 - Some Custom Resource Definitions have been added and will be used for the use cases of the workshop:
+
     - virtualservers and virtualserverroutes -> enable use cases not supported with the Ingress resource, such as traffic splitting and advanced content-based routing.
-    - Policies -> allows to configure features like access control and rate-limiting, which you can add to your VirtualServer and VirtualServerRoute resources.
-    - TransportServer -> allows you to configure TCP, UDP, and TLS Passthrough load balancing.
-    - AppProtect CRDs -> allow to configure security policies, custom attack signatures and security logs for NGINX AppProtect (F5 WAF).
+    - Policies -> allows to configure features like access control and rate-limiting.
+    - TransportServer -> allows to configure TCP, UDP, and TLS Passthrough load balancing.
+    - AppProtect CRDs -> used to configure security policies, custom attack signatures and security logs for NGINX AppProtect (F5 WAF).
+
 - The external Ingress controller is linked to an Azure Public Load Balancer -> we will see the public IP later on.
 
-| In order to be completely agnostic and not dependant of a specific K8S distribution, standard tools will be used for managing the cluster.
-| Hence, the tool ``kubectl`` will be used during that workshop.
+    .. note::
+        | In order to be completely agnostic and not dependant of a specific K8S distribution, standard tools will be used for managing the cluster.
+        | Hence, the tool ``kubectl`` will be used during that workshop.
+
 
 **Let's connect and look into the K8S cluster**
 
 1. Open you browser and go to the `Azure portal <https://portal.azure.com>`_
 
-2. Use the credentials:
+2. Use the credentials which have been provided to you.
 
 3. On the window, open the cli window to access a shell
 
@@ -77,7 +83,7 @@ The description of the K8S cluster is:
         virtualservers.k8s.nginx.org         2021-03-08T10:00:04Z
         harry@Azure:~$
 
-8. Finally, we can look at the pods in each NameSpaces with the command ``kubectl get pods``:
+8. Look at the pods in each NameSpaces with the command ``kubectl get pods``:
 
 .. code-block:: bash
 
@@ -104,20 +110,15 @@ The description of the K8S cluster is:
         nap-internal-ingress-controller-55fdb8cd95-2dz77   1/1     Running   0          30d
 
 
+9. Let's check the Public IP address attached to the external Ingress Controller:
 
+.. code-block:: bash
 
-harry@Azure:~$ kubectl get crds
-NAME                                 CREATED AT
-aplogconfs.appprotect.f5.com         2021-03-08T10:00:03Z
-appolicies.appprotect.f5.com         2021-03-08T10:00:03Z
-apusersigs.appprotect.f5.com         2021-03-08T10:00:03Z
-globalconfigurations.k8s.nginx.org   2021-03-08T10:00:03Z
-policies.k8s.nginx.org               2021-03-08T10:00:03Z
-transportservers.k8s.nginx.org       2021-03-08T10:00:03Z
-virtualserverroutes.k8s.nginx.org    2021-03-08T10:00:03Z
-virtualservers.k8s.nginx.org         2021-03-08T10:00:04Z
+        harry@Azure:~$ kubectl get services -n external-ingress-controller
+        NAME                         TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)                      AGE
+        elb-nap-ingress-controller   LoadBalancer   10.200.0.15   52.167.14.0   80:31613/TCP,443:31094/TCP   30d
 
-
+10. Note the EXTERNAL-IP address. It will be used later in our labs.
 
 
 harry@Azure:~/lab1/Deploy_Cofee$ kubectl create namespace cafe
