@@ -139,11 +139,34 @@ Let's connect and look into the K8S cluster
             Host Ports:    0/TCP, 0/TCP, 0/TCP, 0/TCP
             Args:
               -nginx-plus=true
+              -nginx-reload-timeout=0
+              -enable-app-protect=true
               .......
               .......
-              -ingress-class=nginx-external        <-----INGRESS CLASS NAME
+              -ingress-class=nginx-external        <-----INGRESS CLASS NAME nginx-external
               .......
               .......
+
+
+.. code-block:: bash
+
+        harry@Azure:~/lab1$ kubectl describe pod nap-internal-ingress-controller-55fdb8cd95-2dz77 -n internal-ingress-controller
+        Name:         nap-internal-ingress-controller-55fdb8cd95-2dz77
+        Namespace:    internal-ingress-controller
+        .......
+        .......
+            Ports:         80/TCP, 443/TCP, 9113/TCP, 8081/TCP
+            Host Ports:    0/TCP, 0/TCP, 0/TCP, 0/TCP
+            Args:
+              -nginx-plus=true
+              -nginx-reload-timeout=0
+              -enable-app-protect=true
+              .......
+              .......
+              -ingress-class=nginx-internal         <-----INGRESS CLASS NAME is nginx-internal
+              .......
+              .......
+
 
 10. Let's check the Public IP address attached to the external Ingress Controller:
 
