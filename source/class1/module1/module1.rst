@@ -129,10 +129,144 @@ Let's connect and look into the K8S cluster
 10. Note the EXTERNAL-IP address. It will be used later in our labs.
 
 
+LAB USE CASE 1: traffic splitting and advanced content-based routing
+####################################################################
+
+| For that use case, A new application called cafe we be deployed and used
+| The CRDs virtualservers and virtualserverroutes will be used to enable the use case.
+
+1. Create the directory Lab1 and move into it
+
+.. code-block:: bash
+
+        harry@Azure:~$ mkdir Lab1
+        harry@Azure:~$ cd lab1/
+        harry@Azure:~/lab1$
+
+2. copy and paste the manifest below into a new file called cafe.yaml
+
+.. code-block:: bash
+
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: coffee
+          namespace: cafe
+        spec:
+          replicas: 2
+          selector:
+            matchLabels:
+              app: coffee
+          template:
+            metadata:
+              labels:
+                app: coffee
+            spec:
+              containers:
+              - name: coffee
+                image: nginxdemos/nginx-hello:plain-text
+                ports:
+                - containerPort: 8080
+        ---
+        apiVersion: v1
+        kind: Service
+        metadata:
+          name: coffee-svc
+        spec:
+          ports:
+          - port: 80
+            targetPort: 8080
+            protocol: TCP
+            name: http
+          selector:
+            app: coffee
+        ---
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: tea
+          namespace: cafe
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              app: tea
+          template:
+            metadata:
+              labels:
+                app: tea
+            spec:
+              containers:
+              - name: tea
+                image: nginxdemos/nginx-hello:plain-text
+                ports:
+                - containerPort: 8080
+        ---
+        apiVersion: v1
+        kind: Service
+        metadata:
+          name: tea-svc
+        spec:
+          ports:
+          - port: 80
+            targetPort: 8080
+            protocol: TCP
+            name: http
+          selector:
+            app: tea
+
+
+
+3. Create a new NameSpace called cafe. We will deploy the application into it.
+
+.. code-block:: bash
+
+        harry@Azure:~/lab1$ kubectl create namespace cafe
+        namespace/cafe created
+
+4. Deploy the application cafe into the NameSpace cafe
+
+.. code-block:: bash
+
+        harry@Azure:~/lab1$ kubectl create -f cafe.yaml
+        deployment.apps/coffee created
+        service/coffee-svc created
+        deployment.apps/tea created
+        service/tea-svc created
+
+5. Let's check everything is ok.
+
+- NameSpace cafe should have been created and should be in status Active:
+
+.. code-block:: bash
+
+        harry@Azure:~/lab1$ kubectl get namespaces
+        NAME                          STATUS   AGE
+        arcadia                       Active   2d3h
+        cafe                          Active   13s
+        default                       Active   2d7h
+        external-ingress-controller   Active   2d6h
+        internal-ingress-controller   Active   2d6h
+        kube-node-lease               Active   2d7h
+        kube-public                   Active   2d7h
+        kube-system                   Active   2d7h
+
+- Pods for the application cafe should have been deployed and in status Running:
+
+.. code-block:: bash
+
+        harry@Azure:~/lab1$ kubectl get pods -n cafe
+        NAME                      READY   STATUS    RESTARTS   AGE
+        coffee-6f4b79b975-pxjxp   1/1     Running   0          21s
+        coffee-6f4b79b975-xpfvr   1/1     Running   0          21s
+        tea-6fb46d899f-j2mqs      1/1     Running   0          21s
+
+
 
 
 harry@Azure:~/lab1/Deploy_Cofee$ kubectl create namespace cafe
 namespace/cafe created
+
 harry@Azure:~/lab1/Deploy_Cofee$ kubectl get namespaces
 NAME                          STATUS   AGE
 arcadia                       Active   2d3h
@@ -143,12 +277,15 @@ internal-ingress-controller   Active   2d6h
 kube-node-lease               Active   2d7h
 kube-public                   Active   2d7h
 kube-system                   Active   2d7h
+
+
 harry@Azure:~/lab1/Deploy_Cofee$ vi cafe.yaml
 harry@Azure:~/lab1/Deploy_Cofee$ kubectl create -f cafe.yaml
 deployment.apps/coffee created
 service/coffee-svc created
 deployment.apps/tea created
 service/tea-svc created
+
 harry@Azure:~/lab1/Deploy_Cofee$ kubectl get pods -n cafe
 NAME                      READY   STATUS    RESTARTS   AGE
 coffee-6f4b79b975-pxjxp   1/1     Running   0          21s
