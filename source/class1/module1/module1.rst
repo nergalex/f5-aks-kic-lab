@@ -10,16 +10,16 @@ The description of the K8S cluster is:
 - Name: ``CloudBuilder``
 - 3 NameSpaces have already been added:
 
-    - arcadia -> contains the pods for the application named arcadia
-    - external-ingress-controller -> NGINX+ Ingress Controller for external traffic
-    - internal-ingress-controller -> NGINX+ Ingress Controller for internal traffic
+    - *arcadia* -> contains the pods for the application named arcadia
+    - *external-ingress-controller* -> NGINX+ Ingress Controller for external traffic
+    - *internal-ingress-controller* -> NGINX+ Ingress Controller for internal traffic
 
 - Some Custom Resource Definitions have been added and will be used for the use cases of the workshop:
 
-    - virtualservers and virtualserverroutes -> enable use cases not supported with the Ingress resource, such as traffic splitting and advanced content-based routing.
-    - Policies -> allows to configure features like access control and rate-limiting.
-    - TransportServer -> allows to configure TCP, UDP, and TLS Passthrough load balancing.
-    - AppProtect CRDs -> used to configure security policies, custom attack signatures and security logs for NGINX AppProtect (F5 WAF).
+    - *virtualservers and virtualserverroutes* -> enable use cases not supported with the Ingress resource, such as traffic splitting and advanced content-based routing.
+    - *Policies* -> allows to configure features like access control and rate-limiting.
+    - *TransportServer* -> allows to configure TCP, UDP, and TLS Passthrough load balancing.
+    - *AppProtect CRDs* -> used to configure security policies, custom attack signatures and security logs for NGINX AppProtect (F5 WAF).
 
 - The external Ingress controller is linked to an Azure Public Load Balancer -> we will see the public IP later on.
 
@@ -66,7 +66,6 @@ The description of the K8S cluster is:
         kube-node-lease               Active   30d
         kube-public                   Active   30d
         kube-system                   Active   30d
-        harry@Azure:~$
 
 7. Let's verify the CRDs installed:
 
@@ -81,7 +80,6 @@ The description of the K8S cluster is:
         transportservers.k8s.nginx.org       2021-03-08T10:00:03Z
         virtualserverroutes.k8s.nginx.org    2021-03-08T10:00:03Z
         virtualservers.k8s.nginx.org         2021-03-08T10:00:04Z
-        harry@Azure:~$
 
 8. Look at the pods in each NameSpaces with the command ``kubectl get pods``:
 
@@ -119,6 +117,8 @@ The description of the K8S cluster is:
         elb-nap-ingress-controller   LoadBalancer   10.200.0.15   52.167.14.0   80:31613/TCP,443:31094/TCP   30d
 
 10. Note the EXTERNAL-IP address. It will be used later in our labs.
+
+
 
 
 harry@Azure:~/lab1/Deploy_Cofee$ kubectl create namespace cafe
