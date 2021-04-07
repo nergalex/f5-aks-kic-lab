@@ -5,7 +5,7 @@ For simplification, for that workshop, we use the Azure Kubernetes Service aka A
 
     .. note::
         | The goal of the workshop is not to learn how to install NGINX+ as an Ingress Controller.
-        | So to gain time, we have already done the installation (steps are described in the `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_).
+        | So to gain time, we have already done the installation (see the `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_ for step by step).
 
     .. note::
         | In order to be completely agnostic and not dependant of a specific K8S distribution, standard tools will be used for managing the cluster.
