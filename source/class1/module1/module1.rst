@@ -1,5 +1,6 @@
+**************************************
 Architecture of the Kubernetes Cluster
-######################################
+**************************************
 
 For simplification, for that workshop, we use the Azure Kubernetes Service aka AKS.
 
@@ -7,7 +8,9 @@ For simplification, for that workshop, we use the Azure Kubernetes Service aka A
         | The goal of the workshop is not to learn how to install NGINX+ as an Ingress Controller.
         | So to gain time, we have already done the installation (see `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_ for step by step).
 
-**Description of the Kubernetes Cluster**
+
+Description of the Kubernetes Cluster
+#####################################
 
 - Name: ``CloudBuilder``
 - 3 NameSpaces have already been added:
@@ -60,6 +63,7 @@ For simplification, for that workshop, we use the Azure Kubernetes Service aka A
 6. Let's check the NameSpaces of the cluster:
 
 .. code-block:: bash
+
         harry@Azure:~$ kubectl get ns
         NAME                          STATUS   AGE
         arcadia                       Active   30d
@@ -73,6 +77,7 @@ For simplification, for that workshop, we use the Azure Kubernetes Service aka A
 7. Let's verify the CRDs installed:
 
 .. code-block:: bash
+
         harry@Azure:~$ kubectl get crds
         NAME                                 CREATED AT
         aplogconfs.appprotect.f5.com         2021-03-08T10:00:03Z
