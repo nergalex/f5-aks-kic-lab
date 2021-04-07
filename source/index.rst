@@ -1,5 +1,6 @@
+**************************************************
 Workshop Kubernetes Ingress Controller with NGINX+
-##################################################
+**************************************************
 
 
 
@@ -7,7 +8,7 @@ Workshop Kubernetes Ingress Controller with NGINX+
    :align: center
 
 
-NGINX Ingress Controller, also know as NGINX Ingress Controller for Kubernetes, comes in three different versions:
+NGINX Ingress Controller (NIC), also know as NGINX Ingress Controller for Kubernetes, comes in three different versions:
 
     #. Commercial: NGINX Plus
     #. Opensource: NGINX official mainline `build <https://github.com/nginxinc/docker-nginx>`_

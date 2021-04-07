@@ -61,21 +61,7 @@ Let's connect and look into the K8S cluster
         harry@Azure:~$ az aks get-credentials --resource-group rg-aksdistrict2 --name CloudBuilder
         Merged "CloudBuilder" as current context in /home/harry/.kube/config
 
-6. Let's check the NameSpaces of the cluster:
-
-.. code-block:: bash
-
-        harry@Azure:~$ kubectl get ns
-        NAME                          STATUS   AGE
-        arcadia                       Active   30d
-        default                       Active   30d
-        external-ingress-controller   Active   30d
-        internal-ingress-controller   Active   30d
-        kube-node-lease               Active   30d
-        kube-public                   Active   30d
-        kube-system                   Active   30d
-
-7. Let's verify the CRDs installed:
+6. Let's verify the CRDs installed:
 
 .. code-block:: bash
 
@@ -89,6 +75,20 @@ Let's connect and look into the K8S cluster
         transportservers.k8s.nginx.org       2021-03-08T10:00:03Z
         virtualserverroutes.k8s.nginx.org    2021-03-08T10:00:03Z
         virtualservers.k8s.nginx.org         2021-03-08T10:00:04Z
+
+7. Let's check the NameSpaces of the cluster:
+
+.. code-block:: bash
+
+        harry@Azure:~$ kubectl get ns
+        NAME                          STATUS   AGE
+        arcadia                       Active   30d
+        default                       Active   30d
+        external-ingress-controller   Active   30d
+        internal-ingress-controller   Active   30d
+        kube-node-lease               Active   30d
+        kube-public                   Active   30d
+        kube-system                   Active   30d
 
 8. Look at the pods in each NameSpaces with the command ``kubectl get pods``:
 
