@@ -124,7 +124,7 @@ Let's connect and look into the K8S cluster
 
 9. Let's check the Ingress Class Name attached to each NIC:
 
-.. code-block:: bash
+::
 
         harry@Azure:~$ kubectl describe pod nap-external-ingress-controller-54db45d656-fg4tq -n external-ingress-controller
         Name:         nap-external-ingress-controller-54db45d656-fg4tq
@@ -143,7 +143,7 @@ Let's connect and look into the K8S cluster
               -enable-app-protect=true
               -nginx-configmaps=$(POD_NAMESPACE)/external-nginx-plus-ingress-nginx-ingress
               -default-server-tls-secret=$(POD_NAMESPACE)/external-nginx-plus-ingress-nginx-ingress-default-server-tls
-              -"ingress-class=nginx-external"
+              -ingress-class=nginx-external
               -health-status=true
               -health-status-uri=/nginx-health
               -nginx-debug=false
