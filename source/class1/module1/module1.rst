@@ -22,7 +22,7 @@ Below is the description of the K8S cluster which has been deployed into AKS:
 
 3. On the window, open the cli window to access a shell
 
-.. image:: ../pictures/module1/_01_Azure_Portal_Open_bash.png
+.. image:: ./images/_01_Azure_Portal_Open_bash.png
    :align: center
 
 
