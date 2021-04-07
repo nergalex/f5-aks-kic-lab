@@ -32,10 +32,8 @@ Below is the description of the K8S cluster which has been deployed into AKS:
 
 5. Configure kubectl to connect to your Kubernetes cluster using the az aks get-credentials command.
 
-    .. note:: In the CLI, the touch Tab can be used for completion of the commands and arguments.
-
-.. code-block:: bash
-   az aks get-credentials --resource-group rg-aksdistrict2 --name CloudBuilder
+    .. code-block:: bash
+            az aks get-credentials --resource-group rg-aksdistrict2 --name CloudBuilder
 
 
 
