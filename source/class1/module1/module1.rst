@@ -44,9 +44,10 @@ Let's connect and look into the K8S cluster
 3. On the window, open the cli window to access a shell
 
     .. image:: ./images/_01_AzurePortalOpenBash.png
-        :align: center
         :width: 200px
         :height: 100px
+        :align: center
+
 
 4. You should have the image below
 
