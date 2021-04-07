@@ -5,6 +5,13 @@ For simplification, for that workshop, we use the Azure Kubernetes Service aka A
 
 .. note:: The goal of the workshop is not to learn how to install NGINX+ as an Ingress Controller. So to gain time, we have already done the installation. All the steps are described in our `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_.
 
+The description of the K8S cluster is:
+
+- Name: ``CloudBuilder``
+- 3 NameSpaces have already been added:
+    - arcadia (contains the pods for the application named arcadia)
+    -
+
 
 | In order to be completely agnostic and not dependant of a specific K8S distribution, standard tools will be used for managing the cluster.
 | Hence, the tool ``kubectl`` will be used during that workshop.
@@ -25,16 +32,17 @@ For simplification, for that workshop, we use the Azure Kubernetes Service aka A
     .. image:: ./images/_02_bash_opened.png
         :align: center
 
-5. Configure kubectl to connect to your Kubernetes cluster using the az aks get-credentials command.
+5. Configure kubectl to connect to your Kubernetes cluster using the command ``az aks get-credentials``.
 
     - The name of the K8S Cluster is ``CloudBuilder``.
     - Use the resource group name which has been assigned to you. For instance ``rg-aksdistrict2``.
 
-    .. code-block:: bash
+.. code-block:: bash
 
-            az aks get-credentials --resource-group rg-aksdistrict2 --name CloudBuilder
+        harry@Azure:~$ az aks get-credentials --resource-group rg-aksdistrict2 --name CloudBuilder
+Merged "CloudBuilder" as current context in /home/harry/.kube/config
 
-
+6. fsd
 
 
 
