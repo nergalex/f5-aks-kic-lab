@@ -12,7 +12,7 @@ For simplification, for that workshop, we use the Azure Kubernetes Service aka A
 Description of the Kubernetes Cluster
 #####################################
 
-- Name: ``CloudBuilder``
+- Name: *CloudBuilder*
 - 3 NameSpaces have already been added:
 
     - *arcadia* -> contains the pods for the application named arcadia
@@ -29,7 +29,8 @@ Description of the Kubernetes Cluster
 - The external Ingress controller is linked to an Azure Public Load Balancer -> we will see the public IP later on.
 
 
-**Let's connect and look into the K8S cluster**
+Let's connect and look into the K8S cluster
+###########################################
 
     .. note::
         | In order to be completely agnostic and not dependant of a specific K8S distribution, standard tools will be used for managing the cluster.
