@@ -122,7 +122,33 @@ Let's connect and look into the K8S cluster
         nap-internal-ingress-controller-55fdb8cd95-2dz77   1/1     Running   0          30d
 
 
-9. Let's check the Public IP address attached to the external Ingress Controller:
+9. Let's check the Ingress Class Name attached to each NIC:
+
+.. code-block:: bash
+
+        harry@Azure:~$ kubectl describe pod nap-external-ingress-controller-54db45d656-fg4tq -n external-ingress-controller
+        Name:         nap-external-ingress-controller-54db45d656-fg4tq
+        Namespace:    external-ingress-controller
+        .......
+        .......
+        Containers:
+          external-nginx-plus-ingress-nginx-ingress:
+            .......
+            .......
+            Ports:         80/TCP, 443/TCP, 9113/TCP, 8081/TCP
+            Host Ports:    0/TCP, 0/TCP, 0/TCP, 0/TCP
+            Args:
+              -nginx-plus=true
+              -nginx-reload-timeout=0
+              -enable-app-protect=true
+              -nginx-configmaps=$(POD_NAMESPACE)/external-nginx-plus-ingress-nginx-ingress
+              -default-server-tls-secret=$(POD_NAMESPACE)/external-nginx-plus-ingress-nginx-ingress-default-server-tls
+              -``ingress-class=nginx-external``
+              -health-status=true
+              -health-status-uri=/nginx-health
+              -nginx-debug=false
+
+10. Let's check the Public IP address attached to the external Ingress Controller:
 
 .. code-block:: bash
 
@@ -130,7 +156,7 @@ Let's connect and look into the K8S cluster
         NAME                         TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)                      AGE
         elb-nap-ingress-controller   LoadBalancer   10.200.0.15   52.167.14.0   80:31613/TCP,443:31094/TCP   30d
 
-10. Note the EXTERNAL-IP address. It will be used later in our labs.
+11. Note the EXTERNAL-IP address. It will be used later in our labs.
 
 
 LAB USE CASE 1: traffic splitting and advanced content-based routing
