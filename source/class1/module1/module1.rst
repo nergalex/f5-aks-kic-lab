@@ -21,8 +21,8 @@ Below is the description of the K8S cluster which has been deployed into AKS:
 2. Use the credentials:
 
 3. On the window, open the cli window to access a shell
-.. image:: ./images/01-AzurePortalOpenBash.png
-   :align: center
+    .. image:: ./images/01-AzurePortalOpenBash.png
+        :align: center
 
 4. fssqf
 
