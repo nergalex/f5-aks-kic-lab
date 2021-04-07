@@ -143,7 +143,7 @@ Let's connect and look into the K8S cluster
               -enable-app-protect=true
               -nginx-configmaps=$(POD_NAMESPACE)/external-nginx-plus-ingress-nginx-ingress
               -default-server-tls-secret=$(POD_NAMESPACE)/external-nginx-plus-ingress-nginx-ingress-default-server-tls
-              -``ingress-class=nginx-external``
+              -"ingress-class=nginx-external"
               -health-status=true
               -health-status-uri=/nginx-health
               -nginx-debug=false
