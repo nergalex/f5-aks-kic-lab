@@ -33,8 +33,8 @@ Let's connect and look into the K8S cluster
 ###########################################
 
     .. note::
-        | In order to be completely agnostic and not dependant of a specific K8S distribution, standard tools will be used for managing the cluster.
-        | Hence, the tool ``kubectl`` will be used during that workshop.
+        | In order to be independant of a specific K8S distribution, standard tools will be used for managing the cluster.
+        | The tool ``kubectl`` will be used during that workshop.
 
 
 1. Open you browser and go to the `Azure portal <https://portal.azure.com>`_
