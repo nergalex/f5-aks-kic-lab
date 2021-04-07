@@ -45,7 +45,8 @@ Let's connect and look into the K8S cluster
 
     .. image:: ./images/_01_AzurePortalOpenBash.png
         :align: center
-        :scale: 10 %
+        :width: 200px
+        :height: 100px
 
 4. You should have the image below
 
