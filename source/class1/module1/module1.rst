@@ -132,8 +132,9 @@ Let's connect and look into the K8S cluster
 LAB USE CASE 1: traffic splitting and advanced content-based routing
 ####################################################################
 
-| For that use case, A new application called cafe we be deployed and used
+| For that use case, A new application called cafe will be deployed and used
 | The CRDs virtualservers and virtualserverroutes will be used to enable the use case.
+
 
 1. Create the directory Lab1 and move into it
 
