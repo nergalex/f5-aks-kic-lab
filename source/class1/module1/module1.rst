@@ -3,7 +3,7 @@ Architecture of the Kubernetes Cluster
 
 For simplification, for that workshop, we use the Azure Kubernetes Service aka AKS.
 
-.. note:: The goal of the workshop is not to learn how to install NGINX+ as an Ingress Controller. So to gain time, we have already done the installation. All the steps are described in our `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_.
+    .. note:: The goal of the workshop is not to learn how to install NGINX+ as an Ingress Controller. So to gain time, we have already done the installation (the steps are described in our `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_).
 
 The description of the K8S cluster is:
 
