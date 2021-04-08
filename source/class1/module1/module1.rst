@@ -51,7 +51,7 @@ Let's connect and look into the K8S cluster
         :align: center
 
 
-4. You should have the image below
+4. You should see a page which looks like the one below
 
     .. image:: ./images/_02_bash_opened.png
         :align: center
