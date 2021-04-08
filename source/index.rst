@@ -49,6 +49,11 @@ The use cases are:
 - Secure API services via NAP and Open API support
 
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+   :glob:
+
    class*/class*
 
 
