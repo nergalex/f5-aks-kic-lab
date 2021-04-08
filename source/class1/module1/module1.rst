@@ -421,7 +421,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 
 .. code-block:: bash
 
-        cafe.example.com        52.167.14.0
+        52.167.14.0         cafe.example.com
 
 - Open a browser and test some connections on http://cafe.example.com and https://cafe.example.com
 
