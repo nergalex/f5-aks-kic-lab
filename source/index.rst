@@ -1,8 +1,5 @@
-**************************************************
 Workshop Kubernetes Ingress Controller with NGINX+
-**************************************************
-
-
+##################################################
 
 .. image:: ./images/nginx_kic.png
    :align: center
@@ -49,6 +46,12 @@ The use cases are:
 - Secure API services via NAP and Open API support
 
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+   :glob:
+
+   class*/class*
 
 
 
