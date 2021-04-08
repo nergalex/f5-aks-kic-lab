@@ -102,6 +102,8 @@ Let's connect and look into the K8S cluster
         harry@Azure:~$ kubectl get pods -n default
         No resources found in default namespace.
 
+.. code-block:: bash
+
         harry@Azure:~$ kubectl get pods -n arcadia
         NAME                       READY   STATUS    RESTARTS   AGE
         app2-6dcf6d5845-crpv6      1/1     Running   0          30d
@@ -113,9 +115,13 @@ Let's connect and look into the K8S cluster
         main-84cf4949b9-f5x5t      1/1     Running   0          30d
         main-84cf4949b9-pnkwt      1/1     Running   0          30d
 
+.. code-block:: bash
+
         harry@Azure:~$ kubectl get pods -n external-ingress-controller
         NAME                                               READY   STATUS    RESTARTS   AGE
         nap-external-ingress-controller-54db45d656-fg4tq   1/1     Running   0          30d
+
+.. code-block:: bash
 
         harry@Azure:~$ kubectl get pods -n internal-ingress-controller
         NAME                                               READY   STATUS    RESTARTS   AGE
