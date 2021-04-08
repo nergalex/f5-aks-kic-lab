@@ -363,8 +363,8 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 
 9. Copy/Paste the manifest below into a new file named cafe-virtual-server.yaml and deploy it.
 
-- That manifest uses the custom resources *VirtualServer* and *VirtualServerRoutes*.
-- The deployment configure the external NGINX+ Ingress Controller via the usage of the Ingress Class Name *nginx-external*.
+- That manifest uses the custom resources **VirtualServer** and **VirtualServerRoutes**.
+- The deployment configure the **external NGINX+ Ingress Controller** via the usage of the Ingress Class Name **nginx-external**.
 - For that first deployment, the setup is very simple :
     - listens for hostname cafe.example.com
     - TLS is activated and use the cert and key from cafe-secret
@@ -373,7 +373,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
         - request for /coffee are sent to service coffee
 
 - A lot of features are available via the utilisation of the custom resources *VirtualServer* and *VirtualServerRoutes*.
-- The list is quite long and is available in the `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_
+- The list is quite long and is available in the `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_. Some of those advanced features will be used later in the workshop.
 - For this first deployment, we use the features below:
     - tls: allows to attach a secret with a TLS certificate and key. The secret must belong to the same namespace as the VirtualServer.
     - route: defines rules for matching client requests to actions like passing a request to an upstream.
