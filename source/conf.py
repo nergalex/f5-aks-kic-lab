@@ -18,15 +18,14 @@
 
 import sys
 import sphinx
-import sphinx_rtd_theme
 from sphinx.errors import VersionRequirementError
 
 
 # -- Project information -----------------------------------------------------
 
-project = u'AKS and NGINX Ingress Controller Lab'
-copyright = u'2021, F5'
-author = u'F5'
+project = u'F5 AKS KIC lab'
+copyright = u'2020, F5 SE'
+author = u'F5 SE'
 
 # The short X.Y version
 version = u''
@@ -44,8 +43,7 @@ needs_sphinx = '3.3'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx_copybutton',
-    'sphinx_rtd_theme'
+    'sphinx_copybutton'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -73,7 +71,7 @@ language = None
 exclude_patterns = []
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = None
+pygments_style = 'sphinx'
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -81,8 +79,8 @@ pygments_style = None
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = "sphinx_rtd_theme"
-html_theme_path = ["_themes", ]
+html_theme = "docs-theme"
+html_theme_path = ["../_themes", ]
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -136,8 +134,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'f5-aks-kic-lab.tex', u'F5 AKS KIC Lab Documentation',
-     u'F5', 'manual'),
+    (master_doc, 'f5-aks-kic-lab.tex', u'F5 AKS KIC lab Documentation',
+     u'F5 SE', 'manual'),
 ]
 
 
@@ -146,7 +144,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'f5-aks-kic-lab', u'F5 AKS KIC Lab Documentation',
+    (master_doc, 'f5-aks-kic-lab', u'F5 AKS KIC lab Documentation',
      [author], 1)
 ]
 
@@ -157,7 +155,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'f5-aks-kic-lab', u'F5 AKS KIC Lab Documentation',
+    (master_doc, 'f5-aks-kic-lab', u'F5 AKS KIC lab Documentation',
      author, 'f5-aks-kic-lab', 'One line description of project.',
      'Miscellaneous'),
 ]

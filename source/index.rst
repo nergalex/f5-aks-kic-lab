@@ -49,6 +49,7 @@ The use cases are:
 - Secure API services via NAP and Open API support
 
 
+   class*/class*
 
 
 
