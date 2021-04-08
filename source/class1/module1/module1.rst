@@ -194,7 +194,17 @@ LAB USE CASE 1: traffic splitting and advanced content-based routing
         harry@Azure:~$ cd lab1/
         harry@Azure:~/lab1$
 
-2. copy and paste the manifest below into a new file called cafe.yaml
+2. Create a new NameSpace called cafe. We will deploy the application into it.
+
+.. code-block:: bash
+
+        harry@Azure:~/lab1$ kubectl create namespace cafe
+        namespace/cafe created
+
+3. copy and paste the manifest below into a new file called cafe.yaml.
+
+    | That manifest will be used to deploy the application into the cluster.
+    | The application cafe is composed of 2 micro services: cofee and tea.
 
 .. code-block:: bash
 
@@ -267,15 +277,7 @@ LAB USE CASE 1: traffic splitting and advanced content-based routing
             app: tea
 
 
-
-3. Create a new NameSpace called cafe. We will deploy the application into it.
-
-.. code-block:: bash
-
-        harry@Azure:~/lab1$ kubectl create namespace cafe
-        namespace/cafe created
-
-4. Deploy the application cafe into the NameSpace cafe
+4. Deploy the application cafe
 
 .. code-block:: bash
 
@@ -302,7 +304,7 @@ LAB USE CASE 1: traffic splitting and advanced content-based routing
         kube-public                   Active   2d7h
         kube-system                   Active   2d7h
 
-- Pods for the application cafe should have been deployed and in status Running:
+- Pods for the application cafe should have been deployed in the NameSpace cafe and in status Running:
 
 .. code-block:: bash
 
@@ -314,7 +316,7 @@ LAB USE CASE 1: traffic splitting and advanced content-based routing
 
 6. Copy and Past the manifest below into a new file called cafe-secret.yaml
 
-That manifest deploys a certificate and keys that will be used for TLS traffic.
+That manifest deploys a certificate and keys that will be used later for TLS traffic.
 
 .. code-block:: bash
 
@@ -328,18 +330,18 @@ That manifest deploys a certificate and keys that will be used for TLS traffic.
           tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURMakNDQWhZQ0NRREFPRjl0THNhWFdqQU5CZ2txaGtpRzl3MEJBUXNGQURCYU1Rc3dDUVlEVlFRR0V3SlYKVXpFTE1Ba0dBMVVFQ0F3Q1EwRXhJVEFmQmdOVkJBb01HRWx1ZEdWeWJtVjBJRmRwWkdkcGRITWdVSFI1SUV4MApaREViTUJrR0ExVUVBd3dTWTJGbVpTNWxlR0Z0Y0d4bExtTnZiU0FnTUI0WERURTRNRGt4TWpFMk1UVXpOVm9YCkRUSXpNRGt4TVRFMk1UVXpOVm93V0RFTE1Ba0dBMVVFQmhNQ1ZWTXhDekFKQmdOVkJBZ01Ba05CTVNFd0h3WUQKVlFRS0RCaEpiblJsY201bGRDQlhhV1JuYVhSeklGQjBlU0JNZEdReEdUQVhCZ05WQkFNTUVHTmhabVV1WlhoaApiWEJzWlM1amIyMHdnZ0VpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElCRHdBd2dnRUtBb0lCQVFDcDZLbjdzeTgxCnAwanVKL2N5ayt2Q0FtbHNmanRGTTJtdVpOSzBLdGVjcUcyZmpXUWI1NXhRMVlGQTJYT1N3SEFZdlNkd0kyaloKcnVXOHFYWENMMnJiNENaQ0Z4d3BWRUNyY3hkam0zdGVWaVJYVnNZSW1tSkhQUFN5UWdwaW9iczl4N0RsTGM2SQpCQTBaalVPeWwwUHFHOVNKZXhNVjczV0lJYTVyRFZTRjJyNGtTa2JBajREY2o3TFhlRmxWWEgySTVYd1hDcHRDCm42N0pDZzQyZitrOHdnemNSVnA4WFprWldaVmp3cTlSVUtEWG1GQjJZeU4xWEVXZFowZXdSdUtZVUpsc202OTIKc2tPcktRajB2a29QbjQxRUUvK1RhVkVwcUxUUm9VWTNyemc3RGtkemZkQml6Rk8yZHNQTkZ4MkNXMGpYa05MdgpLbzI1Q1pyT2hYQUhBZ01CQUFFd0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFLSEZDY3lPalp2b0hzd1VCTWRMClJkSEliMzgzcFdGeW5acS9MdVVvdnNWQTU4QjBDZzdCRWZ5NXZXVlZycTVSSWt2NGxaODFOMjl4MjFkMUpINnIKalNuUXgrRFhDTy9USkVWNWxTQ1VwSUd6RVVZYVVQZ1J5anNNL05VZENKOHVIVmhaSitTNkZBK0NuT0Q5cm4yaQpaQmVQQ0k1ckh3RVh3bm5sOHl3aWozdnZRNXpISXV5QmdsV3IvUXl1aTlmalBwd1dVdlVtNG52NVNNRzl6Q1Y3ClBwdXd2dWF0cWpPMTIwOEJqZkUvY1pISWc4SHc5bXZXOXg5QytJUU1JTURFN2IvZzZPY0s3TEdUTHdsRnh2QTgKN1dqRWVxdW5heUlwaE1oS1JYVmYxTjM0OWVOOThFejM4Zk9USFRQYmRKakZBL1BjQytHeW1lK2lHdDVPUWRGaAp5UkU9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
           tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBcWVpcCs3TXZOYWRJN2lmM01wUHJ3Z0pwYkg0N1JUTnBybVRTdENyWG5LaHRuNDFrCkcrZWNVTldCUU5semtzQndHTDBuY0NObzJhN2x2S2wxd2k5cTIrQW1RaGNjS1ZSQXEzTVhZNXQ3WGxZa1YxYkcKQ0pwaVJ6ejBza0lLWXFHN1BjZXc1UzNPaUFRTkdZMURzcGRENmh2VWlYc1RGZTkxaUNHdWF3MVVoZHErSkVwRwp3SStBM0kreTEzaFpWVng5aU9WOEZ3cWJRcCt1eVFvT05uL3BQTUlNM0VWYWZGMlpHVm1WWThLdlVWQ2cxNWhRCmRtTWpkVnhGbldkSHNFYmltRkNaYkp1dmRySkRxeWtJOUw1S0Q1K05SQlAvazJsUkthaTAwYUZHTjY4NE93NUgKYzMzUVlzeFR0bmJEelJjZGdsdEkxNURTN3lxTnVRbWF6b1Z3QndJREFRQUJBb0lCQVFDUFNkU1luUXRTUHlxbApGZlZGcFRPc29PWVJoZjhzSStpYkZ4SU91UmF1V2VoaEp4ZG01Uk9ScEF6bUNMeUw1VmhqdEptZTIyM2dMcncyCk45OUVqVUtiL1ZPbVp1RHNCYzZvQ0Y2UU5SNThkejhjbk9SVGV3Y290c0pSMXBuMWhobG5SNUhxSkpCSmFzazEKWkVuVVFmY1hackw5NGxvOUpIM0UrVXFqbzFGRnM4eHhFOHdvUEJxalpzVjdwUlVaZ0MzTGh4bndMU0V4eUZvNApjeGI5U09HNU9tQUpvelN0Rm9RMkdKT2VzOHJKNXFmZHZ5dGdnOXhiTGFRTC94MGtwUTYyQm9GTUJEZHFPZVBXCktmUDV6WjYvMDcvdnBqNDh5QTFRMzJQem9idWJzQkxkM0tjbjMyamZtMUU3cHJ0V2wrSmVPRmlPem5CUUZKYk4KNHFQVlJ6NWhBb0dCQU50V3l4aE5DU0x1NFArWGdLeWNrbGpKNkY1NjY4Zk5qNUN6Z0ZScUowOXpuMFRsc05ybwpGVExaY3hEcW5SM0hQWU00MkpFUmgySi9xREZaeW5SUW8zY2czb2VpdlVkQlZHWTgrRkkxVzBxZHViL0w5K3l1CmVkT1pUUTVYbUdHcDZyNmpleHltY0ppbS9Pc0IzWm5ZT3BPcmxEN1NQbUJ2ek5MazRNRjZneGJYQW9HQkFNWk8KMHA2SGJCbWNQMHRqRlhmY0tFNzdJbUxtMHNBRzR1SG9VeDBlUGovMnFyblRuT0JCTkU0TXZnRHVUSnp5K2NhVQprOFJxbWRIQ2JIelRlNmZ6WXEvOWl0OHNaNzdLVk4xcWtiSWN1YytSVHhBOW5OaDFUanNSbmU3NFowajFGQ0xrCmhIY3FIMHJpN1BZU0tIVEU4RnZGQ3haWWRidUI4NENtWmlodnhicFJBb0dBSWJqcWFNWVBUWXVrbENkYTVTNzkKWVNGSjFKelplMUtqYS8vdER3MXpGY2dWQ0thMzFqQXdjaXowZi9sU1JxM0hTMUdHR21lemhQVlRpcUxmZVpxYwpSMGlLYmhnYk9jVlZrSkozSzB5QXlLd1BUdW14S0haNnpJbVpTMGMwYW0rUlk5WUdxNVQ3WXJ6cHpjZnZwaU9VCmZmZTNSeUZUN2NmQ21mb09oREN0enVrQ2dZQjMwb0xDMVJMRk9ycW40M3ZDUzUxemM1em9ZNDR1QnpzcHd3WU4KVHd2UC9FeFdNZjNWSnJEakJDSCtULzZzeXNlUGJKRUltbHpNK0l3eXRGcEFOZmlJWEV0LzQ4WGY2ME54OGdXTQp1SHl4Wlp4L05LdER3MFY4dlgxUE9ucTJBNWVpS2ErOGpSQVJZS0pMWU5kZkR1d29seHZHNmJaaGtQaS80RXRUCjNZMThzUUtCZ0h0S2JrKzdsTkpWZXN3WEU1Y1VHNkVEVXNEZS8yVWE3ZlhwN0ZjanFCRW9hcDFMU3crNlRYcDAKWmdybUtFOEFSek00NytFSkhVdmlpcS9udXBFMTVnMGtKVzNzeWhwVTl6WkxPN2x0QjBLSWtPOVpSY21Vam84UQpjcExsSE1BcWJMSjhXWUdKQ2toaVd4eWFsNmhZVHlXWTRjVmtDMHh0VGwvaFVFOUllTktvCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
 
-7. Deploy the manifest cafe-secret
+7. Deploy the manifest cafe-secret.
 
 .. code-block:: bash
 
-        harry@Azure:~/lab1/Deploy_Cofee$ kubectl create -f cafe-secret.yaml
+        harry@Azure:~/lab1$ kubectl create -f cafe-secret.yaml
         secret/cafe-secret created
 
 8. Verify the certificate and keys have been deployed into the namespace cafe
 
 .. code-block:: bash
 
-        harry@Azure:~/lab1/Deploy_Cofee$ kubectl describe secret cafe-secret -n cafe
+        harry@Azure:~/lab1$ kubectl describe secret cafe-secret -n cafe
         Name:         cafe-secret
         Namespace:    cafe
         Labels:       <none>
@@ -352,7 +354,165 @@ That manifest deploys a certificate and keys that will be used for TLS traffic.
         tls.crt:  1164 bytes
         tls.key:  1675 bytes
 
-9.
+9. Copy/Paste the manifest below into a new file named cafe-virtual-server.yaml and deploy it.
+
+- That manifest uses the custom resources *VirtualServer* and *VirtualServerRoutes*.
+- The deployment configure the external NGINX+ Ingress Controller via the usage of the Ingress Class Name *nginx-external*.
+- For that first deployment, the setup is very simple :
+    - listens for hostname cafe.example.com
+    - TLS is activated and use the cert and key from cafe-secret
+    - Simple Path Routing is done :
+        - request for /tea are sent to service tea
+        - request for /coffee are sent to service coffee
+
+- A lot of features are available via the utilisation of the custom resources *VirtualServer* and *VirtualServerRoutes*.
+- The list is quite long and is available in the `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_
+- For this first deployment, we use the features below:
+    - tls: allows to attach a secret with a TLS certificate and key. The secret must belong to the same namespace as the VirtualServer.
+    - route: defines rules for matching client requests to actions like passing a request to an upstream.
+
+.. code-block:: bash
+
+        apiVersion: k8s.nginx.org/v1
+        kind: VirtualServer
+        metadata:
+          name: app-cafe
+          namespace: cafe
+        spec:
+          ingressClassName: nginx-external
+          host: cafe.example.com
+          tls:
+            secret: cafe-secret
+          upstreams:
+          - name: tea
+            service: tea-svc
+            port: 80
+          - name: coffee
+            service: coffee-svc
+            port: 80
+          routes:
+          - path: /tea
+            action:
+              pass: tea
+          - path: /coffee
+            action:
+              pass: coffee
+
+
+- Deploy the manifest:
+
+.. code-block:: bash
+
+        harry@Azure:~/lab1$ kubectl apply -f cafe-virtual-server.yaml
+        virtualserver.k8s.nginx.org/app-cafe configured
+
+
+10. Test the setup
+
+- Edit the host file of your client
+- Add a line with hostname *cafe.example.com* and the EXTERNAL-IP address you've seen for the external NIC (cf step 11 above).
+
+.. code-block:: bash
+
+        cafe.example.com        52.167.14.0
+
+- Open a browser and test some connections on http://cafe.example.com and https://cafe.example.com
+
+
+11. Let's modify the deployment with a more complex setup
+
+- Copy and Paste the manifest below into a new file named cafe-virtual-server-2.yaml and deploy it.
+- For that new deployment we use a lot more features available in the CRDs VirtualServer.
+    - if path is */redirect* then the action is **redirect** to http://www.nginx.com.
+    - if path is */proxy* then the action is **proxy** to add/rewrite/ignore some headers.
+    - if path is */return_page* then the action is **return** to reply with a custom web page.
+    - in each action, variables could be used like: $request_uri, $request_method, $request_body, $scheme, $host, $request_time, $request_length, $connection, $remote_addr, $remote_port, $ssl_cipher, $ssl_client_cert, etc
+
+
+.. code-block:: bash
+
+        apiVersion: k8s.nginx.org/v1
+        kind: VirtualServer
+        metadata:
+          name: app-cafe
+          namespace: cafe
+        spec:
+          ingressClassName: nginx-external
+          host: cafe.example.com
+          tls:
+            secret: cafe-secret
+          upstreams:
+          - name: tea
+            service: tea-svc
+            port: 80
+          - name: coffee
+            service: coffee-svc
+            port: 80
+          routes:
+          - path: /tea
+            action:
+              pass: tea
+          - path: /coffee
+            action:
+              pass: coffee
+          - path: /redirect
+            action:
+              redirect:
+                url: http://www.nginx.com
+                code: 301
+          - path: /proxy
+            action:
+              proxy:
+                upstream: coffee
+                requestHeaders:
+                  pass: true
+                  set:
+                  - name: My-Header
+                    value: Value
+                  - name: Client-Cert
+                    value: ${ssl_client_escaped_cert}
+                responseHeaders:
+                  add:
+                  - name: My-Header
+                    value: Hello_this_your_value
+                  - name: IC-Nginx-Version
+                    value: ${nginx_version}
+                    always: true
+                  hide:
+                  - x-internal-version
+                  ignore:
+                  - Expires
+                  - Set-Cookie
+                  pass:
+                  - Server
+          - path: /return_page
+            action:
+              return:
+                code: 200
+                type: text/plain
+                body: "Hello World\n\n\n\nRequest is ${request_uri}\nRequest Method is ${request_method}\nRequest Scheme is ${scheme}\nRequest Host is ${host}\nRequest Lengthis ${request_length}\nNGINX Version is ${nginx_version}\nClient IP address is ${remote_addr}\nClient Port is : ${remote_port}\nLocal Time is ${time_local}\nServer IP Address is ${server_addr}\nServer Port is ${server_port}\nProtocol is ${server_protocol}\n"
+
+
+- Deploy the manifest:
+
+.. code-block:: bash
+
+        harry@Azure:~/lab1$ kubectl apply -f cafe-virtual-server-2.yaml
+        virtualserver.k8s.nginx.org/app-cafe configured
+
+
+12. Test the setup
+
+Open a browser and test some connections on:
+
+https://cafe.example.com                -> works like previous configuration
+https://ccafe.example.com/redirect      -> client is redirected to www.nginx.com
+https://cafe.example.com/return_page    -> custom page Hello World is returned
+https://cafe.example.com/proxy          -> requests go to coffee you should see custom headers in the responses
+
+
+
+
 harry@Azure:~/lab1/Deploy_Cofee$ kubectl create namespace cafe
 namespace/cafe created
 
