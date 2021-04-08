@@ -149,7 +149,7 @@ Let's connect and look into the K8S cluster
               -enable-app-protect=true
               .......
               .......
-              -ingress-class=nginx-external        ****INGRESS CLASS NAME nginx-external****
+              -ingress-class=nginx-external        ****INGRESS CLASS NAME is nginx-external****
               .......
               .......
 
@@ -310,7 +310,8 @@ LAB USE CASE 1: traffic splitting and advanced content-based routing
         kube-public                   Active   2d7h
         kube-system                   Active   2d7h
 
-- Pods for the application cafe should have been deployed in the NameSpace cafe and in status Running:
+- The services of the application cafe should have been deployed in the NameSpace cafe and should be in status Running.
+- You should have 2 Pods for the coffee service and 1 Pod for tea service
 
 .. code-block:: bash
 
