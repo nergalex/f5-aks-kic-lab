@@ -209,8 +209,8 @@ LAB USE CASE 1: traffic splitting and advanced content-based routing
 
 3. copy and paste the manifest below into a new file called cafe.yaml.
 
-    | That manifest will be used to deploy the application into the cluster.
-    | The application cafe is composed of 2 micro services: cofee and tea.
+That manifest will be used to deploy the application into the cluster.
+The application cafe is composed of 2 micro services: cofee and tea.
 
 .. code-block:: bash
 
