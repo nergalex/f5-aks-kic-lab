@@ -15,8 +15,8 @@ Description of the Kubernetes Cluster
 - Name: **CloudBuilder**
 - 3 NameSpaces have already been added:
 
-    - **external-ingress-controller** -> 1 pod for NIC for external traffic
-    - **internal-ingress-controller** -> 1 pod for NIC for internal traffic
+    - **external-ingress-controller** -> contains 1 pod for NIC. Will be used for external traffic.
+    - **internal-ingress-controller** -> contains 1 pod for NIC. Will be used for internal traffic.
     - **arcadia** -> contains the pods for the application named arcadia
 
 - Some Custom Resource Definitions have been added and will be used for the use cases of the workshop:
