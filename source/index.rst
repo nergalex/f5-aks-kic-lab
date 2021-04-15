@@ -1,3 +1,13 @@
+[ADC] COMMENT BEGIN
+Proposition pour la page de garde:
+- mettre les Use Case et pain points couverts (cf. use cases listés à la fin)
+- les produits phare utilisés comme solution (NGINX + AKS pour nos vouchers Azure :op)
+- les bénéfices obtenus à la sortie de ce lab
+
+Déplacer le contenu ci-dessous dans Class 1
+
+[ADC] COMMENT END
+
 Workshop Kubernetes Ingress Controller with NGINX+
 ##################################################
 

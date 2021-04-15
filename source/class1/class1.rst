@@ -1,16 +1,26 @@
+[ADC] COMMENT BEGIN
+
+Proposition: schéma avec logo des produits. P-e utiliser le symbole CI/CD ("infini")
+Arcadia: disparait au profit de coffee App ?
+
+[ADC] COMMENT END
+
 Class 1 - [Harry] 1) Présentation générale (théorie + lab)
 ##########################################################
 
 In this class, we will deploy a modern application (Arcadia Finance app) with modern tools in a modern environment.
 
 What are modern tools:
-   - Ansible
-   - Terraform
-   - Gitlab and Gitlab CI
+   - `Red Hat Ansible Tower <https://www.ansible.com/products/tower>`_ as Automation Platform
+   - Terraform [ADC] non
+   - Gitlab and Gitlab CI [ADC] non
 
 What is a modern environment:
-   - Kubernetes
-   - Docker containers with docker registry
+   - `Azure Kubernetes Service <https://azure.microsoft.com/en-us/services/kubernetes-service/>`_
+   - `Azure Container Registry <https://azure.microsoft.com/en-us/services/container-registry/>`_
+   - `Github as code repository <https://azure.microsoft.com/en-us/products/github/>`_
+   - `Kibana<https://www.elastic.co/kibana>`_ + `Elasticsearch<https://www.elastic.co/elastic-stack>`_ + `Fluentd<https://www.fluentd.org/>`_  +  as a logging platform
+   - `Docker<https://www.docker.com/>`_ to build images
 
 .. note:: Don't be afraid if you don't know those tools. The goal of the lab is not to learn how to deploy them, but how to use them.
 
