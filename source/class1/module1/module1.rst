@@ -61,7 +61,7 @@ Let's connect and look into the K8S cluster
     - The name of the K8S Cluster is ``CloudBuilder``.
     - Use the resource group name which has been assigned to you. For instance ``rg-aksdistrict2``.
 
-.. code-block:: bash
+    .. code-block:: bash
 
         harry@Azure:~$ az aks get-credentials --resource-group rg-aksdistrict2 --name CloudBuilder
         Merged "CloudBuilder" as current context in /home/harry/.kube/config
@@ -209,8 +209,10 @@ LAB USE CASE 1: traffic splitting and advanced content-based routing
 
 3. copy and paste the manifest below into a new file called cafe.yaml.
 
-    | That manifest will be used to deploy the application into the cluster.
-    | The application cafe is composed of 2 micro services: cofee and tea.
+
+That manifest will be used to deploy the application into the cluster.
+The application cafe is composed of 2 micro services: cofee and tea.
+
 
 .. code-block:: bash
 
