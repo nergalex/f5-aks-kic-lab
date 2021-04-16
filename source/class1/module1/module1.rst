@@ -420,13 +420,13 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 
 - Edit the host file of your client
 - Add a line with hostname *cafe.example.com* and the EXTERNAL-IP address you've seen for the external NIC (cf step 11 above).
-
+[ADC] use '--resolve' option in curl. curl is available in Windows now :)
 .. code-block:: bash
 
         52.167.14.0         cafe.example.com
 
 - Open a browser and test some connections on http://cafe.example.com and https://cafe.example.com
-
+[ADC] 404 error, unknown PATH '/' in VirtualServer resource
 
 11. Let's modify the deployment with a more complex setup
 
