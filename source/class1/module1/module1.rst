@@ -421,6 +421,8 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 - Edit the host file of your client
 - Add a line with hostname *cafe.example.com* and the EXTERNAL-IP address you've seen for the external NIC (cf step 11 above).
 [ADC] use '--resolve' option in curl. curl is available in Windows now :)
+[ADC] I'll publish the service IP on GSLB
+
 .. code-block:: bash
 
         52.167.14.0         cafe.example.com
