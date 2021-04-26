@@ -514,6 +514,9 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 
 12. Test the setup
 
+[ADC] Check compilation status of VS: kubectl describe virtualserver cafe -n cafe
+[ADC] Check compilation status of VSR: kubectl describe virtualserverroute coffee -n cafe
+
 Open a browser and test some connections on:
 
 https://cafe.example.com                -> works like previous configuration
