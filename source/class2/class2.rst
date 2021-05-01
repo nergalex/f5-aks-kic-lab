@@ -1,4 +1,4 @@
-Lab 1 - Ingress resource + WAF
+lab 1 - Ingress + WAF
 ##########################################################
 
 In this class, we will deploy a modern application (Arcadia Finance app) with modern tools in a modern environment.
