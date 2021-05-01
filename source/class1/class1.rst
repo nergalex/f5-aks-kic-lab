@@ -1,10 +1,3 @@
-[ADC] COMMENT BEGIN
-
-Proposition: schéma avec logo des produits. P-e utiliser le symbole CI/CD ("infini")
-Arcadia: disparait au profit de coffee App ?
-
-[ADC] COMMENT END
-
 [Harry] Présentation générale (théorie + lab)
 ##########################################################
 
