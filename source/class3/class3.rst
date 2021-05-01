@@ -1,4 +1,4 @@
-Class 3 - [Ben] 3)	Cross Name Space
+Class 3 - Micro-Proxy architecture
 ##############################################################
 
 In this class, we will deploy NGINX App Protect in CentOS host by installing the RPM packages from the official NGINX Plus Repo.
