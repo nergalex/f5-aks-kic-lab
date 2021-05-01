@@ -1,4 +1,4 @@
-Class 3 - Micro-Proxy architecture
+lab 3 - API GW & OIDC
 ##############################################################
 
 In this class, we will deploy NGINX App Protect in CentOS host by installing the RPM packages from the official NGINX Plus Repo.
