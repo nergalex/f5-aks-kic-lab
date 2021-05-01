@@ -55,6 +55,12 @@ This API GW is also used to publish one or more specific services **internally**
 that do not require a security policy but require **advanced delivery** features.
 
 
+Design overview
+=========================================
 
+.. image:: ./_pictures/global_design.png
+   :align: center
+   :width: 700
+   :alt: Design overview
 
 
