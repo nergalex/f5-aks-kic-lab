@@ -19,7 +19,7 @@ WAF on the Ingress Controller
 
 .. image:: ./_pictures/app-services-Kubernetes-pt2_Ingress-controller.png
    :align: center
-   :width: 600
+   :width: 400
    :alt: Edge Proxy
 
 In those labs, it was considered to do not have any security service on Front Door, only an Load Balancer.
@@ -41,7 +41,7 @@ API GW on a Per‑Service Basis
 
 .. image:: ./_pictures/app-services-Kubernetes-pt2_per-service.png
    :align: center
-   :width: 600
+   :width: 400
    :alt: Micro Proxy
 
 In lab3, an API GW is also deployed as a proxy tier within Kubernetes,
