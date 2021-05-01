@@ -9,6 +9,8 @@ in a Kubernetes environment, there are several locations where you might deploy 
 
 .. image:: ./_pictures/app-services-Kubernetes-pt2_four-locations.png
    :align: center
+   :width: 800
+   :alt: All layers
 
 Let’s take web application firewall (WAF) as an example.
 WAF policies implement advanced security measures to inspect and block undesirable traffic,
@@ -19,11 +21,12 @@ WAF on the Ingress Controller
 
 .. image:: ./_pictures/app-services-Kubernetes-pt2_Ingress-controller.png
    :align: center
-   :width: 400
+   :width: 800
    :alt: Edge Proxy
 
 In those labs, it was considered to do not have any security service on Front Door, only an Load Balancer.
 The WAF application service is deployed on Ingress controller in order to met the following customer context:
+
 - Baseline of the **WAF policy definition** is owned by **SecOps** team and they make it available as a catalog for DevOps consumption
 - The **implementation** of the WAF policies (baseline + modifications) are under the direction of the **DevOps** team
 - Customer wants to **centralize WAF policies** at the infrastructure layer, rather than delegating them to individual applications.
@@ -41,7 +44,7 @@ API GW on a Per‑Service Basis
 
 .. image:: ./_pictures/app-services-Kubernetes-pt2_per-service.png
    :align: center
-   :width: 400
+   :width: 800
    :alt: Micro Proxy
 
 In lab3, an API GW is also deployed as a proxy tier within Kubernetes,
