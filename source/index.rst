@@ -13,9 +13,10 @@ Environment
 - Azure Kubernetes Service (AKS)
 - Okta
 
+
 .. toctree::
    :maxdepth: 2
-   :caption: **Contents**:
+   :caption: Contents:
    :glob:
 
    class*/class*
