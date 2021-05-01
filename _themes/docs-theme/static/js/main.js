@@ -110,7 +110,7 @@
 		// Doc responsive menu code
 		var _w = $(window).width();
 		var searchContent = $('.nginx-doc-sidebar-inner .search-doc-wrapper').html();
-		$('.nginx-doc-sidebar').prepend('<div class="search-doc-wrapper mob-search-doc">'+searchContent+'</div><div class="doc-mob-sidenav"><h3>NGINX Documentation<span class="icon icon-arrow-down"></span></h3></div>');
+		$('.nginx-doc-sidebar').prepend('<div class="search-doc-wrapper mob-search-doc">'+searchContent+'</div><div class="doc-mob-sidenav"><h3>Lab guide<span class="icon icon-arrow-down"></span></h3></div>');
 
 		$('.nginx-doc-sidebar').on('click',".doc-mob-sidenav",function(){
 			$('.nginx-doc-sidebar-inner').slideToggle(300);
