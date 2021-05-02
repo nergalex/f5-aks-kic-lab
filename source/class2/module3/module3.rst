@@ -1,3 +1,11 @@
+The use cases are:
+
+- Advanced Traffic splitting and content-based routing for Canary testing
+- Support of OAuth with JWT validation and traffic redirection based on JWT claim
+- Multi Team organisation with Cross Name Space support
+- Secure API services via NAP and Open API support
+
+
 **************************************
 Architecture of the Kubernetes Cluster
 **************************************
