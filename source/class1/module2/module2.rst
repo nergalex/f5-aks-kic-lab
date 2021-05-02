@@ -1,7 +1,7 @@
 NGINX Ingress Controller, which one?
 ##################################################
 
-.. image:: ./images/nginx_kic.png
+.. image:: ./images/dia-MH-2021-04-06-NIC-for-KIC-03-no-legend-padding-LP-1400x515-1.svg
    :align: center
    :width: 600
    :alt: All layers
