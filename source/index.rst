@@ -14,7 +14,7 @@ Environment
 - Okta
 
 
-** Contents **
+**Contents**
 
 .. toctree::
    :maxdepth: 2
