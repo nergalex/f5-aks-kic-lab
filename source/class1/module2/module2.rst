@@ -3,7 +3,7 @@ NGINX Ingress Controller, which one?
 
 .. image:: ./_pictures/dia-MH-2021-04-06-NIC-for-KIC-03-no-legend-padding-LP-1400x515-1.svg
    :align: center
-   :width: 600
+   :width: 800
    :alt: All layers
 
 Implementations
