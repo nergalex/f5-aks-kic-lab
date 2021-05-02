@@ -1,66 +1,701 @@
-Architecture
-##################################################
+**************************************
+Architecture of the Kubernetes Cluster
+**************************************
 
-Application Services in Kubernetes
-=========================================
+For simplification, for that workshop, we use the Azure Kubernetes Service aka AKS.
 
-As discussed in this `blog <https://www.nginx.com/blog/deploying-application-services-in-kubernetes-part-2/>`_,
-in a Kubernetes environment, there are several locations where you might deploy application services:
-
-.. image:: ./_pictures/app-services-Kubernetes-pt2_four-locations.png
-   :align: center
-   :width: 700
-   :alt: All layers
-
-Let’s take web application firewall (WAF) as an example.
-WAF policies implement advanced security measures to inspect and block undesirable traffic,
-but these policies often need to be fine‑tuned for specific applications in order to minimize the number of false positives.
-
-WAF on the Ingress Controller
-=========================================
-
-.. image:: ./_pictures/app-services-Kubernetes-pt2_Ingress-controller.png
-   :align: center
-   :width: 700
-   :alt: Edge Proxy
-
-In those labs, it was considered to do not have any security service on Front Door, only an Load Balancer.
-The WAF application service is deployed on Ingress controller in order to met the following customer context:
-
-- Baseline of the **WAF policy definition** is owned by **SecOps** team and they make it available as a catalog for DevOps consumption
-- The **implementation** of the WAF policies (baseline + modifications) are under the direction of the **DevOps** team
-- Customer wants to **centralize WAF policies** at the infrastructure layer, rather than delegating them to individual applications.
-- DevOps make extensive use of **Kubernetes APIs** to manage the **deployment and operation** of applications.
-
-This approach still allows for a central **SecOps** team to **define the WAF policies**.
-They can define the policies in a manner that can be easily imported into Kubernetes,
-and the **DevOps** team **responsible for the Ingress controller** can then assign the WAF policies to specific applications.
-
-The NGINX App Protect WAF module is deployed directly on the Ingress Controller.
-All WAF configuration is managed using *Ingress* resources [lab #1] or *VirtualServer(Route)* resources [lab #2, lab #3], configured through the Kubernetes API.
-
-API GW on a Per‑Service Basis
-=========================================
-
-.. image:: ./_pictures/app-services-Kubernetes-pt2_per-service.png
-   :align: center
-   :width: 700
-   :alt: Micro Proxy
-
-In lab #3, an API GW is also deployed as a proxy tier within Kubernetes,
-in front of one or more specific services published publicly on **Internet**,
-therefore that require an **API GW** with authentication based on **oAuth / OpenID Connect** (OIDC) and apply **rate limiting**.
-
-This API GW is also used to publish one or more specific services **internally**, i.e. published to other PODs hosted into Kubernetes,
-that do not require a security policy but require **advanced delivery** features.
+    .. note::
+        | The goal of the workshop is not to learn how to install NGINX+ as an Ingress Controller.
+        | So to gain time, we have already done the installation (see `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_ for step by step).
 
 
-Design overview
-=========================================
+Description of the Kubernetes Cluster
+#####################################
 
-.. image:: ./_pictures/global_design.png
-   :align: center
-   :width: 700
-   :alt: Design overview
+- Name: **CloudBuilder**
+- 3 NameSpaces have already been added:
+
+    - **external-ingress-controller** -> contains 1 pod for NIC. Will be used for external traffic.
+    - **internal-ingress-controller** -> contains 1 pod for NIC. Will be used for internal traffic.
+    - **arcadia** -> contains the pods for the application named arcadia
+
+- Some Custom Resource Definitions have been added and will be used for the use cases of the workshop:
+
+    - **virtualservers and virtualserverroutes** -> enable use cases not supported with the Ingress resource, such as traffic splitting and advanced content-based routing.
+    - **Policies** -> allows to configure features like access control and rate-limiting.
+    - **TransportServer** -> allows to configure TCP, UDP, and TLS Passthrough load balancing.
+    - **AppProtect CRDs** -> used to configure security policies, custom attack signatures and security logs for NGINX AppProtect (F5 WAF).
+
+- The external Ingress controller is linked to an Azure Public Load Balancer -> we will see the public IP later on.
+
+- The coexistence of multiple Ingress Controllers in one cluster is provided by the support of Ingress Class Name:
+
+    - External NIC has been deployed with argument **ingress-class=nginx-external**.
+    - Internal NIC has been deployed with argument **ingress-class=nginx-internal**.
+
+Let's connect and look into the K8S cluster
+###########################################
+
+    .. note::
+        | In order to be independant of a specific K8S distribution, standard tools will be used for managing the cluster.
+        | The tool ``kubectl`` will be used during that workshop.
 
 
+1. Open you browser and go to the `Azure portal <https://portal.azure.com>`_
+
+2. Use the credentials which have been provided to you.
+
+3. On the window, open the cli window to access a shell
+
+    .. image:: ./images/_01_AzurePortalOpenBash.png
+        :align: center
+
+
+4. You should see a page which looks like the one below
+
+    .. image:: ./images/_02_bash_opened.png
+        :align: center
+
+5. Configure kubectl to connect to your Kubernetes cluster using the command ``az aks get-credentials``.
+
+    - The name of the K8S Cluster is ``CloudBuilder``.
+    - Use the resource group name which has been assigned to you. For instance ``rg-aksdistrict2``.
+
+    .. code-block:: bash
+
+        harry@Azure:~$ az aks get-credentials --resource-group rg-aksdistrict2 --name CloudBuilder
+        Merged "CloudBuilder" as current context in /home/harry/.kube/config
+
+6. Let's verify the CRDs installed:
+
+.. code-block:: bash
+
+        harry@Azure:~$ kubectl get crds
+        NAME                                 CREATED AT
+        aplogconfs.appprotect.f5.com         2021-03-08T10:00:03Z
+        appolicies.appprotect.f5.com         2021-03-08T10:00:03Z
+        apusersigs.appprotect.f5.com         2021-03-08T10:00:03Z
+        globalconfigurations.k8s.nginx.org   2021-03-08T10:00:03Z
+        policies.k8s.nginx.org               2021-03-08T10:00:03Z
+        transportservers.k8s.nginx.org       2021-03-08T10:00:03Z
+        virtualserverroutes.k8s.nginx.org    2021-03-08T10:00:03Z
+        virtualservers.k8s.nginx.org         2021-03-08T10:00:04Z
+
+7. Let's check the NameSpaces of the cluster:
+
+.. code-block:: bash
+
+        harry@Azure:~$ kubectl get ns
+        NAME                          STATUS   AGE
+        arcadia                       Active   30d
+        default                       Active   30d
+        external-ingress-controller   Active   30d
+        internal-ingress-controller   Active   30d
+        kube-node-lease               Active   30d
+        kube-public                   Active   30d
+        kube-system                   Active   30d
+
+8. Look at the pods in each NameSpaces with the command ``kubectl get pods``:
+
+.. code-block:: bash
+
+        harry@Azure:~$ kubectl get pods -n default
+        No resources found in default namespace.
+
+.. code-block:: bash
+
+        harry@Azure:~$ kubectl get pods -n arcadia
+        NAME                       READY   STATUS    RESTARTS   AGE
+        app2-6dcf6d5845-crpv6      1/1     Running   0          30d
+        app2-6dcf6d5845-wdxds      1/1     Running   0          30d
+        app3-b989dc6dc-6klxk       1/1     Running   0          30d
+        app3-b989dc6dc-9vpfm       1/1     Running   0          30d
+        backend-56c9b667d5-4x4w2   1/1     Running   0          30d
+        backend-56c9b667d5-zfgvc   1/1     Running   0          30d
+        main-84cf4949b9-f5x5t      1/1     Running   0          30d
+        main-84cf4949b9-pnkwt      1/1     Running   0          30d
+
+.. code-block:: bash
+
+        harry@Azure:~$ kubectl get pods -n external-ingress-controller
+        NAME                                               READY   STATUS    RESTARTS   AGE
+        nap-external-ingress-controller-54db45d656-fg4tq   1/1     Running   0          30d
+
+.. code-block:: bash
+
+        harry@Azure:~$ kubectl get pods -n internal-ingress-controller
+        NAME                                               READY   STATUS    RESTARTS   AGE
+        nap-internal-ingress-controller-55fdb8cd95-2dz77   1/1     Running   0          30d
+
+
+9. Let's check the Ingress Class Name attached to each NIC:
+
+.. code-block:: bash
+
+        harry@Azure:~$ kubectl describe pod nap-external-ingress-controller-54db45d656-fg4tq -n external-ingress-controller
+        Name:         nap-external-ingress-controller-54db45d656-fg4tq
+        Namespace:    external-ingress-controller
+        .......
+        .......
+        Containers:
+          external-nginx-plus-ingress-nginx-ingress:
+            .......
+            .......
+            Ports:         80/TCP, 443/TCP, 9113/TCP, 8081/TCP
+            Host Ports:    0/TCP, 0/TCP, 0/TCP, 0/TCP
+            Args:
+              -nginx-plus=true
+              -nginx-reload-timeout=0
+              -enable-app-protect=true
+              .......
+              .......
+              -ingress-class=nginx-external        ****INGRESS CLASS NAME is nginx-external****
+              .......
+              .......
+
+
+.. code-block:: bash
+
+        harry@Azure:~/lab1$ kubectl describe pod nap-internal-ingress-controller-55fdb8cd95-2dz77 -n internal-ingress-controller
+        Name:         nap-internal-ingress-controller-55fdb8cd95-2dz77
+        Namespace:    internal-ingress-controller
+        .......
+        .......
+            Ports:         80/TCP, 443/TCP, 9113/TCP, 8081/TCP
+            Host Ports:    0/TCP, 0/TCP, 0/TCP, 0/TCP
+            Args:
+              -nginx-plus=true
+              -nginx-reload-timeout=0
+              -enable-app-protect=true
+              .......
+              .......
+              -ingress-class=nginx-internal         ****INGRESS CLASS NAME is nginx-internal****
+              .......
+              .......
+
+
+10. Let's check the Public IP address attached to the external Ingress Controller:
+
+.. code-block:: bash
+
+        harry@Azure:~$ kubectl get services -n external-ingress-controller
+        NAME                         TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)                      AGE
+        elb-nap-ingress-controller   LoadBalancer   10.200.0.15   52.167.14.0   80:31613/TCP,443:31094/TCP   30d
+
+11. Note the EXTERNAL-IP address. It will be used later in our labs.
+
+
+LAB USE CASE 1: traffic splitting and advanced content-based routing
+####################################################################
+
+| For that use case, A new application called cafe will be deployed and used
+| The CRDs virtualservers and virtualserverroutes will be used to enable the use case.
+|
+
+1. Create the directory Lab1 and move into it
+
+.. code-block:: bash
+
+        harry@Azure:~$ mkdir Lab1
+        harry@Azure:~$ cd lab1/
+        harry@Azure:~/lab1$
+
+2. Create a new NameSpace called cafe. We will deploy the application into it.
+
+.. code-block:: bash
+
+        harry@Azure:~/lab1$ kubectl create namespace cafe
+        namespace/cafe created
+
+3. copy and paste the manifest below into a new file called cafe.yaml.
+
+
+That manifest will be used to deploy the application into the cluster.
+The application cafe is composed of 2 micro services: cofee and tea.
+
+
+.. code-block:: bash
+
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: coffee
+          namespace: cafe
+        spec:
+          replicas: 2
+          selector:
+            matchLabels:
+              app: coffee
+          template:
+            metadata:
+              labels:
+                app: coffee
+            spec:
+              containers:
+              - name: coffee
+                image: nginxdemos/nginx-hello:plain-text
+                ports:
+                - containerPort: 8080
+        ---
+        apiVersion: v1
+        kind: Service
+        metadata:
+          name: coffee-svc
+        spec:
+          ports:
+          - port: 80
+            targetPort: 8080
+            protocol: TCP
+            name: http
+          selector:
+            app: coffee
+        ---
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: tea
+          namespace: cafe
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              app: tea
+          template:
+            metadata:
+              labels:
+                app: tea
+            spec:
+              containers:
+              - name: tea
+                image: nginxdemos/nginx-hello:plain-text
+                ports:
+                - containerPort: 8080
+        ---
+        apiVersion: v1
+        kind: Service
+        metadata:
+          name: tea-svc
+        spec:
+          ports:
+          - port: 80
+            targetPort: 8080
+            protocol: TCP
+            name: http
+          selector:
+            app: tea
+
+
+4. Deploy the application cafe
+
+.. code-block:: bash
+
+        harry@Azure:~/lab1$ kubectl create -f cafe.yaml
+        deployment.apps/coffee created
+        service/coffee-svc created
+        deployment.apps/tea created
+        service/tea-svc created
+
+5. Let's check everything is ok.
+
+- NameSpace cafe should have been created and should be in status Active:
+
+.. code-block:: bash
+
+        harry@Azure:~/lab1$ kubectl get namespaces
+        NAME                          STATUS   AGE
+        arcadia                       Active   2d3h
+        cafe                          Active   13s
+        default                       Active   2d7h
+        external-ingress-controller   Active   2d6h
+        internal-ingress-controller   Active   2d6h
+        kube-node-lease               Active   2d7h
+        kube-public                   Active   2d7h
+        kube-system                   Active   2d7h
+
+- The services of the application cafe should have been deployed in the NameSpace cafe and should be in status Running.
+- You should have 2 Pods for the coffee service and 1 Pod for tea service
+
+.. code-block:: bash
+
+        harry@Azure:~/lab1$ kubectl get pods -n cafe
+        NAME                      READY   STATUS    RESTARTS   AGE
+        coffee-6f4b79b975-pxjxp   1/1     Running   0          21s
+        coffee-6f4b79b975-xpfvr   1/1     Running   0          21s
+        tea-6fb46d899f-j2mqs      1/1     Running   0          21s
+
+6. Copy and Past the manifest below into a new file called cafe-secret.yaml
+
+That manifest deploys a certificate and keys that will be used later for TLS traffic.
+
+.. code-block:: bash
+
+        apiVersion: v1
+        kind: Secret
+        metadata:
+          name: cafe-secret
+          namespace: cafe
+        type: kubernetes.io/tls
+        data:
+          tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURMakNDQWhZQ0NRREFPRjl0THNhWFdqQU5CZ2txaGtpRzl3MEJBUXNGQURCYU1Rc3dDUVlEVlFRR0V3SlYKVXpFTE1Ba0dBMVVFQ0F3Q1EwRXhJVEFmQmdOVkJBb01HRWx1ZEdWeWJtVjBJRmRwWkdkcGRITWdVSFI1SUV4MApaREViTUJrR0ExVUVBd3dTWTJGbVpTNWxlR0Z0Y0d4bExtTnZiU0FnTUI0WERURTRNRGt4TWpFMk1UVXpOVm9YCkRUSXpNRGt4TVRFMk1UVXpOVm93V0RFTE1Ba0dBMVVFQmhNQ1ZWTXhDekFKQmdOVkJBZ01Ba05CTVNFd0h3WUQKVlFRS0RCaEpiblJsY201bGRDQlhhV1JuYVhSeklGQjBlU0JNZEdReEdUQVhCZ05WQkFNTUVHTmhabVV1WlhoaApiWEJzWlM1amIyMHdnZ0VpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElCRHdBd2dnRUtBb0lCQVFDcDZLbjdzeTgxCnAwanVKL2N5ayt2Q0FtbHNmanRGTTJtdVpOSzBLdGVjcUcyZmpXUWI1NXhRMVlGQTJYT1N3SEFZdlNkd0kyaloKcnVXOHFYWENMMnJiNENaQ0Z4d3BWRUNyY3hkam0zdGVWaVJYVnNZSW1tSkhQUFN5UWdwaW9iczl4N0RsTGM2SQpCQTBaalVPeWwwUHFHOVNKZXhNVjczV0lJYTVyRFZTRjJyNGtTa2JBajREY2o3TFhlRmxWWEgySTVYd1hDcHRDCm42N0pDZzQyZitrOHdnemNSVnA4WFprWldaVmp3cTlSVUtEWG1GQjJZeU4xWEVXZFowZXdSdUtZVUpsc202OTIKc2tPcktRajB2a29QbjQxRUUvK1RhVkVwcUxUUm9VWTNyemc3RGtkemZkQml6Rk8yZHNQTkZ4MkNXMGpYa05MdgpLbzI1Q1pyT2hYQUhBZ01CQUFFd0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFLSEZDY3lPalp2b0hzd1VCTWRMClJkSEliMzgzcFdGeW5acS9MdVVvdnNWQTU4QjBDZzdCRWZ5NXZXVlZycTVSSWt2NGxaODFOMjl4MjFkMUpINnIKalNuUXgrRFhDTy9USkVWNWxTQ1VwSUd6RVVZYVVQZ1J5anNNL05VZENKOHVIVmhaSitTNkZBK0NuT0Q5cm4yaQpaQmVQQ0k1ckh3RVh3bm5sOHl3aWozdnZRNXpISXV5QmdsV3IvUXl1aTlmalBwd1dVdlVtNG52NVNNRzl6Q1Y3ClBwdXd2dWF0cWpPMTIwOEJqZkUvY1pISWc4SHc5bXZXOXg5QytJUU1JTURFN2IvZzZPY0s3TEdUTHdsRnh2QTgKN1dqRWVxdW5heUlwaE1oS1JYVmYxTjM0OWVOOThFejM4Zk9USFRQYmRKakZBL1BjQytHeW1lK2lHdDVPUWRGaAp5UkU9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+          tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBcWVpcCs3TXZOYWRJN2lmM01wUHJ3Z0pwYkg0N1JUTnBybVRTdENyWG5LaHRuNDFrCkcrZWNVTldCUU5semtzQndHTDBuY0NObzJhN2x2S2wxd2k5cTIrQW1RaGNjS1ZSQXEzTVhZNXQ3WGxZa1YxYkcKQ0pwaVJ6ejBza0lLWXFHN1BjZXc1UzNPaUFRTkdZMURzcGRENmh2VWlYc1RGZTkxaUNHdWF3MVVoZHErSkVwRwp3SStBM0kreTEzaFpWVng5aU9WOEZ3cWJRcCt1eVFvT05uL3BQTUlNM0VWYWZGMlpHVm1WWThLdlVWQ2cxNWhRCmRtTWpkVnhGbldkSHNFYmltRkNaYkp1dmRySkRxeWtJOUw1S0Q1K05SQlAvazJsUkthaTAwYUZHTjY4NE93NUgKYzMzUVlzeFR0bmJEelJjZGdsdEkxNURTN3lxTnVRbWF6b1Z3QndJREFRQUJBb0lCQVFDUFNkU1luUXRTUHlxbApGZlZGcFRPc29PWVJoZjhzSStpYkZ4SU91UmF1V2VoaEp4ZG01Uk9ScEF6bUNMeUw1VmhqdEptZTIyM2dMcncyCk45OUVqVUtiL1ZPbVp1RHNCYzZvQ0Y2UU5SNThkejhjbk9SVGV3Y290c0pSMXBuMWhobG5SNUhxSkpCSmFzazEKWkVuVVFmY1hackw5NGxvOUpIM0UrVXFqbzFGRnM4eHhFOHdvUEJxalpzVjdwUlVaZ0MzTGh4bndMU0V4eUZvNApjeGI5U09HNU9tQUpvelN0Rm9RMkdKT2VzOHJKNXFmZHZ5dGdnOXhiTGFRTC94MGtwUTYyQm9GTUJEZHFPZVBXCktmUDV6WjYvMDcvdnBqNDh5QTFRMzJQem9idWJzQkxkM0tjbjMyamZtMUU3cHJ0V2wrSmVPRmlPem5CUUZKYk4KNHFQVlJ6NWhBb0dCQU50V3l4aE5DU0x1NFArWGdLeWNrbGpKNkY1NjY4Zk5qNUN6Z0ZScUowOXpuMFRsc05ybwpGVExaY3hEcW5SM0hQWU00MkpFUmgySi9xREZaeW5SUW8zY2czb2VpdlVkQlZHWTgrRkkxVzBxZHViL0w5K3l1CmVkT1pUUTVYbUdHcDZyNmpleHltY0ppbS9Pc0IzWm5ZT3BPcmxEN1NQbUJ2ek5MazRNRjZneGJYQW9HQkFNWk8KMHA2SGJCbWNQMHRqRlhmY0tFNzdJbUxtMHNBRzR1SG9VeDBlUGovMnFyblRuT0JCTkU0TXZnRHVUSnp5K2NhVQprOFJxbWRIQ2JIelRlNmZ6WXEvOWl0OHNaNzdLVk4xcWtiSWN1YytSVHhBOW5OaDFUanNSbmU3NFowajFGQ0xrCmhIY3FIMHJpN1BZU0tIVEU4RnZGQ3haWWRidUI4NENtWmlodnhicFJBb0dBSWJqcWFNWVBUWXVrbENkYTVTNzkKWVNGSjFKelplMUtqYS8vdER3MXpGY2dWQ0thMzFqQXdjaXowZi9sU1JxM0hTMUdHR21lemhQVlRpcUxmZVpxYwpSMGlLYmhnYk9jVlZrSkozSzB5QXlLd1BUdW14S0haNnpJbVpTMGMwYW0rUlk5WUdxNVQ3WXJ6cHpjZnZwaU9VCmZmZTNSeUZUN2NmQ21mb09oREN0enVrQ2dZQjMwb0xDMVJMRk9ycW40M3ZDUzUxemM1em9ZNDR1QnpzcHd3WU4KVHd2UC9FeFdNZjNWSnJEakJDSCtULzZzeXNlUGJKRUltbHpNK0l3eXRGcEFOZmlJWEV0LzQ4WGY2ME54OGdXTQp1SHl4Wlp4L05LdER3MFY4dlgxUE9ucTJBNWVpS2ErOGpSQVJZS0pMWU5kZkR1d29seHZHNmJaaGtQaS80RXRUCjNZMThzUUtCZ0h0S2JrKzdsTkpWZXN3WEU1Y1VHNkVEVXNEZS8yVWE3ZlhwN0ZjanFCRW9hcDFMU3crNlRYcDAKWmdybUtFOEFSek00NytFSkhVdmlpcS9udXBFMTVnMGtKVzNzeWhwVTl6WkxPN2x0QjBLSWtPOVpSY21Vam84UQpjcExsSE1BcWJMSjhXWUdKQ2toaVd4eWFsNmhZVHlXWTRjVmtDMHh0VGwvaFVFOUllTktvCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
+
+7. Deploy the manifest cafe-secret.
+
+.. code-block:: bash
+
+        harry@Azure:~/lab1$ kubectl create -f cafe-secret.yaml
+        secret/cafe-secret created
+
+8. Verify the certificate and keys have been deployed into the namespace cafe
+
+.. code-block:: bash
+
+        harry@Azure:~/lab1$ kubectl describe secret cafe-secret -n cafe
+        Name:         cafe-secret
+        Namespace:    cafe
+        Labels:       <none>
+        Annotations:  <none>
+
+        Type:  kubernetes.io/tls
+
+        Data
+        ====
+        tls.crt:  1164 bytes
+        tls.key:  1675 bytes
+
+9. Copy/Paste the manifest below into a new file named cafe-virtual-server.yaml and deploy it.
+
+- That manifest uses the custom resources **VirtualServer** and **VirtualServerRoutes**.
+- The deployment configure the **external NGINX+ Ingress Controller** via the usage of the Ingress Class Name **nginx-external**.
+- For that first deployment, the setup is very simple :
+    - listens for hostname cafe.example.com
+    - TLS is activated and use the cert and key from cafe-secret
+    - Simple Path Routing is done :
+        - request for /tea are sent to service tea
+        - request for /coffee are sent to service coffee
+
+- A lot of features are available via the utilisation of the custom resources *VirtualServer* and *VirtualServerRoutes*.
+- The list is quite long and is available in the `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_. Some of those advanced features will be used later in the workshop.
+- For this first deployment, we use the features below:
+    - tls: allows to attach a secret with a TLS certificate and key. The secret must belong to the same namespace as the VirtualServer.
+    - route: defines rules for matching client requests to actions like passing a request to an upstream.
+
+.. code-block:: bash
+
+        apiVersion: k8s.nginx.org/v1
+        kind: VirtualServer
+        metadata:
+          name: app-cafe
+          namespace: cafe
+        spec:
+          ingressClassName: nginx-external
+          host: cafe.example.com
+          tls:
+            secret: cafe-secret
+          upstreams:
+          - name: tea
+            service: tea-svc
+            port: 80
+          - name: coffee
+            service: coffee-svc
+            port: 80
+          routes:
+          - path: /tea
+            action:
+              pass: tea
+          - path: /coffee
+            action:
+              pass: coffee
+
+
+- Deploy the manifest:
+
+.. code-block:: bash
+
+        harry@Azure:~/lab1$ kubectl apply -f cafe-virtual-server.yaml
+        virtualserver.k8s.nginx.org/app-cafe configured
+
+
+10. Test the setup
+
+- Edit the host file of your client
+- Add a line with hostname *cafe.example.com* and the EXTERNAL-IP address you've seen for the external NIC (cf step 11 above).
+[ADC] use '--resolve' option in curl. curl is available in Windows now :)
+[ADC] I'll publish the service IP on GSLB
+
+.. code-block:: bash
+
+        52.167.14.0         cafe.example.com
+
+- Open a browser and test some connections on http://cafe.example.com and https://cafe.example.com
+[ADC] 404 error, unknown PATH '/' in VirtualServer resource
+
+11. Let's modify the deployment with a more complex setup
+
+- Copy and Paste the manifest below into a new file named cafe-virtual-server-2.yaml and deploy it.
+- For that new deployment we use a lot more features available in the CRDs VirtualServer.
+    - if path is */redirect* then the action is **redirect** to http://www.nginx.com.
+    - if path is */proxy* then the action is **proxy** to add/rewrite/ignore some headers.
+    - if path is */return_page* then the action is **return** to reply with a custom web page.
+    - in each action, variables could be used like: $request_uri, $request_method, $request_body, $scheme, $host, $request_time, $request_length, $connection, $remote_addr, $remote_port, $ssl_cipher, $ssl_client_cert, etc
+
+
+.. code-block:: bash
+
+        apiVersion: k8s.nginx.org/v1
+        kind: VirtualServer
+        metadata:
+          name: app-cafe
+          namespace: cafe
+        spec:
+          ingressClassName: nginx-external
+          host: cafe.example.com
+          tls:
+            secret: cafe-secret
+          upstreams:
+          - name: tea
+            service: tea-svc
+            port: 80
+          - name: coffee
+            service: coffee-svc
+            port: 80
+          routes:
+          - path: /tea
+            action:
+              pass: tea
+          - path: /coffee
+            action:
+              pass: coffee
+          - path: /redirect
+            action:
+              redirect:
+                url: http://www.nginx.com
+                code: 301
+          - path: /proxy
+            action:
+              proxy:
+                upstream: coffee
+                requestHeaders:
+                  pass: true
+                  set:
+                  - name: My-Header
+                    value: Value
+                  - name: Client-Cert
+                    value: ${ssl_client_escaped_cert}
+                responseHeaders:
+                  add:
+                  - name: My-Header
+                    value: Hello_this_your_value
+                  - name: IC-Nginx-Version
+                    value: ${nginx_version}
+                    always: true
+                  hide:
+                  - x-internal-version
+                  ignore:
+                  - Expires
+                  - Set-Cookie
+                  pass:
+                  - Server
+          - path: /return_page
+            action:
+              return:
+                code: 200
+                type: text/plain
+                body: "Hello World\n\n\n\nRequest is ${request_uri}\nRequest Method is ${request_method}\nRequest Scheme is ${scheme}\nRequest Host is ${host}\nRequest Lengthis ${request_length}\nNGINX Version is ${nginx_version}\nClient IP address is ${remote_addr}\nClient Port is : ${remote_port}\nLocal Time is ${time_local}\nServer IP Address is ${server_addr}\nServer Port is ${server_port}\nProtocol is ${server_protocol}\n"
+
+
+- Deploy the manifest:
+
+.. code-block:: bash
+
+        harry@Azure:~/lab1$ kubectl apply -f cafe-virtual-server-2.yaml
+        virtualserver.k8s.nginx.org/app-cafe configured
+
+
+12. Test the setup
+
+[ADC] Check compilation status of VS: kubectl describe virtualserver cafe -n cafe
+[ADC] Check compilation status of VSR: kubectl describe virtualserverroute coffee -n cafe
+
+Open a browser and test some connections on:
+
+https://cafe.example.com                -> works like previous configuration
+https://ccafe.example.com/redirect      -> client is redirected to www.nginx.com
+https://cafe.example.com/return_page    -> custom page Hello World is returned
+https://cafe.example.com/proxy          -> requests go to coffee you should see custom headers in the responses
+
+
+
+
+harry@Azure:~/lab1/Deploy_Cofee$ kubectl create namespace cafe
+namespace/cafe created
+
+harry@Azure:~/lab1/Deploy_Cofee$ kubectl get namespaces
+NAME                          STATUS   AGE
+arcadia                       Active   2d3h
+cafe                          Active   13s
+default                       Active   2d7h
+external-ingress-controller   Active   2d6h
+internal-ingress-controller   Active   2d6h
+kube-node-lease               Active   2d7h
+kube-public                   Active   2d7h
+kube-system                   Active   2d7h
+
+
+harry@Azure:~/lab1/Deploy_Cofee$ vi cafe.yaml
+
+harry@Azure:~/lab1/Deploy_Cofee$ kubectl create -f cafe.yaml
+deployment.apps/coffee created
+service/coffee-svc created
+deployment.apps/tea created
+service/tea-svc created
+
+harry@Azure:~/lab1/Deploy_Cofee$ kubectl get pods -n cafe
+NAME                      READY   STATUS    RESTARTS   AGE
+coffee-6f4b79b975-pxjxp   1/1     Running   0          21s
+coffee-6f4b79b975-xpfvr   1/1     Running   0          21s
+tea-6fb46d899f-j2mqs      1/1     Running   0          21s
+harry@Azure:~/lab1/Deploy_Cofee$
+
+
+
+
+harry@Azure:~/lab1$ vi cafe-secret.yaml
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cafe-secret
+  namespace: cafe
+type: kubernetes.io/tls
+data:
+  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURMakNDQWhZQ0NRREFPRjl0THNhWFdqQU5CZ2txaGtpRzl3MEJBUXNGQURCYU1Rc3dDUVlEVlFRR0V3SlYKVXpFTE1Ba0dBMVVFQ0F3Q1EwRXhJVEFmQmdOVkJBb01HRWx1ZEdWeWJtVjBJRmRwWkdkcGRITWdVSFI1SUV4MApaREViTUJrR0ExVUVBd3dTWTJGbVpTNWxlR0Z0Y0d4bExtTnZiU0FnTUI0WERURTRNRGt4TWpFMk1UVXpOVm9YCkRUSXpNRGt4TVRFMk1UVXpOVm93V0RFTE1Ba0dBMVVFQmhNQ1ZWTXhDekFKQmdOVkJBZ01Ba05CTVNFd0h3WUQKVlFRS0RCaEpiblJsY201bGRDQlhhV1JuYVhSeklGQjBlU0JNZEdReEdUQVhCZ05WQkFNTUVHTmhabVV1WlhoaApiWEJzWlM1amIyMHdnZ0VpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElCRHdBd2dnRUtBb0lCQVFDcDZLbjdzeTgxCnAwanVKL2N5ayt2Q0FtbHNmanRGTTJtdVpOSzBLdGVjcUcyZmpXUWI1NXhRMVlGQTJYT1N3SEFZdlNkd0kyaloKcnVXOHFYWENMMnJiNENaQ0Z4d3BWRUNyY3hkam0zdGVWaVJYVnNZSW1tSkhQUFN5UWdwaW9iczl4N0RsTGM2SQpCQTBaalVPeWwwUHFHOVNKZXhNVjczV0lJYTVyRFZTRjJyNGtTa2JBajREY2o3TFhlRmxWWEgySTVYd1hDcHRDCm42N0pDZzQyZitrOHdnemNSVnA4WFprWldaVmp3cTlSVUtEWG1GQjJZeU4xWEVXZFowZXdSdUtZVUpsc202OTIKc2tPcktRajB2a29QbjQxRUUvK1RhVkVwcUxUUm9VWTNyemc3RGtkemZkQml6Rk8yZHNQTkZ4MkNXMGpYa05MdgpLbzI1Q1pyT2hYQUhBZ01CQUFFd0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFLSEZDY3lPalp2b0hzd1VCTWRMClJkSEliMzgzcFdGeW5acS9MdVVvdnNWQTU4QjBDZzdCRWZ5NXZXVlZycTVSSWt2NGxaODFOMjl4MjFkMUpINnIKalNuUXgrRFhDTy9USkVWNWxTQ1VwSUd6RVVZYVVQZ1J5anNNL05VZENKOHVIVmhaSitTNkZBK0NuT0Q5cm4yaQpaQmVQQ0k1ckh3RVh3bm5sOHl3aWozdnZRNXpISXV5QmdsV3IvUXl1aTlmalBwd1dVdlVtNG52NVNNRzl6Q1Y3ClBwdXd2dWF0cWpPMTIwOEJqZkUvY1pISWc4SHc5bXZXOXg5QytJUU1JTURFN2IvZzZPY0s3TEdUTHdsRnh2QTgKN1dqRWVxdW5heUlwaE1oS1JYVmYxTjM0OWVOOThFejM4Zk9USFRQYmRKakZBL1BjQytHeW1lK2lHdDVPUWRGaAp5UkU9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+  tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBcWVpcCs3TXZOYWRJN2lmM01wUHJ3Z0pwYkg0N1JUTnBybVRTdENyWG5LaHRuNDFrCkcrZWNVTldCUU5semtzQndHTDBuY0NObzJhN2x2S2wxd2k5cTIrQW1RaGNjS1ZSQXEzTVhZNXQ3WGxZa1YxYkcKQ0pwaVJ6ejBza0lLWXFHN1BjZXc1UzNPaUFRTkdZMURzcGRENmh2VWlYc1RGZTkxaUNHdWF3MVVoZHErSkVwRwp3SStBM0kreTEzaFpWVng5aU9WOEZ3cWJRcCt1eVFvT05uL3BQTUlNM0VWYWZGMlpHVm1WWThLdlVWQ2cxNWhRCmRtTWpkVnhGbldkSHNFYmltRkNaYkp1dmRySkRxeWtJOUw1S0Q1K05SQlAvazJsUkthaTAwYUZHTjY4NE93NUgKYzMzUVlzeFR0bmJEelJjZGdsdEkxNURTN3lxTnVRbWF6b1Z3QndJREFRQUJBb0lCQVFDUFNkU1luUXRTUHlxbApGZlZGcFRPc29PWVJoZjhzSStpYkZ4SU91UmF1V2VoaEp4ZG01Uk9ScEF6bUNMeUw1VmhqdEptZTIyM2dMcncyCk45OUVqVUtiL1ZPbVp1RHNCYzZvQ0Y2UU5SNThkejhjbk9SVGV3Y290c0pSMXBuMWhobG5SNUhxSkpCSmFzazEKWkVuVVFmY1hackw5NGxvOUpIM0UrVXFqbzFGRnM4eHhFOHdvUEJxalpzVjdwUlVaZ0MzTGh4bndMU0V4eUZvNApjeGI5U09HNU9tQUpvelN0Rm9RMkdKT2VzOHJKNXFmZHZ5dGdnOXhiTGFRTC94MGtwUTYyQm9GTUJEZHFPZVBXCktmUDV6WjYvMDcvdnBqNDh5QTFRMzJQem9idWJzQkxkM0tjbjMyamZtMUU3cHJ0V2wrSmVPRmlPem5CUUZKYk4KNHFQVlJ6NWhBb0dCQU50V3l4aE5DU0x1NFArWGdLeWNrbGpKNkY1NjY4Zk5qNUN6Z0ZScUowOXpuMFRsc05ybwpGVExaY3hEcW5SM0hQWU00MkpFUmgySi9xREZaeW5SUW8zY2czb2VpdlVkQlZHWTgrRkkxVzBxZHViL0w5K3l1CmVkT1pUUTVYbUdHcDZyNmpleHltY0ppbS9Pc0IzWm5ZT3BPcmxEN1NQbUJ2ek5MazRNRjZneGJYQW9HQkFNWk8KMHA2SGJCbWNQMHRqRlhmY0tFNzdJbUxtMHNBRzR1SG9VeDBlUGovMnFyblRuT0JCTkU0TXZnRHVUSnp5K2NhVQprOFJxbWRIQ2JIelRlNmZ6WXEvOWl0OHNaNzdLVk4xcWtiSWN1YytSVHhBOW5OaDFUanNSbmU3NFowajFGQ0xrCmhIY3FIMHJpN1BZU0tIVEU4RnZGQ3haWWRidUI4NENtWmlodnhicFJBb0dBSWJqcWFNWVBUWXVrbENkYTVTNzkKWVNGSjFKelplMUtqYS8vdER3MXpGY2dWQ0thMzFqQXdjaXowZi9sU1JxM0hTMUdHR21lemhQVlRpcUxmZVpxYwpSMGlLYmhnYk9jVlZrSkozSzB5QXlLd1BUdW14S0haNnpJbVpTMGMwYW0rUlk5WUdxNVQ3WXJ6cHpjZnZwaU9VCmZmZTNSeUZUN2NmQ21mb09oREN0enVrQ2dZQjMwb0xDMVJMRk9ycW40M3ZDUzUxemM1em9ZNDR1QnpzcHd3WU4KVHd2UC9FeFdNZjNWSnJEakJDSCtULzZzeXNlUGJKRUltbHpNK0l3eXRGcEFOZmlJWEV0LzQ4WGY2ME54OGdXTQp1SHl4Wlp4L05LdER3MFY4dlgxUE9ucTJBNWVpS2ErOGpSQVJZS0pMWU5kZkR1d29seHZHNmJaaGtQaS80RXRUCjNZMThzUUtCZ0h0S2JrKzdsTkpWZXN3WEU1Y1VHNkVEVXNEZS8yVWE3ZlhwN0ZjanFCRW9hcDFMU3crNlRYcDAKWmdybUtFOEFSek00NytFSkhVdmlpcS9udXBFMTVnMGtKVzNzeWhwVTl6WkxPN2x0QjBLSWtPOVpSY21Vam84UQpjcExsSE1BcWJMSjhXWUdKQ2toaVd4eWFsNmhZVHlXWTRjVmtDMHh0VGwvaFVFOUllTktvCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
+
+
+                                                                                                                      5,17          All
+
+
+harry@Azure:~/lab1/Deploy_Cofee$ kubectl create -f cafe-secret.yaml
+secret/cafe-secret created
+
+harry@Azure:~/lab1/Deploy_Cofee$ kubectl describe secret cafe-secret -n cafe
+Name:         cafe-secret
+Namespace:    cafe
+Labels:       <none>
+Annotations:  <none>
+
+Type:  kubernetes.io/tls
+
+Data
+====
+tls.crt:  1164 bytes
+tls.key:  1675 bytes
+harry@Azure:~/lab1/Deploy_Cofee$
+
+
+harry@Azure:~/lab1$ vi cafe-virtual-server.yaml
+
+apiVersion: k8s.nginx.org/v1
+kind: VirtualServer
+metadata:
+  name: app-cafe
+  namespace: cafe
+spec:
+  ingressClassName: nginx-external
+  host: cafe.example.com
+  tls:
+    secret: cafe-secret
+  upstreams:
+  - name: tea
+    service: tea-svc
+    port: 80
+  - name: coffee
+    service: coffee-svc
+    port: 80
+  routes:
+  - path: /tea
+    action:
+      pass: tea
+  - path: /coffee
+    action:
+      pass: coffee
+
+
+
+
+harry@Azure:~/lab1$ kubectl apply -f cafe-secret.yaml
+secret/cafe-secret created
+harry@Azure:~/lab1$
+harry@Azure:~/lab1$
+harry@Azure:~/lab1$ kubectl apply -f cafe-virtual-server.yaml
+virtualserver.k8s.nginx.org/app-cafe created
+harry@Azure:~/lab1$ kubectl get virtualserver -n cafe
+NAME       STATE   HOST               IP            PORTS      AGE
+app-cafe   Valid   cafe.example.com   52.167.14.0   [80,443]   48s
+harry@Azure:~/lab1$
+
+
+
+
+apiVersion: k8s.nginx.org/v1
+kind: VirtualServer
+metadata:
+  name: app-cafe
+  namespace: cafe
+spec:
+  ingressClassName: nginx-external
+  host: cafe.example.com
+  tls:
+    secret: cafe-secret
+  upstreams:
+  - name: tea
+    service: tea-svc
+    port: 80
+  - name: coffee
+    service: coffee-svc
+    port: 80
+  routes:
+  - path: /tea
+    action:
+      pass: tea
+  - path: /coffee
+    action:
+      pass: coffee
+  - path: /redirect
+    action:
+      redirect:
+        url: http://www.nginx.com
+        code: 301
+  - path: /proxy
+    action:
+      proxy:
+        upstream: coffee
+        requestHeaders:
+          pass: true
+          set:
+          - name: My-Header
+            value: Value
+          - name: Client-Cert
+            value: ${ssl_client_escaped_cert}
+        responseHeaders:
+          add:
+          - name: My-Header
+            value: Value
+          - name: IC-Nginx-Version
+            value: ${nginx_version}
+            always: true
+          hide:
+          - x-internal-version
+          ignore:
+          - Expires
+          - Set-Cookie
+          pass:
+          - Server
+  - path: /return_page
+    action:
+      return:
+        code: 200
+        type: text/plain
+        body: "Hello World\n\n\n\nRequest is ${request_uri}\nRequest Method is ${request_method}\nRequest Scheme is ${scheme}\nRequest Host is ${host}\nRequest Lengthis ${request_length}\nNGINX Version is ${nginx_version}\nClient IP address is ${remote_addr}\nClient Port is : ${remote_port}\nLocal Time is ${time_local}\nServer IP Address is ${server_addr}\nServer Port is ${server_port}\nProtocol is ${server_protocol}\n"
+"cafe-virtual-server.yaml" 60L, 1614C                                                                                                                60,34         Bot
