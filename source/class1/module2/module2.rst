@@ -1,4 +1,4 @@
-NGINX Ingress Controller, which one?
+Ingress Controller
 ##################################################
 
 .. image:: ./_pictures/dia-MH-2021-04-06-NIC-for-KIC-03-no-legend-padding-LP-1400x515-1.svg
@@ -6,7 +6,7 @@ NGINX Ingress Controller, which one?
    :width: 800
    :alt: All layers
 
-Implementations
+Which one?
 =========================================
 NGINX Ingress Controller (NIC) comes in three different implementations:
 
