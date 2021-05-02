@@ -1,4 +1,4 @@
-NGINX Ingress Controller lab
+NGINX Ingress Controller workshop
 ##################################################
 
 Objectives
@@ -13,8 +13,8 @@ Environment
 - Azure Kubernetes Service (AKS)
 - Okta
 
-
-**Contents**
+Content
+**************************************
 
 .. toctree::
    :maxdepth: 2
