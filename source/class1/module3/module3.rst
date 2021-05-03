@@ -9,8 +9,12 @@ Web Application Firewall
 Content:
 
 .. toctree::
-   :maxdepth: 1
-   :glob:
+    :maxdepth: 2
+
+zzzzzzzzzzzzzzzzzzzz
+
+.. toctree::
+    :numbered:
 
 Objectives
 =========================================
