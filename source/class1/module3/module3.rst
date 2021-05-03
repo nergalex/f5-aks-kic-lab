@@ -17,13 +17,13 @@ Why NGINX App Protect?
 =========================================
 NGINX App Protect is a WAF that’s lightweight but high‑performance and designed for modern apps:
 
-- Defense and Analytics
+- **Defense and Analytics**
 
     - Utilizes F5 app‑security technology for efficacy superior to ModSecurity and other WAFs
     - Offers high‑confidence signatures for extremely low false positives
     - Increases visibility, integrating with third‑party analytics solutions
 
-- DevOps integration
+- **DevOps integration**
 
     - Deploys as a lightweight software package that is agnostic of underlying infrastructure
     - Facilitates declarative policies for “security as code” and integration with DevOps tools
@@ -57,7 +57,7 @@ Latency differences were minimal until the 90th percentile, with a significant d
 
 .. image:: ./_pictures/report_latency.png
    :align: center
-   :width: 600
+   :width: 700
    :alt: report latency
 
 
@@ -78,7 +78,7 @@ A WAF enforce a security policy and violations occur when some aspect of a reque
 
 Why F5 WAF engine generates violations with a a low chance of being false positives?
 
-    #. **High accuracy attack signatures**
+#. **High accuracy attack signatures**
 Accuracy of a `F5 signature <https://clouddocs.f5.com/cloud-services/latest/f5-cloud-services-Essential.App.Protect-Details.html#attack-signatures>`_
 indicates the ability of the attack signature to identify the attack including susceptibility to false-positive alarms:
 
@@ -86,7 +86,7 @@ indicates the ability of the attack signature to identify the attack including s
     - *Medium*: Indicates some likelihood of false positives.
     - *High*: Indicates a low likelihood of false positives.
 
-    #. **High violation rating**
+#. **High violation rating**
 Low accuracy signatures have a lot of chance to generate False Positive alone but,
 if a transaction match multiple low signatures, there is a lot of chance to encounter a real threat!
 That's why F5 WAF engine assigns the violation rating by assessing the combination of violations occurring in a transaction.
@@ -99,7 +99,7 @@ Requests with high violation ratings (4-5) are likely to be real attacks:
     - 3: Needs examination
     - 4-5: Threat
 
-    #. **Threat Campaigns**
+#. **Threat Campaigns**
 Because attackers understood this mechanism of *Accuracy* and *Violation Rating*,
 their goal is to generate an attack under the radar,
 i.e. that match only the low accurate signature.
