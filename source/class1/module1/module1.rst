@@ -37,7 +37,7 @@ They can define the policies in a manner that can be easily imported into Kubern
 and the **DevOps** team **responsible for the Ingress controller** can then assign the WAF policies to specific applications.
 
 The NGINX App Protect WAF module is deployed directly on the Ingress Controller.
-All WAF configuration is managed using *Ingress* resources [lab #1] or *VirtualServer(Route)* resources [lab #2, lab #3], configured through the Kubernetes API.
+All WAF configuration is managed using *Ingress* resources [lab #3] or *VirtualServer(Route)* resources [lab #3-4], configured through the Kubernetes API.
 
 API GW on a Per‑Service Basis
 =========================================
@@ -47,7 +47,7 @@ API GW on a Per‑Service Basis
    :width: 600
    :alt: Micro Proxy
 
-In lab #3, an API GW is also deployed as a proxy tier within Kubernetes,
+In lab #4, an API GW is also deployed as a proxy tier within Kubernetes,
 in front of one or more specific services published publicly on **Internet**,
 therefore that require an **API GW** with authentication based on **oAuth / OpenID Connect** (OIDC) and apply **rate limiting**.
 

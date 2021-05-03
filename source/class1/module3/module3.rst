@@ -1,6 +1,75 @@
 Web Application Firewall
 #####################################
 
+.. image:: ./_pictures/dia-RW-2020-05-19-App-Protect-Secure-Apps-diagram-1024x533-1.svg
+   :align: center
+   :width: 600
+   :alt: WAF
+
+Objectives
+=========================================
+Today’s application landscape has changed dramatically.
+Modern apps are microservices that run in containers, communicate via APIs, and deploy via automated CI/CD pipelines.
+DevOps teams need to integrate security controls authorized by the security team across distributed environments without slowing release velocity or performance.
+
+Why NGINX App Protect?
+=========================================
+NGINX App Protect is a WAF that’s lightweight but high‑performance and designed for modern apps:
+
+- Defense and Analytics
+    - Utilizes F5 app‑security technology for efficacy superior to ModSecurity and other WAFs
+    - Offers high‑confidence signatures for extremely low false positives
+    - Increases visibility, integrating with third‑party analytics solutions
+- DevOps integration
+    - Deploys as a lightweight software package that is agnostic of underlying infrastructure
+    - Facilitates declarative policies for “security as code” and integration with DevOps tools
+    - Accelerates time to market and reduces costs with DevSecOps‑automated security
+
+High Performance
+=========================================
+Comparing performance of WAF solutions is important, it will determine impact on:
+- **user experience**: hiccups matter. If the median response time or latency is less than 30 milliseconds, but there are
+“hiccups” with latencies above 1 second, the cumulative effect will impact subsequent user
+experiences. For example, if you visit a fast food drive-through where the median wait time for food is 1
+minute, you probably think that was a good customer experience. However, what if the customer in
+front of you has a problem with their order, and it takes 10 minutes to resolve? Your wait time would
+actually be 11 minutes. Because your request came in line after the “hiccup,” the 99.99th percentile’s
+delay becomes your delay too.
+- **compute**: How many *Ingress Controller + WAF* PODs to run? Size depends on throughput, throughput depends on WAF solution.
+
+`GigaOm report <https://www.nginx.com/resources/library/high-performance-app-security-testing/>`_ presents the results of its performance testing on three WAFs:
+
+- NGINX App Protect
+- ModSecurity on NGINX
+- AWS WAF
+
+Few interesting results:
+- **user experience**: NGINX App Protect produced 82% lower latency than AWS WAF at 1,000 tps on the 5% bad request test.
+Latency differences were minimal until the 90th percentile, with a significant difference witnessed at the 99th percentile and above.
+
+.. image:: ./_pictures/report_latency.png
+   :align: center
+   :width: 600
+   :alt: report latency
+
+- **compute**: NGINX App Protect produced 82% lower latency than AWS WAF at 1,000 tps on the 5% bad request test.
+Latency differences were minimal until the 90th percentile, with a significant difference witnessed at the 99th percentile and above.
+
+.. image:: ./_pictures/report_throughput.png
+   :align: center
+   :width: 600
+   :alt: report throughput
+
+Lower False-Positives
+=========================================
+
+
+DevOps integration
+=========================================
+
+
+
+
 ToDo
 
 -	DS-NGINX-NGINXAppProtectVsAzure: an official comparison of WAF features with Azure WAF
