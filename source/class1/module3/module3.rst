@@ -111,8 +111,10 @@ This set of signatures, updated up to several times a day, is named *Threat camp
 DevOps integration
 **************************
 
-
-
+.. image:: ./_pictures/multi-layer-approach.png
+   :align: center
+   :width: 600
+   :alt: multi layer approach
 
 
 ToDo
