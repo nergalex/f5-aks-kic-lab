@@ -40,6 +40,7 @@ minute, you probably think that was a good customer experience. However, what if
 front of you has a problem with their order, and it takes 10 minutes to resolve? Your wait time would
 actually be 11 minutes. Because your request came in line after the “hiccup,” the 99.99th percentile’s
 delay becomes your delay too.
+
 - **compute**: How many *Ingress Controller + WAF* PODs to run? Size depends on throughput, throughput depends on WAF solution.
 
 `GigaOm report <https://www.nginx.com/resources/library/high-performance-app-security-testing/>`_ presents the results of its performance testing on three WAFs:
@@ -47,6 +48,7 @@ delay becomes your delay too.
 - NGINX App Protect
 - ModSecurity on NGINX
 - AWS WAF
+
 
 Few interesting results:
 
@@ -58,20 +60,25 @@ Latency differences were minimal until the 90th percentile, with a significant d
    :width: 600
    :alt: report latency
 
-- **compute**: NGINX App Protect produced 82% lower latency than AWS WAF at 1,000 tps on the 5% bad request test.
-Latency differences were minimal until the 90th percentile, with a significant difference witnessed at the 99th percentile and above.
+
+- **compute**: The maximum transaction throughput achieved with 100% success (no 5xx or 429 errors)
+and with less than 30ms maximum latency with our tiny AWS c5n.large (2 CPU and 5.25 GB RAM) instance was
+approximately 5,000 requests per second for NGINX App Protect.
+By comparison, ModSecurity began to produce errors at the 2,000 requests per second threshold.
 
 .. image:: ./_pictures/report_throughput.png
    :align: center
    :width: 600
    :alt: report throughput
 
+
 Lower rate of False Positive for more protection
 *************************************************
 A WAF enforce a security policy and violations occur when some aspect of a request or response does not comply with the security policy.
+
 Why F5 WAF engine generates violations with a a low chance of being false positives?
 
-- **High accuracy attack signatures**
+    #. **High accuracy attack signatures**
 Accuracy of a `F5 signature <https://clouddocs.f5.com/cloud-services/latest/f5-cloud-services-Essential.App.Protect-Details.html#attack-signatures>`_
 indicates the ability of the attack signature to identify the attack including susceptibility to false-positive alarms:
 
@@ -79,7 +86,7 @@ indicates the ability of the attack signature to identify the attack including s
     - *Medium*: Indicates some likelihood of false positives.
     - *High*: Indicates a low likelihood of false positives.
 
-- **High violation rating**
+    #. **High violation rating**
 Low accuracy signatures have a lot of chance to generate False Positive alone but,
 if a transaction match multiple low signatures, there is a lot of chance to encounter a real threat!
 That's why F5 WAF engine assigns the violation rating by assessing the combination of violations occurring in a transaction.
@@ -92,13 +99,14 @@ Requests with high violation ratings (4-5) are likely to be real attacks:
     - 3: Needs examination
     - 4-5: Threat
 
-- **Threat Campaigns**
+    #. **Threat Campaigns**
 Because attackers understood this mechanism of *Accuracy* and *Violation Rating*,
 their goal is to generate an attack under the radar,
 i.e. that match only the low accurate signature.
 `F5 labs <https://www.f5.com/labs>`_ deployed a honey pot infrastructure over the globe,
 analyse ongoing attacks and develop very accurate signatures to block the ongoing attacks.
 This set of signatures, updated up to several times a day, is named *Threat campaigns*.
+
 
 DevOps integration
 **************************
