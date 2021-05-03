@@ -117,6 +117,12 @@ DevOps integration
    :alt: multi layer approach
 
 
+.. image:: ./_pictures/unified_policy.png
+   :align: center
+   :width: 600
+   :alt: multi layer approach
+
+
 ToDo
 
 Best Practices
