@@ -66,13 +66,39 @@ Latency differences were minimal until the 90th percentile, with a significant d
    :width: 600
    :alt: report throughput
 
-Feature comparison
-**************************
+Lower rate of False Positive for more protection
+*************************************************
+A WAF enforce a security policy and violations occur when some aspect of a request or response does not comply with the security policy.
+Why F5 WAF engine generates violations with a a low chance of being false positives?
 
-Lower False-Positives
-**************************
+- **High accuracy attack signatures**
+Accuracy of a `F5 signature <https://clouddocs.f5.com/cloud-services/latest/f5-cloud-services-Essential.App.Protect-Details.html#attack-signatures>`_
+indicates the ability of the attack signature to identify the attack including susceptibility to false-positive alarms:
 
+    - *Low*: Indicates a high likelihood of false positives.
+    - *Medium*: Indicates some likelihood of false positives.
+    - *High*: Indicates a low likelihood of false positives.
 
+- **High violation rating**
+Low accuracy signatures have a lot of chance to generate False Positive alone but,
+if a transaction match multiple low signatures, there is a lot of chance to encounter a real threat!
+That's why F5 WAF engine assigns the violation rating by assessing the combination of violations occurring in a transaction.
+The violation rating is assigned to the transaction as a whole rather than the individual violations in the request.
+This is because real attacks often include multiple violations within one transaction.
+The violation rating takes into consideration the impact of the violations on the business.
+Requests with high violation ratings (4-5) are likely to be real attacks:
+    - 0: No violation
+    - 1-2: False positive
+    - 3: Needs examination
+    - 4-5: Threat
+
+- **Threat Campaigns**
+Because attackers understood this mechanism of *Accuracy* and *Violation Rating*,
+their goal is to generate an attack under the radar,
+i.e. that match only the low accurate signature.
+`F5 labs <https://www.f5.com/labs>`_ deployed a honey pot infrastructure over the globe,
+analyse ongoing attacks and develop very accurate signatures to block the ongoing attacks.
+This set of signatures, updated up to several times a day, is named *Threat campaigns*.
 
 DevOps integration
 **************************
@@ -82,20 +108,6 @@ DevOps integration
 
 
 ToDo
-
--	DS-NGINX-NGINXAppProtectVsAzure: an official comparison of WAF features with Azure WAF
--	XLS matrix: documents done with 2 customers for a WAF comparison
--	Gigaom-Report: a performance report done by an independent company. It’s important to determine if the WAF engine is based on ModSecurity (AVI for example), because performance is lower than F5 WAF engine (named “App Protect”) and therefore require more compute (CPU).
-
-
-
-Lower rate of False Positive and more protection
-One big benefit of F5 WAF is that False Positive are reduced as described here:
--	Violation rating
-F5 knows that some signatures are not sufficiently accurate (accuracy score) and so could generates False Positive. So mitigation can’t be raised if the signature is match alone. However if the low accurate signature is matched with other signature, it generates globally a Violation Rating and the mitigation is raised
-
--	Threat Campaigns
-Because attackers understood this mechanism, their goal is to generate an attack under the radar, i.e. that match only the low accurate signature. F5 deployed a honey pot infrastructure and F5 Labs team develop very accurate signatures to block the specified attack. This set of signatures, updated up to several times a day, is named “Threat campaigns”
 
 Best Practices
 A WAF policy includes 2 parts, I share with you some Best Practice to onboard them easier:
