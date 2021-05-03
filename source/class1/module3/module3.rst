@@ -3,13 +3,14 @@ Web Application Firewall
 
 .. image:: ./_pictures/dia-RW-2020-05-19-App-Protect-Secure-Apps-diagram-1024x533-1.svg
    :align: center
-   :width: 600
+   :width: 500
    :alt: WAF
 
 Objectives
 =========================================
 Today’s application landscape has changed dramatically.
 Modern apps are microservices that run in containers, communicate via APIs, and deploy via automated CI/CD pipelines.
+
 DevOps teams need to integrate security controls authorized by the security team across distributed environments without slowing release velocity or performance.
 
 Why NGINX App Protect?
@@ -17,17 +18,21 @@ Why NGINX App Protect?
 NGINX App Protect is a WAF that’s lightweight but high‑performance and designed for modern apps:
 
 - Defense and Analytics
+
     - Utilizes F5 app‑security technology for efficacy superior to ModSecurity and other WAFs
     - Offers high‑confidence signatures for extremely low false positives
     - Increases visibility, integrating with third‑party analytics solutions
+
 - DevOps integration
+
     - Deploys as a lightweight software package that is agnostic of underlying infrastructure
     - Facilitates declarative policies for “security as code” and integration with DevOps tools
     - Accelerates time to market and reduces costs with DevSecOps‑automated security
 
 High Performance
-=========================================
+**************************
 Comparing performance of WAF solutions is important, it will determine impact on:
+
 - **user experience**: hiccups matter. If the median response time or latency is less than 30 milliseconds, but there are
 “hiccups” with latencies above 1 second, the cumulative effect will impact subsequent user
 experiences. For example, if you visit a fast food drive-through where the median wait time for food is 1
@@ -44,6 +49,7 @@ delay becomes your delay too.
 - AWS WAF
 
 Few interesting results:
+
 - **user experience**: NGINX App Protect produced 82% lower latency than AWS WAF at 1,000 tps on the 5% bad request test.
 Latency differences were minimal until the 90th percentile, with a significant difference witnessed at the 99th percentile and above.
 
@@ -60,12 +66,17 @@ Latency differences were minimal until the 90th percentile, with a significant d
    :width: 600
    :alt: report throughput
 
+Feature comparison
+**************************
+
 Lower False-Positives
-=========================================
+**************************
+
 
 
 DevOps integration
-=========================================
+**************************
+
 
 
 
