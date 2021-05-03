@@ -6,6 +6,12 @@ Web Application Firewall
    :width: 500
    :alt: WAF
 
+Content:
+
+.. toctree::
+   :maxdepth: 1
+   :glob:
+
 Objectives
 =========================================
 Today’s application landscape has changed dramatically.
@@ -113,13 +119,13 @@ DevOps integration
 
 .. image:: ./_pictures/multi-layer-approach.png
    :align: center
-   :width: 600
+   :width: 700
    :alt: multi layer approach
 
 
 .. image:: ./_pictures/unified_policy.png
    :align: center
-   :width: 600
+   :width: 700
    :alt: multi layer approach
 
 
