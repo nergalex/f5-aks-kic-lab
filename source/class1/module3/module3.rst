@@ -172,7 +172,7 @@ This part of the policy is usually determined when the application is deployed a
       name: baseline-corp-low
       signatures:
       - signatureId: 200001834
-        enabled: false
+        enabled: true
 
 The ``modifications`` structure property (see below) contains a list of changes expressed by DevOps / SRE team.
 Modifications are used to express exceptions to the baseline policy.
@@ -188,7 +188,7 @@ These changes are more frequent.
       name: baseline-corp-low
       signatures:
       - signatureId: 200001834
-        enabled: false
+        enabled: true
     modifications:
     - entityChanges:
         enabled: false
