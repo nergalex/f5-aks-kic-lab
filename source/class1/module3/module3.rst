@@ -159,60 +159,40 @@ In a blameless culture, the question is: How does NGINX App Protect allow to man
    :alt: multi layer approach
 
 A *pre-defined Negative policy* is a policy JSON file that describes the security baseline.
-It includes the ``policy`` structure property.
+It includes the ``policy`` structure property (see below).
+JSON files are stored in a repository owned by SecOps and consumed by CI/CD pipelines.
+Ideally, which Negative policy to use is defined during *Risk Impact Analysis* phase done by Product Owner.
+SecOps use policy to express the security policy as intended to be: enabled features, the signature sets, server technologies...
+This part of the policy is usually determined when the application is deployed and changes at a relatively slow pace, after an Audit at least.
 
 .. code-block:: yaml
-    :emphasize-lines: 2
+    :emphasize-lines: 1
 
     policy:
-      name: signature_exclude_1
+      name: baseline-corp-low
       signatures:
       - signatureId: 200001834
         enabled: false
 
-*Pre-defined Negative policies* are stored in a repository owned by SecOps and consumed by CI/CD pipelines.
-Ideally, which Negative policy to use is defined during *Risk Impact Analysis* phase done by Product Owner.
-
-During Quality Assurance (QA) tests and Production, False Positive are met.
+The ``modifications`` structure property (see below) contains a list of changes expressed by DevOps / SRE team.
+Modifications are used to express exceptions to the baseline policy.
+These exceptions are usually the result of fixing false positive incidents and failures in tests applied to those policies.
 Because adapting baseline to handle False Positive is too long to be included in a Dev Sprint,
-DevOps could be allowed to insert modification in this specific Application policy.
+DevOps are usually allowed to insert granular modifications, typically disabling checks of individual signatures, metacharacters and sub-violations.
+These changes are more frequent.
 
-The ``modifications`` structure property contains a list of changes expressed by DevOps / SRE team.
+.. code-block:: yaml
+    :emphasize-lines: 3
 
-
-
-.hosted in a repository owned by SecOps,
-
-that are different from the base template,
-such as enabling more signatures, disabling some violations, adding server technologies, etc.
-
-There are two ways to tune those settings:
-
-Within the policy structure property, the organic structure of the policy.
-Within the modifications structure property that contains a list of changes expressed in a generic manner.
-
-        - For False Positive, disable signature per entity (URI path, page, header) here
-        ›	Enable WAF policy in blocking mode for an application (FQDN). Keep WAF policy in transparent mode for URI paths where False Positive are still encountered.
-        ê	…
-        5.	In parallel, repeat step 3 and 4 until False Positive disappeared on an URI path
-        6.	In parallel, review modification created by False Positive:
-        ê	Change your base line policy: for example, integrate a signature disabled because the CVE is already patched on server side and this signature generates False Positive
-        ê	Modify Application to be compliant with your base line policy
+    policy:
+      name: baseline-corp-low
+    modifications:
+    - entityChanges:
+        enabled: false
+      entity:
+        signatureId: 200001834
+      entityType: signature
+      action: add-or-update
 
 
-
-
-ToDo
-
-
-
-
-
-Design overview
-=========================================
-
-.. image:: ./_pictures/global_design.png
-   :align: center
-   :width: 800
-   :alt: Design overview
 
