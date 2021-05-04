@@ -6,6 +6,9 @@ Web Application Firewall
    :width: 500
    :alt: WAF
 
+.. contents:: Contents
+    :local:
+
 Objectives
 =========================================
 Today’s application landscape has changed dramatically.

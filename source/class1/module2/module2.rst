@@ -6,6 +6,9 @@ Ingress Controller
    :width: 800
    :alt: All layers
 
+.. contents:: Contents
+    :local:
+
 Which one?
 =========================================
 NGINX Ingress Controller (NIC) comes in three different implementations:
