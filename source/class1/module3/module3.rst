@@ -132,7 +132,6 @@ Because NGINX App Protect presents a multi layered defense, a declarative WAF po
         - For API based application, App Dev consolidate their knowledge in a specification file in a standard format (OpenAPI 3.x, swagger 2.x). This file is imported in F5 WAF and F5 WAF auto-reconfigure its positive security policy. Because this spec evolves each App release (2-4 weeks), my customer allow DevOps to upload this file directly to F5 WAF.
         - For non-API based application, the effort to get the knowledge of the App from/with App Dev could be simple or huge, it depends on your organization. Translation of Application specification in a declarative format should be a teamwork AppDev/SecOps
 
-
 #. **Negative model**
 
     - **Objective**:
