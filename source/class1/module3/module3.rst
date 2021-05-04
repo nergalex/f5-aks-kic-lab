@@ -117,7 +117,7 @@ DevOps need to automate security controls with Infrastructure-as-Code built into
 **MODELS**
 
 NGINX App Protect uses declarative policies for “security as code” that can be integrated with DevOps tools.
-Because NGINX App Protect presents a multi layered defense, a declarative WAF policy reflects it and includes 2 parts:
+Because NGINX App Protect presents a multi layered defense, a `declarative WAF policy <https://docs.nginx.com/nginx-app-protect/configuration/#policy-authoring-and-tuning>`_ reflects it and includes 2 parts:
 
 .. image:: ./_pictures/multi-layer-approach.png
    :align: center
@@ -129,7 +129,7 @@ Because NGINX App Protect presents a multi layered defense, a declarative WAF po
     - **Objective**: Reduce the surface attack to publish only expected request by the Application (URI, method, parameter, JSON schema (key and vaue types), file types, header, cookies)
     - **Owner**: Application knowledge is owned by App Developpers.
     - **How to configure**:
-        - For API based application, App Dev consolidate their knowledge in a specification file in a standard format (OpenAPI 3.x, swagger 2.x). This file is imported in F5 WAF and F5 WAF auto-reconfigure its positive security policy. Because this spec evolves each App release (2-4 weeks), my customer allow DevOps to upload this file directly to F5 WAF.
+        - For API based application, App Dev consolidate their knowledge in a specification file in a standard format (OpenAPI 3, swagger). As described `here <https://docs.nginx.com/nginx-app-protect/configuration/#openapi-specification-file-reference>`_ , this file is imported in F5 WAF and F5 WAF auto-reconfigures its positive security policy. Because this spec evolves each App release (2-4 weeks), my customer allow DevOps to upload this file directly to F5 WAF.
         - For non-API based application, the effort to get the knowledge of the App from/with App Dev could be simple or huge, it depends on your organization. Translation of Application specification in a declarative format should be a teamwork AppDev/SecOps
 
 #. **Negative model**
