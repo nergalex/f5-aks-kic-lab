@@ -62,7 +62,7 @@ NGINX App Protect, ModSecurity on NGINX and AWS WAF.
    :alt: report throughput
 
 
-Lower rate of False Positive for more protection
+Lower rate of False Positive and more protection
 *************************************************
 A WAF enforce a security policy and violations occur when some aspect of a request or response does not comply with the security policy.
 
@@ -97,7 +97,7 @@ Because attackers understood this mechanism of *Accuracy* and *Violation Rating*
 their goal is to generate an attack under the radar,
 i.e. that match only the low accurate signature.
 `F5 labs <https://www.f5.com/labs>`_ deployed a honey pot infrastructure over the globe,
-analyse ongoing attacks and develop very accurate signatures to block the ongoing attacks.
+analyse ongoing attacks and develop very accurate signatures to block ongoing attacks.
 This set of signatures, updated up to several times a day, is named *Threat campaigns*.
 
 

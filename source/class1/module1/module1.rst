@@ -1,6 +1,15 @@
 Architecture
 ##################################################
 
+**Contents**
+
+.. toctree::
+   :maxdepth: 2
+   :glob:
+
+   */*
+
+
 Application Services in Kubernetes
 =========================================
 
