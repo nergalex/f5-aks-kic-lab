@@ -150,7 +150,7 @@ Because NGINX App Protect presents a multi layered defense, a `declarative WAF p
 
 **FALSE POSITIVES**
 
-It's unavoidable, you will encounter False Positive.
+It's unavoidable, you will encounter False Positives.
 In a blameless culture, the question is: How does NGINX App Protect allow to manage False Positive effectively?
 
 .. image:: ./_pictures/policy_run.svg
@@ -182,10 +182,13 @@ DevOps are usually allowed to insert granular modifications, typically disabling
 These changes are more frequent.
 
 .. code-block:: yaml
-    :emphasize-lines: 3
+    :emphasize-lines: 6
 
     policy:
       name: baseline-corp-low
+      signatures:
+      - signatureId: 200001834
+        enabled: false
     modifications:
     - entityChanges:
         enabled: false
