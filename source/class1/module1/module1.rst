@@ -7,7 +7,7 @@ Architecture
    :maxdepth: 2
    :glob:
 
-   *
+   module*
 
 
 Application Services in Kubernetes
