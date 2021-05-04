@@ -2,7 +2,7 @@ Architecture
 ##################################################
 
 .. contents:: Table of Contents
-   :local:
+   :local: Architecture
 
 Application Services in Kubernetes
 =========================================
