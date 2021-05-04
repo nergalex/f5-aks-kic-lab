@@ -10,14 +10,14 @@ Web Application Firewall
     :local:
 
 Objectives
-=========================================
+**********************
 Today’s application landscape has changed dramatically.
 Modern apps are microservices that run in containers, communicate via APIs, and deploy via automated CI/CD pipelines.
 
 DevOps teams need to integrate security controls authorized by the security team across distributed environments without slowing release velocity or performance.
 
 Why NGINX App Protect?
-=========================================
+**********************
 NGINX App Protect is a WAF that’s lightweight but high‑performance and designed for modern apps:
 
 - **Defense and Analytics**
@@ -33,7 +33,7 @@ NGINX App Protect is a WAF that’s lightweight but high‑performance and desig
     - Accelerates time to market and reduces costs with DevSecOps‑automated security
 
 High Performance
-**************************
+====================
 
 **OBJECTIVES**
 
@@ -66,7 +66,7 @@ NGINX App Protect, ModSecurity on NGINX and AWS WAF.
 
 
 Lower rate of False Positive and more protection
-*************************************************
+==================================================
 A WAF enforce a security policy and violations occur when some aspect of a request or response does not comply with the security policy.
 
 Why F5 WAF engine generates violations with a a low chance of being false positives?
@@ -105,14 +105,16 @@ This set of signatures, updated up to several times a day, is named *Threat camp
 
 
 DevOps integration
-**************************
+====================================
 
 DevOps need to automate security controls with Infrastructure-as-Code built into your CI/CD pipeline.
 
 .. image:: ./_pictures/dia-RW-2020-05-19-App-Protect-DevOps-logos-1024x552-1.svg
    :align: center
-   :width: 700
+   :width: 600
    :alt: DevOps CI/CD
+
+**MODELS**
 
 NGINX App Protect uses declarative policies for “security as code” that can be integrated with DevOps tools.
 Because NGINX App Protect presents a multi layered defense, a declarative WAF policy reflects it and includes 2 parts:
@@ -122,7 +124,7 @@ Because NGINX App Protect presents a multi layered defense, a declarative WAF po
    :width: 700
    :alt: multi layer approach
 
-#. Positive model
+#. **Positive model**
 
     - **Objective**: Reduce the surface attack to publish only expected request by the Application (URI, method, parameter, JSON schema (key and vaue types), file types, header, cookies)
     - **Owner**: Application knowledge is owned by App Developpers.
@@ -130,12 +132,13 @@ Because NGINX App Protect presents a multi layered defense, a declarative WAF po
         - For API based application, App Dev consolidate their knowledge in a specification file in a standard format (OpenAPI 3.x, swagger 2.x). This file is imported in F5 WAF and F5 WAF auto-reconfigure its positive security policy. Because this spec evolves each App release (2-4 weeks), my customer allow DevOps to upload this file directly to F5 WAF.
         - For non-API based application, the effort to get the knowledge of the App from/with App Dev could be simple or huge, it depends on your organization. Translation of Application specification in a declarative format should be a teamwork AppDev/SecOps
 
-#. Negative model
 
-    - **Objective**: Enable protection from
-        - software vulnerabilities & common web exploits: non-legitimate request
-        - fraud & abuse: legitimate request but the intent is bad (DoS, Credential Stuffing, Brute Force, Web Scraping…)
-    - **Owner**: Security knowledge is owned by SecOps.
+#. **Negative model**
+
+    - **Objective**:
+        - software vulnerabilities & common web exploits protection: non-legitimate request
+        - fraud & abuse protection: legitimate request but the intent is bad (DoS, Credential Stuffing, Brute Force, Web Scraping…)
+    - **Owner**: SecOps
     - **How to configure**:
         - Start with `base template <https://docs.nginx.com/nginx-app-protect/configuration/#best-practices>`_ that already includes OWASP top 10 recommendation
         - Define `Server Technologies <https://docs.nginx.com/nginx-app-protect/configuration/#server-technologies>`_ to improve performance by enabling only signatures linked to Application frameworks (Apache, IIS, MySQL…)
@@ -145,10 +148,11 @@ Because NGINX App Protect presents a multi layered defense, a declarative WAF po
             - `Custom signature <https://docs.nginx.com/nginx-app-protect/configuration/#user-defined-signature-sets>`_
             - `Clickjacking <https://docs.nginx.com/nginx-app-protect/configuration/#clickjacking-protection>`_
 
-**False Positive**
+
+**FALSE POSITIVES**
 
 It's unavoidable, you will encounter False Positive.
-In a blameless culture, the question is: how does NGINX App Protect allow to manage False Positive effectively?
+In a blameless culture, the question is: How does NGINX App Protect allow to manage False Positive effectively?
 
 .. image:: ./_pictures/policy_run.svg
    :align: center
@@ -158,40 +162,25 @@ In a blameless culture, the question is: how does NGINX App Protect allow to man
 A *pre-defined Negative policy* is a policy JSON file that describes the security baseline.
 It includes the ``policy`` structure property.
 
-.. example-code::
+.. code-block:: yaml
+    :emphasize-lines: 2
 
-    .. code-block:: json
-        :emphasize-lines: 2
+    policy:
+      name: signature_exclude_1
+      signatures:
+      - signatureId: 200001834
+        enabled: false
 
-        {
-            "policy": {
-                "name": "signature_exclude_1",
-                "signatures": [
-                    {
-                        "signatureId": 200001834,
-                        "enabled": false
-                    }
-                ]
-            }
-        }
-
-    .. code-block:: yaml
-        :emphasize-lines: 2
-
-        policy:
-          name: signature_exclude_1
-          signatures:
-          - signatureId: 200001834
-            enabled: false
-
-
-
-They are stored in a repository owned by SecOps and consumed by CI/CD pipelines.
-Ideally, which Negative policy to use is defined during Risk Impact Analysis phase done by Product Owner.
+*Pre-defined Negative policies* are stored in a repository owned by SecOps and consumed by CI/CD pipelines.
+Ideally, which Negative policy to use is defined during *Risk Impact Analysis* phase done by Product Owner.
 
 During Quality Assurance (QA) tests and Production, False Positive are met.
-Because adapting baseline to handle False Positive cannot be included in a Dev Sprint,
+Because adapting baseline to handle False Positive is too long to be included in a Dev Sprint,
 DevOps could be allowed to insert modification in this specific Application policy.
+
+The ``modifications`` structure property contains a list of changes expressed by DevOps / SRE team.
+
+
 
 .hosted in a repository owned by SecOps,
 
