@@ -1,8 +1,7 @@
 Architecture
 ##################################################
 
-.. contents::
-    :depth: 2
+.. contents:: Contents
     :local:
 
 Application Services in Kubernetes
