@@ -3,7 +3,7 @@ Web Application Firewall
 
 .. image:: ./_pictures/dia-RW-2020-05-19-App-Protect-Secure-Apps-diagram-1024x533-1.svg
    :align: center
-   :width: 500
+   :width: 600
    :alt: WAF
 
 .. contents:: Contents
@@ -107,55 +107,116 @@ This set of signatures, updated up to several times a day, is named *Threat camp
 DevOps integration
 **************************
 
+DevOps need to automate security controls with Infrastructure-as-Code built into your CI/CD pipeline.
+
+.. image:: ./_pictures/dia-RW-2020-05-19-App-Protect-DevOps-logos-1024x552-1.svg
+   :align: center
+   :width: 700
+   :alt: DevOps CI/CD
+
+NGINX App Protect uses declarative policies for “security as code” that can be integrated with DevOps tools.
+Because NGINX App Protect presents a multi layered defense, a declarative WAF policy reflects it and includes 2 parts:
+
 .. image:: ./_pictures/multi-layer-approach.png
    :align: center
    :width: 700
    :alt: multi layer approach
 
+#. Positive model
 
-.. image:: ./_pictures/unified_policy.png
+    - **Objective**: Reduce the surface attack to publish only expected request by the Application (URI, method, parameter, JSON schema (key and vaue types), file types, header, cookies)
+    - **Owner**: Application knowledge is owned by App Developpers.
+    - **How to configure**:
+        - For API based application, App Dev consolidate their knowledge in a specification file in a standard format (OpenAPI 3.x, swagger 2.x). This file is imported in F5 WAF and F5 WAF auto-reconfigure its positive security policy. Because this spec evolves each App release (2-4 weeks), my customer allow DevOps to upload this file directly to F5 WAF.
+        - For non-API based application, the effort to get the knowledge of the App from/with App Dev could be simple or huge, it depends on your organization. Translation of Application specification in a declarative format should be a teamwork AppDev/SecOps
+
+#. Negative model
+
+    - **Objective**: Enable protection from
+        - software vulnerabilities & common web exploits: non-legitimate request
+        - fraud & abuse: legitimate request but the intent is bad (DoS, Credential Stuffing, Brute Force, Web Scraping…)
+    - **Owner**: Security knowledge is owned by SecOps.
+    - **How to configure**:
+        - Start with `base template <https://docs.nginx.com/nginx-app-protect/configuration/#best-practices>`_ that already includes OWASP top 10 recommendation
+        - Define `Server Technologies <https://docs.nginx.com/nginx-app-protect/configuration/#server-technologies>`_ to improve performance by enabling only signatures linked to Application frameworks (Apache, IIS, MySQL…)
+        - Enable advanced protections:
+            - `Bot Defense <https://docs.nginx.com/nginx-app-protect/configuration/#anti-automation>`_
+            - `Data Guard <https://docs.nginx.com/nginx-app-protect/configuration/#data-guard-blocking>`_
+            - `Custom signature <https://docs.nginx.com/nginx-app-protect/configuration/#user-defined-signature-sets>`_
+            - `Clickjacking <https://docs.nginx.com/nginx-app-protect/configuration/#clickjacking-protection>`_
+
+**False Positive**
+
+It's unavoidable, you will encounter False Positive.
+In a blameless culture, the question is: how does NGINX App Protect allow to manage False Positive effectively?
+
+.. image:: ./_pictures/policy_run.svg
    :align: center
    :width: 800
    :alt: multi layer approach
 
+A *pre-defined Negative policy* is a policy JSON file that describes the security baseline.
+It includes the ``policy`` structure property.
+
+.. example-code::
+
+    .. code-block:: json
+        :emphasize-lines: 2
+
+        {
+            "policy": {
+                "name": "signature_exclude_1",
+                "signatures": [
+                    {
+                        "signatureId": 200001834,
+                        "enabled": false
+                    }
+                ]
+            }
+        }
+
+    .. code-block:: yaml
+        :emphasize-lines: 2
+
+        policy:
+          name: signature_exclude_1
+          signatures:
+          - signatureId: 200001834
+            enabled: false
+
+
+
+They are stored in a repository owned by SecOps and consumed by CI/CD pipelines.
+Ideally, which Negative policy to use is defined during Risk Impact Analysis phase done by Product Owner.
+
+During Quality Assurance (QA) tests and Production, False Positive are met.
+Because adapting baseline to handle False Positive cannot be included in a Dev Sprint,
+DevOps could be allowed to insert modification in this specific Application policy.
+
+.hosted in a repository owned by SecOps,
+
+that are different from the base template,
+such as enabling more signatures, disabling some violations, adding server technologies, etc.
+
+There are two ways to tune those settings:
+
+Within the policy structure property, the organic structure of the policy.
+Within the modifications structure property that contains a list of changes expressed in a generic manner.
+
+        - For False Positive, disable signature per entity (URI path, page, header) here
+        ›	Enable WAF policy in blocking mode for an application (FQDN). Keep WAF policy in transparent mode for URI paths where False Positive are still encountered.
+        ê	…
+        5.	In parallel, repeat step 3 and 4 until False Positive disappeared on an URI path
+        6.	In parallel, review modification created by False Positive:
+        ê	Change your base line policy: for example, integrate a signature disabled because the CVE is already patched on server side and this signature generates False Positive
+        ê	Modify Application to be compliant with your base line policy
+
+
+
 
 ToDo
 
-Best Practices
-A WAF policy includes 2 parts, I share with you some Best Practice to onboard them easier:
 
-1.	Positive security policy
-›	Objective
-ê	reduce the surface attack to publish only expected request by the Application (URI, method, parameter, JSON schema (key and vaue types), file types, header, cookies)
-›	Owner
-ê	Application knowledge is owned by App Developpers.
-›	How to configure
-ê	For API based application, App Dev consolidate their knowledge in a specification file in a standard format (OpenAPI 3.x, swagger 2.x). This file is imported in F5 WAF and F5 WAF auto-reconfigure its positive security policy. Because this spec evolves each App release (2-4 weeks), my customer allow DevOps to upload this file directly to F5 WAF.
-ê	For non-API based application, the effort to get the knowledge of the App from/with App Dev could be simple or huge, it depends on your organization.
-
-2.	Negative security policy
-›	Objective
-Enable protection from:
-ê	software vulnerabilities & common web exploits: non-legitimate request
-ê	fraud & abuse: legitimate request but the intent is bad (DoS, Credential Stuffing, Brute Force, Web Scraping…)
-›	Owner
-ê	Security knowledge is owned by SecOps.
-›	How to configure
-›	Start with base F5 WAF template here that includes already OWASP top 10 recommendation
-›	Enable WAF policy in transparent mode for an application (FQDN)
-›	For False Positive, disable signature per entity (URI path, page, header) here
-›	Enable WAF policy in blocking mode for an application (FQDN). Keep WAF policy in transparent mode for URI paths where False Positive are still encountered.
-›	Define Server Technologies here to improve performance by enabling only signatures linked to Application frameworks (Apache, IIS, MySQL…)
-›	Enable advanced protections, step by step, and monitor False Positive:
-ê	Bot Defense here
-ê	Data Guard here
-ê	Custom signature here
-ê	Clickjacking here
-ê	…
-5.	In parallel, repeat step 3 and 4 until False Positive disappeared on an URI path
-6.	In parallel, review modification created by False Positive:
-ê	Change your base line policy: for example, integrate a signature disabled because the CVE is already patched on server side and this signature generates False Positive
-ê	Modify Application to be compliant with your base line policy
 
 
 

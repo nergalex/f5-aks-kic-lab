@@ -1,7 +1,7 @@
 Introduction
 ##########################################################
 
-ToDo
+This section introduce the benefits of the solution.
 
 **Contents**
 
