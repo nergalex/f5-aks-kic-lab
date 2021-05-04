@@ -2,16 +2,7 @@ Architecture
 ##################################################
 
 .. contents:: Table of Contents
-
-
-**Contents**
-
-.. toctree::
-   :maxdepth: 2
-   :glob:
-
-   module*
-
+   :local:
 
 Application Services in Kubernetes
 =========================================
