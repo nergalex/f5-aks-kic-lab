@@ -1,4 +1,4 @@
-lab 2 - VirtualServer(Route) + WAF
+lab 2 - VirtualServer(Route)
 ##########################################################
 
 [Harry] 2) Canary testing (théorie + lab)
