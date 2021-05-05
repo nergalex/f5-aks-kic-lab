@@ -15,7 +15,7 @@ For simplification, for that workshop, we use the Azure Kubernetes Service aka A
 Description of the Kubernetes Cluster
 ####################################################
 
-- Name: **CloudBuilder**
+- Name of the K8S Cluster: **CloudBuilder**
 - 3 NameSpaces have already been added:
 
     - **external-ingress-controller** -> contains 1 pod for NIC. Will be used for external traffic.
@@ -406,17 +406,19 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 | The deployment configure the **external NGINX+ Ingress Controller** via the usage of the Ingress Class Name **nginx-external**.
 |
 | For that first deployment, the setup is very simple :
-    - listens for hostname cafe.example.com
-    - TLS is activated and use the cert and key from cafe-secret
-    - Simple Path Routing is done :
-        - request for /tea are sent to service tea
-        - request for /coffee are sent to service coffee
+|    - listens for hostname cafe.example.com
+|    - TLS is activated and use the cert and key from cafe-secret
+|    - Simple Path Routing is done :
+|        - request for /tea are sent to service tea
+|        - request for /coffee are sent to service coffee
 |
 | A lot of features are available via the utilisation of the custom resources *VirtualServer*.
+|
 | The list is quite long and is available in the `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_. Some of those advanced features will be used later in the workshop.
-| For this first deployment, we use the features below:
-    - tls: allows to attach a secret with a TLS certificate and key. The secret must belong to the same namespace as the VirtualServer.
-    - route: defines rules for matching client requests to actions like passing a request to an upstream.
+|
+| For this first deployment, we're going to use the features below:
+|    - tls: allows to attach a secret with a TLS certificate and key. The secret must belong to the same namespace as the VirtualServer.
+|    - route: defines rules for matching client requests to actions like passing a request to an upstream.
 
 .. code-block:: bash
 
@@ -461,8 +463,9 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 
 
 - Step 10: Test the setup
-
+|
 | If you have the rights to modify the hosts file of your client:
+|
 |    - Edit the host file of your client
 |    - Add a line with hostname *cafe.example.com* and the EXTERNAL-IP address of the cluster you've seen on step 11 of LAB 2A above.
 
