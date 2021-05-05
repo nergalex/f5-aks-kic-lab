@@ -75,16 +75,16 @@ LAB 2A: Exploring and understanding the K8S cluster
 
 .. code-block:: bash
 
-        harry@Azure:~$ kubectl get crds
-        NAME                                 CREATED AT
-        aplogconfs.appprotect.f5.com         2021-03-08T10:00:03Z
-        appolicies.appprotect.f5.com         2021-03-08T10:00:03Z
-        apusersigs.appprotect.f5.com         2021-03-08T10:00:03Z
-        globalconfigurations.k8s.nginx.org   2021-03-08T10:00:03Z
-        policies.k8s.nginx.org               2021-03-08T10:00:03Z
-        transportservers.k8s.nginx.org       2021-03-08T10:00:03Z
-        virtualserverroutes.k8s.nginx.org    2021-03-08T10:00:03Z
-        virtualservers.k8s.nginx.org         2021-03-08T10:00:04Z
+    harry@Azure:~$ kubectl get crds
+    NAME                                 CREATED AT
+    aplogconfs.appprotect.f5.com         2021-03-08T10:00:03Z
+    appolicies.appprotect.f5.com         2021-03-08T10:00:03Z
+    apusersigs.appprotect.f5.com         2021-03-08T10:00:03Z
+    globalconfigurations.k8s.nginx.org   2021-03-08T10:00:03Z
+    policies.k8s.nginx.org               2021-03-08T10:00:03Z
+    transportservers.k8s.nginx.org       2021-03-08T10:00:03Z
+    virtualserverroutes.k8s.nginx.org    2021-03-08T10:00:03Z
+    virtualservers.k8s.nginx.org         2021-03-08T10:00:04Z
 
 7. Let's check the NameSpaces of the cluster:
 
@@ -161,7 +161,7 @@ LAB 2A: Exploring and understanding the K8S cluster
 
 .. code-block:: bash
 
-        harry@Azure:~/lab1$ kubectl describe pod nap-internal-ingress-controller-55fdb8cd95-2dz77 -n internal-ingress-controller
+        harry@Azure:~/lab2$ kubectl describe pod nap-internal-ingress-controller-55fdb8cd95-2dz77 -n internal-ingress-controller
         Name:         nap-internal-ingress-controller-55fdb8cd95-2dz77
         Namespace:    internal-ingress-controller
         .......
@@ -190,9 +190,8 @@ LAB 2A: Exploring and understanding the K8S cluster
 11. Note the EXTERNAL-IP address. It will be used later in our labs.
 
 
-***************************************************
 LAB 2B: Simple Traffic Splitting and Content-Based Routing
-***************************************************
+***********************************************************
 
 | For that use case, a new application named cafe will be deployed.
 | The application cafe is composed of 2 services: cofee and tea.
@@ -206,23 +205,23 @@ LAB 2B: Simple Traffic Splitting and Content-Based Routing
         - request for /coffee are sent to service coffee
 |
 
-- Step 1: Create the directory Lab1 and move into it
+- Step 1: Create the directory Lab2 and move into it
 
 .. code-block:: bash
 
-        harry@Azure:~$ mkdir Lab1
-        harry@Azure:~$ cd lab1/
-        harry@Azure:~/lab1$
+        harry@Azure:~$ mkdir lab2
+        harry@Azure:~$ cd lab2/
+        harry@Azure:~/lab2$
 |
 - Step 2: Create a new NameSpace called cafe-ns. We will deploy the application into it.
 
 .. code-block:: bash
 
-        harry@Azure:~/lab1$ kubectl create namespace cafe-ns
+        harry@Azure:~/lab2$ kubectl create namespace cafe-ns
         namespace/cafe created
 
 |
-- Step 3: copy and paste the manifest below into a new file called cafe.yaml.
+- Step 3: copy and paste the manifest below into a new file named cafe.yaml.
 
 That manifest will be used to deploy the application into the cluster.
 The application cafe is composed of 2 micro services: cofee and tea.
@@ -303,7 +302,7 @@ The application cafe is composed of 2 micro services: cofee and tea.
 
 .. code-block:: bash
 
-        harry@Azure:~/lab1$ kubectl create -f cafe.yaml
+        harry@Azure:~/lab2$ kubectl create -f cafe.yaml
         deployment.apps/coffee created
         service/coffee-svc created
         deployment.apps/tea created
@@ -316,7 +315,7 @@ The application cafe is composed of 2 micro services: cofee and tea.
 
 .. code-block:: bash
 
-        harry@Azure:~/lab1$ kubectl get namespaces
+        harry@Azure:~/lab2$ kubectl get namespaces
         NAME                          STATUS   AGE
         arcadia                       Active   2d3h
         cafe-ns                       Active   13s
@@ -332,7 +331,7 @@ The application cafe is composed of 2 micro services: cofee and tea.
 
 .. code-block:: bash
 
-        harry@Azure:~/lab1$ kubectl get pods -n cafe-ns
+        harry@Azure:~/lab2$ kubectl get pods -n cafe-ns
         NAME                      READY   STATUS    RESTARTS   AGE
         coffee-6f4b79b975-pxjxp   1/1     Running   0          21s
         coffee-6f4b79b975-xpfvr   1/1     Running   0          21s
@@ -360,7 +359,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 
 .. code-block:: bash
 
-        harry@Azure:~/lab1$ kubectl create -f cafe-secret.yaml
+        harry@Azure:~/lab2$ kubectl create -f cafe-secret.yaml
         secret/cafe-secret created
 
 |
@@ -368,7 +367,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 
 .. code-block:: bash
 
-        harry@Azure:~/lab1$ kubectl describe secret cafe-secret -n cafe-ns
+        harry@Azure:~/lab2$ kubectl describe secret cafe-secret -n cafe-ns
         Name:         cafe-secret
         Namespace:    cafe-ns
         Labels:       <none>
@@ -431,7 +430,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 
 .. code-block:: bash
 
-        harry@Azure:~/lab1$ kubectl apply -f cafe-virtual-server.yaml
+        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server.yaml
         virtualserver.k8s.nginx.org/app-cafe configured
 
 
@@ -501,7 +500,7 @@ LAB 2C: Canary and A/B Testing
 
 .. code-block:: bash
 
-        harry@Azure:~/lab1$ kubectl apply -f cafe-virtual-server.yaml
+        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server.yaml
         virtualserver.k8s.nginx.org/app-cafe configured
 
 
@@ -614,7 +613,7 @@ LAB 2D: Advanced Traffic Splitting and Content-Based Routing
 
 .. code-block:: bash
 
-        harry@Azure:~/lab1$ kubectl apply -f cafe-virtual-server-2.yaml
+        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server-2.yaml
         virtualserver.k8s.nginx.org/app-cafe configured
 
 
