@@ -254,6 +254,7 @@ The application cafe is composed of 2 micro services: cofee and tea.
         kind: Service
         metadata:
           name: coffee-svc
+          namespace: cafe-ns
         spec:
           ports:
           - port: 80
@@ -288,6 +289,7 @@ The application cafe is composed of 2 micro services: cofee and tea.
         kind: Service
         metadata:
           name: tea-svc
+          namespace: cafe-ns
         spec:
           ports:
           - port: 80
@@ -341,10 +343,9 @@ The application cafe is composed of 2 micro services: cofee and tea.
 
 .. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl get services
+        harry@Azure:~/lab2$ kubectl get services -n cafe-ns
         NAME         TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
         coffee-svc   ClusterIP   10.200.0.91   <none>        80/TCP    16m
-        kubernetes   ClusterIP   10.200.0.1    <none>        443/TCP   58d
         tea-svc      ClusterIP   10.200.0.88   <none>        80/TCP    16m
 
 |
