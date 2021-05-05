@@ -36,7 +36,7 @@ Description of the Kubernetes Cluster
     - External NIC has been deployed with argument **ingress-class=nginx-external**.
     - Internal NIC has been deployed with argument **ingress-class=nginx-internal**.
 
-***************************************************
+
 LAB 2A: Exploring and understanding the K8S cluster
 ***************************************************
 
