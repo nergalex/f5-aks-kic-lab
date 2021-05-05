@@ -201,11 +201,11 @@ LAB USE CASE 1: traffic splitting and advanced content-based routing
         harry@Azure:~$ cd lab1/
         harry@Azure:~/lab1$
 
-2. Create a new NameSpace called cafe. We will deploy the application into it.
+2. Create a new NameSpace called cafe-ns. We will deploy the application into it.
 
 .. code-block:: bash
 
-        harry@Azure:~/lab1$ kubectl create namespace cafe
+        harry@Azure:~/lab1$ kubectl create namespace cafe-ns
         namespace/cafe created
 
 3. copy and paste the manifest below into a new file called cafe.yaml.
@@ -221,7 +221,7 @@ The application cafe is composed of 2 micro services: cofee and tea.
         kind: Deployment
         metadata:
           name: coffee
-          namespace: cafe
+          namespace: cafe-ns
         spec:
           replicas: 2
           selector:
@@ -255,7 +255,7 @@ The application cafe is composed of 2 micro services: cofee and tea.
         kind: Deployment
         metadata:
           name: tea
-          namespace: cafe
+          namespace: cafe-ns
         spec:
           replicas: 1
           selector:
@@ -305,7 +305,7 @@ The application cafe is composed of 2 micro services: cofee and tea.
         harry@Azure:~/lab1$ kubectl get namespaces
         NAME                          STATUS   AGE
         arcadia                       Active   2d3h
-        cafe                          Active   13s
+        cafe-ns                       Active   13s
         default                       Active   2d7h
         external-ingress-controller   Active   2d6h
         internal-ingress-controller   Active   2d6h
@@ -313,12 +313,12 @@ The application cafe is composed of 2 micro services: cofee and tea.
         kube-public                   Active   2d7h
         kube-system                   Active   2d7h
 
-- The services of the application cafe should have been deployed in the NameSpace cafe and should be in status Running.
+- The services of the application cafe should have been deployed in the NameSpace cafe-ns and should be in status Running.
 - You should have 2 Pods for the coffee service and 1 Pod for tea service
 
 .. code-block:: bash
 
-        harry@Azure:~/lab1$ kubectl get pods -n cafe
+        harry@Azure:~/lab1$ kubectl get pods -n cafe-ns
         NAME                      READY   STATUS    RESTARTS   AGE
         coffee-6f4b79b975-pxjxp   1/1     Running   0          21s
         coffee-6f4b79b975-xpfvr   1/1     Running   0          21s
@@ -334,7 +334,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
         kind: Secret
         metadata:
           name: cafe-secret
-          namespace: cafe
+          namespace: cafe-ns
         type: kubernetes.io/tls
         data:
           tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURMakNDQWhZQ0NRREFPRjl0THNhWFdqQU5CZ2txaGtpRzl3MEJBUXNGQURCYU1Rc3dDUVlEVlFRR0V3SlYKVXpFTE1Ba0dBMVVFQ0F3Q1EwRXhJVEFmQmdOVkJBb01HRWx1ZEdWeWJtVjBJRmRwWkdkcGRITWdVSFI1SUV4MApaREViTUJrR0ExVUVBd3dTWTJGbVpTNWxlR0Z0Y0d4bExtTnZiU0FnTUI0WERURTRNRGt4TWpFMk1UVXpOVm9YCkRUSXpNRGt4TVRFMk1UVXpOVm93V0RFTE1Ba0dBMVVFQmhNQ1ZWTXhDekFKQmdOVkJBZ01Ba05CTVNFd0h3WUQKVlFRS0RCaEpiblJsY201bGRDQlhhV1JuYVhSeklGQjBlU0JNZEdReEdUQVhCZ05WQkFNTUVHTmhabVV1WlhoaApiWEJzWlM1amIyMHdnZ0VpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElCRHdBd2dnRUtBb0lCQVFDcDZLbjdzeTgxCnAwanVKL2N5ayt2Q0FtbHNmanRGTTJtdVpOSzBLdGVjcUcyZmpXUWI1NXhRMVlGQTJYT1N3SEFZdlNkd0kyaloKcnVXOHFYWENMMnJiNENaQ0Z4d3BWRUNyY3hkam0zdGVWaVJYVnNZSW1tSkhQUFN5UWdwaW9iczl4N0RsTGM2SQpCQTBaalVPeWwwUHFHOVNKZXhNVjczV0lJYTVyRFZTRjJyNGtTa2JBajREY2o3TFhlRmxWWEgySTVYd1hDcHRDCm42N0pDZzQyZitrOHdnemNSVnA4WFprWldaVmp3cTlSVUtEWG1GQjJZeU4xWEVXZFowZXdSdUtZVUpsc202OTIKc2tPcktRajB2a29QbjQxRUUvK1RhVkVwcUxUUm9VWTNyemc3RGtkemZkQml6Rk8yZHNQTkZ4MkNXMGpYa05MdgpLbzI1Q1pyT2hYQUhBZ01CQUFFd0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFLSEZDY3lPalp2b0hzd1VCTWRMClJkSEliMzgzcFdGeW5acS9MdVVvdnNWQTU4QjBDZzdCRWZ5NXZXVlZycTVSSWt2NGxaODFOMjl4MjFkMUpINnIKalNuUXgrRFhDTy9USkVWNWxTQ1VwSUd6RVVZYVVQZ1J5anNNL05VZENKOHVIVmhaSitTNkZBK0NuT0Q5cm4yaQpaQmVQQ0k1ckh3RVh3bm5sOHl3aWozdnZRNXpISXV5QmdsV3IvUXl1aTlmalBwd1dVdlVtNG52NVNNRzl6Q1Y3ClBwdXd2dWF0cWpPMTIwOEJqZkUvY1pISWc4SHc5bXZXOXg5QytJUU1JTURFN2IvZzZPY0s3TEdUTHdsRnh2QTgKN1dqRWVxdW5heUlwaE1oS1JYVmYxTjM0OWVOOThFejM4Zk9USFRQYmRKakZBL1BjQytHeW1lK2lHdDVPUWRGaAp5UkU9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
@@ -351,9 +351,9 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 
 .. code-block:: bash
 
-        harry@Azure:~/lab1$ kubectl describe secret cafe-secret -n cafe
+        harry@Azure:~/lab1$ kubectl describe secret cafe-secret -n cafe-ns
         Name:         cafe-secret
-        Namespace:    cafe
+        Namespace:    cafe-ns
         Labels:       <none>
         Annotations:  <none>
 
@@ -387,7 +387,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
         kind: VirtualServer
         metadata:
           name: app-cafe
-          namespace: cafe
+          namespace: cafe-ns
         spec:
           ingressClassName: nginx-external
           host: cafe.example.com
@@ -417,6 +417,12 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
         virtualserver.k8s.nginx.org/app-cafe configured
 
 
+- Check the compilation status of the VirtualServer with the command below:
+
+.. code-block:: bash
+        kubectl describe virtualserver app-cafe -n cafe-ns
+
+
 10. Test the setup
 
 - Edit the host file of your client
@@ -428,8 +434,9 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 
         52.167.14.0         cafe.example.com
 
-- Open a browser and test some connections on http://cafe.example.com and https://cafe.example.com
+- Open a browser and test some connections on https://cafe.example.com/tea and https://cafe.example.com/coffee
 [ADC] 404 error, unknown PATH '/' in VirtualServer resource
+[HK] Modification of the tested URLs from https://cafe.example.com/ to https://cafe.example.com/tea and coffee
 
 11. Let's modify the deployment with a more complex setup
 
@@ -447,7 +454,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
         kind: VirtualServer
         metadata:
           name: app-cafe
-          namespace: cafe
+          namespace: cafe-ns
         spec:
           ingressClassName: nginx-external
           host: cafe.example.com
@@ -513,10 +520,20 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
         virtualserver.k8s.nginx.org/app-cafe configured
 
 
+- Check the compilation status of the VirtualServer with the command below:
+
+.. code-block:: bash
+        kubectl describe virtualserver app-cafe -n cafe-ns
+
+
 12. Test the setup
 
 [ADC] Check compilation status of VS: kubectl describe virtualserver cafe -n cafe
+[HK]  CHECK COMPILATION ADDED IN PRECEDENT POINT ABOVE
+
 [ADC] Check compilation status of VSR: kubectl describe virtualserverroute coffee -n cafe
+[HK] VSR are done in steps 13+
+
 
 Open a browser and test some connections on:
 
@@ -524,6 +541,258 @@ https://cafe.example.com                -> works like previous configuration
 https://ccafe.example.com/redirect      -> client is redirected to www.nginx.com
 https://cafe.example.com/return_page    -> custom page Hello World is returned
 https://cafe.example.com/proxy          -> requests go to coffee you should see custom headers in the responses
+
+
+
+13. Let's modify the setup to use the CRD VirtualServerRoute.
+
+In this example we use the VirtualServer and VirtualServerRoute resources to configure load balancing.
+We put the load balancing configuration as well as the deployments and services into multiple namespaces.
+Instead of one namespace, we now use three: tea, coffee, and cafe.
+
+    In the tea namespace, we create the tea deployment, service, and the corresponding load-balancing configuration.
+    In the coffee namespace, we create the coffee deployment, service, and the corresponding load-balancing configuration.
+    In the cafe namespace, we create the cafe secret with the TLS certificate and key and the load-balancing configuration for the cafe application.
+
+
+- copy and paste the manifests below:
+
+namespaces.yaml:
+
+.. code-block:: bash
+
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: cafe
+        ---
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: tea
+        ---
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: coffee
+
+
+tea.yaml:
+
+.. code-block:: bash
+
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: tea
+          namespace: tea
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              app: tea
+          template:
+            metadata:
+              labels:
+                app: tea
+            spec:
+              containers:
+              - name: tea
+                image: nginxdemos/nginx-hello:plain-text
+                ports:
+                - containerPort: 8080
+        ---
+        apiVersion: v1
+        kind: Service
+        metadata:
+          name: tea-svc
+          namespace: tea
+        spec:
+          ports:
+          - port: 80
+            targetPort: 8080
+            protocol: TCP
+            name: http
+          selector:
+            app: tea
+
+
+cofee.yaml:
+
+.. code-block:: bash
+
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: coffee
+          namespace: coffee
+        spec:
+          replicas: 1
+          selector:
+            matchLabels:
+              app: coffee
+          template:
+            metadata:
+              labels:
+                app: coffee
+            spec:
+              containers:
+              - name: coffee
+                image: nginxdemos/nginx-hello:plain-text
+                ports:
+                - containerPort: 8080
+        ---
+        apiVersion: v1
+        kind: Service
+        metadata:
+          name: coffee-svc
+          namespace: coffee
+        spec:
+          ports:
+          - port: 80
+            targetPort: 8080
+            protocol: TCP
+            name: http
+          selector:
+            app: coffee
+
+
+coffee-virtual-server-route.yaml:
+
+.. code-block:: bash
+
+        apiVersion: k8s.nginx.org/v1
+        kind: VirtualServerRoute
+        metadata:
+          name: coffee
+          namespace: coffee
+        spec:
+          host: cafe.example.com
+          upstreams:
+          - name: coffee
+            service: coffee-svc
+            port: 80
+          subroutes:
+          - path: /coffee
+            action:
+              pass: coffee
+
+
+tea-virtual-server-route.yaml:
+
+.. code-block:: bash
+
+        apiVersion: k8s.nginx.org/v1
+        kind: VirtualServerRoute
+        metadata:
+          name: tea
+          namespace: tea
+        spec:
+          host: cafe.example.com
+          upstreams:
+          - name: tea
+            service: tea-svc
+            port: 80
+          subroutes:
+          - path: /tea
+            action:
+              pass: tea
+
+
+cafe-virtual-server.yaml:
+
+.. code-block:: bash
+
+        apiVersion: k8s.nginx.org/v1
+        kind: VirtualServer
+        metadata:
+          name: cafe
+          namespace: cafe
+        spec:
+          host: cafe.example.com
+          tls:
+            secret: cafe-secret
+          routes:
+          - path: /tea
+            route: tea/tea
+          - path: /coffee
+            route: coffee/coffee
+
+
+
+
+
+- Create the new namespaces
+
+
+
+- Copy and Paste the manifest below into a new file named
+The VirtualServerRoute resource defines a route for a VirtualServer. It can consist of one or multiple subroutes.
+
+In the example below, the VirtualServer cafe from the namespace cafe-ns defines a route with the path /coffee.
+The route with the path /coffee is further defined in the VirtualServerRoute coffee from a second namespace called coffee-ns.
+
+| As an alternative to Mergeable Ingress resources, you can use VirtualServer
+| and VirtualServerRoute resources for cross-namespace configuration.
+
+- Copy and Paste the manifest below into a new file named cafe-virtual-server-3.yaml
+
+.. code-block:: bash
+
+        apiVersion: k8s.nginx.org/v1
+        kind: VirtualServer
+        metadata:
+          name: cafe
+          namespace: cafe-ns
+        spec:
+          host: cafe.example.com
+          upstreams:
+          - name: tea
+            service: tea-svc
+            port: 80
+          routes:
+          - path: /tea
+            action:
+              pass: tea
+          - path: /coffee
+            route: coffee-ns/coffee
+
+- Copy and Paste the manifest below into a new file named cafe-virtual-server-route.yaml
+
+.. code-block:: bash
+
+        apiVersion: k8s.nginx.org/v1
+        kind: VirtualServerRoute
+        metadata:
+          name: coffee
+          namespace: coffee-ns
+        spec:
+          host: cafe.example.com
+          upstreams:
+          - name: latte
+            service: latte-svc
+            port: 80
+          - name: espresso
+            service: espresso-svc
+            port: 80
+          subroutes:
+          - path: /coffee/latte
+            action:
+              pass: latte
+          - path: /coffee/espresso
+            action:
+              pass: espresso
+
+
+
+
+
+
+
+
+
+
+
 
 
 
