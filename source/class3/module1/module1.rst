@@ -313,7 +313,7 @@ The application cafe is composed of 2 micro services: cofee and tea.
 |
 - Step 5: Let's check everything is ok.
 
-- NameSpace cafe should have been created and should be in status Active:
+NameSpace cafe should have been created and should be in status Active:
 
 .. code-block:: bash
 
@@ -328,8 +328,8 @@ The application cafe is composed of 2 micro services: cofee and tea.
         kube-public                   Active   2d7h
         kube-system                   Active   2d7h
 
-- The services of the application cafe should have been deployed in the NameSpace cafe-ns and should be in status Running.
-- You should have 2 Pods for the coffee service and 1 Pod for tea service
+The services of the application cafe should have been deployed in the NameSpace cafe-ns and should be in status Running.
+You should have 2 Pods for the coffee service and 1 Pod for tea service
 
 .. code-block:: bash
 
@@ -339,7 +339,7 @@ The application cafe is composed of 2 micro services: cofee and tea.
         coffee-6f4b79b975-xpfvr   1/1     Running   0          21s
         tea-6fb46d899f-j2mqs      1/1     Running   0          21s
 
-- You should have the services tea-svc and coffee-svc deployed:
+You should have the services tea-svc and coffee-svc deployed:
 
 .. code-block:: bash
 
@@ -395,7 +395,9 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 - Step 9: Copy/Paste the manifest below into a new file named **cafe-virtual-server.yaml** and deploy it.
 
 | That manifest uses the custom resources **VirtualServer**.
+|
 | The deployment configure the **external NGINX+ Ingress Controller** via the usage of the Ingress Class Name **nginx-external**.
+|
 | For that first deployment, the setup is very simple :
     - listens for hostname cafe.example.com
     - TLS is activated and use the cert and key from cafe-secret
@@ -453,20 +455,20 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 
 - Step 10: Test the setup
 
-- If you have the rights to modify the hosts file of your client:
-    - Edit the host file of your client
-    - Add a line with hostname *cafe.example.com* and the EXTERNAL-IP address of the cluster you've seen on step 11 above.
+| If you have the rights to modify the hosts file of your client:
+|    - Edit the host file of your client
+|    - Add a line with hostname *cafe.example.com* and the EXTERNAL-IP address of the cluster you've seen on step 11 of LAB 2A above.
 
 .. code-block:: bash
 
         52.167.14.0         cafe.example.com
 
-    - Open a browser and test some connections :
+|    - Open a browser and test some connections :
     | https://cafe.example.com/tea and https://cafe.example.com/coffee should be successfull
     | https://cafe.example.com/ should receive an HTTP 404 Not Found page. -> This is because the path / hasn't been defined into the Routes field of the manifest above.
 
 
-- If you don't have the rights on the hosts file of your client then you can use the curl command with the EXTERNAL-IP address of the cluster you've seen on step 11 above:
+| If you don't have the rights on the hosts file of your client then you can use the curl command with the EXTERNAL-IP address of the cluster you've seen on step 11 of LAB 2A above:
 
 .. code-block:: bash
     $ curl https://cafe.example.com/coffee --resolve cafe.example.com:443:52.167.14.0 --insecure
@@ -498,12 +500,15 @@ LAB 2C: Canary and A/B Testing
 ###########################################################
 
 | For that use case, we're going to modify the previous setup.
+|
 | The aim is to passes 80% of requests to the upstream coffee and the remaining 20% to tea.
+|
 | The custom resource **VirtualServer** will be used with the rule **splits**.
+|
 | The split defines a weight for an action as part of the splits configuration.
 |
 
-- Step 1: Edit and modify the manifest cafe-virtual-server.yaml.
+- Step 1: Create/Edit a new file named **cafe-virtual-server-lab-2C.yaml** and copy/past the manifest below.
 
 .. code-block:: bash
 
@@ -537,7 +542,7 @@ LAB 2C: Canary and A/B Testing
 
 .. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server.yaml
+        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server-lab-2C.yaml
         virtualserver.k8s.nginx.org/app-cafe configured
 
 
@@ -549,7 +554,7 @@ LAB 2C: Canary and A/B Testing
 
 - Step 4: Test the setup
 
-Open a browser and test 10 connections on https://cafe.example.com
+Use curl (see step 10 in Lab 2B for the command and options) to open 10 connections on https://cafe.example.com
 8 connections should go to coffee
 2 connections should go to tea
 
