@@ -33,8 +33,9 @@ Description of the Kubernetes Cluster
     - External NIC has been deployed with argument **ingress-class=nginx-external**.
     - Internal NIC has been deployed with argument **ingress-class=nginx-internal**.
 
-Let's connect and look into the K8S cluster
-###########################################
+***************************************************
+LAB 2A: Exploring and understanding the K8S cluster
+***************************************************
 
     .. note::
         | In order to be independant of a specific K8S distribution, standard tools will be used for managing the cluster.
@@ -186,30 +187,39 @@ Let's connect and look into the K8S cluster
 11. Note the EXTERNAL-IP address. It will be used later in our labs.
 
 
-LAB USE CASE 1: traffic splitting and advanced content-based routing
-####################################################################
+***************************************************
+LAB 2B: traffic splitting and advanced content-based routing
+***************************************************
 
-| For that use case, A new application called cafe will be deployed and used
-| The CRDs virtualservers and virtualserverroutes will be used to enable the use case.
+| For that use case, A new application named cafe will be deployed.
+| The application cafe is composed of 2 services: cofee and tea.
+| The custom resource **VirtualServer** will be used.
+| That first deployment is simple. We will complete it later on with more complex actions.
+| For now, the use case is:
+    - listens for hostname cafe.example.com
+    - TLS activated and uses a specified cert and key from K8S secret resource
+    - Simple Path Routing is done :
+        - request for /tea are sent to service tea
+        - request for /coffee are sent to service coffee
 |
 
-1. Create the directory Lab1 and move into it
+- Step 1: Create the directory Lab1 and move into it
 
 .. code-block:: bash
 
         harry@Azure:~$ mkdir Lab1
         harry@Azure:~$ cd lab1/
         harry@Azure:~/lab1$
-
-2. Create a new NameSpace called cafe-ns. We will deploy the application into it.
+|
+- Step 2: Create a new NameSpace called cafe-ns. We will deploy the application into it.
 
 .. code-block:: bash
 
         harry@Azure:~/lab1$ kubectl create namespace cafe-ns
         namespace/cafe created
 
-3. copy and paste the manifest below into a new file called cafe.yaml.
-
+|
+- Step 3: copy and paste the manifest below into a new file called cafe.yaml.
 
 That manifest will be used to deploy the application into the cluster.
 The application cafe is composed of 2 micro services: cofee and tea.
@@ -285,8 +295,8 @@ The application cafe is composed of 2 micro services: cofee and tea.
           selector:
             app: tea
 
-
-4. Deploy the application cafe
+|
+- Step 4: Deploy the application cafe
 
 .. code-block:: bash
 
@@ -296,7 +306,8 @@ The application cafe is composed of 2 micro services: cofee and tea.
         deployment.apps/tea created
         service/tea-svc created
 
-5. Let's check everything is ok.
+|
+- Step 5: Let's check everything is ok.
 
 - NameSpace cafe should have been created and should be in status Active:
 
@@ -324,7 +335,8 @@ The application cafe is composed of 2 micro services: cofee and tea.
         coffee-6f4b79b975-xpfvr   1/1     Running   0          21s
         tea-6fb46d899f-j2mqs      1/1     Running   0          21s
 
-6. Copy and Past the manifest below into a new file called cafe-secret.yaml
+|
+- Step 6: Copy and Past the manifest below into a new file called cafe-secret.yaml
 
 That manifest deploys a certificate and keys that will be used later for TLS traffic.
 
@@ -340,14 +352,16 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
           tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURMakNDQWhZQ0NRREFPRjl0THNhWFdqQU5CZ2txaGtpRzl3MEJBUXNGQURCYU1Rc3dDUVlEVlFRR0V3SlYKVXpFTE1Ba0dBMVVFQ0F3Q1EwRXhJVEFmQmdOVkJBb01HRWx1ZEdWeWJtVjBJRmRwWkdkcGRITWdVSFI1SUV4MApaREViTUJrR0ExVUVBd3dTWTJGbVpTNWxlR0Z0Y0d4bExtTnZiU0FnTUI0WERURTRNRGt4TWpFMk1UVXpOVm9YCkRUSXpNRGt4TVRFMk1UVXpOVm93V0RFTE1Ba0dBMVVFQmhNQ1ZWTXhDekFKQmdOVkJBZ01Ba05CTVNFd0h3WUQKVlFRS0RCaEpiblJsY201bGRDQlhhV1JuYVhSeklGQjBlU0JNZEdReEdUQVhCZ05WQkFNTUVHTmhabVV1WlhoaApiWEJzWlM1amIyMHdnZ0VpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElCRHdBd2dnRUtBb0lCQVFDcDZLbjdzeTgxCnAwanVKL2N5ayt2Q0FtbHNmanRGTTJtdVpOSzBLdGVjcUcyZmpXUWI1NXhRMVlGQTJYT1N3SEFZdlNkd0kyaloKcnVXOHFYWENMMnJiNENaQ0Z4d3BWRUNyY3hkam0zdGVWaVJYVnNZSW1tSkhQUFN5UWdwaW9iczl4N0RsTGM2SQpCQTBaalVPeWwwUHFHOVNKZXhNVjczV0lJYTVyRFZTRjJyNGtTa2JBajREY2o3TFhlRmxWWEgySTVYd1hDcHRDCm42N0pDZzQyZitrOHdnemNSVnA4WFprWldaVmp3cTlSVUtEWG1GQjJZeU4xWEVXZFowZXdSdUtZVUpsc202OTIKc2tPcktRajB2a29QbjQxRUUvK1RhVkVwcUxUUm9VWTNyemc3RGtkemZkQml6Rk8yZHNQTkZ4MkNXMGpYa05MdgpLbzI1Q1pyT2hYQUhBZ01CQUFFd0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFLSEZDY3lPalp2b0hzd1VCTWRMClJkSEliMzgzcFdGeW5acS9MdVVvdnNWQTU4QjBDZzdCRWZ5NXZXVlZycTVSSWt2NGxaODFOMjl4MjFkMUpINnIKalNuUXgrRFhDTy9USkVWNWxTQ1VwSUd6RVVZYVVQZ1J5anNNL05VZENKOHVIVmhaSitTNkZBK0NuT0Q5cm4yaQpaQmVQQ0k1ckh3RVh3bm5sOHl3aWozdnZRNXpISXV5QmdsV3IvUXl1aTlmalBwd1dVdlVtNG52NVNNRzl6Q1Y3ClBwdXd2dWF0cWpPMTIwOEJqZkUvY1pISWc4SHc5bXZXOXg5QytJUU1JTURFN2IvZzZPY0s3TEdUTHdsRnh2QTgKN1dqRWVxdW5heUlwaE1oS1JYVmYxTjM0OWVOOThFejM4Zk9USFRQYmRKakZBL1BjQytHeW1lK2lHdDVPUWRGaAp5UkU9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
           tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBcWVpcCs3TXZOYWRJN2lmM01wUHJ3Z0pwYkg0N1JUTnBybVRTdENyWG5LaHRuNDFrCkcrZWNVTldCUU5semtzQndHTDBuY0NObzJhN2x2S2wxd2k5cTIrQW1RaGNjS1ZSQXEzTVhZNXQ3WGxZa1YxYkcKQ0pwaVJ6ejBza0lLWXFHN1BjZXc1UzNPaUFRTkdZMURzcGRENmh2VWlYc1RGZTkxaUNHdWF3MVVoZHErSkVwRwp3SStBM0kreTEzaFpWVng5aU9WOEZ3cWJRcCt1eVFvT05uL3BQTUlNM0VWYWZGMlpHVm1WWThLdlVWQ2cxNWhRCmRtTWpkVnhGbldkSHNFYmltRkNaYkp1dmRySkRxeWtJOUw1S0Q1K05SQlAvazJsUkthaTAwYUZHTjY4NE93NUgKYzMzUVlzeFR0bmJEelJjZGdsdEkxNURTN3lxTnVRbWF6b1Z3QndJREFRQUJBb0lCQVFDUFNkU1luUXRTUHlxbApGZlZGcFRPc29PWVJoZjhzSStpYkZ4SU91UmF1V2VoaEp4ZG01Uk9ScEF6bUNMeUw1VmhqdEptZTIyM2dMcncyCk45OUVqVUtiL1ZPbVp1RHNCYzZvQ0Y2UU5SNThkejhjbk9SVGV3Y290c0pSMXBuMWhobG5SNUhxSkpCSmFzazEKWkVuVVFmY1hackw5NGxvOUpIM0UrVXFqbzFGRnM4eHhFOHdvUEJxalpzVjdwUlVaZ0MzTGh4bndMU0V4eUZvNApjeGI5U09HNU9tQUpvelN0Rm9RMkdKT2VzOHJKNXFmZHZ5dGdnOXhiTGFRTC94MGtwUTYyQm9GTUJEZHFPZVBXCktmUDV6WjYvMDcvdnBqNDh5QTFRMzJQem9idWJzQkxkM0tjbjMyamZtMUU3cHJ0V2wrSmVPRmlPem5CUUZKYk4KNHFQVlJ6NWhBb0dCQU50V3l4aE5DU0x1NFArWGdLeWNrbGpKNkY1NjY4Zk5qNUN6Z0ZScUowOXpuMFRsc05ybwpGVExaY3hEcW5SM0hQWU00MkpFUmgySi9xREZaeW5SUW8zY2czb2VpdlVkQlZHWTgrRkkxVzBxZHViL0w5K3l1CmVkT1pUUTVYbUdHcDZyNmpleHltY0ppbS9Pc0IzWm5ZT3BPcmxEN1NQbUJ2ek5MazRNRjZneGJYQW9HQkFNWk8KMHA2SGJCbWNQMHRqRlhmY0tFNzdJbUxtMHNBRzR1SG9VeDBlUGovMnFyblRuT0JCTkU0TXZnRHVUSnp5K2NhVQprOFJxbWRIQ2JIelRlNmZ6WXEvOWl0OHNaNzdLVk4xcWtiSWN1YytSVHhBOW5OaDFUanNSbmU3NFowajFGQ0xrCmhIY3FIMHJpN1BZU0tIVEU4RnZGQ3haWWRidUI4NENtWmlodnhicFJBb0dBSWJqcWFNWVBUWXVrbENkYTVTNzkKWVNGSjFKelplMUtqYS8vdER3MXpGY2dWQ0thMzFqQXdjaXowZi9sU1JxM0hTMUdHR21lemhQVlRpcUxmZVpxYwpSMGlLYmhnYk9jVlZrSkozSzB5QXlLd1BUdW14S0haNnpJbVpTMGMwYW0rUlk5WUdxNVQ3WXJ6cHpjZnZwaU9VCmZmZTNSeUZUN2NmQ21mb09oREN0enVrQ2dZQjMwb0xDMVJMRk9ycW40M3ZDUzUxemM1em9ZNDR1QnpzcHd3WU4KVHd2UC9FeFdNZjNWSnJEakJDSCtULzZzeXNlUGJKRUltbHpNK0l3eXRGcEFOZmlJWEV0LzQ4WGY2ME54OGdXTQp1SHl4Wlp4L05LdER3MFY4dlgxUE9ucTJBNWVpS2ErOGpSQVJZS0pMWU5kZkR1d29seHZHNmJaaGtQaS80RXRUCjNZMThzUUtCZ0h0S2JrKzdsTkpWZXN3WEU1Y1VHNkVEVXNEZS8yVWE3ZlhwN0ZjanFCRW9hcDFMU3crNlRYcDAKWmdybUtFOEFSek00NytFSkhVdmlpcS9udXBFMTVnMGtKVzNzeWhwVTl6WkxPN2x0QjBLSWtPOVpSY21Vam84UQpjcExsSE1BcWJMSjhXWUdKQ2toaVd4eWFsNmhZVHlXWTRjVmtDMHh0VGwvaFVFOUllTktvCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
 
-7. Deploy the manifest cafe-secret.
+|
+- Step 7: Deploy the manifest cafe-secret.
 
 .. code-block:: bash
 
         harry@Azure:~/lab1$ kubectl create -f cafe-secret.yaml
         secret/cafe-secret created
 
-8. Verify the certificate and keys have been deployed into the namespace cafe
+|
+- Step 8: Verify the certificate and keys have been deployed into the namespace cafe
 
 .. code-block:: bash
 
@@ -364,9 +378,10 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
         tls.crt:  1164 bytes
         tls.key:  1675 bytes
 
-9. Copy/Paste the manifest below into a new file named cafe-virtual-server.yaml and deploy it.
+|
+- Step 9: Copy/Paste the manifest below into a new file named cafe-virtual-server.yaml and deploy it.
 
-- That manifest uses the custom resources **VirtualServer** and **VirtualServerRoutes**.
+- That manifest uses the custom resources **VirtualServer**.
 - The deployment configure the **external NGINX+ Ingress Controller** via the usage of the Ingress Class Name **nginx-external**.
 - For that first deployment, the setup is very simple :
     - listens for hostname cafe.example.com
@@ -375,7 +390,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
         - request for /tea are sent to service tea
         - request for /coffee are sent to service coffee
 
-- A lot of features are available via the utilisation of the custom resources *VirtualServer* and *VirtualServerRoutes*.
+- A lot of features are available via the utilisation of the custom resources *VirtualServer*.
 - The list is quite long and is available in the `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_. Some of those advanced features will be used later in the workshop.
 - For this first deployment, we use the features below:
     - tls: allows to attach a secret with a TLS certificate and key. The secret must belong to the same namespace as the VirtualServer.
