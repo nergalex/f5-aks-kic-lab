@@ -193,7 +193,8 @@ Note the EXTERNAL-IP address. It will be used later in our labs.
 
 
 LAB 2B: Simple Traffic Splitting and Content-Based Routing
-***********************************************************
+*************************************************************
+
 
 LAB 2B: Simple Traffic Splitting and Content-Based Routing
 ###########################################################
