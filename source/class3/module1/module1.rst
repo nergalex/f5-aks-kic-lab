@@ -564,17 +564,17 @@ namespaces.yaml:
         apiVersion: v1
         kind: Namespace
         metadata:
-          name: cafe
+          name: cafe-ns
         ---
         apiVersion: v1
         kind: Namespace
         metadata:
-          name: tea
+          name: tea-ns
         ---
         apiVersion: v1
         kind: Namespace
         metadata:
-          name: coffee
+          name: coffee-ns
 
 
 tea.yaml:
@@ -585,7 +585,7 @@ tea.yaml:
         kind: Deployment
         metadata:
           name: tea
-          namespace: tea
+          namespace: tea-ns
         spec:
           replicas: 1
           selector:
@@ -606,7 +606,7 @@ tea.yaml:
         kind: Service
         metadata:
           name: tea-svc
-          namespace: tea
+          namespace: tea-ns
         spec:
           ports:
           - port: 80
@@ -625,7 +625,7 @@ cofee.yaml:
         kind: Deployment
         metadata:
           name: coffee
-          namespace: coffee
+          namespace: coffee-ns
         spec:
           replicas: 1
           selector:
@@ -646,7 +646,7 @@ cofee.yaml:
         kind: Service
         metadata:
           name: coffee-svc
-          namespace: coffee
+          namespace: coffee-ns
         spec:
           ports:
           - port: 80
@@ -664,8 +664,8 @@ coffee-virtual-server-route.yaml:
         apiVersion: k8s.nginx.org/v1
         kind: VirtualServerRoute
         metadata:
-          name: coffee
-          namespace: coffee
+          name: coffee-vsr
+          namespace: coffee-ns
         spec:
           host: cafe.example.com
           upstreams:
@@ -685,8 +685,8 @@ tea-virtual-server-route.yaml:
         apiVersion: k8s.nginx.org/v1
         kind: VirtualServerRoute
         metadata:
-          name: tea
-          namespace: tea
+          name: tea-vsr
+          namespace: tea-ns
         spec:
           host: cafe.example.com
           upstreams:
@@ -707,265 +707,121 @@ cafe-virtual-server.yaml:
         kind: VirtualServer
         metadata:
           name: cafe
-          namespace: cafe
+          namespace: cafe-ns
         spec:
           host: cafe.example.com
           tls:
             secret: cafe-secret
           routes:
           - path: /tea
-            route: tea/tea
+            route: tea-vsr/tea
           - path: /coffee
-            route: coffee/coffee
+            route: coffee-vsr/coffee
 
 
+- Step 1: Create the Namespaces
 
-
-
-- Create the new namespaces
-
-
-
-- Copy and Paste the manifest below into a new file named
-The VirtualServerRoute resource defines a route for a VirtualServer. It can consist of one or multiple subroutes.
-
-In the example below, the VirtualServer cafe from the namespace cafe-ns defines a route with the path /coffee.
-The route with the path /coffee is further defined in the VirtualServerRoute coffee from a second namespace called coffee-ns.
-
-| As an alternative to Mergeable Ingress resources, you can use VirtualServer
-| and VirtualServerRoute resources for cross-namespace configuration.
-
-- Copy and Paste the manifest below into a new file named cafe-virtual-server-3.yaml
+Create the required tea, coffee, and cafe namespaces:
 
 .. code-block:: bash
 
-        apiVersion: k8s.nginx.org/v1
-        kind: VirtualServer
-        metadata:
-          name: cafe
-          namespace: cafe-ns
-        spec:
-          host: cafe.example.com
-          upstreams:
-          - name: tea
-            service: tea-svc
-            port: 80
-          routes:
-          - path: /tea
-            action:
-              pass: tea
-          - path: /coffee
-            route: coffee-ns/coffee
+        $ kubectl create -f namespaces.yaml
 
-- Copy and Paste the manifest below into a new file named cafe-virtual-server-route.yaml
+
+- Step 2: Deploy the new Cafe Application
+
+Create the tea deployment and service in the tea-ns namespace:
 
 .. code-block:: bash
 
-        apiVersion: k8s.nginx.org/v1
-        kind: VirtualServerRoute
-        metadata:
-          name: coffee
-          namespace: coffee-ns
-        spec:
-          host: cafe.example.com
-          upstreams:
-          - name: latte
-            service: latte-svc
-            port: 80
-          - name: espresso
-            service: espresso-svc
-            port: 80
-          subroutes:
-          - path: /coffee/latte
-            action:
-              pass: latte
-          - path: /coffee/espresso
-            action:
-              pass: espresso
+        $ kubectl create -f tea.yaml
+
+Create the coffee deployment and service in the coffee-ns namespace:
+
+.. code-block:: bash
+
+        $ kubectl create -f coffee.yaml
+
+
+- Step 3: Configure Load Balancing and TLS Termination
+
+Create the VirtualServerRoute resource for tea in the tea-ns namespace:
+
+.. code-block:: bash
+
+        $ kubectl create -f tea-virtual-server-route.yaml
+
+Create the VirtualServerRoute resource for coffee in the coffee-ns namespace:
+
+.. code-block:: bash
+
+        $ kubectl create -f coffee-virtual-server-route.yaml
+
+
+Create the VirtualServer resource for the cafe app in the cafe-ns namespace:
+
+.. code-block:: bash
+
+        $ kubectl create -f cafe-virtual-server.yaml
+
+
+- Step 4: Test the Configuration
+
+Check that the configuration has been successfully applied by inspecting the events of the VirtualServerRoutes and VirtualServer:
+
+.. code-block:: bash
+
+        $ kubectl describe virtualserverroute tea -n tea-ns
+        . . .
+        Events:
+          Type     Reason                 Age   From                      Message
+          ----     ------                 ----  ----                      -------
+          Warning  NoVirtualServersFound  2m    nginx-ingress-controller  No VirtualServer references VirtualServerRoute tea/tea
+          Normal   AddedOrUpdated         1m    nginx-ingress-controller  Configuration for tea-ns/tea was added or updated
+
+.. code-block:: bash
+
+        $ kubectl describe virtualserverroute coffee -n coffee-ns
+        . . .
+        Events:
+          Type     Reason                 Age   From                      Message
+          ----     ------                 ----  ----                      -------
+          Warning  NoVirtualServersFound  2m    nginx-ingress-controller  No VirtualServer references VirtualServerRoute coffee/coffee
+          Normal   AddedOrUpdated         1m    nginx-ingress-controller  Configuration for coffee-ns/coffee was added or updated
+
+.. code-block:: bash
+
+        $ kubectl describe virtualserver cafe -n cafe-ns
+        . . .
+        Events:
+          Type    Reason          Age   From                      Message
+          ----    ------          ----  ----                      -------
+          Normal  AddedOrUpdated  1m    nginx-ingress-controller  Configuration for cafe-ns/cafe was added or updated
+
+
+Access the application using curl.
+We'll use curl's --insecure option to turn off certificate verification of our self-signed certificate and --resolve option to set the IP address and HTTPS port of the Ingress Controller to the domain name of the cafe application:
+
+To get coffee:
+
+.. code-block:: bash
+
+        $ curl --resolve cafe.example.com:$IC_HTTPS_PORT:$IC_IP https://cafe.example.com:$IC_HTTPS_PORT/coffee --insecure
+        Server address: 10.16.1.193:80
+        Server name: coffee-7dbb5795f6-mltpf
+        ...
+
+
+    If your prefer tea:
+
+.. code-block:: bash
+
+        $ curl --resolve cafe.example.com:$IC_HTTPS_PORT:$IC_IP https://cafe.example.com:$IC_HTTPS_PORT/tea --insecure
+        Server address: 10.16.0.157:80
+        Server name: tea-7d57856c44-674b8
+        ...
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-harry@Azure:~/lab1/Deploy_Cofee$ kubectl create namespace cafe
-namespace/cafe created
-
-harry@Azure:~/lab1/Deploy_Cofee$ kubectl get namespaces
-NAME                          STATUS   AGE
-arcadia                       Active   2d3h
-cafe                          Active   13s
-default                       Active   2d7h
-external-ingress-controller   Active   2d6h
-internal-ingress-controller   Active   2d6h
-kube-node-lease               Active   2d7h
-kube-public                   Active   2d7h
-kube-system                   Active   2d7h
-
-
-harry@Azure:~/lab1/Deploy_Cofee$ vi cafe.yaml
-
-harry@Azure:~/lab1/Deploy_Cofee$ kubectl create -f cafe.yaml
-deployment.apps/coffee created
-service/coffee-svc created
-deployment.apps/tea created
-service/tea-svc created
-
-harry@Azure:~/lab1/Deploy_Cofee$ kubectl get pods -n cafe
-NAME                      READY   STATUS    RESTARTS   AGE
-coffee-6f4b79b975-pxjxp   1/1     Running   0          21s
-coffee-6f4b79b975-xpfvr   1/1     Running   0          21s
-tea-6fb46d899f-j2mqs      1/1     Running   0          21s
-harry@Azure:~/lab1/Deploy_Cofee$
-
-
-
-
-harry@Azure:~/lab1$ vi cafe-secret.yaml
-
-apiVersion: v1
-kind: Secret
-metadata:
-  name: cafe-secret
-  namespace: cafe
-type: kubernetes.io/tls
-data:
-  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURMakNDQWhZQ0NRREFPRjl0THNhWFdqQU5CZ2txaGtpRzl3MEJBUXNGQURCYU1Rc3dDUVlEVlFRR0V3SlYKVXpFTE1Ba0dBMVVFQ0F3Q1EwRXhJVEFmQmdOVkJBb01HRWx1ZEdWeWJtVjBJRmRwWkdkcGRITWdVSFI1SUV4MApaREViTUJrR0ExVUVBd3dTWTJGbVpTNWxlR0Z0Y0d4bExtTnZiU0FnTUI0WERURTRNRGt4TWpFMk1UVXpOVm9YCkRUSXpNRGt4TVRFMk1UVXpOVm93V0RFTE1Ba0dBMVVFQmhNQ1ZWTXhDekFKQmdOVkJBZ01Ba05CTVNFd0h3WUQKVlFRS0RCaEpiblJsY201bGRDQlhhV1JuYVhSeklGQjBlU0JNZEdReEdUQVhCZ05WQkFNTUVHTmhabVV1WlhoaApiWEJzWlM1amIyMHdnZ0VpTUEwR0NTcUdTSWIzRFFFQkFRVUFBNElCRHdBd2dnRUtBb0lCQVFDcDZLbjdzeTgxCnAwanVKL2N5ayt2Q0FtbHNmanRGTTJtdVpOSzBLdGVjcUcyZmpXUWI1NXhRMVlGQTJYT1N3SEFZdlNkd0kyaloKcnVXOHFYWENMMnJiNENaQ0Z4d3BWRUNyY3hkam0zdGVWaVJYVnNZSW1tSkhQUFN5UWdwaW9iczl4N0RsTGM2SQpCQTBaalVPeWwwUHFHOVNKZXhNVjczV0lJYTVyRFZTRjJyNGtTa2JBajREY2o3TFhlRmxWWEgySTVYd1hDcHRDCm42N0pDZzQyZitrOHdnemNSVnA4WFprWldaVmp3cTlSVUtEWG1GQjJZeU4xWEVXZFowZXdSdUtZVUpsc202OTIKc2tPcktRajB2a29QbjQxRUUvK1RhVkVwcUxUUm9VWTNyemc3RGtkemZkQml6Rk8yZHNQTkZ4MkNXMGpYa05MdgpLbzI1Q1pyT2hYQUhBZ01CQUFFd0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFLSEZDY3lPalp2b0hzd1VCTWRMClJkSEliMzgzcFdGeW5acS9MdVVvdnNWQTU4QjBDZzdCRWZ5NXZXVlZycTVSSWt2NGxaODFOMjl4MjFkMUpINnIKalNuUXgrRFhDTy9USkVWNWxTQ1VwSUd6RVVZYVVQZ1J5anNNL05VZENKOHVIVmhaSitTNkZBK0NuT0Q5cm4yaQpaQmVQQ0k1ckh3RVh3bm5sOHl3aWozdnZRNXpISXV5QmdsV3IvUXl1aTlmalBwd1dVdlVtNG52NVNNRzl6Q1Y3ClBwdXd2dWF0cWpPMTIwOEJqZkUvY1pISWc4SHc5bXZXOXg5QytJUU1JTURFN2IvZzZPY0s3TEdUTHdsRnh2QTgKN1dqRWVxdW5heUlwaE1oS1JYVmYxTjM0OWVOOThFejM4Zk9USFRQYmRKakZBL1BjQytHeW1lK2lHdDVPUWRGaAp5UkU9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
-  tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBcWVpcCs3TXZOYWRJN2lmM01wUHJ3Z0pwYkg0N1JUTnBybVRTdENyWG5LaHRuNDFrCkcrZWNVTldCUU5semtzQndHTDBuY0NObzJhN2x2S2wxd2k5cTIrQW1RaGNjS1ZSQXEzTVhZNXQ3WGxZa1YxYkcKQ0pwaVJ6ejBza0lLWXFHN1BjZXc1UzNPaUFRTkdZMURzcGRENmh2VWlYc1RGZTkxaUNHdWF3MVVoZHErSkVwRwp3SStBM0kreTEzaFpWVng5aU9WOEZ3cWJRcCt1eVFvT05uL3BQTUlNM0VWYWZGMlpHVm1WWThLdlVWQ2cxNWhRCmRtTWpkVnhGbldkSHNFYmltRkNaYkp1dmRySkRxeWtJOUw1S0Q1K05SQlAvazJsUkthaTAwYUZHTjY4NE93NUgKYzMzUVlzeFR0bmJEelJjZGdsdEkxNURTN3lxTnVRbWF6b1Z3QndJREFRQUJBb0lCQVFDUFNkU1luUXRTUHlxbApGZlZGcFRPc29PWVJoZjhzSStpYkZ4SU91UmF1V2VoaEp4ZG01Uk9ScEF6bUNMeUw1VmhqdEptZTIyM2dMcncyCk45OUVqVUtiL1ZPbVp1RHNCYzZvQ0Y2UU5SNThkejhjbk9SVGV3Y290c0pSMXBuMWhobG5SNUhxSkpCSmFzazEKWkVuVVFmY1hackw5NGxvOUpIM0UrVXFqbzFGRnM4eHhFOHdvUEJxalpzVjdwUlVaZ0MzTGh4bndMU0V4eUZvNApjeGI5U09HNU9tQUpvelN0Rm9RMkdKT2VzOHJKNXFmZHZ5dGdnOXhiTGFRTC94MGtwUTYyQm9GTUJEZHFPZVBXCktmUDV6WjYvMDcvdnBqNDh5QTFRMzJQem9idWJzQkxkM0tjbjMyamZtMUU3cHJ0V2wrSmVPRmlPem5CUUZKYk4KNHFQVlJ6NWhBb0dCQU50V3l4aE5DU0x1NFArWGdLeWNrbGpKNkY1NjY4Zk5qNUN6Z0ZScUowOXpuMFRsc05ybwpGVExaY3hEcW5SM0hQWU00MkpFUmgySi9xREZaeW5SUW8zY2czb2VpdlVkQlZHWTgrRkkxVzBxZHViL0w5K3l1CmVkT1pUUTVYbUdHcDZyNmpleHltY0ppbS9Pc0IzWm5ZT3BPcmxEN1NQbUJ2ek5MazRNRjZneGJYQW9HQkFNWk8KMHA2SGJCbWNQMHRqRlhmY0tFNzdJbUxtMHNBRzR1SG9VeDBlUGovMnFyblRuT0JCTkU0TXZnRHVUSnp5K2NhVQprOFJxbWRIQ2JIelRlNmZ6WXEvOWl0OHNaNzdLVk4xcWtiSWN1YytSVHhBOW5OaDFUanNSbmU3NFowajFGQ0xrCmhIY3FIMHJpN1BZU0tIVEU4RnZGQ3haWWRidUI4NENtWmlodnhicFJBb0dBSWJqcWFNWVBUWXVrbENkYTVTNzkKWVNGSjFKelplMUtqYS8vdER3MXpGY2dWQ0thMzFqQXdjaXowZi9sU1JxM0hTMUdHR21lemhQVlRpcUxmZVpxYwpSMGlLYmhnYk9jVlZrSkozSzB5QXlLd1BUdW14S0haNnpJbVpTMGMwYW0rUlk5WUdxNVQ3WXJ6cHpjZnZwaU9VCmZmZTNSeUZUN2NmQ21mb09oREN0enVrQ2dZQjMwb0xDMVJMRk9ycW40M3ZDUzUxemM1em9ZNDR1QnpzcHd3WU4KVHd2UC9FeFdNZjNWSnJEakJDSCtULzZzeXNlUGJKRUltbHpNK0l3eXRGcEFOZmlJWEV0LzQ4WGY2ME54OGdXTQp1SHl4Wlp4L05LdER3MFY4dlgxUE9ucTJBNWVpS2ErOGpSQVJZS0pMWU5kZkR1d29seHZHNmJaaGtQaS80RXRUCjNZMThzUUtCZ0h0S2JrKzdsTkpWZXN3WEU1Y1VHNkVEVXNEZS8yVWE3ZlhwN0ZjanFCRW9hcDFMU3crNlRYcDAKWmdybUtFOEFSek00NytFSkhVdmlpcS9udXBFMTVnMGtKVzNzeWhwVTl6WkxPN2x0QjBLSWtPOVpSY21Vam84UQpjcExsSE1BcWJMSjhXWUdKQ2toaVd4eWFsNmhZVHlXWTRjVmtDMHh0VGwvaFVFOUllTktvCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
-
-
-                                                                                                                      5,17          All
-
-
-harry@Azure:~/lab1/Deploy_Cofee$ kubectl create -f cafe-secret.yaml
-secret/cafe-secret created
-
-harry@Azure:~/lab1/Deploy_Cofee$ kubectl describe secret cafe-secret -n cafe
-Name:         cafe-secret
-Namespace:    cafe
-Labels:       <none>
-Annotations:  <none>
-
-Type:  kubernetes.io/tls
-
-Data
-====
-tls.crt:  1164 bytes
-tls.key:  1675 bytes
-harry@Azure:~/lab1/Deploy_Cofee$
-
-
-harry@Azure:~/lab1$ vi cafe-virtual-server.yaml
-
-apiVersion: k8s.nginx.org/v1
-kind: VirtualServer
-metadata:
-  name: app-cafe
-  namespace: cafe
-spec:
-  ingressClassName: nginx-external
-  host: cafe.example.com
-  tls:
-    secret: cafe-secret
-  upstreams:
-  - name: tea
-    service: tea-svc
-    port: 80
-  - name: coffee
-    service: coffee-svc
-    port: 80
-  routes:
-  - path: /tea
-    action:
-      pass: tea
-  - path: /coffee
-    action:
-      pass: coffee
-
-
-
-
-harry@Azure:~/lab1$ kubectl apply -f cafe-secret.yaml
-secret/cafe-secret created
-harry@Azure:~/lab1$
-harry@Azure:~/lab1$
-harry@Azure:~/lab1$ kubectl apply -f cafe-virtual-server.yaml
-virtualserver.k8s.nginx.org/app-cafe created
-harry@Azure:~/lab1$ kubectl get virtualserver -n cafe
-NAME       STATE   HOST               IP            PORTS      AGE
-app-cafe   Valid   cafe.example.com   52.167.14.0   [80,443]   48s
-harry@Azure:~/lab1$
-
-
-
-
-apiVersion: k8s.nginx.org/v1
-kind: VirtualServer
-metadata:
-  name: app-cafe
-  namespace: cafe
-spec:
-  ingressClassName: nginx-external
-  host: cafe.example.com
-  tls:
-    secret: cafe-secret
-  upstreams:
-  - name: tea
-    service: tea-svc
-    port: 80
-  - name: coffee
-    service: coffee-svc
-    port: 80
-  routes:
-  - path: /tea
-    action:
-      pass: tea
-  - path: /coffee
-    action:
-      pass: coffee
-  - path: /redirect
-    action:
-      redirect:
-        url: http://www.nginx.com
-        code: 301
-  - path: /proxy
-    action:
-      proxy:
-        upstream: coffee
-        requestHeaders:
-          pass: true
-          set:
-          - name: My-Header
-            value: Value
-          - name: Client-Cert
-            value: ${ssl_client_escaped_cert}
-        responseHeaders:
-          add:
-          - name: My-Header
-            value: Value
-          - name: IC-Nginx-Version
-            value: ${nginx_version}
-            always: true
-          hide:
-          - x-internal-version
-          ignore:
-          - Expires
-          - Set-Cookie
-          pass:
-          - Server
-  - path: /return_page
-    action:
-      return:
-        code: 200
-        type: text/plain
-        body: "Hello World\n\n\n\nRequest is ${request_uri}\nRequest Method is ${request_method}\nRequest Scheme is ${scheme}\nRequest Host is ${host}\nRequest Lengthis ${request_length}\nNGINX Version is ${nginx_version}\nClient IP address is ${remote_addr}\nClient Port is : ${remote_port}\nLocal Time is ${time_local}\nServer IP Address is ${server_addr}\nServer Port is ${server_port}\nProtocol is ${server_protocol}\n"
-"cafe-virtual-server.yaml" 60L, 1614C                                                                                                                60,34         Bot
+                                                                                                          60,34         Bot
