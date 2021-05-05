@@ -12,10 +12,9 @@ Your dedicated Azure ``resource group`` includes:
 Jumphost
 ======================
 
-- Connection
-    - Download SSH key `jumphost.key <https://f5-my.sharepoint.com/:f:/r/personal/al_dacosta_f5_com/Documents/Lab/f5-aks-kic-lab?csf=1&web=1&e=PYcBdc>`_
-    - Ask for your ``{{ student_ID }}`` and your Azure ``{{ region }}``
-    - Open an SSH session to ``jumphost-aksdistrict{{ student_ID }}.{{ region }}.cloudapp.azure.com``. Log in as user ``cyber`` authenticated with private key ``jumphost.key``.
+- Download SSH key `jumphost.key <https://f5-my.sharepoint.com/:f:/r/personal/al_dacosta_f5_com/Documents/Lab/f5-aks-kic-lab?csf=1&web=1&e=PYcBdc>`_
+- Ask for your ``{{ student_ID }}`` and your Azure ``{{ region }}``
+- Open an SSH session to ``jumphost-aksdistrict{{ student_ID }}.{{ region }}.cloudapp.azure.com``. Log in as user ``cyber`` authenticated with private key ``jumphost.key``.
 
 .. code-block:: bash
 
@@ -24,10 +23,10 @@ Jumphost
 AKS cluster
 ======================
 
-- Connection
-    - On jumphost, communicate with K8S API using kubectl
+On Jumphost, communicate with K8S API using kubectl
 
 .. code-block:: bash
+
     $ kubectl get namespaces
 
 K8S resources
@@ -38,21 +37,21 @@ ELK UI is published by Ingress Controller.
 
 .. image:: ./_pictures/infra_resources.svg
    :align: center
-   :width: 800
+   :width: 900
    :alt: infra
 
-ELK UI is protected by Ingress Controller.
+ELK UI is protected by NGINX App Protect embedded in Ingress Controller.
 
 .. image:: ./_pictures/infra_resources_elk.svg
    :align: center
-   :width: 600
+   :width: 900
    :alt: ELK
 
 Security events logs are sent to ELK.
 
 .. image:: ./_pictures/infra_resources_nap_log.svg
    :align: center
-   :width: 600
+   :width: 900
    :alt: NAP logs
 
 
