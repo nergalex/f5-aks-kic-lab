@@ -406,6 +406,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 | The deployment configure the **external NGINX+ Ingress Controller** via the usage of the Ingress Class Name **nginx-external**.
 |
 | For that first deployment, the setup is very simple :
+|
 |    - listens for hostname cafe.example.com
 |    - TLS is activated and use the cert and key from cafe-secret
 |    - Simple Path Routing is done :
