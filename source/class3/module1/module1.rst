@@ -455,7 +455,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 
 
 ***************************************************
-LAB 2C: Canary Testing
+LAB 2C: Canary and A/B Testing
 ***************************************************
 
 | For that use case, we're going to modify the previous setup.
