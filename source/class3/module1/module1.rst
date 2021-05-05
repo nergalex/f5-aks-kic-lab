@@ -188,10 +188,10 @@ LAB 2A: Exploring and understanding the K8S cluster
 
 
 ***************************************************
-LAB 2B: traffic splitting and advanced content-based routing
+LAB 2B: Simple Traffic Splitting and Content-Based Routing
 ***************************************************
 
-| For that use case, A new application named cafe will be deployed.
+| For that use case, a new application named cafe will be deployed.
 | The application cafe is composed of 2 services: cofee and tea.
 | The custom resource **VirtualServer** will be used.
 | That first deployment is simple. We will complete it later on with more complex actions.
@@ -438,7 +438,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
         kubectl describe virtualserver app-cafe -n cafe-ns
 
 
-10. Test the setup
+- Step 10: Test the setup
 
 - Edit the host file of your client
 - Add a line with hostname *cafe.example.com* and the EXTERNAL-IP address you've seen for the external NIC (cf step 11 above).
@@ -452,6 +452,86 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 - Open a browser and test some connections on https://cafe.example.com/tea and https://cafe.example.com/coffee
 [ADC] 404 error, unknown PATH '/' in VirtualServer resource
 [HK] Modification of the tested URLs from https://cafe.example.com/ to https://cafe.example.com/tea and coffee
+
+
+***************************************************
+LAB 2C: Canary Testing
+***************************************************
+
+| For that use case, we're going to modify the previous setup.
+| The aim is to passes 80% of requests to the upstream coffee and the remaining 20% to tea.
+| The custom resource **VirtualServer** will be used with the rule **splits**.
+| The split defines a weight for an action as part of the splits configuration.
+|
+
+- Step 1: Edit and modify the manifest cafe-virtual-server.yaml.
+
+.. code-block:: bash
+
+        apiVersion: k8s.nginx.org/v1
+        kind: VirtualServer
+        metadata:
+          name: app-cafe
+          namespace: cafe-ns
+        spec:
+          ingressClassName: nginx-external
+          host: cafe.example.com
+          tls:
+            secret: cafe-secret
+          upstreams:
+          - name: tea
+            service: tea-svc
+            port: 80
+          - name: coffee
+            service: coffee-svc
+            port: 80
+          splits:
+            - weight: 80
+              action:
+                pass: coffee
+            - weight: 20
+              action:
+                pass: tea
+
+
+- Step 2: Deploy the new setup
+
+.. code-block:: bash
+
+        harry@Azure:~/lab1$ kubectl apply -f cafe-virtual-server.yaml
+        virtualserver.k8s.nginx.org/app-cafe configured
+
+
+- Step 3: Check the compilation status of the VirtualServer with the command below:
+
+.. code-block:: bash
+        kubectl describe virtualserver app-cafe -n cafe-ns
+
+
+- Step 4: Test the setup
+
+Open a browser and test 10 connections on https://cafe.example.com
+8 connections should go to coffee
+2 connections should go to tea
+
+
+
+***************************************************
+LAB 2D: Advanced Traffic Splitting and Content-Based Routing
+***************************************************
+
+| For that use case, a new application named cafe will be deployed.
+| The application cafe is composed of 2 services: cofee and tea.
+| The custom resource **VirtualServer** will be used.
+| That first deployment is simple. We will complete it later on with more complex actions.
+| For now, the use case is:
+    - listens for hostname cafe.example.com
+    - TLS activated and uses a specified cert and key from K8S secret resource
+    - Simple Path Routing is done :
+        - request for /tea are sent to service tea
+        - request for /coffee are sent to service coffee
+|
+
 
 11. Let's modify the deployment with a more complex setup
 
