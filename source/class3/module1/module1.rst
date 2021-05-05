@@ -614,7 +614,7 @@ Verify the services coffee-v1-svc and coffee-v2-svc are correctly deployed:
         tea-svc         ClusterIP   10.200.0.51    <none>        80/TCP    63m
 
 
-- step 2: Create/Edit a new file named **cafe-virtual-server-lab-2C.yaml** and copy/past the manifest below.
+- Step 2: Create/Edit a new file named **cafe-virtual-server-lab-2C.yaml** and copy/past the manifest below.
 
 .. code-block:: bash
 
@@ -678,6 +678,9 @@ Use curl (see step 10 in Lab 2B for the command and options) to open 10 connecti
 
 LAB 2D: Advanced Traffic Splitting and Content-Based Routing
 ##############################################################
+
+LAB 2D: Advanced Traffic Splitting and Content-Based Routing
+*************************************************************
 
 | For that use case, a new application named cafe will be deployed.
 | The application cafe is composed of 2 services: cofee and tea.
