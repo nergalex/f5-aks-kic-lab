@@ -38,7 +38,7 @@ Description of the Kubernetes Cluster
 
 
 LAB 2A: Exploring and understanding the K8S cluster
-***************************************************
+####################################################
 
     .. note::
         | In order to be independant of a specific K8S distribution, standard tools will be used for managing the cluster.
@@ -191,7 +191,7 @@ LAB 2A: Exploring and understanding the K8S cluster
 
 
 LAB 2B: Simple Traffic Splitting and Content-Based Routing
-***********************************************************
+###########################################################
 
 | For that use case, a new application named cafe will be deployed.
 | The application cafe is composed of 2 services: cofee and tea.
@@ -392,7 +392,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
         tls.key:  1675 bytes
 
 |
-- Step 9: Copy/Paste the manifest below into a new file named cafe-virtual-server.yaml and deploy it.
+- Step 9: Copy/Paste the manifest below into a new file named **cafe-virtual-server.yaml** and deploy it.
 
 | That manifest uses the custom resources **VirtualServer**.
 | The deployment configure the **external NGINX+ Ingress Controller** via the usage of the Ingress Class Name **nginx-external**.
@@ -453,23 +453,49 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 
 - Step 10: Test the setup
 
-- Edit the host file of your client
-- Add a line with hostname *cafe.example.com* and the EXTERNAL-IP address you've seen for the external NIC (cf step 11 above).
-[ADC] use '--resolve' option in curl. curl is available in Windows now :)
-[ADC] I'll publish the service IP on GSLB
+- If you have the rights to modify the hosts file of your client:
+    - Edit the host file of your client
+    - Add a line with hostname *cafe.example.com* and the EXTERNAL-IP address of the cluster you've seen on step 11 above.
 
 .. code-block:: bash
 
         52.167.14.0         cafe.example.com
 
-- Open a browser and test some connections on https://cafe.example.com/tea and https://cafe.example.com/coffee
-[ADC] 404 error, unknown PATH '/' in VirtualServer resource
-[HK] Modification of the tested URLs from https://cafe.example.com/ to https://cafe.example.com/tea and coffee
+    - Open a browser and test some connections :
+    | https://cafe.example.com/tea and https://cafe.example.com/coffee should be successfull
+    | https://cafe.example.com/ should receive an HTTP 404 Not Found page. -> This is because the path / hasn't been defined into the Routes field of the manifest above.
 
 
-***************************************************
+- If you don't have the rights on the hosts file of your client then you can use the curl command with the EXTERNAL-IP address of the cluster you've seen on step 11 above:
+
+.. code-block:: bash
+    $ curl https://cafe.example.com/coffee --resolve cafe.example.com:443:52.167.14.0 --insecure
+    Server address: 10.22.1.55:8080
+    Server name: coffee-6f4b79b975-5vmrd
+    Date: 05/May/2021:14:01:43 +0000
+    URI: /coffee
+    Request ID: 197d3c08b40fea8ba4428ab7d53440de
+
+    $ curl https://cafe.example.com/tea --resolve cafe.example.com:443:52.167.14.0 --insecure
+    Server address: 10.22.1.31:8080
+    Server name: tea-6fb46d899f-k2sfc
+    Date: 05/May/2021:14:01:57 +0000
+    URI: /tea
+    Request ID: a7874c6a4389b72e75f608ce9ed0075b
+
+    $ curl https://cafe.example.com/ --resolve cafe.example.com:443:52.167.14.0 --insecure
+    <html>
+    <head><title>404 Not Found</title></head>
+    <body>
+    <center><h1>404 Not Found</h1></center>
+    <hr><center>nginx/1.19.5</center>
+    </body>
+    </html>
+
+
+
 LAB 2C: Canary and A/B Testing
-***************************************************
+###########################################################
 
 | For that use case, we're going to modify the previous setup.
 | The aim is to passes 80% of requests to the upstream coffee and the remaining 20% to tea.
@@ -529,9 +555,8 @@ Open a browser and test 10 connections on https://cafe.example.com
 
 
 
-***************************************************
 LAB 2D: Advanced Traffic Splitting and Content-Based Routing
-***************************************************
+##############################################################
 
 | For that use case, a new application named cafe will be deployed.
 | The application cafe is composed of 2 services: cofee and tea.
