@@ -13,7 +13,7 @@ For simplification, for that workshop, we use the Azure Kubernetes Service aka A
 
 
 Description of the Kubernetes Cluster
-**************************************
+####################################################
 
 - Name: **CloudBuilder**
 - 3 NameSpaces have already been added:
@@ -36,8 +36,10 @@ Description of the Kubernetes Cluster
     - External NIC has been deployed with argument **ingress-class=nginx-external**.
     - Internal NIC has been deployed with argument **ingress-class=nginx-internal**.
 
+
+
 LAB 2A: Exploring and understanding the K8S cluster
-****************************************************
+####################################################
 
 
 
