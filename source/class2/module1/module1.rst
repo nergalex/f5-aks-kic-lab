@@ -50,4 +50,9 @@ Security events logs are sent to ELK.
    :width: 900
    :alt: NAP logs
 
+Security dashboards are available on Kibana. Mode details `here <https://github.com/f5devcentral/f5-waf-elk-dashboards#screenshots>`_
 
+.. image:: ./_pictures/dashboard1.png
+   :align: center
+   :width: 900
+   :alt: NAP logs
