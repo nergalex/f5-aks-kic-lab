@@ -36,6 +36,8 @@ Description of the Kubernetes Cluster
     - External NIC has been deployed with argument **ingress-class=nginx-external**.
     - Internal NIC has been deployed with argument **ingress-class=nginx-internal**.
 
+LAB 2A: Exploring and understanding the K8S cluster
+****************************************************
 
 LAB 2A: Exploring and understanding the K8S cluster
 ####################################################
@@ -45,23 +47,23 @@ LAB 2A: Exploring and understanding the K8S cluster
         | The tool ``kubectl`` will be used during that workshop.
 
 
-1. Open you browser and go to the `Azure portal <https://portal.azure.com>`_
+- Step 1: Open you browser and go to the `Azure portal <https://portal.azure.com>`_
 
-2. Use the credentials which have been provided to you.
+- Step 2: Use the credentials which have been provided to you.
 
-3. On the window, open the cli window to access a shell
+- Step 3: On the window, open the cli window to access a shell
 
     .. image:: ./images/_01_AzurePortalOpenBash.png
         :align: center
         :width: 600
 
 
-4. You should see a page which looks like the one below
+- Step 4: You should see a page which looks like the one below
 
     .. image:: ./images/_02_bash_opened.png
         :align: center
 
-5. Configure kubectl to connect to your Kubernetes cluster using the command ``az aks get-credentials``.
+- Step 5: Configure kubectl to connect to your Kubernetes cluster using the command ``az aks get-credentials``.
 
     - The name of the K8S Cluster is ``CloudBuilder``.
     - Use the resource group name which has been assigned to you. For instance ``rg-aksdistrict2``.
@@ -71,7 +73,7 @@ LAB 2A: Exploring and understanding the K8S cluster
         harry@Azure:~$ az aks get-credentials --resource-group rg-aksdistrict2 --name CloudBuilder
         Merged "CloudBuilder" as current context in /home/harry/.kube/config
 
-6. Let's verify the CRDs installed:
+- Step 6: Let's verify the CRDs installed:
 
 .. code-block:: bash
 
@@ -86,7 +88,7 @@ LAB 2A: Exploring and understanding the K8S cluster
     virtualserverroutes.k8s.nginx.org    2021-03-08T10:00:03Z
     virtualservers.k8s.nginx.org         2021-03-08T10:00:04Z
 
-7. Let's check the NameSpaces of the cluster:
+- Step 7: Let's check the NameSpaces of the cluster:
 
 .. code-block:: bash
 
@@ -100,7 +102,7 @@ LAB 2A: Exploring and understanding the K8S cluster
         kube-public                   Active   30d
         kube-system                   Active   30d
 
-8. Look at the pods in each NameSpaces with the command ``kubectl get pods``:
+Step 8: Look at the pods in each NameSpaces with the command ``kubectl get pods``:
 
 .. code-block:: bash
 
@@ -133,7 +135,7 @@ LAB 2A: Exploring and understanding the K8S cluster
         nap-internal-ingress-controller-55fdb8cd95-2dz77   1/1     Running   0          30d
 
 
-9. Let's check the Ingress Class Name attached to each NIC:
+Step 9: Let's check the Ingress Class Name attached to each NIC:
 
 .. code-block:: bash
 
@@ -179,7 +181,7 @@ LAB 2A: Exploring and understanding the K8S cluster
               .......
 
 
-10. Let's check the Public IP address attached to the external Ingress Controller:
+- Step 10: Let's check the Public IP address attached to the external Ingress Controller:
 
 .. code-block:: bash
 
@@ -187,8 +189,11 @@ LAB 2A: Exploring and understanding the K8S cluster
         NAME                         TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)                      AGE
         elb-nap-ingress-controller   LoadBalancer   10.200.0.15   52.167.14.0   80:31613/TCP,443:31094/TCP   30d
 
-11. Note the EXTERNAL-IP address. It will be used later in our labs.
+Note the EXTERNAL-IP address. It will be used later in our labs.
 
+
+LAB 2B: Simple Traffic Splitting and Content-Based Routing
+***********************************************************
 
 LAB 2B: Simple Traffic Splitting and Content-Based Routing
 ###########################################################
