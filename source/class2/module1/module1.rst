@@ -1,16 +1,11 @@
-Onboarding
+Infrastructure
 ##############################################################
 
 .. contents:: Contents
     :local:
 
-Infrastructure
-**********************
-
-Your dedicated Azure ``resource group`` includes:
-
 Jumphost
-======================
+*********************
 
 - Download SSH key `jumphost.key <https://f5-my.sharepoint.com/:f:/r/personal/al_dacosta_f5_com/Documents/Lab/f5-aks-kic-lab?csf=1&web=1&e=PYcBdc>`_
 - Ask for your ``{{ student_ID }}`` and your Azure ``{{ region }}``
@@ -21,7 +16,7 @@ Jumphost
     ssh -i jumphost.key cyber@jumphost-aksdistrict{{ student_ID }}.{{ region }}.cloudapp.azure.com
 
 AKS cluster
-======================
+*********************
 
 On Jumphost, communicate with K8S API using kubectl
 
@@ -30,7 +25,7 @@ On Jumphost, communicate with K8S API using kubectl
     $ kubectl get namespaces
 
 K8S resources
-======================
+*********************
 
 A NGINX Ingress Controller + App Protect module is already deployed.
 ELK UI is published by Ingress Controller.
