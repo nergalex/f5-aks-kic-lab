@@ -190,8 +190,8 @@ Step 9: Let's check the Ingress Class Name attached to each NIC:
         elb-nap-ingress-controller   LoadBalancer   10.200.0.15   52.167.14.0   80:31613/TCP,443:31094/TCP   30d
 
 .. note::
-        | Notice the EXTERNAL-IP address and write it somewhere.
-        | It will be used later in our labs.
+    | Notice the EXTERNAL-IP address and write it somewhere.
+    | It will be used later in our labs.
 
 
 LAB 2B: Simple Traffic Splitting and Content-Based Routing
