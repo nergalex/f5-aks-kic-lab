@@ -41,8 +41,6 @@ Description of the Kubernetes Cluster
 LAB 2A: Exploring and understanding the K8S cluster
 ####################################################
 
-
-
     .. note::
         | In order to be independant of a specific K8S distribution, standard tools will be used for managing the cluster.
         | The tool ``kubectl`` will be used during that workshop.
@@ -52,27 +50,28 @@ LAB 2A: Exploring and understanding the K8S cluster
 
 - Step 2: Use the credentials which have been provided to you.
 
-- Step 3: On the window, open the cli window to access a shell
+- Step 3: On the window, open the cli window to access a shell (the red arrow below):
 
     .. image:: ./images/_01_AzurePortalOpenBash.png
         :align: center
-        :width: 600
+        :width: 800
 
 
 - Step 4: You should see a page which looks like the one below
 
     .. image:: ./images/_02_bash_opened.png
         :align: center
+        :width: 800
 
 - Step 5: Configure kubectl to connect to your Kubernetes cluster using the command ``az aks get-credentials``.
 
     - The name of the K8S Cluster is ``CloudBuilder``.
     - Use the resource group name which has been assigned to you. For instance ``rg-aksdistrict2``.
 
-    .. code-block:: bash
+.. code-block:: bash
 
-        harry@Azure:~$ az aks get-credentials --resource-group rg-aksdistrict2 --name CloudBuilder
-        Merged "CloudBuilder" as current context in /home/harry/.kube/config
+    harry@Azure:~$ az aks get-credentials --resource-group rg-aksdistrict2 --name CloudBuilder
+    Merged "CloudBuilder" as current context in /home/harry/.kube/config
 
 - Step 6: Let's verify the CRDs installed:
 
@@ -190,11 +189,9 @@ Step 9: Let's check the Ingress Class Name attached to each NIC:
         NAME                         TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)                      AGE
         elb-nap-ingress-controller   LoadBalancer   10.200.0.15   52.167.14.0   80:31613/TCP,443:31094/TCP   30d
 
-Note the EXTERNAL-IP address. It will be used later in our labs.
-
-
-LAB 2B: Simple Traffic Splitting and Content-Based Routing
-*************************************************************
+.. note::
+        | Notice the EXTERNAL-IP address and write it somewhere.
+        | It will be used later in our labs.
 
 
 LAB 2B: Simple Traffic Splitting and Content-Based Routing
