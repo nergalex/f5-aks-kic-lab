@@ -16,6 +16,8 @@ For simplification, for that workshop, we use the Azure Kubernetes Service aka A
 Description of the Kubernetes Cluster
 ######################################
 
+Description of the Kubernetes Cluster
+**************************************
 
 - Name of the K8S Cluster: **CloudBuilder**
 - 3 NameSpaces have already been added:
