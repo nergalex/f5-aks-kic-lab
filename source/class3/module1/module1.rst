@@ -486,7 +486,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
         52.167.14.0         cafe.example.com
 
 |    - Open a browser and test some connections :
-    | https://cafe.example.com/tea and https://cafe.example.com/coffee should be successfull
+    | https://cafe.example.com/tea and https://cafe.example.com/coffee should be successfull.
     | https://cafe.example.com/ should receive an HTTP 404 Not Found page. -> This is because the path / hasn't been defined into the Routes field of the manifest above.
 
 
@@ -624,6 +624,9 @@ https://cafe.example.com/redirect       -> client is redirected to www.nginx.com
 https://cafe.example.com/return_page    -> custom page Hello World is returned
 https://cafe.example.com/proxy          -> requests go to coffee you should see custom headers in the responses
 
+With Curl, the command is:
+.. code-block:: bash
+        $ curl https://cafe.example.com/<PATH> --resolve cafe.example.com:443:<EXTERNAL_IP_Cluster> --insecure
 
 LAB 2D: Canary or A/B Testing
 ###############################
