@@ -218,9 +218,11 @@ LAB 2B: Simple Traffic Splitting and Content-Based Routing
         |
         | - For now, the use case is:
         |
+        |
         |    - listens for hostname cafe.example.com
         |    - TLS activated and uses a specified cert and key from K8S secret resource
         |    - Simple Path Routing is done :
+        |
         |
         |        - request for /tea are sent to service tea
         |        - request for /coffee are sent to service coffee
