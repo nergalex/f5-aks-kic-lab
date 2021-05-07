@@ -6,7 +6,7 @@
 Architecture of the Kubernetes Cluster
 #######################################
 
-For simplification, the Azure Kubernetes Service aka AKS is used for the workshop.
+| For simplification, the Azure Kubernetes Service aka AKS is used for the workshop.
 | But all the labs and setups of the workshop work with any K8S distribution.
 
     .. note::
