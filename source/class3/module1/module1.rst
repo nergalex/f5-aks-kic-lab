@@ -195,7 +195,7 @@ Step 9: Let's check the Ingress Class Name attached to each NIC:
 
 
 LAB 2B: Simple Traffic Splitting and Content-Based Routing
-###########################################################
+#############################################################
 
 | For that use case, a new application named cafe will be deployed.
 | The application cafe is composed of 2 services: cofee and tea.
