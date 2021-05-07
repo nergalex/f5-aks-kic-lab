@@ -532,7 +532,7 @@ LAB 2C: Advanced Traffic Splitting and Content-Based Routing
 |
 |
 
-- Step 1. Let's modify the deployment done in the previous lab.
+- Step 1: Let's modify the deployment done in the previous lab.
 
 Copy and Paste the manifest below into a new file named cafe-virtual-server-Lab-2C.yaml and deploy it.
 
@@ -600,7 +600,7 @@ Copy and Paste the manifest below into a new file named cafe-virtual-server-Lab-
                 body: "Hello World\n\n\n\nRequest is ${request_uri}\nRequest Method is ${request_method}\nRequest Scheme is ${scheme}\nRequest Host is ${host}\nRequest Lengthis ${request_length}\nNGINX Version is ${nginx_version}\nClient IP address is ${remote_addr}\nClient Port is : ${remote_port}\nLocal Time is ${time_local}\nServer IP Address is ${server_addr}\nServer Port is ${server_port}\nProtocol is ${server_protocol}\n"
 
 
-- Deploy the manifest:
+- Step 2: Deploy the manifest:
 
 .. code-block:: bash
 
@@ -608,15 +608,15 @@ Copy and Paste the manifest below into a new file named cafe-virtual-server-Lab-
         virtualserver.k8s.nginx.org/app-cafe configured
 
 
-- Check the compilation status of the VirtualServer with the command below:
+- Step 3: Check the compilation status of the VirtualServer with the command below:
 
 .. code-block:: bash
         kubectl describe virtualserver app-cafe -n cafe-ns
 
 
-12. Test the setup
+- Step 4: Test the setup
 
-Open a browser and test the requests below with your browser or curl:
+Test the requests below with a browser or curl:
 
 https://cafe.example.com/coffee         -> request is sent to the service coffee
 https://cafe.example.com/tea            -> request is sent to the service tea
@@ -627,6 +627,8 @@ https://cafe.example.com/proxy          -> requests go to coffee you should see 
 With Curl, the command is:
 .. code-block:: bash
         $ curl https://cafe.example.com/<PATH> --resolve cafe.example.com:443:<EXTERNAL_IP_Cluster> --insecure
+
+
 
 LAB 2D: Canary or A/B Testing
 ###############################
