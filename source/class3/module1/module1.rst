@@ -208,22 +208,18 @@ LAB 2B: Simple Traffic Splitting and Content-Based Routing
 ***********************************************************
 
     .. note::
-        | * For that use case, a new application named cafe will be deployed.
+        | *For that use case, a new application named cafe will be deployed.
         |
-        | * The application cafe is composed of 2 services: cofee and tea.
+        | *The application cafe is composed of 2 services: **cofee-svc** and **tea-svc**.
         |
-        | * The custom resource **VirtualServer** will be used.
+        | *The custom resource **VirtualServer** will be used.
         |
-        | * That first deployment is simple. We will do a more complex setup later on LAB D.
+        | *That first deployment is simple. We will do a more complex setup later on LAB D.
         |
-        | * For now, the use case is:
-        |
+        | *For now, the use case is:
         |
         |    - listens for hostname cafe.example.com
         |    - TLS activated and uses a specified cert and key from K8S secret resource
-        |    - Simple Path Routing is done :
-        |
-        |
         |        - request for /tea are sent to service tea
         |        - request for /coffee are sent to service coffee
 
