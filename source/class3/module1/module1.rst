@@ -629,6 +629,7 @@ https://cafe.example.com/return_page    -> custom page Hello World is returned
 https://cafe.example.com/proxy          -> requests go to coffee you should see custom headers in the responses
 
 With Curl, the command is:
+
 .. code-block:: bash
         $ curl https://cafe.example.com/<PATH> --resolve cafe.example.com:443:<EXTERNAL_IP_Cluster> --insecure
 
