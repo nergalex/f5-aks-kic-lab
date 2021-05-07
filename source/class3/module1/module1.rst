@@ -518,10 +518,123 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 
 
 
-LAB 2C: Canary or A/B Testing
+LAB 2C: Advanced Traffic Splitting and Content-Based Routing
+##############################################################
+
+LAB 2C: Advanced Traffic Splitting and Content-Based Routing
+*************************************************************
+|
+- For that new deployment we use a lot more features available in the Custom Resource VirtualServer.
+    - if path is */redirect* then the action is **redirect** to http://www.nginx.com.
+    - if path is */proxy* then the action is **proxy** to add/rewrite/ignore some headers.
+    - if path is */return_page* then the action is **return** to reply with a custom web page.
+    - in each action, variables could be used like: $request_uri, $request_method, $request_body, $scheme, $host, $request_time, $request_length, $connection, $remote_addr, $remote_port, $ssl_cipher, $ssl_client_cert, etc
+|
+|
+
+- Step 1. Let's modify the deployment with a more complex setup
+
+- Copy and Paste the manifest below into a new file named cafe-virtual-server-2.yaml and deploy it.
+
+.. code-block:: bash
+
+        apiVersion: k8s.nginx.org/v1
+        kind: VirtualServer
+        metadata:
+          name: app-cafe
+          namespace: cafe-ns
+        spec:
+          ingressClassName: nginx-external
+          host: cafe.example.com
+          tls:
+            secret: cafe-secret
+          upstreams:
+          - name: tea
+            service: tea-svc
+            port: 80
+          - name: coffee
+            service: coffee-svc
+            port: 80
+          routes:
+          - path: /tea
+            action:
+              pass: tea
+          - path: /coffee
+            action:
+              pass: coffee
+          - path: /redirect
+            action:
+              redirect:
+                url: http://www.nginx.com
+                code: 301
+          - path: /proxy
+            action:
+              proxy:
+                upstream: coffee
+                requestHeaders:
+                  pass: true
+                  set:
+                  - name: My-Header
+                    value: Value
+                  - name: Client-Cert
+                    value: ${ssl_client_escaped_cert}
+                responseHeaders:
+                  add:
+                  - name: My-Header
+                    value: Hello_this_your_value
+                  - name: IC-Nginx-Version
+                    value: ${nginx_version}
+                    always: true
+                  hide:
+                  - x-internal-version
+                  ignore:
+                  - Expires
+                  - Set-Cookie
+                  pass:
+                  - Server
+          - path: /return_page
+            action:
+              return:
+                code: 200
+                type: text/plain
+                body: "Hello World\n\n\n\nRequest is ${request_uri}\nRequest Method is ${request_method}\nRequest Scheme is ${scheme}\nRequest Host is ${host}\nRequest Lengthis ${request_length}\nNGINX Version is ${nginx_version}\nClient IP address is ${remote_addr}\nClient Port is : ${remote_port}\nLocal Time is ${time_local}\nServer IP Address is ${server_addr}\nServer Port is ${server_port}\nProtocol is ${server_protocol}\n"
+
+
+- Deploy the manifest:
+
+.. code-block:: bash
+
+        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server-2.yaml
+        virtualserver.k8s.nginx.org/app-cafe configured
+
+
+- Check the compilation status of the VirtualServer with the command below:
+
+.. code-block:: bash
+        kubectl describe virtualserver app-cafe -n cafe-ns
+
+
+12. Test the setup
+
+[ADC] Check compilation status of VS: kubectl describe virtualserver cafe -n cafe
+[HK]  CHECK COMPILATION ADDED IN PRECEDENT POINT ABOVE
+
+[ADC] Check compilation status of VSR: kubectl describe virtualserverroute coffee -n cafe
+[HK] VSR are done in steps 13+
+
+
+Open a browser and test some connections on:
+
+https://cafe.example.com                -> works like previous configuration
+https://ccafe.example.com/redirect      -> client is redirected to www.nginx.com
+https://cafe.example.com/return_page    -> custom page Hello World is returned
+https://cafe.example.com/proxy          -> requests go to coffee you should see custom headers in the responses
+
+
+LAB 2D: Canary or A/B Testing
 ###############################
 
-LAB 2C: Canary or A/B Testing
+LAB 2D: Canary or A/B Testing
 *******************************
 
     .. note::
@@ -700,122 +813,6 @@ Use curl (see step 10 in Lab 2B for the command and options) to open 10 connecti
 
 8 connections should go to Server name: coffee-v1
 2 connections should go to Server name: coffee-v2
-
-
-
-LAB 2D: Advanced Traffic Splitting and Content-Based Routing
-##############################################################
-
-LAB 2D: Advanced Traffic Splitting and Content-Based Routing
-*************************************************************
-
-- For that new deployment we use a lot more features available in the CRDs VirtualServer.
-    - if path is */redirect* then the action is **redirect** to http://www.nginx.com.
-    - if path is */proxy* then the action is **proxy** to add/rewrite/ignore some headers.
-    - if path is */return_page* then the action is **return** to reply with a custom web page.
-    - in each action, variables could be used like: $request_uri, $request_method, $request_body, $scheme, $host, $request_time, $request_length, $connection, $remote_addr, $remote_port, $ssl_cipher, $ssl_client_cert, etc
-|
-|
-|
-|
-
-- Step 1. Let's modify the deployment with a more complex setup
-
-- Copy and Paste the manifest below into a new file named cafe-virtual-server-2.yaml and deploy it.
-
-.. code-block:: bash
-
-        apiVersion: k8s.nginx.org/v1
-        kind: VirtualServer
-        metadata:
-          name: app-cafe
-          namespace: cafe-ns
-        spec:
-          ingressClassName: nginx-external
-          host: cafe.example.com
-          tls:
-            secret: cafe-secret
-          upstreams:
-          - name: tea
-            service: tea-svc
-            port: 80
-          - name: coffee
-            service: coffee-svc
-            port: 80
-          routes:
-          - path: /tea
-            action:
-              pass: tea
-          - path: /coffee
-            action:
-              pass: coffee
-          - path: /redirect
-            action:
-              redirect:
-                url: http://www.nginx.com
-                code: 301
-          - path: /proxy
-            action:
-              proxy:
-                upstream: coffee
-                requestHeaders:
-                  pass: true
-                  set:
-                  - name: My-Header
-                    value: Value
-                  - name: Client-Cert
-                    value: ${ssl_client_escaped_cert}
-                responseHeaders:
-                  add:
-                  - name: My-Header
-                    value: Hello_this_your_value
-                  - name: IC-Nginx-Version
-                    value: ${nginx_version}
-                    always: true
-                  hide:
-                  - x-internal-version
-                  ignore:
-                  - Expires
-                  - Set-Cookie
-                  pass:
-                  - Server
-          - path: /return_page
-            action:
-              return:
-                code: 200
-                type: text/plain
-                body: "Hello World\n\n\n\nRequest is ${request_uri}\nRequest Method is ${request_method}\nRequest Scheme is ${scheme}\nRequest Host is ${host}\nRequest Lengthis ${request_length}\nNGINX Version is ${nginx_version}\nClient IP address is ${remote_addr}\nClient Port is : ${remote_port}\nLocal Time is ${time_local}\nServer IP Address is ${server_addr}\nServer Port is ${server_port}\nProtocol is ${server_protocol}\n"
-
-
-- Deploy the manifest:
-
-.. code-block:: bash
-
-        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server-2.yaml
-        virtualserver.k8s.nginx.org/app-cafe configured
-
-
-- Check the compilation status of the VirtualServer with the command below:
-
-.. code-block:: bash
-        kubectl describe virtualserver app-cafe -n cafe-ns
-
-
-12. Test the setup
-
-[ADC] Check compilation status of VS: kubectl describe virtualserver cafe -n cafe
-[HK]  CHECK COMPILATION ADDED IN PRECEDENT POINT ABOVE
-
-[ADC] Check compilation status of VSR: kubectl describe virtualserverroute coffee -n cafe
-[HK] VSR are done in steps 13+
-
-
-Open a browser and test some connections on:
-
-https://cafe.example.com                -> works like previous configuration
-https://ccafe.example.com/redirect      -> client is redirected to www.nginx.com
-https://cafe.example.com/return_page    -> custom page Hello World is returned
-https://cafe.example.com/proxy          -> requests go to coffee you should see custom headers in the responses
 
 
 
