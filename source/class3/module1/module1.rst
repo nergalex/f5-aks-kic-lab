@@ -204,6 +204,9 @@ Step 9: Let's check the Ingress Class Name attached to each NIC:
 LAB 2B: Simple Traffic Splitting and Content-Based Routing
 #############################################################
 
+LAB 2B: Simple Traffic Splitting and Content-Based Routing
+***********************************************************
+
 | For that use case, a new application named cafe will be deployed.
 |
 | The application cafe is composed of 2 services: cofee and tea.
@@ -514,8 +517,11 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 
 
 
-LAB 2C: Canary and A/B Testing
-###########################################################
+LAB 2C: Canary or A/B Testing
+###############################
+
+LAB 2C: Canary or A/B Testing
+*******************************
 
 | For that use case, we're going to use a new cafe application with two versions of the service coffee.
 |
