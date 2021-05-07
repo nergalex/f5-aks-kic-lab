@@ -208,20 +208,18 @@ LAB 2B: Simple Traffic Splitting and Content-Based Routing
 ***********************************************************
 
     .. note::
-        | *For that use case, a new application named cafe will be deployed.
+        | * For that use case, a new application named cafe will be deployed.
         |
-        | *The application cafe is composed of 2 services: **cofee-svc** and **tea-svc**.
+        | * The application cafe is composed of 2 services: **cofee-svc** and **tea-svc**.
         |
-        | *The custom resource **VirtualServer** will be used.
+        | * The custom resource **VirtualServer** will be used.
         |
-        | *That first deployment is simple. We will do a more complex setup later on LAB D.
-        |
-        | *For now, the use case is:
+        | * The setup we want to deploy is :
         |
         |    - listens for hostname cafe.example.com
-        |    - TLS activated and uses a specified cert and key from K8S secret resource
-        |        - request for /tea are sent to service tea
-        |        - request for /coffee are sent to service coffee
+        |    - TLS activated and uses a specified cert and key from a K8S secret resource
+        |    - request for /tea are sent to service tea
+        |    - request for /coffee are sent to service coffee
 
 
 - Step 1: Create the directory Lab2 and move into it
@@ -526,14 +524,16 @@ LAB 2C: Canary or A/B Testing
 LAB 2C: Canary or A/B Testing
 *******************************
 
-| For that use case, we're going to use a new cafe application with two versions of the service coffee.
-|
-| The aim is to pass 80% of requests to the coffee-v1 and the remaining 20% to coffee-v2.
-|
-| The custom resource **VirtualServer** will be used with the field **splits**.
-|
-| The split defines a weight for an action as part of the splits configuration.
-|
+    .. note::
+        | * For that use case, we're going to use a new cafe application with two versions of the service coffee-svc.
+        |
+        | * The aim is to pass 80% of requests to the coffee-v1-svc and the remaining 20% to coffee-v2-svc.
+        |
+        | * The custom resource **VirtualServer** will be used with the field **splits**.
+        |
+        | * The split defines a weight for an action as part of the splits configuration.
+        |
+
 
 - Step 1: Deploy the new application cafe-v2:
 
@@ -709,28 +709,19 @@ LAB 2D: Advanced Traffic Splitting and Content-Based Routing
 LAB 2D: Advanced Traffic Splitting and Content-Based Routing
 *************************************************************
 
-| For that use case, a new application named cafe will be deployed.
-| The application cafe is composed of 2 services: cofee and tea.
-| The custom resource **VirtualServer** will be used.
-| That first deployment is simple. We will complete it later on with more complex actions.
-| For now, the use case is:
-    - listens for hostname cafe.example.com
-    - TLS activated and uses a specified cert and key from K8S secret resource
-    - Simple Path Routing is done :
-        - request for /tea are sent to service tea
-        - request for /coffee are sent to service coffee
-|
-
-
-11. Let's modify the deployment with a more complex setup
-
-- Copy and Paste the manifest below into a new file named cafe-virtual-server-2.yaml and deploy it.
 - For that new deployment we use a lot more features available in the CRDs VirtualServer.
     - if path is */redirect* then the action is **redirect** to http://www.nginx.com.
     - if path is */proxy* then the action is **proxy** to add/rewrite/ignore some headers.
     - if path is */return_page* then the action is **return** to reply with a custom web page.
     - in each action, variables could be used like: $request_uri, $request_method, $request_body, $scheme, $host, $request_time, $request_length, $connection, $remote_addr, $remote_port, $ssl_cipher, $ssl_client_cert, etc
+|
+|
+|
+|
 
+- Step 1. Let's modify the deployment with a more complex setup
+
+- Copy and Paste the manifest below into a new file named cafe-virtual-server-2.yaml and deploy it.
 
 .. code-block:: bash
 
