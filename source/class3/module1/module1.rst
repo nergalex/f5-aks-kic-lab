@@ -208,15 +208,15 @@ LAB 2B: Simple Traffic Splitting and Content-Based Routing
 ***********************************************************
 
     .. note::
-        | - For that use case, a new application named cafe will be deployed.
+        | * For that use case, a new application named cafe will be deployed.
         |
-        | - The application cafe is composed of 2 services: cofee and tea.
+        | * The application cafe is composed of 2 services: cofee and tea.
         |
-        | - The custom resource **VirtualServer** will be used.
+        | * The custom resource **VirtualServer** will be used.
         |
-        | - That first deployment is simple. We will do a more complex setup later on LAB D.
+        | * That first deployment is simple. We will do a more complex setup later on LAB D.
         |
-        | - For now, the use case is:
+        | * For now, the use case is:
         |
         |
         |    - listens for hostname cafe.example.com
@@ -227,6 +227,7 @@ LAB 2B: Simple Traffic Splitting and Content-Based Routing
         |        - request for /tea are sent to service tea
         |        - request for /coffee are sent to service coffee
 
+
 - Step 1: Create the directory Lab2 and move into it
 
 .. code-block:: bash
@@ -235,6 +236,7 @@ LAB 2B: Simple Traffic Splitting and Content-Based Routing
         harry@Azure:~$ cd lab2/
         harry@Azure:~/lab2$
 |
+
 - Step 2: Create a new NameSpace called cafe-ns. We will deploy the application into it.
 
 .. code-block:: bash
