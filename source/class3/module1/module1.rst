@@ -392,7 +392,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
         secret/cafe-secret created
 
 |
-- Step 8: Verify the certificate and keys have been deployed into the namespace cafe
+- Step 8: Verify the certificate and keys have been deployed into the namespace cafe-ns
 
 .. code-block:: bash
 
@@ -410,7 +410,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
         tls.key:  1675 bytes
 
 |
-- Step 9: Copy/Paste the manifest below into a new file named **cafe-virtual-server.yaml** and deploy it.
+- Step 9: Copy/Paste the manifest below into a new file named **cafe-virtual-server-lab-2B.yaml** and deploy it.
 
 | That manifest uses the custom resources **VirtualServer**.
 |
@@ -464,7 +464,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 
 .. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server.yaml
+        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server-lab-2B.yaml
         virtualserver.k8s.nginx.org/app-cafe configured
 
 
@@ -532,9 +532,9 @@ LAB 2C: Advanced Traffic Splitting and Content-Based Routing
 |
 |
 
-- Step 1. Let's modify the deployment with a more complex setup
+- Step 1. Let's modify the deployment done in the previous lab.
 
-- Copy and Paste the manifest below into a new file named cafe-virtual-server-2.yaml and deploy it.
+Copy and Paste the manifest below into a new file named cafe-virtual-server-Lab-2C.yaml and deploy it.
 
 .. code-block:: bash
 
@@ -604,7 +604,7 @@ LAB 2C: Advanced Traffic Splitting and Content-Based Routing
 
 .. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server-2.yaml
+        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server-lab-2C.yaml
         virtualserver.k8s.nginx.org/app-cafe configured
 
 
@@ -615,13 +615,6 @@ LAB 2C: Advanced Traffic Splitting and Content-Based Routing
 
 
 12. Test the setup
-
-[ADC] Check compilation status of VS: kubectl describe virtualserver cafe -n cafe
-[HK]  CHECK COMPILATION ADDED IN PRECEDENT POINT ABOVE
-
-[ADC] Check compilation status of VSR: kubectl describe virtualserverroute coffee -n cafe
-[HK] VSR are done in steps 13+
-
 
 Open a browser and test some connections on:
 
@@ -642,7 +635,7 @@ LAB 2D: Canary or A/B Testing
         |
         | * The aim is to pass 80% of requests to the coffee-v1-svc and the remaining 20% to coffee-v2-svc.
         |
-        | * The custom resource **VirtualServer** will be used with the field **splits**.
+        | * We're going to use another field named **splits** and available in the custom resource **VirtualServer**.
         |
         | * The split defines a weight for an action as part of the splits configuration.
         |
@@ -754,7 +747,7 @@ Verify the services coffee-v1-svc and coffee-v2-svc are correctly deployed:
         tea-svc         ClusterIP   10.200.0.51    <none>        80/TCP    63m
 
 
-- Step 2: Create/Edit a new file named **cafe-virtual-server-lab-2C.yaml** and copy/past the manifest below.
+- Step 2: Create/Edit a new file named **cafe-virtual-server-lab-2D.yaml** and copy/past the manifest below.
 
 .. code-block:: bash
 
@@ -788,7 +781,7 @@ Verify the services coffee-v1-svc and coffee-v2-svc are correctly deployed:
 
 .. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server-lab-2C.yaml
+        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server-lab-2D.yaml
         virtualserver.k8s.nginx.org/cafe-vs configured
 
 
