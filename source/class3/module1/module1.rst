@@ -816,7 +816,14 @@ Use curl (see step 10 in Lab 2B for the command and options) to open 10 connecti
 
 
 
-13. Let's modify the setup to use the CRD VirtualServerRoute.
+LAB 2E: Custom Resource VirtualServerRoute
+###########################################
+
+LAB 2E: Custom Resource VirtualServerRoute
+*******************************************
+
+
+Let's modify the setup to use the CRD VirtualServerRoute.
 
 In this example we use the VirtualServer and VirtualServerRoute resources to configure load balancing.
 We put the load balancing configuration as well as the deployments and services into multiple namespaces.
