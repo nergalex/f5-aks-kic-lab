@@ -214,12 +214,14 @@ LAB 2B: Simple Traffic Splitting and Content-Based Routing
         |
         | - The custom resource **VirtualServer** will be used.
         |
-        | - That first deployment is simple. We will complete it later on with more complex actions.
+        | - That first deployment is simple. We will do a more complex setup later on LAB D.
         |
         | - For now, the use case is:
+        |
         |    - listens for hostname cafe.example.com
         |    - TLS activated and uses a specified cert and key from K8S secret resource
         |    - Simple Path Routing is done :
+        |
         |        - request for /tea are sent to service tea
         |        - request for /coffee are sent to service coffee
 
