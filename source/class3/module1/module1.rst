@@ -4,6 +4,7 @@ Architecture of the Kubernetes Cluster
 
 .. contents:: Contents
     :local:
+    :depth: 1
 
 For simplification, for that workshop, we use the Azure Kubernetes Service aka AKS.
 
