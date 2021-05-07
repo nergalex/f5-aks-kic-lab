@@ -611,6 +611,7 @@ Copy and Paste the manifest below into a new file named cafe-virtual-server-Lab-
 - Step 3: Check the compilation status of the VirtualServer with the command below:
 
 .. code-block:: bash
+
         kubectl describe virtualserver app-cafe -n cafe-ns
 
 
@@ -631,6 +632,7 @@ https://cafe.example.com/proxy          -> requests go to coffee you should see 
 With Curl, the command is:
 
 .. code-block:: bash
+
         $ curl https://cafe.example.com/<PATH> --resolve cafe.example.com:443:<EXTERNAL_IP_Cluster> --insecure
 
 
