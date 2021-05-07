@@ -6,10 +6,10 @@
 Architecture of the Kubernetes Cluster
 #######################################
 
-For simplification, for that workshop, we use the Azure Kubernetes Service aka AKS.
+For simplification, for that workshop, the Azure Kubernetes Service aka AKS is used. But all the labs and setups of that workshop work with any K8S distribution.
 
     .. note::
-        | The goal of the workshop is not to learn how to install NGINX+ as an Ingress Controller.
+        | The goal of the workshop is not to learn how to install NGINX+ as an Ingress Controller (NIC).
         | So to gain time, we have already done the installation (see `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_ for step by step).
 
 
@@ -37,8 +37,8 @@ Description of the Kubernetes Cluster
 
 - The coexistence of multiple Ingress Controllers in one cluster is provided by the support of Ingress Class Name:
 
-    - External NIC has been deployed with argument **ingress-class=nginx-external**.
-    - Internal NIC has been deployed with argument **ingress-class=nginx-internal**.
+    - External NIC has been deployed with the argument **ingress-class=nginx-external**.
+    - Internal NIC has been deployed with the argument **ingress-class=nginx-internal**.
 
 
 
