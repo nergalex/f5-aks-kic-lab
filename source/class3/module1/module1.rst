@@ -618,7 +618,8 @@ Copy and Paste the manifest below into a new file named cafe-virtual-server-Lab-
 
 Open a browser and test some connections on:
 
-https://cafe.example.com                -> works like previous configuration
+https://cafe.example.com/coffee         -> request is sent to the service coffee
+https://cafe.example.com/tea            -> request is sent to the service tea
 https://ccafe.example.com/redirect      -> client is redirected to www.nginx.com
 https://cafe.example.com/return_page    -> custom page Hello World is returned
 https://cafe.example.com/proxy          -> requests go to coffee you should see custom headers in the responses
