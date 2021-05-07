@@ -72,10 +72,9 @@ LAB 2A: Exploring and understanding the K8S cluster
         :width: 800
 
 - Step 5: Configure kubectl to connect to your Kubernetes cluster.
-|
+
 | The name of the K8S Cluster is ``CloudBuilder``.
 | Use the resource group name which has been assigned to you. For instance ``rg-aksdistrict2``.
-|
 
 .. code-block:: bash
 
