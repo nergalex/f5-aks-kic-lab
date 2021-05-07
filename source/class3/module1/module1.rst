@@ -6,7 +6,8 @@
 Architecture of the Kubernetes Cluster
 #######################################
 
-For simplification, the Azure Kubernetes Service aka AKS is used for the workshop. But all the labs and setups of the workshop work with any K8S distribution.
+For simplification, the Azure Kubernetes Service aka AKS is used for the workshop.
+| But all the labs and setups of the workshop work with any K8S distribution.
 
     .. note::
         | The goal of the workshop is not to learn how to install NGINX+ as an Ingress Controller (NIC).
