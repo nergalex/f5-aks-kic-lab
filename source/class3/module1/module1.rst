@@ -818,5 +818,6 @@ Use curl (see step 10 in Lab 2B for the command and options) to open 10 connecti
         $ curl http://cafev2.example.com/coffee --resolve cafev2.example.com:80:52.167.14.0
 
 8 connections should go to Server name: coffee-v1
+
 2 connections should go to Server name: coffee-v2
 
