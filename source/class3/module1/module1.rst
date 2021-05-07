@@ -45,6 +45,9 @@ Description of the Kubernetes Cluster
 LAB 2A: Exploring and understanding the K8S cluster
 ####################################################
 
+LAB 2A: Exploring and understanding the K8S cluster
+****************************************************
+
     .. note::
         | In order to be independant of a specific K8S distribution, standard tools will be used for managing the cluster.
         | The tool ``kubectl`` will be used during that workshop.
