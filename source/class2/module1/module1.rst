@@ -80,6 +80,7 @@ Security dashboards are available on Kibana. Mode details `here <https://github.
         | **What is the version of deployed IC?**
         | *NGINX Ingress Controller* image's tag contains: {{IC version}}-{{last update of WAF signature}}.
 
+
 .. code-block:: bash
 
     docker image ls
