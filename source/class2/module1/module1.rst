@@ -74,10 +74,11 @@ Security dashboards are available on Kibana. Mode details `here <https://github.
     docker ps --all
     docker start {{CONTAINER_ID}}
 
-.. warning:: **Capture The Flag**
-    | **What is the version of deployed IC?**
-    |
-    | *NGINX Ingress Controller* image's tag contains: {{IC version}}-{{last update of WAF signature}}.
+- Browse ELK UI ``https://kibana{{site_ID}}.f5app.dev`` >> Dashboard >> Overview and scroll to ``All Requests``
+
+    .. warning:: **Capture The Flag**
+        | **What is the version of deployed IC?**
+        | *NGINX Ingress Controller* image's tag contains: {{IC version}}-{{last update of WAF signature}}.
 
 .. code-block:: bash
 
