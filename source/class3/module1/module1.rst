@@ -1,19 +1,24 @@
 
+.. contents:: Contents
+    :local:
+    :depth: 1
+
 Architecture of the Kubernetes Cluster
 #######################################
 
-.. contents:: Contents
-    :local:
-
-For simplification, for that workshop, we use the Azure Kubernetes Service aka AKS.
-
     .. note::
-        | The goal of the workshop is not to learn how to install NGINX+ as an Ingress Controller.
+        | For simplification, the Azure Kubernetes Service aka AKS is used for the workshop.
+        | But all the labs and setups of the workshop work with any K8S distribution.
+        |
+        | The goal of the workshop is not to learn how to install NGINX+ as an Ingress Controller (NIC).
         | So to gain time, we have already done the installation (see `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_ for step by step).
 
 
 Description of the Kubernetes Cluster
-####################################################
+######################################
+
+Description of the Kubernetes Cluster
+**************************************
 
 - Name of the K8S Cluster: **CloudBuilder**
 - 3 NameSpaces have already been added:
@@ -33,15 +38,16 @@ Description of the Kubernetes Cluster
 
 - The coexistence of multiple Ingress Controllers in one cluster is provided by the support of Ingress Class Name:
 
-    - External NIC has been deployed with argument **ingress-class=nginx-external**.
-    - Internal NIC has been deployed with argument **ingress-class=nginx-internal**.
+    - External NIC has been deployed with the argument **ingress-class=nginx-external**.
+    - Internal NIC has been deployed with the argument **ingress-class=nginx-internal**.
 
 
 
 LAB 2A: Exploring and understanding the K8S cluster
 ####################################################
 
-
+LAB 2A: Exploring and understanding the K8S cluster
+****************************************************
 
     .. note::
         | In order to be independant of a specific K8S distribution, standard tools will be used for managing the cluster.
@@ -52,27 +58,28 @@ LAB 2A: Exploring and understanding the K8S cluster
 
 - Step 2: Use the credentials which have been provided to you.
 
-- Step 3: On the window, open the cli window to access a shell
+- Step 3: On the window, open the cli window to access a shell (the red arrow below):
 
     .. image:: ./images/_01_AzurePortalOpenBash.png
         :align: center
-        :width: 600
+        :width: 800
 
 
 - Step 4: You should see a page which looks like the one below
 
     .. image:: ./images/_02_bash_opened.png
         :align: center
+        :width: 800
 
-- Step 5: Configure kubectl to connect to your Kubernetes cluster using the command ``az aks get-credentials``.
+- Step 5: Configure kubectl to connect to your Kubernetes cluster.
 
-    - The name of the K8S Cluster is ``CloudBuilder``.
-    - Use the resource group name which has been assigned to you. For instance ``rg-aksdistrict2``.
+| The name of the K8S Cluster is ``CloudBuilder``.
+| Use the resource group name which has been assigned to you. For instance ``rg-aksdistrict2``.
 
-    .. code-block:: bash
+.. code-block:: bash
 
-        harry@Azure:~$ az aks get-credentials --resource-group rg-aksdistrict2 --name CloudBuilder
-        Merged "CloudBuilder" as current context in /home/harry/.kube/config
+    harry@Azure:~$ az aks get-credentials --resource-group rg-aksdistrict2 --name CloudBuilder
+    Merged "CloudBuilder" as current context in /home/harry/.kube/config
 
 - Step 6: Let's verify the CRDs installed:
 
@@ -190,27 +197,31 @@ Step 9: Let's check the Ingress Class Name attached to each NIC:
         NAME                         TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)                      AGE
         elb-nap-ingress-controller   LoadBalancer   10.200.0.15   52.167.14.0   80:31613/TCP,443:31094/TCP   30d
 
-Note the EXTERNAL-IP address. It will be used later in our labs.
+.. note::
+    | Notice the EXTERNAL-IP address and write it somewhere.
+    | It will be used later in our labs.
 
 
 LAB 2B: Simple Traffic Splitting and Content-Based Routing
-*************************************************************
-
+#############################################################
 
 LAB 2B: Simple Traffic Splitting and Content-Based Routing
-###########################################################
+***********************************************************
 
-| For that use case, a new application named cafe will be deployed.
-| The application cafe is composed of 2 services: cofee and tea.
-| The custom resource **VirtualServer** will be used.
-| That first deployment is simple. We will complete it later on with more complex actions.
-| For now, the use case is:
-    - listens for hostname cafe.example.com
-    - TLS activated and uses a specified cert and key from K8S secret resource
-    - Simple Path Routing is done :
-        - request for /tea are sent to service tea
-        - request for /coffee are sent to service coffee
-|
+    .. note::
+        | * For that use case, a new application named cafe will be deployed.
+        |
+        | * The application cafe is composed of 2 services: **cofee-svc** and **tea-svc**.
+        |
+        | * The custom resource **VirtualServer** will be used.
+        |
+        | * The setup we want to deploy is :
+        |
+        |    - listens for hostname cafe.example.com
+        |    - TLS activated and uses a specified cert and key from a K8S secret resource
+        |    - request for /tea are sent to service tea
+        |    - request for /coffee are sent to service coffee
+
 
 - Step 1: Create the directory Lab2 and move into it
 
@@ -220,6 +231,7 @@ LAB 2B: Simple Traffic Splitting and Content-Based Routing
         harry@Azure:~$ cd lab2/
         harry@Azure:~/lab2$
 |
+
 - Step 2: Create a new NameSpace called cafe-ns. We will deploy the application into it.
 
 .. code-block:: bash
@@ -381,7 +393,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
         secret/cafe-secret created
 
 |
-- Step 8: Verify the certificate and keys have been deployed into the namespace cafe
+- Step 8: Verify the certificate and keys have been deployed into the namespace cafe-ns
 
 .. code-block:: bash
 
@@ -399,7 +411,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
         tls.key:  1675 bytes
 
 |
-- Step 9: Copy/Paste the manifest below into a new file named **cafe-virtual-server.yaml** and deploy it.
+- Step 9: Copy/Paste the manifest below into a new file named **cafe-virtual-server-lab-2B.yaml** and deploy it.
 
 | That manifest uses the custom resources **VirtualServer**.
 |
@@ -453,7 +465,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 
 .. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server.yaml
+        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server-lab-2B.yaml
         virtualserver.k8s.nginx.org/app-cafe configured
 
 
@@ -475,7 +487,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
         52.167.14.0         cafe.example.com
 
 |    - Open a browser and test some connections :
-    | https://cafe.example.com/tea and https://cafe.example.com/coffee should be successfull
+    | https://cafe.example.com/tea and https://cafe.example.com/coffee should be successfull.
     | https://cafe.example.com/ should receive an HTTP 404 Not Found page. -> This is because the path / hasn't been defined into the Routes field of the manifest above.
 
 
@@ -507,17 +519,141 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 
 
 
-LAB 2C: Canary and A/B Testing
-###########################################################
+LAB 2C: Advanced Traffic Splitting and Content-Based Routing
+##############################################################
 
-| For that use case, we're going to use a new cafe application with two versions of the service coffee.
+LAB 2C: Advanced Traffic Splitting and Content-Based Routing
+*************************************************************
 |
-| The aim is to pass 80% of requests to the coffee-v1 and the remaining 20% to coffee-v2.
+- For that new deployment we use a lot more features available in the Custom Resource VirtualServer.
+    - if path is */redirect* then the action is **redirect** to http://www.nginx.com.
+    - if path is */proxy* then the action is **proxy** to add/rewrite/ignore some headers.
+    - if path is */return_page* then the action is **return** to reply with a custom web page.
+    - in each action, variables could be used like: $request_uri, $request_method, $request_body, $scheme, $host, $request_time, $request_length, $connection, $remote_addr, $remote_port, $ssl_cipher, $ssl_client_cert, etc
 |
-| The custom resource **VirtualServer** will be used with the field **splits**.
 |
-| The split defines a weight for an action as part of the splits configuration.
-|
+
+- Step 1: Let's modify the deployment done in the previous lab.
+
+Copy and Paste the manifest below into a new file named cafe-virtual-server-Lab-2C.yaml and deploy it.
+
+.. code-block:: bash
+
+        apiVersion: k8s.nginx.org/v1
+        kind: VirtualServer
+        metadata:
+          name: app-cafe
+          namespace: cafe-ns
+        spec:
+          ingressClassName: nginx-external
+          host: cafe.example.com
+          tls:
+            secret: cafe-secret
+          upstreams:
+          - name: tea
+            service: tea-svc
+            port: 80
+          - name: coffee
+            service: coffee-svc
+            port: 80
+          routes:
+          - path: /tea
+            action:
+              pass: tea
+          - path: /coffee
+            action:
+              pass: coffee
+          - path: /redirect
+            action:
+              redirect:
+                url: http://www.nginx.com
+                code: 301
+          - path: /proxy
+            action:
+              proxy:
+                upstream: coffee
+                requestHeaders:
+                  pass: true
+                  set:
+                  - name: My-Header
+                    value: Value
+                  - name: Client-Cert
+                    value: ${ssl_client_escaped_cert}
+                responseHeaders:
+                  add:
+                  - name: My-Header
+                    value: Hello_this_your_value
+                  - name: IC-Nginx-Version
+                    value: ${nginx_version}
+                    always: true
+                  hide:
+                  - x-internal-version
+                  ignore:
+                  - Expires
+                  - Set-Cookie
+                  pass:
+                  - Server
+          - path: /return_page
+            action:
+              return:
+                code: 200
+                type: text/plain
+                body: "Hello World\n\n\n\nRequest is ${request_uri}\nRequest Method is ${request_method}\nRequest Scheme is ${scheme}\nRequest Host is ${host}\nRequest Lengthis ${request_length}\nNGINX Version is ${nginx_version}\nClient IP address is ${remote_addr}\nClient Port is : ${remote_port}\nLocal Time is ${time_local}\nServer IP Address is ${server_addr}\nServer Port is ${server_port}\nProtocol is ${server_protocol}\n"
+
+
+- Step 2: Deploy the manifest:
+
+.. code-block:: bash
+
+        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server-lab-2C.yaml
+        virtualserver.k8s.nginx.org/app-cafe configured
+
+
+- Step 3: Check the compilation status of the VirtualServer with the command below:
+
+.. code-block:: bash
+
+        kubectl describe virtualserver app-cafe -n cafe-ns
+
+
+- Step 4: Test the setup
+
+Test the requests below with a browser or curl:
+
+https://cafe.example.com/coffee         -> request is sent to the service coffee
+
+https://cafe.example.com/tea            -> request is sent to the service tea
+
+https://cafe.example.com/redirect       -> client is redirected to www.nginx.com
+
+https://cafe.example.com/return_page    -> custom page Hello World is returned
+
+https://cafe.example.com/proxy          -> requests go to coffee you should see custom headers in the responses
+
+With Curl, the command is:
+
+.. code-block:: bash
+
+        $ curl https://cafe.example.com/<PATH> --resolve cafe.example.com:443:<EXTERNAL_IP_Cluster> --insecure
+
+
+
+LAB 2D: Canary or A/B Testing
+###############################
+
+LAB 2D: Canary or A/B Testing
+*******************************
+
+    .. note::
+        | * For that use case, we're going to use a new cafe application with two versions of the service coffee-svc.
+        |
+        | * The aim is to pass 80% of requests to the coffee-v1-svc and the remaining 20% to coffee-v2-svc.
+        |
+        | * We're going to use another field named **splits** and available in the custom resource **VirtualServer**.
+        |
+        | * The split defines a weight for an action as part of the splits configuration.
+        |
+
 
 - Step 1: Deploy the new application cafe-v2:
 
@@ -625,7 +761,7 @@ Verify the services coffee-v1-svc and coffee-v2-svc are correctly deployed:
         tea-svc         ClusterIP   10.200.0.51    <none>        80/TCP    63m
 
 
-- Step 2: Create/Edit a new file named **cafe-virtual-server-lab-2C.yaml** and copy/past the manifest below.
+- Step 2: Create/Edit a new file named **cafe-virtual-server-lab-2D.yaml** and copy/past the manifest below.
 
 .. code-block:: bash
 
@@ -659,7 +795,7 @@ Verify the services coffee-v1-svc and coffee-v2-svc are correctly deployed:
 
 .. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server-lab-2C.yaml
+        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server-lab-2D.yaml
         virtualserver.k8s.nginx.org/cafe-vs configured
 
 
@@ -683,413 +819,6 @@ Use curl (see step 10 in Lab 2B for the command and options) to open 10 connecti
         $ curl http://cafev2.example.com/coffee --resolve cafev2.example.com:80:52.167.14.0
 
 8 connections should go to Server name: coffee-v1
+
 2 connections should go to Server name: coffee-v2
 
-
-
-LAB 2D: Advanced Traffic Splitting and Content-Based Routing
-##############################################################
-
-LAB 2D: Advanced Traffic Splitting and Content-Based Routing
-*************************************************************
-
-| For that use case, a new application named cafe will be deployed.
-| The application cafe is composed of 2 services: cofee and tea.
-| The custom resource **VirtualServer** will be used.
-| That first deployment is simple. We will complete it later on with more complex actions.
-| For now, the use case is:
-    - listens for hostname cafe.example.com
-    - TLS activated and uses a specified cert and key from K8S secret resource
-    - Simple Path Routing is done :
-        - request for /tea are sent to service tea
-        - request for /coffee are sent to service coffee
-|
-
-
-11. Let's modify the deployment with a more complex setup
-
-- Copy and Paste the manifest below into a new file named cafe-virtual-server-2.yaml and deploy it.
-- For that new deployment we use a lot more features available in the CRDs VirtualServer.
-    - if path is */redirect* then the action is **redirect** to http://www.nginx.com.
-    - if path is */proxy* then the action is **proxy** to add/rewrite/ignore some headers.
-    - if path is */return_page* then the action is **return** to reply with a custom web page.
-    - in each action, variables could be used like: $request_uri, $request_method, $request_body, $scheme, $host, $request_time, $request_length, $connection, $remote_addr, $remote_port, $ssl_cipher, $ssl_client_cert, etc
-
-
-.. code-block:: bash
-
-        apiVersion: k8s.nginx.org/v1
-        kind: VirtualServer
-        metadata:
-          name: app-cafe
-          namespace: cafe-ns
-        spec:
-          ingressClassName: nginx-external
-          host: cafe.example.com
-          tls:
-            secret: cafe-secret
-          upstreams:
-          - name: tea
-            service: tea-svc
-            port: 80
-          - name: coffee
-            service: coffee-svc
-            port: 80
-          routes:
-          - path: /tea
-            action:
-              pass: tea
-          - path: /coffee
-            action:
-              pass: coffee
-          - path: /redirect
-            action:
-              redirect:
-                url: http://www.nginx.com
-                code: 301
-          - path: /proxy
-            action:
-              proxy:
-                upstream: coffee
-                requestHeaders:
-                  pass: true
-                  set:
-                  - name: My-Header
-                    value: Value
-                  - name: Client-Cert
-                    value: ${ssl_client_escaped_cert}
-                responseHeaders:
-                  add:
-                  - name: My-Header
-                    value: Hello_this_your_value
-                  - name: IC-Nginx-Version
-                    value: ${nginx_version}
-                    always: true
-                  hide:
-                  - x-internal-version
-                  ignore:
-                  - Expires
-                  - Set-Cookie
-                  pass:
-                  - Server
-          - path: /return_page
-            action:
-              return:
-                code: 200
-                type: text/plain
-                body: "Hello World\n\n\n\nRequest is ${request_uri}\nRequest Method is ${request_method}\nRequest Scheme is ${scheme}\nRequest Host is ${host}\nRequest Lengthis ${request_length}\nNGINX Version is ${nginx_version}\nClient IP address is ${remote_addr}\nClient Port is : ${remote_port}\nLocal Time is ${time_local}\nServer IP Address is ${server_addr}\nServer Port is ${server_port}\nProtocol is ${server_protocol}\n"
-
-
-- Deploy the manifest:
-
-.. code-block:: bash
-
-        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server-2.yaml
-        virtualserver.k8s.nginx.org/app-cafe configured
-
-
-- Check the compilation status of the VirtualServer with the command below:
-
-.. code-block:: bash
-        kubectl describe virtualserver app-cafe -n cafe-ns
-
-
-12. Test the setup
-
-[ADC] Check compilation status of VS: kubectl describe virtualserver cafe -n cafe
-[HK]  CHECK COMPILATION ADDED IN PRECEDENT POINT ABOVE
-
-[ADC] Check compilation status of VSR: kubectl describe virtualserverroute coffee -n cafe
-[HK] VSR are done in steps 13+
-
-
-Open a browser and test some connections on:
-
-https://cafe.example.com                -> works like previous configuration
-https://ccafe.example.com/redirect      -> client is redirected to www.nginx.com
-https://cafe.example.com/return_page    -> custom page Hello World is returned
-https://cafe.example.com/proxy          -> requests go to coffee you should see custom headers in the responses
-
-
-
-13. Let's modify the setup to use the CRD VirtualServerRoute.
-
-In this example we use the VirtualServer and VirtualServerRoute resources to configure load balancing.
-We put the load balancing configuration as well as the deployments and services into multiple namespaces.
-Instead of one namespace, we now use three: tea, coffee, and cafe.
-
-    In the tea namespace, we create the tea deployment, service, and the corresponding load-balancing configuration.
-    In the coffee namespace, we create the coffee deployment, service, and the corresponding load-balancing configuration.
-    In the cafe namespace, we create the cafe secret with the TLS certificate and key and the load-balancing configuration for the cafe application.
-
-
-- copy and paste the manifests below:
-
-namespaces.yaml:
-
-.. code-block:: bash
-
-        apiVersion: v1
-        kind: Namespace
-        metadata:
-          name: cafe-ns
-        ---
-        apiVersion: v1
-        kind: Namespace
-        metadata:
-          name: tea-ns
-        ---
-        apiVersion: v1
-        kind: Namespace
-        metadata:
-          name: coffee-ns
-
-
-tea.yaml:
-
-.. code-block:: bash
-
-        apiVersion: apps/v1
-        kind: Deployment
-        metadata:
-          name: tea
-          namespace: tea-ns
-        spec:
-          replicas: 1
-          selector:
-            matchLabels:
-              app: tea
-          template:
-            metadata:
-              labels:
-                app: tea
-            spec:
-              containers:
-              - name: tea
-                image: nginxdemos/nginx-hello:plain-text
-                ports:
-                - containerPort: 8080
-        ---
-        apiVersion: v1
-        kind: Service
-        metadata:
-          name: tea-svc
-          namespace: tea-ns
-        spec:
-          ports:
-          - port: 80
-            targetPort: 8080
-            protocol: TCP
-            name: http
-          selector:
-            app: tea
-
-
-cofee.yaml:
-
-.. code-block:: bash
-
-        apiVersion: apps/v1
-        kind: Deployment
-        metadata:
-          name: coffee
-          namespace: coffee-ns
-        spec:
-          replicas: 1
-          selector:
-            matchLabels:
-              app: coffee
-          template:
-            metadata:
-              labels:
-                app: coffee
-            spec:
-              containers:
-              - name: coffee
-                image: nginxdemos/nginx-hello:plain-text
-                ports:
-                - containerPort: 8080
-        ---
-        apiVersion: v1
-        kind: Service
-        metadata:
-          name: coffee-svc
-          namespace: coffee-ns
-        spec:
-          ports:
-          - port: 80
-            targetPort: 8080
-            protocol: TCP
-            name: http
-          selector:
-            app: coffee
-
-
-coffee-virtual-server-route.yaml:
-
-.. code-block:: bash
-
-        apiVersion: k8s.nginx.org/v1
-        kind: VirtualServerRoute
-        metadata:
-          name: coffee-vsr
-          namespace: coffee-ns
-        spec:
-          host: cafe.example.com
-          upstreams:
-          - name: coffee
-            service: coffee-svc
-            port: 80
-          subroutes:
-          - path: /coffee
-            action:
-              pass: coffee
-
-
-tea-virtual-server-route.yaml:
-
-.. code-block:: bash
-
-        apiVersion: k8s.nginx.org/v1
-        kind: VirtualServerRoute
-        metadata:
-          name: tea-vsr
-          namespace: tea-ns
-        spec:
-          host: cafe.example.com
-          upstreams:
-          - name: tea
-            service: tea-svc
-            port: 80
-          subroutes:
-          - path: /tea
-            action:
-              pass: tea
-
-
-cafe-virtual-server.yaml:
-
-.. code-block:: bash
-
-        apiVersion: k8s.nginx.org/v1
-        kind: VirtualServer
-        metadata:
-          name: cafe
-          namespace: cafe-ns
-        spec:
-          host: cafe.example.com
-          tls:
-            secret: cafe-secret
-          routes:
-          - path: /tea
-            route: tea-vsr/tea
-          - path: /coffee
-            route: coffee-vsr/coffee
-
-
-- Step 1: Create the Namespaces
-
-Create the required tea, coffee, and cafe namespaces:
-
-.. code-block:: bash
-
-        $ kubectl create -f namespaces.yaml
-
-
-- Step 2: Deploy the new Cafe Application
-
-Create the tea deployment and service in the tea-ns namespace:
-
-.. code-block:: bash
-
-        $ kubectl create -f tea.yaml
-
-Create the coffee deployment and service in the coffee-ns namespace:
-
-.. code-block:: bash
-
-        $ kubectl create -f coffee.yaml
-
-
-- Step 3: Configure Load Balancing and TLS Termination
-
-Create the VirtualServerRoute resource for tea in the tea-ns namespace:
-
-.. code-block:: bash
-
-        $ kubectl create -f tea-virtual-server-route.yaml
-
-Create the VirtualServerRoute resource for coffee in the coffee-ns namespace:
-
-.. code-block:: bash
-
-        $ kubectl create -f coffee-virtual-server-route.yaml
-
-
-Create the VirtualServer resource for the cafe app in the cafe-ns namespace:
-
-.. code-block:: bash
-
-        $ kubectl create -f cafe-virtual-server.yaml
-
-
-- Step 4: Test the Configuration
-
-Check that the configuration has been successfully applied by inspecting the events of the VirtualServerRoutes and VirtualServer:
-
-.. code-block:: bash
-
-        $ kubectl describe virtualserverroute tea -n tea-ns
-        . . .
-        Events:
-          Type     Reason                 Age   From                      Message
-          ----     ------                 ----  ----                      -------
-          Warning  NoVirtualServersFound  2m    nginx-ingress-controller  No VirtualServer references VirtualServerRoute tea/tea
-          Normal   AddedOrUpdated         1m    nginx-ingress-controller  Configuration for tea-ns/tea was added or updated
-
-.. code-block:: bash
-
-        $ kubectl describe virtualserverroute coffee -n coffee-ns
-        . . .
-        Events:
-          Type     Reason                 Age   From                      Message
-          ----     ------                 ----  ----                      -------
-          Warning  NoVirtualServersFound  2m    nginx-ingress-controller  No VirtualServer references VirtualServerRoute coffee/coffee
-          Normal   AddedOrUpdated         1m    nginx-ingress-controller  Configuration for coffee-ns/coffee was added or updated
-
-.. code-block:: bash
-
-        $ kubectl describe virtualserver cafe -n cafe-ns
-        . . .
-        Events:
-          Type    Reason          Age   From                      Message
-          ----    ------          ----  ----                      -------
-          Normal  AddedOrUpdated  1m    nginx-ingress-controller  Configuration for cafe-ns/cafe was added or updated
-
-
-Access the application using curl.
-We'll use curl's --insecure option to turn off certificate verification of our self-signed certificate and --resolve option to set the IP address and HTTPS port of the Ingress Controller to the domain name of the cafe application:
-
-To get coffee:
-
-.. code-block:: bash
-
-        $ curl --resolve cafe.example.com:$IC_HTTPS_PORT:$IC_IP https://cafe.example.com:$IC_HTTPS_PORT/coffee --insecure
-        Server address: 10.16.1.193:80
-        Server name: coffee-7dbb5795f6-mltpf
-        ...
-
-
-    If your prefer tea:
-
-.. code-block:: bash
-
-        $ curl --resolve cafe.example.com:$IC_HTTPS_PORT:$IC_IP https://cafe.example.com:$IC_HTTPS_PORT/tea --insecure
-        Server address: 10.16.0.157:80
-        Server name: tea-7d57856c44-674b8
-        ...
-
-
-
-
-                                                                                                          60,34         Bot
