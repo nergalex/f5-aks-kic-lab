@@ -74,6 +74,7 @@ Security dashboards are available on Kibana. Mode details `here <https://github.
     docker ps --all
     docker start {{CONTAINER_ID}}
 
+
     .. warning:: **Capture The Flag**
         | **What is the version of deployed IC?**
         |
