@@ -103,7 +103,9 @@ Disadvantages
 Annotation and Snippets have the following disadvantages:
 
 - **Complexity**
-    - Annotation is not an object (dict or/and list), so all your configurations is flat and become quickly difficult to read
+    - Annotation can not reference an unique object, therefore:
+        - all your configurations is flat and become quickly difficult to read
+        - part of configuration is copied for each Master or Minion, for example jwt annotations. A simple change will impact a lot of resources and become risky.
     - To use snippets, you will need to:
         - Understand NGINX configuration primitives and implement a correct NGINX configuration.
         - Understand how the IC generates NGINX configuration so that a snippet doesn’t interfere with the other features in the configuration.
