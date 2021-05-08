@@ -1,4 +1,4 @@
-Ingress Master/Minions
+Arcadia
 ##############################################################
 
 .. image:: ./_pictures/arcadia-ui.png
@@ -70,7 +70,6 @@ This enables easier management when using a large number of paths.
             }
     }
 
-
 Advanced Configuration
 ======================
 ** Annotation **
@@ -100,8 +99,7 @@ Annotation and Snippets have the following disadvantages:
 - **Security implications**
     - Snippets give access to NGINX configuration primitives and those primitives are not validated by the Ingress Controller. For example, a snippet can configure NGINX to serve the TLS certificates and keys used for TLS termination for Ingress resources.
 
-    .. note:: **Note**
-        If the NGINX config includes an invalid snippet, NGINX will continue to operate with the latest valid configurati
+|   **Note**: If the NGINX config includes an invalid snippet, NGINX will continue to operate with the latest valid configuration
 
 
 
