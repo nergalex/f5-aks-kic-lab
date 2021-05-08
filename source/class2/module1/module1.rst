@@ -33,12 +33,6 @@ Two *NGINX Ingress Controller* (KIC) instances, *App Protect* module embedded,
 have been already build on Jumphost following this `guide <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/#building-the-image-and-pushing-it-to-the-private-registry>`_
 and deployed using `Helm <https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-helm/>`_
 
-    .. warning::
-        **Capture The Flag**
-
-    .. target-notes::
-        **Capture The Flag**
-
     .. note::
         **Capture The Flag**
 
@@ -46,10 +40,11 @@ and deployed using `Helm <https://docs.nginx.com/nginx-ingress-controller/instal
         *NGINX Ingress Controller* image's tag contains: {{KIC version}}-{{last update of WAF signature}}
         Use `docker commands <https://docs.docker.com/engine/reference/commandline/docker/>`_ or ``kubectl``
 
+
     .. note::
-        | **Capture The Flag**
-        |
-        | What is the ingress-class name of the *NGINX Ingress Controller* instance accessible from Internet
+        **Capture The Flag**
+
+        What is the ingress-class name of the *NGINX Ingress Controller* instance accessible from Internet?
 
 ELK UI is published by Ingress Controller.
 
@@ -88,7 +83,6 @@ Security dashboards are available on Kibana. Mode details `here <https://github.
     docker stop {{CONTAINER_ID}}
     docker ps --all
     docker start {{CONTAINER_ID}}
-
 
 
 
