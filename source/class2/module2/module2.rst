@@ -27,20 +27,20 @@ Arcadia is published through ingress class External.
 
 .. image:: ./_pictures/arcadia_resources.svg
    :align: center
-   :width: 800
+   :width: 900
    :alt: App resources
 
 Page rendering generates requests to each micro-service routed by Ingress Controller.
 
 .. image:: ./_pictures/arcadia_flow.svg
    :align: center
-   :width: 800
+   :width: 900
    :alt: App flow
 
 - Connect to ``https://arcadia{{site_ID}}.f5app.dev/``
 - Login with user ``matt`` and password ``ilovef5``
 
-Mater / Minions
+Master / Minions
 ===================
 
 Arcadia is published using `mergeable Ingress <https://github.com/nginxinc/kubernetes-ingress/tree/v1.11.1/examples/mergeable-ingress-types>`_.
@@ -114,7 +114,7 @@ Annotation and Snippets have the following disadvantages:
 - **Security implications**
     - Snippets give access to NGINX configuration primitives and those primitives are not validated by the Ingress Controller. For example, a snippet can configure NGINX to serve the TLS certificates and keys used for TLS termination for Ingress resources.
 
-|   **Note**: If the NGINX config includes an invalid snippet, NGINX will continue to operate with the latest valid configuration
+**Note**: If the NGINX config includes an invalid snippet, NGINX will continue to operate with the latest valid configuration
 
 
 
