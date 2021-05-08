@@ -45,11 +45,22 @@ Mater / Minions
 
 Arcadia is published using `mergeable Ingress <https://github.com/nginxinc/kubernetes-ingress/tree/v1.11.1/examples/mergeable-ingress-types>`_.
 
+.. code-block:: bash
+
+    annotations:
+        nginx.org/mergeable-ingress-type: "master"
+
+.. code-block:: bash
+
+    annotations:
+        nginx.org/mergeable-ingress-type: "master"
+
 Ingress configuration a spread for host ``arcadia{{site_ID}}.f5app.dev`` across multiple Ingress resources using Mergeable Ingress resources.
 Here all resources belong to a same namespace ``lab1-arcadia`` but it could be different namespaces.
 This enables easier management when using a large number of paths.
 
-.. code-block:: nginx
+.. code-block:: bash
+
     server {
             # configuration for lab1-arcadia/arcadia-ingress-external-master
 
