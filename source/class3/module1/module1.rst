@@ -1,50 +1,9 @@
+LAB 2A: Exploring and understanding the K8S cluster
+####################################################
 
 .. contents:: Contents
     :local:
     :depth: 1
-
-Architecture of the Kubernetes Cluster
-#######################################
-
-    .. note::
-        | For simplification, the Azure Kubernetes Service aka AKS is used for the workshop.
-        | But all the labs and setups of the workshop work with any K8S distribution.
-        |
-        | The goal of the workshop is not to learn how to install NGINX+ as an Ingress Controller (NIC).
-        | So to gain time, we have already done the installation (see `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_ for step by step).
-
-
-Description of the Kubernetes Cluster
-######################################
-
-Description of the Kubernetes Cluster
-**************************************
-
-- Name of the K8S Cluster: **CloudBuilder**
-- 3 NameSpaces have already been added:
-
-    - **external-ingress-controller** -> contains 1 pod for NIC. Will be used for external traffic.
-    - **internal-ingress-controller** -> contains 1 pod for NIC. Will be used for internal traffic.
-    - **arcadia** -> contains the pods for the application named arcadia
-
-- Some Custom Resource Definitions have been added and will be used for the use cases of the workshop:
-
-    - **virtualservers and virtualserverroutes** -> enable use cases not supported with the Ingress resource, such as traffic splitting and advanced content-based routing.
-    - **Policies** -> allows to configure features like access control and rate-limiting.
-    - **TransportServer** -> allows to configure TCP, UDP, and TLS Passthrough load balancing.
-    - **AppProtect CRDs** -> used to configure security policies, custom attack signatures and security logs for NGINX AppProtect (F5 WAF).
-
-- The external Ingress controller is linked to an Azure Public Load Balancer -> we will see the public IP later on.
-
-- The coexistence of multiple Ingress Controllers in one cluster is provided by the support of Ingress Class Name:
-
-    - External NIC has been deployed with the argument **ingress-class=nginx-external**.
-    - Internal NIC has been deployed with the argument **ingress-class=nginx-internal**.
-
-
-
-LAB 2A: Exploring and understanding the K8S cluster
-####################################################
 
 LAB 2A: Exploring and understanding the K8S cluster
 ****************************************************

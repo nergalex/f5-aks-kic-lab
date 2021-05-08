@@ -15,8 +15,10 @@ Jumphost
 
     ssh -i jumphost.key cyber@jumphost-aksdistrict{{site_ID}}.{{region}}.cloudapp.azure.com
 
-AKS cluster
+Kubernetes cluster
 *********************
+Azure Kubernetes Service (AKS) is used as a Managed Kubernetes Services.
+However all labs and setups of the workshop will work with any other K8S distribution.
 
 On Jumphost, communicate with K8S API using kubectl
 
@@ -27,7 +29,12 @@ On Jumphost, communicate with K8S API using kubectl
 K8S resources
 *********************
 
-A NGINX Ingress Controller + App Protect module is already deployed.
+Two *NGINX Ingress Controller* instances, *App Protect* module embedded, have been already deployed using `Helm <https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-helm/>`_
+
+.. warning::
+    **Capture The Flag**
+
+    What is the ingress-class name of the *NGINX Ingress Controller* instance accessible from Internet
 
 ELK UI ``https://kibana{{site_ID}}.f5app.dev`` is published by Ingress Controller.
 
@@ -56,3 +63,11 @@ Security dashboards are available on Kibana. Mode details `here <https://github.
    :align: center
    :width: 900
    :alt: NAP logs
+
+
+
+
+
+
+
+
