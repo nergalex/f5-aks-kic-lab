@@ -45,21 +45,11 @@ Mater / Minions
 
 Arcadia is published using `mergeable Ingress <https://github.com/nginxinc/kubernetes-ingress/tree/v1.11.1/examples/mergeable-ingress-types>`_.
 
-.. code-block:: bash
-
-    annotations:
-        nginx.org/mergeable-ingress-type: "master"
-
-.. code-block:: bash
-
-    annotations:
-        nginx.org/mergeable-ingress-type: "master"
-
 Ingress configuration a spread for host ``arcadia{{site_ID}}.f5app.dev`` across multiple Ingress resources using Mergeable Ingress resources.
 Here all resources belong to a same namespace ``lab1-arcadia`` but it could be different namespaces.
 This enables easier management when using a large number of paths.
 
-.. code-block:: bash
+.. code-block:: nginx
 
     server {
             # configuration for lab1-arcadia/arcadia-ingress-external-master
@@ -83,18 +73,30 @@ This enables easier management when using a large number of paths.
 
 Advanced Configuration
 ======================
-** Annotation **
+**Annotation**
 
 The Ingress resource only allows you to use basic NGINX features – host and path-based routing and TLS termination.
 For more advanced features like rewriting the request URI or inserting additional response headers,
 annotations `here <https://docs.nginx.com/nginx-ingress-controller/configuration/ingress-resources/advanced-configuration-with-annotations/#summary-of-annotations>`_
 can be applied to an Ingress resource that allow to use advanced NGINX features and customize/fine tune NGINX behavior for that Ingress resource.
 
-** Snippets **
+.. code-block:: yaml
+
+    annotations:
+      nginx.org/mergeable-ingress-type: "master"
+
+**Snippets**
 
 One annotation available is Snippets.
 Snippets allow you to insert raw NGINX config into different contexts of the NGINX configurations that the Ingress Controller generates.
 These should be used as a last-resort solution in cases where annotations entries cannot help.
+
+.. code-block:: yaml
+
+    annotations:
+      nginx.org/server-snippets: |
+        proxy_ignore_headers X-Accel-Expires Expires Cache-Control;
+        proxy_cache_valid any 30s;
 
 Disadvantages
 =============
