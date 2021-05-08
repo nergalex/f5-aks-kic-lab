@@ -7,7 +7,7 @@ Infrastructure
 Jumphost
 *********************
 
-- Download SSH key `jumphost.key <https://f5-my.sharepoint.com/:f:/r/personal/al_dacosta_f5_com/Documents/Lab/f5-aks-kic-lab?csf=1&web=1&e=PYcBdc>`_
+- Download SSH key `jumphost.key <https://f5-my.sharepoint.com/:f:/r/personal/al_dacosta_f5_com/Documents/Lab/f5-aks-IC-lab?csf=1&web=1&e=PYcBdc>`_
 - Ask F5 for your ``{{site_ID}}`` and your Azure ``{{region}}``
 - Open an SSH session to ``jumphost-aksdistrict{{site_ID}}.{{region}}.cloudapp.azure.com``. Log in as user ``cyber`` authenticated with private key ``jumphost.key``.
 
@@ -29,14 +29,14 @@ However all labs and setups of the workshop will work with any other K8S distrib
 K8S resources
 *********************
 
-Two *NGINX Ingress Controller* (KIC) instances, *App Protect* module embedded,
+Two *NGINX Ingress Controller* (IC) instances, *App Protect* module embedded,
 have been already build on Jumphost following this `guide <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/#building-the-image-and-pushing-it-to-the-private-registry>`_
 and deployed using `Helm <https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-helm/>`_
 
     .. note::
         **Capture The Flag**
 
-        **What is the ingress-class name of the KIC instance accessible from Internet?**
+        **What is the ingress-class name of the IC instance accessible from Internet?**
 
 ELK UI is published by Ingress Controller.
 
@@ -76,12 +76,11 @@ Security dashboards are available on Kibana. Mode details `here <https://github.
     docker ps --all
     docker start {{CONTAINER_ID}}
 
-    .. note::
-        **Capture The Flag**
+    .. note:: **Capture The Flag**
 
-        **What is the version of deployed KIC?**
+        **What is the version of deployed IC?**
 
-        *NGINX Ingress Controller* image's tag contains: {{KIC version}}-{{last update of WAF signature}}.
+        *NGINX Ingress Controller* image's tag contains: {{IC version}}-{{last update of WAF signature}}.
 
 .. code-block:: bash
 
