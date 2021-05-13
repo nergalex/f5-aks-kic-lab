@@ -4,8 +4,9 @@ Infrastructure
 .. contents:: Contents
     :local:
 
-Jumphost
+Exercise 1: Jumphost
 *********************
+Logging into your lab System:
 
 - Download SSH key `jumphost.key <https://f5-my.sharepoint.com/:f:/r/personal/al_dacosta_f5_com/Documents/Lab/f5-aks-IC-lab?csf=1&web=1&e=PYcBdc>`_
 - Ask F5 for your ``{{site_ID}}`` and your Azure ``{{region}}``
@@ -15,10 +16,9 @@ Jumphost
 
     ssh -i jumphost.key cyber@jumphost-aksdistrict{{site_ID}}.{{region}}.cloudapp.azure.com
 
-Kubernetes cluster
+Exercise 2: Kubernetes cluster
 *********************
-Azure Kubernetes Service (AKS) is used as a Managed Kubernetes Services.
-However all labs and setups of the workshop will work with any other K8S distribution.
+Logging into your Azure Kubernetes Service (AKS), a Managed Kubernetes Services:
 
 - On Jumphost, communicate with K8S API using kubectl
 
@@ -26,8 +26,8 @@ However all labs and setups of the workshop will work with any other K8S distrib
 
     $ kubectl get namespaces
 
-K8S resources
-*********************
+Exercise 3: NGINX Ingress Controller
+************************************
 
 Two *NGINX Ingress Controller* (IC) instances, *App Protect* module embedded,
 have been already build on Jumphost following this `guide <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/#building-the-image-and-pushing-it-to-the-private-registry>`_
@@ -36,14 +36,22 @@ and deployed using `Helm <https://docs.nginx.com/nginx-ingress-controller/instal
 .. note:: **Capture The Flag**
     | What is the ingress-class name of the IC instance accessible from Internet?
 
-ELK UI is published by Ingress Controller.
+.. note:: **Capture The Flag**
+    | **What is the version of deployed IC?**
+
+    | Tips: *NGINX Ingress Controller* image's tag contains: {{IC version}}-{{last update of WAF signature}}.
+
+Exercise 4: Kibana
+*****************************************
+
+Kibana is published by Ingress Controller.
 
 .. image:: ./_pictures/infra_resources.svg
    :align: center
    :width: 900
    :alt: infra
 
-ELK UI is protected by NGINX App Protect embedded in Ingress Controller.
+Kibana is protected by NGINX App Protect embedded in Ingress Controller.
 
 .. image:: ./_pictures/infra_resources_elk.svg
    :align: center
@@ -64,7 +72,7 @@ Security dashboards are available on Kibana. Mode details `here <https://github.
    :width: 900
    :alt: NAP logs
 
-- Try to reach ELK UI ``https://kibana{{site_ID}}.f5app.dev``... Damn it's DOWN!
+- Using your web browser, try to reach ELK UI ``https://kibana{{site_ID}}.f5app.dev``... Damn it's DOWN!
 - Restart the container using `docker commands <https://docs.docker.com/engine/reference/commandline/docker/>`_
 
 .. code-block:: bash
@@ -76,11 +84,18 @@ Security dashboards are available on Kibana. Mode details `here <https://github.
 
 - Browse ELK UI ``https://kibana{{site_ID}}.f5app.dev`` >> Dashboard >> Overview and scroll to ``All Requests``
 
-.. note:: **Capture The Flag**
-    | **What is the version of deployed IC?**
-    | *NGINX Ingress Controller* image's tag contains: {{IC version}}-{{last update of WAF signature}}.
+Exercise 5: Cryptonice
+*****************************************
+`Cryptonice <https://github.com/F5-Labs/cryptonice>`_ collects data on a given domain and performs a series of tests to check TLS configuration and supporting protocols such as HTTP2 and DNS.
 
+- On Jumphost, evaluate SSL security for ``https://kibana{{site_ID}}.f5app.dev``
 
 .. code-block:: bash
 
-    docker image ls
+    docker run -v `pwd`:`pwd` -w `pwd` -i -t f5labs/cryptonice kibana{{site_ID}}.f5app.dev --json_out --no_console
+    cat kibana{{site_ID}}.f5app.dev.json | jq .
+
+
+.. note:: **Capture The Flag**
+    | **What is the cipher suite supported?**
+    | ECDHE-RSA-AES256-GCM-SHA384
