@@ -31,8 +31,11 @@ Exercise 1: NGINX Configuration
 
 - Show App Protect directives in Arcadia configuration
 
-.. code-block:: nginx
+.. code-block:: bash
+
     $ grep protect /etc/nginx/conf.d/lab1-arcadia-arcadia-ingress-external-master.conf
+
+.. code-block:: nginx
 
     app_protect_enable on;
     app_protect_policy_file /etc/nginx/waf/nac-policies/external-ingress-controller_generic-security-level-low;
