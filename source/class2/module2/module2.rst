@@ -129,8 +129,8 @@ This enables easier management when using a large number of paths.
                     proxy_cache_valid any 30s;
 
 .. note:: **Capture The Flag**
-    | **What is the cookie name that allow a login user to persist his session on "Money Transfer" micro-service of Arcadia ?**
-    | minion
+    | **What is the cookie name that allow a login user to persist his session on "Money Transfer" micro-service of Arcadia?**
+    | arcadia_app2
 
 Advanced Configuration
 ======================
