@@ -160,6 +160,10 @@ These should be used as a last-resort solution in cases where annotations entrie
         proxy_ignore_headers X-Accel-Expires Expires Cache-Control;
         proxy_cache_valid any 30s;
 
+.. note:: **Capture The Flag**
+    | **What is the nginx directive seen in configuration for snippet 'proxy_ignore_headers'?**
+    | proxy_ignore_headers
+
 Disadvantages
 =============
 Annotation and Snippets have the following disadvantages:
