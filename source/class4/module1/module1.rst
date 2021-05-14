@@ -65,7 +65,7 @@ Exercise 2: Security Policy
     $ kubectl describe appolicy -n external-ingress-controller generic-security-level-low | grep -A 100 Spec
 
 .. code-block:: yaml
-    :emphasize-lines: 11
+    :emphasize-lines: 10
 
     Spec:
       Policy:
@@ -127,10 +127,11 @@ Exercise 3: Monitoring
 
 - To test that the site is protected, on Jumphost, append a script to the end of the curl statement:
 
-.. code-block:: html
+.. code-block:: bash
 
     $ curl -k -s https://arcadia1.f5app.dev/?a=%3Cscript%3E
 
+.. code-block:: html
     <html><head><title>Request Rejected</title></head><body>The requested URL was rejected.
     Please consult with your administrator.<br><br>
     Your support ID is: 4096465330496922252
