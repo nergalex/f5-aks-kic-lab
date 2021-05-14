@@ -128,11 +128,9 @@ Using a simple RESTful JSON interface, it’s very easy to connect these stats t
     | **Which build of NGINX is used by IC?**
     | nginx-plus-r23
 
-**BONUS**
+**Extra time**
 
-If you have extra time:
-
-- On your ssh client, configure ssh port forwarding as described `here <https://blog.devolutions.net/2017/4/how-to-configure-an-ssh-tunnel-on-putty>`_
+- On your ssh client, configure ssh port forwarding on Jumphost session as described `here <https://blog.devolutions.net/2017/4/how-to-configure-an-ssh-tunnel-on-putty>`_
 
 .. image:: ./_pictures/securecrt.png
    :align: center
