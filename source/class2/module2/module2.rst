@@ -49,6 +49,25 @@ Ingress configuration a spread for host ``arcadia{{site_ID}}.f5app.dev`` across 
 Here all resources belong to a same namespace ``lab1-arcadia`` but it could be different namespaces.
 This enables easier management when using a large number of paths.
 
+- Connect to a IC container
+
+.. code-block:: bash
+
+    $ kubectl get pods -n external-ingress-controller
+    NAME                                              READY   STATUS    RESTARTS   AGE
+    nap-external-ingress-controller-7576b65b4-ps4ck   1/1     Running   0          8d
+    nap-external-ingress-controller-7576b65b4-w599m   1/1     Running   0          8d
+
+    $ kubectl exec --namespace external-ingress-controller -it nap-external-ingress-controller-7576b65b4-ps4ck bash
+
+- Show Arcadia configuration
+
+.. code-block:: bash
+
+    more /etc/nginx/conf.d/lab1-arcadia-arcadia-ingress-external-master.conf
+
+- Check that configuration of Arcadia is a merge results of a master and minions
+
 .. code-block:: nginx
 
     server {
@@ -70,6 +89,48 @@ This enables easier management when using a large number of paths.
                     # location for minion lab1-arcadia/arcadia-ingress-external-minion-main
             }
     }
+
+- Show ingress resources for Arcadia
+
+.. code-block:: bash
+    $ kubectl get ingresses -n lab1-arcadia
+
+    NAME                                      CLASS            HOSTS                ADDRESS        PORTS     AGE
+    arcadia-ingress-external-master           nginx-external   arcadia1.f5app.dev   20.75.112.65   80, 443   5d15h
+    arcadia-ingress-external-minion-app2      nginx-external   arcadia1.f5app.dev   20.75.112.65   80        5d15h
+    arcadia-ingress-external-minion-app3      nginx-external   arcadia1.f5app.dev   20.75.112.65   80        5d15h
+    arcadia-ingress-external-minion-backend   nginx-external   arcadia1.f5app.dev   20.75.112.65   80        5d15h
+    arcadia-ingress-external-minion-main      nginx-external   arcadia1.f5app.dev   20.75.112.65   80        5d15h
+
+- Show Master's ingress resources for Arcadia
+
+.. code-block:: bash
+    $ kubectl describe ingress -n lab1-arcadia arcadia-ingress-external-master
+
+    Name:             arcadia-ingress-external-master
+    Namespace:        lab1-arcadia
+    Address:          {{site_ID}}
+    Default backend:  default-http-backend:80 (<error: endpoints "default-http-backend" not found>)
+    TLS:
+      arcadia-secret-tls terminates arcadia1.f5app.dev
+    Rules:
+      Host        Path  Backends
+      ----        ----  --------
+      *           *     default-http-backend:80 (<error: endpoints "default-http-backend" not found>)
+    Annotations:  appprotect.f5.com/app-protect-enable: True
+                  appprotect.f5.com/app-protect-policy: external-ingress-controller/generic-security-level-low
+                  appprotect.f5.com/app-protect-security-log: external-ingress-controller/naplogformat
+                  appprotect.f5.com/app-protect-security-log-destination: syslog:server=10.{{site_ID}}.0.10:5144
+                  appprotect.f5.com/app-protect-security-log-enable: True
+                  ingress.kubernetes.io/ssl-redirect: true
+                  nginx.org/mergeable-ingress-type: master
+                  nginx.org/server-snippets:
+                    proxy_ignore_headers X-Accel-Expires Expires Cache-Control;
+                    proxy_cache_valid any 30s;
+
+.. note:: **Capture The Flag**
+    | **What is the cookie name that allow a login user to persist his session on "Money Transfer" micro-service of Arcadia ?**
+    | minion
 
 Advanced Configuration
 ======================

@@ -14,7 +14,7 @@ Logging into your lab System:
 
 .. code-block:: bash
 
-    ssh -i jumphost.key cyber@jumphost-aksdistrict{{site_ID}}.{{region}}.cloudapp.azure.com
+    $ ssh -i jumphost.key cyber@jumphost-aksdistrict{{site_ID}}.{{region}}.cloudapp.azure.com
 
 Exercise 2: Kubernetes cluster
 *********************
@@ -35,11 +35,12 @@ and deployed using `Helm <https://docs.nginx.com/nginx-ingress-controller/instal
 
 .. note:: **Capture The Flag**
     | What is the ingress-class name of the IC instance accessible from Internet?
+    | nginx-external
 
 .. note:: **Capture The Flag**
     | **What is the version of deployed IC?**
-
-    | Tips: *NGINX Ingress Controller* image's tag contains: {{IC version}}-{{last update of WAF signature}}.
+    | Tips: *NGINX Ingress Controller* image's tag contains: {{IC version}}-{{last update of WAF signature}}. `docker commands <https://docs.docker.com/engine/reference/commandline/docker/>`_
+    | 1.11.1
 
 Exercise 4: Kibana
 *****************************************
@@ -77,10 +78,10 @@ Security dashboards are available on Kibana. Mode details `here <https://github.
 
 .. code-block:: bash
 
-    docker ps
-    docker stop {{CONTAINER_ID}}
-    docker ps --all
-    docker start {{CONTAINER_ID}}
+    $ docker ps
+    $ docker stop {{CONTAINER_ID}}
+    $ docker ps --all
+    $ docker start {{CONTAINER_ID}}
 
 - Browse ELK UI ``https://kibana{{site_ID}}.f5app.dev`` >> Dashboard >> Overview and scroll to ``All Requests``
 
@@ -92,8 +93,8 @@ Exercise 5: Cryptonice
 
 .. code-block:: bash
 
-    docker run -v `pwd`:`pwd` -w `pwd` -i -t f5labs/cryptonice kibana{{site_ID}}.f5app.dev --json_out --no_console
-    cat kibana{{site_ID}}.f5app.dev.json | jq .
+    $ docker run -v `pwd`:`pwd` -w `pwd` -i -t f5labs/cryptonice kibana{{site_ID}}.f5app.dev --json_out --no_console
+    $ cat kibana{{site_ID}}.f5app.dev.json | jq .
 
 
 .. note:: **Capture The Flag**
