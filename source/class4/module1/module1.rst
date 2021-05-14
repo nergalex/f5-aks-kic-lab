@@ -60,10 +60,12 @@ Exercise 2: Security Policy
 
 - Show App Protect policy resource
 
-.. code-block:: yaml
-    :emphasize-lines: 12
+.. code-block:: bash
 
     $ kubectl describe appolicy -n external-ingress-controller generic-security-level-low | grep -A 100 Spec
+
+.. code-block:: yaml
+    :emphasize-lines: 11
 
     Spec:
       Policy:
@@ -83,9 +85,11 @@ Exercise 2: Security Policy
 
 - On IC, show App Protect policy
 
-.. code-block:: json
+.. code-block:: bash
 
     $ cat /etc/nginx/waf/nac-policies/external-ingress-controller_generic-security-level-low
+
+.. code-block:: json
 
     {
       "policy": {
