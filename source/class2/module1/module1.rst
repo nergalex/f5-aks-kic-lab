@@ -121,7 +121,6 @@ Using a simple RESTful JSON interface, it’s very easy to connect these stats t
 - On Jumphost, browse `NGINX Plus REST API <http://demo.nginx.com/swagger-ui/>`_
 
 .. code-block:: bash
-    :emphasize-lines: 1
 
     $ curl 10.1.1.18:8080/api/6/nginx/
 
