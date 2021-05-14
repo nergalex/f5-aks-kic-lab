@@ -8,7 +8,7 @@ Exercise 1: Jumphost
 *********************
 Logging into your lab System:
 
-- Download SSH key `jumphost.key <https://f5-my.sharepoint.com/:f:/r/personal/al_dacosta_f5_com/Documents/Lab/f5-aks-IC-lab?csf=1&web=1&e=PYcBdc>`_
+- Download SSH key `jumphost.key <https://f5-my.sharepoint.com/:f:/r/personal/al_dacosta_f5_com/Documents/Lab/f5-aks-kic-lab?csf=1&web=1&e=NcV9gX>`_
 - Ask F5 for your ``{{site_ID}}`` and your Azure ``{{region}}``
 - Open an SSH session to ``jumphost-aksdistrict{{site_ID}}.{{region}}.cloudapp.azure.com``. Log in as user ``cyber`` authenticated with private key ``jumphost.key``.
 
@@ -72,6 +72,14 @@ Security dashboards are available on Kibana. Mode details `here <https://github.
    :align: center
    :width: 900
    :alt: NAP logs
+
+- Download CA CRT `ca_demo.crt <https://f5-my.sharepoint.com/:f:/r/personal/al_dacosta_f5_com/Documents/Lab/f5-aks-kic-lab?csf=1&web=1&e=NcV9gX>`_
+- Open ``ca_demo.crt`` >> ``Install Certificate...`` >> ``Current user`` >> Place certificate in ``Trusted Root Certification Authorities``
+
+.. image:: ./_pictures/dashboard1.png
+   :align: center
+   :width: 700
+   :alt: CA CRT
 
 - Using your web browser, try to reach ELK UI ``https://kibana{{site_ID}}.f5app.dev``... Damn it's DOWN!
 - Restart the container using `docker commands <https://docs.docker.com/engine/reference/commandline/docker/>`_
