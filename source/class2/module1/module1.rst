@@ -76,7 +76,7 @@ Security dashboards are available on Kibana. Mode details `here <https://github.
 - Download CA CRT `ca_demo.crt <https://f5-my.sharepoint.com/:f:/r/personal/al_dacosta_f5_com/Documents/Lab/f5-aks-kic-lab?csf=1&web=1&e=NcV9gX>`_
 - Open ``ca_demo.crt`` >> ``Install Certificate...`` >> ``Current user`` >> Place certificate in ``Trusted Root Certification Authorities``
 
-.. image:: ./_pictures/dashboard1.png
+.. image:: ./_pictures/CA_CRT.png
    :align: center
    :width: 700
    :alt: CA CRT
@@ -109,7 +109,7 @@ Exercise 5: Cryptonice
     | **What is the cipher suite supported?**
     | ECDHE-RSA-AES256-GCM-SHA384
 
-Exercise 6: NGINX+ dashboard
+Exercise 6: NGINX+ API
 *****************************************
 NGINX Plus includes a `real‑time activity monitoring <https://www.nginx.com/products/nginx/live-activity-monitoring/>`_ interface that provides key load and performance metrics.
 Using a simple RESTful JSON interface, it’s very easy to connect these stats to live dashboards and third‑party monitoring tools.
@@ -136,7 +136,8 @@ Using a simple RESTful JSON interface, it’s very easy to connect these stats t
     | **Which build of NGINX is used by IC?**
     | nginx-plus-r23
 
-**Extra time**
+Extra time: NGINX+ dashboard
+*****************************************
 
 - On your ssh client, configure ssh port forwarding on Jumphost session as described `here <https://blog.devolutions.net/2017/4/how-to-configure-an-ssh-tunnel-on-putty>`_
 
