@@ -32,13 +32,12 @@ Exercise 1: NGINX Configuration
 - Show App Protect directives in Arcadia configuration
 
 .. code-block:: nginx
-    :emphasize-lines: 4
-        $ grep protect /etc/nginx/conf.d/lab1-arcadia-arcadia-ingress-external-master.conf
+    $ grep protect /etc/nginx/conf.d/lab1-arcadia-arcadia-ingress-external-master.conf
 
-        app_protect_enable on;
-        app_protect_policy_file /etc/nginx/waf/nac-policies/external-ingress-controller_generic-security-level-low;
-        app_protect_security_log_enable on;
-        app_protect_security_log /etc/nginx/waf/nac-logconfs/external-ingress-controller_naplogformat syslog:server=10.1.0.10:5144;
+    app_protect_enable on;
+    app_protect_policy_file /etc/nginx/waf/nac-policies/external-ingress-controller_generic-security-level-low;
+    app_protect_security_log_enable on;
+    app_protect_security_log /etc/nginx/waf/nac-logconfs/external-ingress-controller_naplogformat syslog:server=10.1.0.10:5144;
 
 - On Jumphost, show App Protect directives in Arcadia ingress resource
 
