@@ -58,7 +58,7 @@ Exercise 2: Security Policy
 - Show App Protect policy resource
 
 .. code-block:: yaml
-    :emphasize-lines: 11
+    :emphasize-lines: 12
 
     $ kubectl describe appolicy -n external-ingress-controller generic-security-level-low | grep -A 100 Spec
 
@@ -81,9 +81,9 @@ Exercise 2: Security Policy
 - On IC, show App Protect policy
 
 .. code-block:: json
-    :emphasize-lines: 15
 
     $ cat /etc/nginx/waf/nac-policies/external-ingress-controller_generic-security-level-low
+
     {
       "policy": {
         "applicationLanguage": "utf-8",
@@ -120,20 +120,21 @@ Exercise 3: Monitoring
 
 - To test that the site is protected, on Jumphost, append a script to the end of the curl statement:
 
-.. code-block:: bash
-    :emphasize-lines: 4
+.. code-block:: html
 
     $ curl -k -s https://arcadia1.f5app.dev/?a=%3Cscript%3E
+
     <html><head><title>Request Rejected</title></head><body>The requested URL was rejected.
     Please consult with your administrator.<br><br>
     Your support ID is: 4096465330496922252
     <br><br><a href='javascript:history.back();'>[Go Back]</a></body></html>
 
-- Connect to Kibana ``https://kibana{{site_ID}}.f5app.dev`` >> Dashboard >> Overview >> Edit filter ``vs_name is *arcadia1.f5app.dev*``
+- Connect to Kibana ``https://kibana{{site_ID}}.f5app.dev`` >> Dashboard >> Overview
+- Add a filter ``vs_name is *arcadia1.f5app.dev*``
 
 .. image:: ./_pictures/kibana_filter.png
    :align: center
-   :width: 600
+   :width: 300
    :alt: SecureCRT
 
 - Add another filter ``support_id is {{support_ID}}`` and replace {{support_ID}} by previous blocked request
