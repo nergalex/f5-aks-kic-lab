@@ -100,3 +100,49 @@ Exercise 5: Cryptonice
 .. note:: **Capture The Flag**
     | **What is the cipher suite supported?**
     | ECDHE-RSA-AES256-GCM-SHA384
+
+Exercise 6: NGINX+ dashboard
+*****************************************
+NGINX Plus includes a `real‑time activity monitoring <https://www.nginx.com/products/nginx/live-activity-monitoring/>`_ interface that provides key load and performance metrics.
+Using a simple RESTful JSON interface, it’s very easy to connect these stats to live dashboards and third‑party monitoring tools.
+
+- On Jumphost, get a IC POD's IP
+
+.. code-block:: bash
+    :emphasize-lines: 3,6
+
+    $ kubectl get pods -n external-ingress-controller
+    NAME                                              READY   STATUS    RESTARTS   AGE
+    nap-external-ingress-controller-7576b65b4-ps4ck   1/1     Running   0          8d
+
+    $ kubectl describe pod -n external-ingress-controller nap-external-ingress-controller-7576b65b4-ps4ck | grep IP
+    IP:           10.1.1.18
+
+- On Jumphost, browse `NGINX Plus REST API <http://demo.nginx.com/swagger-ui/>`_
+
+.. code-block:: bash
+    :emphasize-lines: 1
+
+    $ curl 10.1.1.18:8080/api/6/nginx/
+
+.. note:: **Capture The Flag**
+    | **Which build of NGINX is used by IC?**
+    | nginx-plus-r23
+
+**BONUS**
+
+If you have extra time:
+
+- On your ssh client, configure ssh port forwarding as described `here <https://blog.devolutions.net/2017/4/how-to-configure-an-ssh-tunnel-on-putty>`_
+
+.. image:: ./_pictures/securecrt.png
+   :align: center
+   :width: 900
+   :alt: SecureCRT
+
+- On your web browser, connect to ``http://127.1.1.1/dashboard.html``
+
+.. image:: ./_pictures/nginx_plush_dashboard.png
+   :align: center
+   :width: 900
+   :alt: SecureCRT
