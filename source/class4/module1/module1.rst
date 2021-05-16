@@ -511,6 +511,8 @@ Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
     **5.2 What are the violations?**
     | Illegal meta character in value, Bot Client Detected
 
+Exercise 6: Checks of the trusted bot’s authenticity
+****************************************************
 NAP's Search engine signatures such as googlebot are under the ``trusted_bots`` class,
 but App Protect performs additional checks of the trusted bot’s authenticity
 as reverse DNS for example.
@@ -525,8 +527,8 @@ as reverse DNS for example.
 
 **Capture The Flag**
 
-    **5.3 What is the bot anomaly?**
+    **6.1 What is the bot anomaly?**
     | Search Engine Verification Failed
 
-    **5.4 What is the client class?**
+    **6.2 What is the client class?**
     | Malicious Bot
