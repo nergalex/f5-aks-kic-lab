@@ -152,21 +152,21 @@ Exercise 3: Monitoring
 
 - Review log
 
-.. note:: **Capture The Flag**
-    | **What is the policy name?**
-    | generic-security-level-low
+    .. note:: **Capture The Flag**
+        | **What is the policy name?**
+        | generic-security-level-low
 
-.. note:: **Capture The Flag**
-    | **What is the client_class for curl?**
-    | Untrusted Bot
+    .. note:: **Capture The Flag**
+        | **What is the client_class for curl?**
+        | Untrusted Bot
 
-.. note:: **Capture The Flag**
-    | **Which violations are raised?**
-    | Illegal meta character in value, Attack signature detected, Violation Rating Threat detected, Bot Client Detected
+    .. note:: **Capture The Flag**
+        | **Which violations are raised?**
+        | Illegal meta character in value, Attack signature detected, Violation Rating Threat detected, Bot Client Detected
 
-.. note:: **Capture The Flag**
-    | **Which attack signatures are detected?**
-    | 200001475, 200000098
+    .. note:: **Capture The Flag**
+        | **Which attack signatures are detected?**
+        | 200001475, 200000098
 
 Exercise 4: Modifications
 *************************
@@ -238,7 +238,7 @@ Now, a new security policy for Arcadia must be applied to allow this request.
 
     $ vi lab3-arcadia_ingress.yaml
 
-.. note::
+.. note:: **{{ site_ID }}**
     | Replace {{ site_ID }} in Manifest file, see highlighted lines below
 
 .. code-block:: yaml
