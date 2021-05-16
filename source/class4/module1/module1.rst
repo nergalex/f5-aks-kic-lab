@@ -7,18 +7,22 @@ Arcadia
 Exercise 1: NGINX Configuration
 *********************
 
-- Log into IC
+- Get a IC's POD name
 
 .. code-block:: bash
-    :emphasize-lines: 3
 
     kubectl get pods -n external-ingress-controller
 
-    NAME                                              READY   STATUS    RESTARTS   AGE
-    nap-external-ingress-controller-7576b65b4-ps4ck   1/1     Running   0          8d
+    .. code-block:: bash
+        :emphasize-lines: 2
+
+        NAME                                              READY   STATUS    RESTARTS   AGE
+        nap-external-ingress-controller-7576b65b4-ps4ck   1/1     Running   0          8d
+
+- Log into IC's container
+
 
 .. code-block:: bash
-    :emphasize-lines: 3
 
     kubectl exec --namespace external-ingress-controller -it nap-external-ingress-controller-7576b65b4-ps4ck bash
 
@@ -26,14 +30,14 @@ Exercise 1: NGINX Configuration
 
 .. code-block:: bash
 
-    $ apt list --installed | grep nginx
+    apt list --installed | grep nginx
 
-.. code-block:: bash
-    :emphasize-lines: 1
+    .. code-block:: bash
+        :emphasize-lines: 1
 
-    nginx-plus-module-appprotect/now 23+3.332.0-1~buster amd64 [installed,local]
-    nginx-plus-module-njs/now 23+0.5.0-1~buster amd64 [installed,local]
-    nginx-plus/now 23-1~buster amd64 [installed,local]
+        nginx-plus-module-appprotect/now 23+3.332.0-1~buster amd64 [installed,local]
+        nginx-plus-module-njs/now 23+0.5.0-1~buster amd64 [installed,local]
+        nginx-plus/now 23-1~buster amd64 [installed,local]
 
 - Show App Protect directives in Arcadia configuration
 
@@ -41,12 +45,12 @@ Exercise 1: NGINX Configuration
 
     grep protect /etc/nginx/conf.d/lab1-arcadia-arcadia-ingress-external-master.conf
 
-.. code-block:: nginx
+    .. code-block:: nginx
 
-    app_protect_enable on;
-    app_protect_policy_file /etc/nginx/waf/nac-policies/external-ingress-controller_generic-security-level-low;
-    app_protect_security_log_enable on;
-    app_protect_security_log /etc/nginx/waf/nac-logconfs/external-ingress-controller_naplogformat syslog:server=10.1.0.10:5144;
+        app_protect_enable on;
+        app_protect_policy_file /etc/nginx/waf/nac-policies/external-ingress-controller_generic-security-level-low;
+        app_protect_security_log_enable on;
+        app_protect_security_log /etc/nginx/waf/nac-logconfs/external-ingress-controller_naplogformat syslog:server=10.1.0.10:5144;
 
 - On Jumphost, show App Protect directives in Arcadia ingress resource
 
@@ -285,18 +289,19 @@ Now, a new security policy for Arcadia must be applied to allow this request.
 
 .. code-block:: bash
 
-    $ kubectl apply -f lab3-arcadia_ingress.yaml
-
+    kubectl apply -f lab3-arcadia_ingress.yaml
 
 .. code-block:: bash
 
     ingress.networking.k8s.io/arcadia-ingress-external-master configured
 
 .. code-block:: bash
-    :emphasize-lines: 6
 
-    $ kubectl describe ingress -n lab1-arcadia arcadia-ingress-external-master
-    (...)
+    kubectl describe ingress -n lab1-arcadia arcadia-ingress-external-master
+
+.. code-block:: bash
+    :emphasize-lines: 4
+
     Events:
       Type    Reason          Age                   From                      Message
       ----    ------          ----                  ----                      -------
@@ -325,7 +330,7 @@ Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
 
 .. code-block:: bash
 
-    $ vi lab3-arcadia_appolicy_bot.yaml
+    vi lab3-arcadia_appolicy_bot.yaml
 
 .. code-block:: yaml
     :linenos:
@@ -369,7 +374,10 @@ Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
 
 .. code-block:: bash
 
-    $ kubectl apply -f lab3-arcadia_appolicy_bot.yaml
+    kubectl apply -f lab3-arcadia_appolicy_bot.yaml
+
+.. code-block:: bash
+
     appolicy.appprotect.f5.com/arcadia configured
 
 - Log into IC
@@ -377,31 +385,35 @@ Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
 .. code-block:: bash
     :emphasize-lines: 3
 
-    $ kubectl get pods -n external-ingress-controller
+    kubectl get pods -n external-ingress-controller
+
+.. code-block:: bash
+    :emphasize-lines: 2
+
     NAME                                              READY   STATUS    RESTARTS   AGE
     nap-external-ingress-controller-7576b65b4-ps4ck   1/1     Running   0          8d
 
 .. code-block:: bash
 
-    $ kubectl exec --namespace external-ingress-controller -it nap-external-ingress-controller-7576b65b4-ps4ck bash
+    kubectl exec --namespace external-ingress-controller -it nap-external-ingress-controller-7576b65b4-ps4ck bash
 
 - See configured WAF policies
 
 .. code-block:: bash
 
-    $ grep -A 8 arcadia /opt/app_protect/config/config_set.json
+    grep -A 8 arcadia /opt/app_protect/config/config_set.json
 
 - See content of Arcadia's WAF policy
 
 .. code-block:: bash
 
-    $ cat /etc/nginx/waf/nac-policies/external-ingress-controller_arcadia
+    cat /etc/nginx/waf/nac-policies/external-ingress-controller_arcadia
 
 - See WAF compilation output
 
 .. code-block:: bash
 
-    $ cat /var/log/app_protect/compile_error_msg.json
+    cat /var/log/app_protect/compile_error_msg.json
 
 .. code-block:: json
     :emphasize-lines: 2
