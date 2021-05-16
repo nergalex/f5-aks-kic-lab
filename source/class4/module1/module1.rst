@@ -48,18 +48,22 @@ Exercise 1: NGINX Configuration
 
     grep protect /etc/nginx/conf.d/lab1-arcadia-arcadia-ingress-external-master.conf
 
-    .. code-block:: nginx
+*output:*
 
-        app_protect_enable on;
-        app_protect_policy_file /etc/nginx/waf/nac-policies/external-ingress-controller_generic-security-level-low;
-        app_protect_security_log_enable on;
-        app_protect_security_log /etc/nginx/waf/nac-logconfs/external-ingress-controller_naplogformat syslog:server=10.1.0.10:5144;
+.. code-block:: nginx
+
+    app_protect_enable on;
+    app_protect_policy_file /etc/nginx/waf/nac-policies/external-ingress-controller_generic-security-level-low;
+    app_protect_security_log_enable on;
+    app_protect_security_log /etc/nginx/waf/nac-logconfs/external-ingress-controller_naplogformat syslog:server=10.1.0.10:5144;
 
 - On Jumphost, show App Protect directives in Arcadia ingress resource
 
 .. code-block:: bash
 
     kubectl describe ingress -n lab1-arcadia arcadia-ingress-external-master | grep protect
+
+*output:*
 
 .. code-block:: bash
     :emphasize-lines: 2
@@ -78,6 +82,8 @@ Exercise 2: Security Policy
 .. code-block:: bash
 
     kubectl describe appolicy -n external-ingress-controller generic-security-level-low | grep -A 100 Spec
+
+*output:*
 
 .. code-block:: yaml
     :emphasize-lines: 10
@@ -103,6 +109,8 @@ Exercise 2: Security Policy
 .. code-block:: bash
 
     cat /etc/nginx/waf/nac-policies/external-ingress-controller_generic-security-level-low
+
+*output:*
 
 .. code-block:: json
 
@@ -132,7 +140,9 @@ Exercise 2: Security Policy
       }
     }
 
-    .. note:: **Capture The Flag**
+**Capture The Flag**
+
+    .. note::
         | **2.1 Which request type are logged by App Protect for Arcadia application?**
         | all
         | Tip: `App Protect Logs <https://docs.nginx.com/nginx-ingress-controller/app-protect/configuration/#app-protect-logs>`_
@@ -145,6 +155,8 @@ Exercise 3: Monitoring
 .. code-block:: bash
 
     curl -k -s "https://arcadia1.f5app.dev/?a=<script>"
+
+*output:*
 
 .. code-block:: html
     <html><head><title>Request Rejected</title></head><body>The requested URL was rejected.
@@ -164,19 +176,21 @@ Exercise 3: Monitoring
 
 - Review log
 
-    .. note:: **Capture The Flag**
+**Capture The Flag**
+
+    .. note::
         | **3.1 What is the policy name?**
         | generic-security-level-low
 
-    .. note:: **Capture The Flag**
+    .. note::
         | **3.2 What is the client_class for curl?**
         | Untrusted Bot
 
-    .. note:: **Capture The Flag**
+    .. note::
         | **3.3 Which violations are raised?**
         | Illegal meta character in value, Attack signature detected, Violation Rating Threat detected, Bot Client Detected
 
-    .. note:: **Capture The Flag**
+    .. note::
         | **3.4 Which attack signatures are detected?**
         | 200001475, 200000098
 
@@ -198,6 +212,8 @@ Now, a new security policy for Arcadia must be applied to allow this request.
 .. code-block:: bash
 
     vi lab3-arcadia_appolicy.yaml
+
+*input:*
 
 .. code-block:: yaml
     :linenos:
@@ -233,6 +249,8 @@ Now, a new security policy for Arcadia must be applied to allow this request.
 
     kubectl apply -f lab3-arcadia_appolicy.yaml
 
+*output:*
+
 .. code-block:: bash
 
     appolicy.appprotect.f5.com/arcadia created
@@ -241,6 +259,8 @@ Now, a new security policy for Arcadia must be applied to allow this request.
     :emphasize-lines: 6
 
     kubectl describe appolicy -n external-ingress-controller arcadia
+
+*output:*
 
 .. code-block:: log
 
@@ -255,8 +275,9 @@ Now, a new security policy for Arcadia must be applied to allow this request.
 
     vi lab3-arcadia_ingress.yaml
 
-    .. note:: **{{ site_ID }}**
-        | Replace {{ site_ID }} in Manifest file, see highlighted lines below
+.. note:: Replace {{ site_ID }} in Manifest file, see highlighted lines below
+
+*input:*
 
 .. code-block:: yaml
     :linenos:
@@ -294,6 +315,8 @@ Now, a new security policy for Arcadia must be applied to allow this request.
 
     kubectl apply -f lab3-arcadia_ingress.yaml
 
+*output:*
+
 .. code-block:: bash
 
     ingress.networking.k8s.io/arcadia-ingress-external-master configured
@@ -301,6 +324,8 @@ Now, a new security policy for Arcadia must be applied to allow this request.
 .. code-block:: bash
 
     kubectl describe ingress -n lab1-arcadia arcadia-ingress-external-master
+
+*output:*
 
 .. code-block:: bash
     :emphasize-lines: 4
@@ -334,6 +359,8 @@ Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
 .. code-block:: bash
 
     vi lab3-arcadia_appolicy_bot.yaml
+
+*input:*
 
 .. code-block:: yaml
     :linenos:
@@ -379,6 +406,8 @@ Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
 
     kubectl apply -f lab3-arcadia_appolicy_bot.yaml
 
+*output:*
+
 .. code-block:: bash
 
     appolicy.appprotect.f5.com/arcadia configured
@@ -389,6 +418,8 @@ Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
     :emphasize-lines: 3
 
     kubectl get pods -n external-ingress-controller
+
+*output:*
 
 .. code-block:: bash
     :emphasize-lines: 2
@@ -406,6 +437,28 @@ Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
 
     grep -A 8 arcadia /opt/app_protect/config/config_set.json
 
+*output:*
+
+.. code-block:: bash
+    :emphasize-lines: 1
+
+  "/etc/nginx/waf/nac-policies/external-ingress-controller_arcadia": {
+    "import_filename": "/etc/nginx/waf/nac-policies/external-ingress-controller_arcadia",
+    "src_config_line": 79,
+    "vs_info": {
+      "49-arcadia1.f5app.dev:12-/": {
+        "vs_name": "49-arcadia1.f5app.dev:12-/",
+        "logging": {
+          "dest_ip": "10.1.0.10",
+          "dest_port": "5144",
+          "dest_filename": "",
+          "$ref": "/etc/nginx/waf/nac-logconfs/external-ingress-controller_naplogformat",
+          "src_config_line": 81
+        }
+      }
+    (...)
+
+
 - See content of Arcadia's WAF policy
 
 .. code-block:: bash
@@ -417,6 +470,8 @@ Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
 .. code-block:: bash
 
     cat /var/log/app_protect/compile_error_msg.json
+
+*output:*
 
 .. code-block:: json
     :emphasize-lines: 2
@@ -444,12 +499,12 @@ Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
 
 - Review log generated by curl using support ID in Kibana ``https://kibana{{site_ID}}.f5app.dev``
 
-    .. note:: **Capture The Flag**
-        | **5.1 What is the violation rating?**
+**Capture The Flag**
+
+    .. note:: **5.1 What is the violation rating?**
         | 3
 
-    .. note:: **Capture The Flag**
-        | **5.2 What are the violations?**
+    .. note:: **5.2 What are the violations?**
         | Illegal meta character in value, Bot Client Detected
 
 NAP's Search engine signatures such as googlebot are under the ``trusted_bots`` class,
@@ -464,14 +519,10 @@ as reverse DNS for example.
 
 - Review log generated by curl using support ID in Kibana ``https://kibana{{site_ID}}.f5app.dev``
 
-    .. note:: **Capture The Flag**
-        | **5.3 What is the bot anomaly?**
+**Capture The Flag**
+
+    .. note:: **5.3 What is the bot anomaly?**
         | Search Engine Verification Failed
 
-    .. note:: **Capture The Flag**
-        | **5.4 What is the client class?**
+    .. note:: **5.4 What is the client class?**
         | Malicious Bot
-
-
-
-
