@@ -12,7 +12,7 @@ Exercise 1: NGINX Configuration
 .. code-block:: bash
     :emphasize-lines: 3
 
-    $ kubectl get pods -n external-ingress-controller
+    kubectl get pods -n external-ingress-controller
 
     NAME                                              READY   STATUS    RESTARTS   AGE
     nap-external-ingress-controller-7576b65b4-ps4ck   1/1     Running   0          8d
@@ -20,14 +20,16 @@ Exercise 1: NGINX Configuration
 .. code-block:: bash
     :emphasize-lines: 3
 
-    $ kubectl exec --namespace external-ingress-controller -it nap-external-ingress-controller-7576b65b4-ps4ck bash
+    kubectl exec --namespace external-ingress-controller -it nap-external-ingress-controller-7576b65b4-ps4ck bash
 
 - See installed NGINX Plus software
 
 .. code-block:: bash
-    :emphasize-lines: 3
 
     $ apt list --installed | grep nginx
+
+.. code-block:: bash
+    :emphasize-lines: 1
 
     nginx-plus-module-appprotect/now 23+3.332.0-1~buster amd64 [installed,local]
     nginx-plus-module-njs/now 23+0.5.0-1~buster amd64 [installed,local]
@@ -37,7 +39,7 @@ Exercise 1: NGINX Configuration
 
 .. code-block:: bash
 
-    $ grep protect /etc/nginx/conf.d/lab1-arcadia-arcadia-ingress-external-master.conf
+    grep protect /etc/nginx/conf.d/lab1-arcadia-arcadia-ingress-external-master.conf
 
 .. code-block:: nginx
 
@@ -49,9 +51,12 @@ Exercise 1: NGINX Configuration
 - On Jumphost, show App Protect directives in Arcadia ingress resource
 
 .. code-block:: bash
-    :emphasize-lines: 3
 
-    $ kubectl describe ingress -n lab1-arcadia arcadia-ingress-external-master | grep protect
+    kubectl describe ingress -n lab1-arcadia arcadia-ingress-external-master | grep protect
+
+.. code-block:: bash
+    :emphasize-lines: 2
+
     Annotations:  appprotect.f5.com/app-protect-enable: True
                   appprotect.f5.com/app-protect-policy: external-ingress-controller/generic-security-level-low
                   appprotect.f5.com/app-protect-security-log: external-ingress-controller/naplogformat
@@ -65,7 +70,7 @@ Exercise 2: Security Policy
 
 .. code-block:: bash
 
-    $ kubectl describe appolicy -n external-ingress-controller generic-security-level-low | grep -A 100 Spec
+    kubectl describe appolicy -n external-ingress-controller generic-security-level-low | grep -A 100 Spec
 
 .. code-block:: yaml
     :emphasize-lines: 10
@@ -90,7 +95,7 @@ Exercise 2: Security Policy
 
 .. code-block:: bash
 
-    $ cat /etc/nginx/waf/nac-policies/external-ingress-controller_generic-security-level-low
+    cat /etc/nginx/waf/nac-policies/external-ingress-controller_generic-security-level-low
 
 .. code-block:: json
 
@@ -120,10 +125,10 @@ Exercise 2: Security Policy
       }
     }
 
-.. note:: **Capture The Flag**
-    | **Which request type are logged by App Protect for Arcadia application?**
-    | all
-    | Tip: `App Protect Logs <https://docs.nginx.com/nginx-ingress-controller/app-protect/configuration/#app-protect-logs>`_
+    .. note:: **Capture The Flag**
+        | **Which request type are logged by App Protect for Arcadia application?**
+        | all
+        | Tip: `App Protect Logs <https://docs.nginx.com/nginx-ingress-controller/app-protect/configuration/#app-protect-logs>`_
 
 Exercise 3: Monitoring
 *********************
@@ -132,7 +137,7 @@ Exercise 3: Monitoring
 
 .. code-block:: bash
 
-    $ curl -k -s "https://arcadia1.f5app.dev/?a=<script>"
+    curl -k -s "https://arcadia1.f5app.dev/?a=<script>"
 
 .. code-block:: html
     <html><head><title>Request Rejected</title></head><body>The requested URL was rejected.
@@ -185,7 +190,7 @@ Now, a new security policy for Arcadia must be applied to allow this request.
 
 .. code-block:: bash
 
-    $ vi lab3-arcadia_appolicy.yaml
+    vi lab3-arcadia_appolicy.yaml
 
 .. code-block:: yaml
     :linenos:
@@ -219,14 +224,19 @@ Now, a new security policy for Arcadia must be applied to allow this request.
 
 .. code-block:: bash
 
-    $ kubectl apply -f lab3-arcadia_appolicy.yaml
+    kubectl apply -f lab3-arcadia_appolicy.yaml
+
+.. code-block:: bash
+
     appolicy.appprotect.f5.com/arcadia created
 
 .. code-block:: bash
     :emphasize-lines: 6
 
-    $ kubectl describe appolicy -n external-ingress-controller arcadia
-    (...)
+    kubectl describe appolicy -n external-ingress-controller arcadia
+
+.. code-block:: log
+
     Events:
       Type    Reason          Age   From                      Message
       ----    ------          ----  ----                      -------
@@ -236,10 +246,10 @@ Now, a new security policy for Arcadia must be applied to allow this request.
 
 .. code-block:: bash
 
-    $ vi lab3-arcadia_ingress.yaml
+    vi lab3-arcadia_ingress.yaml
 
-.. note:: **{{ site_ID }}**
-    | Replace {{ site_ID }} in Manifest file, see highlighted lines below
+    .. note:: **{{ site_ID }}**
+        | Replace {{ site_ID }} in Manifest file, see highlighted lines below
 
 .. code-block:: yaml
     :linenos:
@@ -276,6 +286,10 @@ Now, a new security policy for Arcadia must be applied to allow this request.
 .. code-block:: bash
 
     $ kubectl apply -f lab3-arcadia_ingress.yaml
+
+
+.. code-block:: bash
+
     ingress.networking.k8s.io/arcadia-ingress-external-master configured
 
 .. code-block:: bash
@@ -364,7 +378,6 @@ Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
     :emphasize-lines: 3
 
     $ kubectl get pods -n external-ingress-controller
-
     NAME                                              READY   STATUS    RESTARTS   AGE
     nap-external-ingress-controller-7576b65b4-ps4ck   1/1     Running   0          8d
 
@@ -378,7 +391,7 @@ Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
 
     $ grep -A 8 arcadia /opt/app_protect/config/config_set.json
 
-- See content of WAF policy for Arcadia
+- See content of Arcadia's WAF policy
 
 .. code-block:: bash
 
@@ -416,13 +429,13 @@ Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
 
 - Review log generated by curl using support ID in Kibana ``https://kibana{{site_ID}}.f5app.dev``
 
-.. note:: **Capture The Flag**
-    | **What is the violation rating?**
-    | 3
+    .. note:: **Capture The Flag**
+        | **What is the violation rating?**
+        | 3
 
-.. note:: **Capture The Flag**
-    | **What are the violations?**
-    | Illegal meta character in value, Bot Client Detected
+    .. note:: **Capture The Flag**
+        | **What are the violations?**
+        | Illegal meta character in value, Bot Client Detected
 
 NAP's Search engine signatures such as googlebot are under the ``trusted_bots`` class,
 but App Protect performs additional checks of the trusted bot’s authenticity
@@ -432,18 +445,17 @@ as reverse DNS for example.
 
 .. code-block:: bash
 
-    $ curl -k --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" https://arcadia{{site_ID}}.f5app.dev
+    curl -k --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" https://arcadia{{site_ID}}.f5app.dev
 
 - Review log generated by curl using support ID in Kibana ``https://kibana{{site_ID}}.f5app.dev``
 
-.. note:: **Capture The Flag**
-    | **What is the bot anomaly?**
-    | Search Engine Verification Failed
+    .. note:: **Capture The Flag**
+        | **What is the bot anomaly?**
+        | Search Engine Verification Failed
 
-.. note:: **Capture The Flag**
-    | **What is the client class?**
-    | Malicious Bot
-
+    .. note:: **Capture The Flag**
+        | **What is the client class?**
+        | Malicious Bot
 
 
 
