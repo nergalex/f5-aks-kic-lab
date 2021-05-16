@@ -178,13 +178,23 @@ except for some specific violations described here `here <https://docs.nginx.com
 This is to minimize false positives.
 
 However App Developers assume that this security event is a False Positive.
-Security policy must be modified to allow this request.
+They added modifications of security policy `here <https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/modifications/arcadia.f5app.dev.json>`_
+Now, a new security policy for Arcadia must be applied to allow this request.
 
-- Create a new App Protect Policy
+- On Jumphost, create a new App Protect Policy reusing `the current policy <https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/core/secure_low.yaml>`_ and referencing modifications set by AppDev
 
 .. code-block:: yaml
     :linenos:
-    :emphasize-lines: 24
+    :emphasize-lines: 25
+    apiVersion: appprotect.f5.com/v1beta1
+    kind: APPolicy
+    metadata:
+      name: arcadia
+      namespace: external-ingress-controller
+      labels:
+        app: arcadia
+        policy-version: 1.0.0
+    spec:
     apiVersion: appprotect.f5.com/v1beta1
     kind: APPolicy
     metadata:
@@ -202,22 +212,11 @@ Security policy must be modified to allow this request.
             block: true
             name: VIOL_HTTP_RESPONSE_STATUS
         enforcementMode: blocking
-        name: generic-security-level-low
+        name: arcadia
         signatures:
         - enabled: false
           signatureId: 200000128
         template:
           name: POLICY_TEMPLATE_NGINX_BASE
-      modifications:
-        - entityType: signature
-          entity:
-            signatureId: 200001475
-          entityChanges:
-            enabled: false
-          action: add-or-update
-        - entityType: signature
-          entity:
-            signatureId: 200000098
-          entityChanges:
-            enabled: false
-          action: add-or-update
+      modificationsReference:
+          link: https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/modifications/arcadia.f5app.dev.json
