@@ -182,13 +182,16 @@ Exercise 3: Monitoring
         | **3.1 What is the policy name?**
         | generic-security-level-low
 
+
     .. note::
         | **3.2 What is the client_class for curl?**
         | Untrusted Bot
 
+
     .. note::
         | **3.3 Which violations are raised?**
         | Illegal meta character in value, Attack signature detected, Violation Rating Threat detected, Bot Client Detected
+
 
     .. note::
         | **3.4 Which attack signatures are detected?**
@@ -207,7 +210,7 @@ They added modifications of security policy `here <https://raw.githubusercontent
 
 Now, a new security policy for Arcadia must be applied to allow this request.
 
-- On Jumphost, apply a new manifest of App Protect Policy reusing `the current policy <https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/core/secure_low.yaml>`_ and referencing modifications set by AppDev
+- On Jumphost, create a manifest of App Protect Policy reusing `the current policy <https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/core/secure_low.yaml>`_ and referencing modifications set by AppDev
 
 .. code-block:: bash
 
@@ -245,6 +248,8 @@ Now, a new security policy for Arcadia must be applied to allow this request.
       modificationsReference:
           link: https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/modifications/arcadia.f5app.dev.json
 
+- Apply manifest APPolicy
+
 .. code-block:: bash
 
     kubectl apply -f lab3-arcadia_appolicy.yaml
@@ -254,6 +259,8 @@ Now, a new security policy for Arcadia must be applied to allow this request.
 .. code-block:: bash
 
     appolicy.appprotect.f5.com/arcadia created
+
+- Check apply status
 
 .. code-block:: bash
     :emphasize-lines: 6
@@ -269,7 +276,7 @@ Now, a new security policy for Arcadia must be applied to allow this request.
       ----    ------          ----  ----                      -------
       Normal  AddedOrUpdated  36s   nginx-ingress-controller  AppProtectPolicy external-ingress-controller/arcadia was added or updated
 
-- Apply the new created policy to Arcadia's ingress resource
+- Create a manifest reusing current Arcadia's ingress resource and reference newly created APPolicy
 
 .. code-block:: bash
 
@@ -311,6 +318,8 @@ Now, a new security policy for Arcadia must be applied to allow this request.
       rules:
       - host: "arcadia{{ site_ID }}.f5app.dev"
 
+- Apply manifest Ingress
+
 .. code-block:: bash
 
     kubectl apply -f lab3-arcadia_ingress.yaml
@@ -320,6 +329,8 @@ Now, a new security policy for Arcadia must be applied to allow this request.
 .. code-block:: bash
 
     ingress.networking.k8s.io/arcadia-ingress-external-master configured
+
+- Check apply status
 
 .. code-block:: bash
 
@@ -354,7 +365,7 @@ The default actions for bot classes are:
 
 Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
 
-- On Jumphost, apply a new manifest of App Protect Policy using `new core policy <https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/core/secure_medium.yaml>`_ and still referencing modifications set by AppDev
+- On Jumphost, create a new manifest of App Protect Policy using `new core policy <https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/core/secure_medium.yaml>`_ and still referencing modifications set by AppDev
 
 .. code-block:: bash
 
@@ -401,6 +412,8 @@ Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
               action: block
       modificationsReference:
           link: https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/modifications/arcadia.f5app.dev.json
+
+- Apply new Arcadia's APPolicy
 
 .. code-block:: bash
 
@@ -458,7 +471,6 @@ Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
       }
     (...)
 
-
 - See content of Arcadia's WAF policy
 
 .. code-block:: bash
@@ -504,6 +516,7 @@ Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
     .. note:: **5.1 What is the violation rating?**
         | 3
 
+
     .. note:: **5.2 What are the violations?**
         | Illegal meta character in value, Bot Client Detected
 
@@ -523,6 +536,7 @@ as reverse DNS for example.
 
     .. note:: **5.3 What is the bot anomaly?**
         | Search Engine Verification Failed
+
 
     .. note:: **5.4 What is the client class?**
         | Malicious Bot
