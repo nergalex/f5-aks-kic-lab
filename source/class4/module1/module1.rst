@@ -532,3 +532,4 @@ as reverse DNS for example.
 
     **6.2 What is the client class?**
     | Malicious Bot
+
