@@ -33,7 +33,7 @@ Exercise 1: NGINX Configuration
 
     apt list --installed | grep nginx
 
-    - output
+*output:*
 
 .. code-block:: bash
     :emphasize-lines: 1
