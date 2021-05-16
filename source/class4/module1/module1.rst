@@ -140,12 +140,11 @@ Exercise 2: Security Policy
       }
     }
 
-**\o/ Capture The Flag \o/**
+**Capture The Flag**
 
-    .. note::
-        | **2.1 Which request type are logged by App Protect for Arcadia application?**
-        | all
-        | Tip: `App Protect Logs <https://docs.nginx.com/nginx-ingress-controller/app-protect/configuration/#app-protect-logs>`_
+    **2.1 Which request type are logged by App Protect for Arcadia application?**
+    | all
+    | Tip: `App Protect Logs <https://docs.nginx.com/nginx-ingress-controller/app-protect/configuration/#app-protect-logs>`_
 
 Exercise 3: Monitoring
 *********************
@@ -178,24 +177,17 @@ Exercise 3: Monitoring
 
 **Capture The Flag**
 
-    .. note::
-        | **3.1 What is the policy name?**
-        | generic-security-level-low
+    **3.1 What is the policy name?**
+    | generic-security-level-low
 
+    **3.2 What is the client_class for curl?**
+    | Untrusted Bot
 
-    .. note::
-        | **3.2 What is the client_class for curl?**
-        | Untrusted Bot
+    **3.3 Which violations are raised?**
+    | Illegal meta character in value, Attack signature detected, Violation Rating Threat detected, Bot Client Detected
 
-
-    .. note::
-        | **3.3 Which violations are raised?**
-        | Illegal meta character in value, Attack signature detected, Violation Rating Threat detected, Bot Client Detected
-
-
-    .. note::
-        | **3.4 Which attack signatures are detected?**
-        | 200001475, 200000098
+    **3.4 Which attack signatures are detected?**
+    | 200001475, 200000098
 
 Exercise 4: Modifications
 *************************
@@ -533,9 +525,8 @@ as reverse DNS for example.
 
 **Capture The Flag**
 
-    .. note:: **5.3 What is the bot anomaly?**
-        | Search Engine Verification Failed
+    **5.3 What is the bot anomaly?**
+    | Search Engine Verification Failed
 
-
-    .. note:: **5.4 What is the client class?**
-        | Malicious Bot
+    **5.4 What is the client class?**
+    | Malicious Bot

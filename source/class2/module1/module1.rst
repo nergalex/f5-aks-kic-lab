@@ -33,14 +33,14 @@ Two *NGINX Ingress Controller* (IC) instances, *App Protect* module embedded,
 have been already build on Jumphost following this `guide <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/#building-the-image-and-pushing-it-to-the-private-registry>`_
 and deployed using `Helm <https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-helm/>`_
 
-    .. note:: **Capture The Flag**
-        | What is the ingress-class name of the IC instance accessible from Internet?
-        | nginx-external
+**Capture The Flag**
 
-    .. note:: **Capture The Flag**
-        | **What is the version of deployed IC?**
-        | Tips: *NGINX Ingress Controller* image's tag contains: {{IC version}}-{{last update of WAF signature}}. `docker commands <https://docs.docker.com/engine/reference/commandline/docker/>`_
-        | 1.11.1
+    **3.1 What is the ingress-class name of the IC instance accessible from Internet?**
+    | nginx-external
+
+    **3.2 What is the version of deployed IC?**
+    | Tips: *NGINX Ingress Controller* image's tag contains: {{IC version}}-{{last update of WAF signature}}. `docker commands <https://docs.docker.com/engine/reference/commandline/docker/>`_
+    | 1.11.1
 
 Exercise 4: Kibana
 *****************************************
@@ -105,9 +105,10 @@ Exercise 5: Cryptonice
     $ cat kibana{{site_ID}}.f5app.dev.json | jq .
 
 
-    .. note:: **Capture The Flag**
-        | **What is the cipher suite supported?**
-        | ECDHE-RSA-AES256-GCM-SHA384
+**Capture The Flag**
+
+    **5.1 What is the cipher suite supported?**
+    | ECDHE-RSA-AES256-GCM-SHA384
 
 Exercise 6: NGINX+ API
 *****************************************
@@ -132,9 +133,10 @@ Using a simple RESTful JSON interface, it’s very easy to connect these stats t
 
     $ curl 10.1.1.18:8080/api/6/nginx/
 
-    .. note:: **Capture The Flag**
-        | **Which build of NGINX is used by IC?**
-        | nginx-plus-r23
+**Capture The Flag**
+
+    **6.1 Which build of NGINX is used by IC?**
+    | nginx-plus-r23
 
 Extra time: NGINX+ dashboard
 *****************************************
