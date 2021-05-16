@@ -13,7 +13,7 @@ Exercise 1: NGINX Configuration
 
     kubectl get pods -n external-ingress-controller
 
-    - output
+*output:*
 
 .. code-block:: bash
     :emphasize-lines: 2
@@ -140,7 +140,7 @@ Exercise 2: Security Policy
       }
     }
 
-**Capture The Flag**
+**\o/ Capture The Flag \o/**
 
     .. note::
         | **2.1 Which request type are logged by App Protect for Arcadia application?**
