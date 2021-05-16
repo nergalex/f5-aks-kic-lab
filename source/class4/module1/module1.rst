@@ -13,8 +13,12 @@ Exercise 1: NGINX Configuration
     :emphasize-lines: 3
 
     $ kubectl get pods -n external-ingress-controller
+
     NAME                                              READY   STATUS    RESTARTS   AGE
     nap-external-ingress-controller-7576b65b4-ps4ck   1/1     Running   0          8d
+
+.. code-block:: bash
+    :emphasize-lines: 3
 
     $ kubectl exec --namespace external-ingress-controller -it nap-external-ingress-controller-7576b65b4-ps4ck bash
 
@@ -48,7 +52,6 @@ Exercise 1: NGINX Configuration
     :emphasize-lines: 4
 
     $ kubectl describe ingress -n lab1-arcadia arcadia-ingress-external-master | grep protect
-
     Annotations:  appprotect.f5.com/app-protect-enable: True
                   appprotect.f5.com/app-protect-policy: external-ingress-controller/generic-security-level-low
                   appprotect.f5.com/app-protect-security-log: external-ingress-controller/naplogformat
@@ -129,7 +132,7 @@ Exercise 3: Monitoring
 
 .. code-block:: bash
 
-    $ curl -k -s https://arcadia1.f5app.dev/?a=%3Cscript%3E
+    $ curl -k -s "https://arcadia1.f5app.dev/?a=<script>"
 
 .. code-block:: html
     <html><head><title>Request Rejected</title></head><body>The requested URL was rejected.
@@ -158,11 +161,63 @@ Exercise 3: Monitoring
     | Untrusted Bot
 
 .. note:: **Capture The Flag**
-    | **What are the signatures raised?**
-    | 200001475, 200000098
-
-.. note:: **Capture The Flag**
-    | **What are the violations raised?**
+    | **Which violations are raised?**
     | Illegal meta character in value, Attack signature detected, Violation Rating Threat detected, Bot Client Detected
 
+.. note:: **Capture The Flag**
+    | **Which attack signatures are detected?**
+    | 200001475, 200000098
 
+Exercise 4: Modifications
+*********************
+
+By default block requests that are declared as threats, that is, their Violation Rating is 4 or 5.
+By default, if the violation rating is 4-5 the request is blocked using the VIOL_RATING_THREAT violation.
+By default, other requests which have a lower violation rating are not blocked,
+except for some specific violations described here `here <https://docs.nginx.com/nginx-app-protect/configuration/#basic-configuration-and-the-default-policy>`_ .
+This is to minimize false positives.
+
+However App Developers assume that this security event is a False Positive.
+Security policy must be modified to allow this request.
+
+- Create a new App Protect Policy
+
+.. code-block:: yaml
+    :linenos:
+    :emphasize-lines: 24
+    apiVersion: appprotect.f5.com/v1beta1
+    kind: APPolicy
+    metadata:
+      name: arcadia
+      namespace: external-ingress-controller
+      labels:
+        app: arcadia
+        policy-version: 1.0.0
+    spec:
+      policy:
+        applicationLanguage: utf-8
+        blocking-settings:
+          violations:
+          - alarm: true
+            block: true
+            name: VIOL_HTTP_RESPONSE_STATUS
+        enforcementMode: blocking
+        name: generic-security-level-low
+        signatures:
+        - enabled: false
+          signatureId: 200000128
+        template:
+          name: POLICY_TEMPLATE_NGINX_BASE
+      modifications:
+        - entityType: signature
+          entity:
+            signatureId: 200001475
+          entityChanges:
+            enabled: false
+          action: add-or-update
+        - entityType: signature
+          entity:
+            signatureId: 200000098
+          entityChanges:
+            enabled: false
+          action: add-or-update
