@@ -160,24 +160,29 @@ Exercise 3: Monitoring
     | **What is the client_class for curl?**
     | Untrusted Bot
 
+The default actions for bot classes are:
+
+    - detect for trusted-bot
+    - alarm for untrusted-bot
+    - block for malicious-bot
+
 .. note:: **Capture The Flag**
     | **Which violations are raised?**
     | Illegal meta character in value, Attack signature detected, Violation Rating Threat detected, Bot Client Detected
+
+By default, App Protect minimize false positives :
+    - block requests that are declared as threats their Violation Rating is 4 or 5.
+    - if the violation rating is 4-5 the request is blocked using the VIOL_RATING_THREAT violation.
+    - other requests which have a lower violation rating are not blocked, except for some specific violations described `here <https://docs.nginx.com/nginx-app-protect/configuration/#basic-configuration-and-the-default-policy>`_ .
 
 .. note:: **Capture The Flag**
     | **Which attack signatures are detected?**
     | 200001475, 200000098
 
 Exercise 4: Modifications
-*********************
+*************************
 
-By default block requests that are declared as threats, that is, their Violation Rating is 4 or 5.
-By default, if the violation rating is 4-5 the request is blocked using the VIOL_RATING_THREAT violation.
-By default, other requests which have a lower violation rating are not blocked,
-except for some specific violations described here `here <https://docs.nginx.com/nginx-app-protect/configuration/#basic-configuration-and-the-default-policy>`_ .
-This is to minimize false positives.
-
-However App Developers assume that this security event is a False Positive.
+App Developers assume that matched signatures are a False Positive.
 They added modifications of security policy `here <https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/modifications/arcadia.f5app.dev.json>`_.
 
 Now, a new security policy for Arcadia must be applied to allow this request.
@@ -288,3 +293,90 @@ Now, a new security policy for Arcadia must be applied to allow this request.
       Type    Reason          Age                   From                      Message
       ----    ------          ----                  ----                      -------
       Normal  AddedOrUpdated  45s (x20 over 7d23h)  nginx-ingress-controller  Configuration for lab1-arcadia/arcadia-ingress-external-master was added or update
+
+- Check that request is not block by WAF
+
+.. code-block:: bash
+
+    curl -k -s "https://arcadia1.f5app.dev/?a=<script>"
+
+Exercise 5: Anti Automation
+***************************
+Anti Automation provides basic bot protection by detecting bot signatures and clients that falsely claim to be browsers or search engines.
+The bot-defense section in the policy is enabled by default.
+
+Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
+
+- On Jumphost, apply a new manifest of App Protect Policy using `new core policy <https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/core/secure_medium.yaml>`_ and still referencing modifications set by AppDev
+
+.. code-block:: bash
+
+    $ vi lab3-arcadia_appolicy_bot.yaml
+
+.. code-block:: yaml
+    :linenos:
+    :emphasize-lines: 23-33
+
+    apiVersion: appprotect.f5.com/v1beta1
+    kind: APPolicy
+    metadata:
+      name: arcadia
+      namespace: external-ingress-controller
+      labels:
+        app: arcadia
+        policy-version: 1.1.0
+    spec:
+      policy:
+        name: arcadia
+        enforcementMode: blocking
+        applicationLanguage: utf-8
+        template:
+          name: POLICY_TEMPLATE_NGINX_BASE
+        server-technologies:
+          - serverTechnologyName: Unix/Linux
+          - serverTechnologyName: Nginx
+          - serverTechnologyName: "Apache/NCSA HTTP Server"
+          - serverTechnologyName: PHP
+          - serverTechnologyName: JavaScript
+          - serverTechnologyName: PostgreSQL
+        bot-defense:
+          settings:
+            isEnabled: true
+          mitigations:
+            classes:
+            - name: trusted-bot
+              action: alarm
+            - name: untrusted-bot
+              action: block
+            - name: malicious-bot
+              action: block
+      modificationsReference:
+          link: https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/modifications/arcadia.f5app.dev.json
+
+.. code-block:: bash
+
+    $ kubectl apply -f lab3-arcadia_appolicy_bot.yaml
+    appolicy.appprotect.f5.com/arcadia configured
+
+- Log into IC
+
+.. code-block:: bash
+    :emphasize-lines: 3
+
+    $ kubectl get pods -n external-ingress-controller
+
+    NAME                                              READY   STATUS    RESTARTS   AGE
+    nap-external-ingress-controller-7576b65b4-ps4ck   1/1     Running   0          8d
+
+.. code-block:: bash
+    :emphasize-lines: 3
+
+    $ kubectl exec --namespace external-ingress-controller -it nap-external-ingress-controller-7576b65b4-ps4ck bash
+
+- See configured WAF policies
+    $ grep -A 8 arcadia /opt/app_protect/config/config_set.json
+
+- See content of WAF policy for Arcadia
+    $ cat /etc/nginx/waf/nac-policies/external-ingress-controller_arcadia
+
+-
