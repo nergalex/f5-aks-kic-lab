@@ -181,20 +181,15 @@ However App Developers assume that this security event is a False Positive.
 They added modifications of security policy `here <https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/modifications/arcadia.f5app.dev.json>`_
 Now, a new security policy for Arcadia must be applied to allow this request.
 
-- On Jumphost, create a new App Protect Policy reusing `the current policy <https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/core/secure_low.yaml>`_ and referencing modifications set by AppDev
+- On Jumphost, apply a new manifest of App Protect Policy reusing `the current policy <https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/core/secure_low.yaml>`_ and referencing modifications set by AppDev
+
+.. code-block:: bash
+
+    $ vi app-arcadia.yaml
 
 .. code-block:: yaml
     :linenos:
     :emphasize-lines: 25
-    apiVersion: appprotect.f5.com/v1beta1
-    kind: APPolicy
-    metadata:
-      name: arcadia
-      namespace: external-ingress-controller
-      labels:
-        app: arcadia
-        policy-version: 1.0.0
-    spec:
     apiVersion: appprotect.f5.com/v1beta1
     kind: APPolicy
     metadata:
@@ -220,3 +215,60 @@ Now, a new security policy for Arcadia must be applied to allow this request.
           name: POLICY_TEMPLATE_NGINX_BASE
       modificationsReference:
           link: https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/modifications/arcadia.f5app.dev.json
+
+.. code-block:: bash
+
+    $ kubectl apply -f app-arcadia.yaml
+    appolicy.appprotect.f5.com/arcadia created
+
+.. code-block:: bash
+    :emphasize-lines: 6
+
+    $ kubectl describe appolicy -n external-ingress-controller arcadia
+    (...)
+    Events:
+      Type    Reason          Age   From                      Message
+      ----    ------          ----  ----                      -------
+      Normal  AddedOrUpdated  36s   nginx-ingress-controller  AppProtectPolicy external-ingress-controller/arcadia was added or updated
+
+- Apply the new created policy to Arcadia's ingress resource
+
+.. code-block:: bash
+
+    $ vi ingress-arcadia.yaml
+
+.. note::
+    | Replace {{ site_ID }} in Manifest file, see highlighted lines below
+
+.. code-block:: yaml
+    :linenos:
+    :emphasize-lines: 19,24,27
+
+    apiVersion: networking.k8s.io/v1
+    kind: Ingress
+    metadata:
+      name: "arcadia-ingress-external-master"
+      namespace: "lab1-arcadia"
+      labels:
+        app: "arcadia"
+        policy_target: external
+      annotations:
+        nginx.org/mergeable-ingress-type: "master"
+        nginx.org/server-snippets: |
+          proxy_ignore_headers X-Accel-Expires Expires Cache-Control;
+          proxy_cache_valid any 30s;
+        ingress.kubernetes.io/ssl-redirect: "true"
+        appprotect.f5.com/app-protect-policy: "external-ingress-controller/arcadia"
+        appprotect.f5.com/app-protect-enable: "True"
+        appprotect.f5.com/app-protect-security-log-enable: "True"
+        appprotect.f5.com/app-protect-security-log: "external-ingress-controller/naplogformat"
+        appprotect.f5.com/app-protect-security-log-destination: "syslog:server=10.{{ site_ID }}.0.10:5144"
+    spec:
+      ingressClassName: "nginx-external"
+      tls:
+      - hosts:
+        - "arcadia{{ site_ID }}.f5app.dev"
+        secretName: "arcadia-secret-tls"
+      rules:
+      - host: "arcadia{{ site_ID }}.f5app.dev"
+
