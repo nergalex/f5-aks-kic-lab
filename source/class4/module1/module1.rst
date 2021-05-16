@@ -178,18 +178,20 @@ except for some specific violations described here `here <https://docs.nginx.com
 This is to minimize false positives.
 
 However App Developers assume that this security event is a False Positive.
-They added modifications of security policy `here <https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/modifications/arcadia.f5app.dev.json>`_
+They added modifications of security policy `here <https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/modifications/arcadia.f5app.dev.json>`_.
+
 Now, a new security policy for Arcadia must be applied to allow this request.
 
 - On Jumphost, apply a new manifest of App Protect Policy reusing `the current policy <https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/core/secure_low.yaml>`_ and referencing modifications set by AppDev
 
 .. code-block:: bash
 
-    $ vi app-arcadia.yaml
+    $ vi lab3-arcadia_appolicy.yaml
 
 .. code-block:: yaml
     :linenos:
     :emphasize-lines: 25
+
     apiVersion: appprotect.f5.com/v1beta1
     kind: APPolicy
     metadata:
@@ -218,7 +220,7 @@ Now, a new security policy for Arcadia must be applied to allow this request.
 
 .. code-block:: bash
 
-    $ kubectl apply -f app-arcadia.yaml
+    $ kubectl apply -f lab3-arcadia_appolicy.yaml
     appolicy.appprotect.f5.com/arcadia created
 
 .. code-block:: bash
@@ -235,7 +237,7 @@ Now, a new security policy for Arcadia must be applied to allow this request.
 
 .. code-block:: bash
 
-    $ vi ingress-arcadia.yaml
+    $ vi lab3-arcadia_ingress.yaml
 
 .. note::
     | Replace {{ site_ID }} in Manifest file, see highlighted lines below
@@ -272,3 +274,17 @@ Now, a new security policy for Arcadia must be applied to allow this request.
       rules:
       - host: "arcadia{{ site_ID }}.f5app.dev"
 
+.. code-block:: bash
+
+    $ kubectl apply -f lab3-arcadia_ingress.yaml
+    ingress.networking.k8s.io/arcadia-ingress-external-master configured
+
+.. code-block:: bash
+    :emphasize-lines: 6
+
+    $ kubectl describe ingress -n lab1-arcadia arcadia-ingress-external-master
+    (...)
+    Events:
+      Type    Reason          Age                   From                      Message
+      ----    ------          ----                  ----                      -------
+      Normal  AddedOrUpdated  45s (x20 over 7d23h)  nginx-ingress-controller  Configuration for lab1-arcadia/arcadia-ingress-external-master was added or update
