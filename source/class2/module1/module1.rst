@@ -42,6 +42,9 @@ and deployed using `Helm <https://docs.nginx.com/nginx-ingress-controller/instal
     | Tips: *NGINX Ingress Controller* image's tag contains: {{IC version}}-{{last update of WAF signature}}. `docker commands <https://docs.docker.com/engine/reference/commandline/docker/>`_
     | 1.11.1
 
+    **3.3 Ingress Controller - for an ingress class name - watch for resources in Namespaces. What is the Helm configuration parameter to limit Namespace(s) to watch?**
+    | controller.watchNamespace
+
 Exercise 4: Kibana
 *****************************************
 

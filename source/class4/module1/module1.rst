@@ -77,6 +77,12 @@ Exercise 1: NGINX Configuration
 Exercise 2: Security Policy
 *********************
 
+- See installed App Protect software
+
+.. code-block:: bash
+
+    apt list --installed | grep protect
+
 - Show App Protect policy resource
 
 .. code-block:: bash
@@ -145,6 +151,13 @@ Exercise 2: Security Policy
     **2.1 Which request type are logged by App Protect for Arcadia application?**
     | all
     | Tip: `App Protect Logs <https://docs.nginx.com/nginx-ingress-controller/app-protect/configuration/#app-protect-logs>`_
+
+    **2.2 What is the name of Threat Campaigns installed package?**
+    | app-protect-threat-campaigns
+
+    **2.3 How many signature attack update were released in April?**
+    | 10
+    | Tip: ``yum list --showduplicates {{ package name }}``
 
 Exercise 3: Monitoring
 *********************

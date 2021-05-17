@@ -23,6 +23,8 @@ In lab3, a WAF policy have been already applied to ``VirtualServer`` and each ``
    :width: 800
    :alt: cafe flow
 
+- Try to access to ``https://cafe{{site_ID}}.f5app.dev/tea`` and ``https://cafe{{site_ID}}.f5app.dev/coffee``
+
 Exercise 1: K8S resources
 *******************************
 
@@ -80,6 +82,11 @@ VirtualServerRoute
         Port:     80
         Service:  coffee
 
+**Capture The Flag**
+
+    **1.1 What is the waf policy name that protects /tea?**
+    | waf-cafe-tea
+
 WAF Policy
 ===============================
 
@@ -130,6 +137,11 @@ App Protect Policy
           Signature Id:  200000128
         Template:
           Name:  POLICY_TEMPLATE_NGINX_BASE
+
+**Capture The Flag**
+
+    **1.2 In which namespace are located all APPolicies?**
+    | external-ingress-controller
 
 Exercise 2: Ingress Controller configuration
 ********************************************
@@ -188,6 +200,11 @@ NGINX
         app_protect_security_log_enable on;
         app_protect_security_log /etc/nginx/waf/nac-logconfs/external-ingress-controller_naplogformat syslog:server=10.1.0.10:5144;
 
+**Capture The Flag**
+
+    **2.1 Which App Protect policy name protects /return_page?**
+    | external-ingress-controller_generic-security-level-low
+
 App Protect
 ===============================
 
@@ -234,3 +251,18 @@ App Protect
         }
       }
     }
+
+**Capture The Flag**
+
+    **2.2 Two VirtualServerRoutes in a same namespace can reference same WAF policy. Is it true?**
+    | yes
+
+    **2.3 Two VirtualServerRoutes in 2 namespaces can reference one same WAF policy. Is it true?**
+    | yes
+
+
+
+
+
+
+
