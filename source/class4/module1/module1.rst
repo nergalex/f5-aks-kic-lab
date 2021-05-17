@@ -27,20 +27,36 @@ Exercise 1: NGINX Configuration
 
     kubectl exec --namespace external-ingress-controller -it nap-external-ingress-controller-7576b65b4-ps4ck bash
 
-- See installed NGINX Plus software
+Package
+=====================
+
+- See installed App Protect software
 
 .. code-block:: bash
 
-    apt list --installed | grep nginx
+    apt list --installed | grep protect
 
 *output:*
 
 .. code-block:: bash
     :emphasize-lines: 1
 
-    nginx-plus-module-appprotect/now 23+3.332.0-1~buster amd64 [installed,local]
-    nginx-plus-module-njs/now 23+0.5.0-1~buster amd64 [installed,local]
-    nginx-plus/now 23-1~buster amd64 [installed,local]
+    app-protect-attack-signatures/now 2021.04.29-1~buster amd64 [installed,local]
+    app-protect-compiler/now 6.3.6-1~buster amd64 [installed,local]
+    app-protect-engine/now 6.3.6-1~buster amd64 [installed,local]
+    ...
+
+**Capture The Flag**
+
+    **2.1 What is the name of Threat Campaigns package?**
+    | app-protect-threat-campaigns
+
+    **2.2 How many signature attack update were released in April?**
+    | 10
+    | Tip: ``yum list --showduplicates {{ package name }}``
+
+Directive
+=====================
 
 - Show App Protect directives in Arcadia configuration
 
@@ -57,7 +73,10 @@ Exercise 1: NGINX Configuration
     app_protect_security_log_enable on;
     app_protect_security_log /etc/nginx/waf/nac-logconfs/external-ingress-controller_naplogformat syslog:server=10.1.0.10:5144;
 
-- On Jumphost, show App Protect directives in Arcadia ingress resource
+Annotation
+=====================
+
+- On Jumphost, show App Protect annotations in Arcadia ingress resource
 
 .. code-block:: bash
 
@@ -77,11 +96,8 @@ Exercise 1: NGINX Configuration
 Exercise 2: Security Policy
 *********************
 
-- See installed App Protect software
-
-.. code-block:: bash
-
-    apt list --installed | grep protect
+APPolicy
+=====================
 
 - Show App Protect policy resource
 
@@ -110,7 +126,10 @@ Exercise 2: Security Policy
         Template:
           Name:  POLICY_TEMPLATE_NGINX_BASE
 
-- On IC, show App Protect policy
+Declarative policy
+=====================
+
+- On IC, show App Protect `declarative policy <https://docs.nginx.com/nginx-app-protect/policy/>`_
 
 .. code-block:: bash
 
@@ -148,19 +167,15 @@ Exercise 2: Security Policy
 
 **Capture The Flag**
 
-    **2.1 Which request type are logged by App Protect for Arcadia application?**
+    **2.3 Which request type are logged by App Protect for Arcadia application?**
     | all
     | Tip: `App Protect Logs <https://docs.nginx.com/nginx-ingress-controller/app-protect/configuration/#app-protect-logs>`_
 
-    **2.2 What is the name of Threat Campaigns installed package?**
-    | app-protect-threat-campaigns
-
-    **2.3 How many signature attack update were released in April?**
-    | 10
-    | Tip: ``yum list --showduplicates {{ package name }}``
-
 Exercise 3: Monitoring
 *********************
+
+Support ID
+=====================
 
 - To test that the site is protected, on Jumphost, append a script to the end of the curl statement:
 
@@ -175,6 +190,9 @@ Exercise 3: Monitoring
     Please consult with your administrator.<br><br>
     Your support ID is: 4096465330496922252
     <br><br><a href='javascript:history.back();'>[Go Back]</a></body></html>
+
+Analytics
+=====================
 
 - Connect to Kibana ``https://kibana{{site_ID}}.f5app.dev`` >> Dashboard >> Overview
 - Add a filter ``vs_name is *arcadia1.f5app.dev*``
@@ -215,6 +233,9 @@ They added modifications of security policy `here <https://raw.githubusercontent
 
 Now, a new security policy for Arcadia must be applied to allow this request.
 
+APPolicy - Manifest
+=====================
+
 - On Jumphost, create a manifest of App Protect Policy reusing `the current policy <https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/core/secure_low.yaml>`_ and referencing modifications set by AppDev
 
 .. code-block:: bash
@@ -253,6 +274,9 @@ Now, a new security policy for Arcadia must be applied to allow this request.
       modificationsReference:
           link: https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/modifications/arcadia.f5app.dev.json
 
+APPolicy - APPLY
+=====================
+
 - Apply manifest APPolicy
 
 .. code-block:: bash
@@ -264,6 +288,9 @@ Now, a new security policy for Arcadia must be applied to allow this request.
 .. code-block:: bash
 
     appolicy.appprotect.f5.com/arcadia created
+
+APPolicy - CHECK
+=====================
 
 - Check apply status
 
@@ -280,6 +307,9 @@ Now, a new security policy for Arcadia must be applied to allow this request.
       Type    Reason          Age   From                      Message
       ----    ------          ----  ----                      -------
       Normal  AddedOrUpdated  36s   nginx-ingress-controller  AppProtectPolicy external-ingress-controller/arcadia was added or updated
+
+Ingress - Manifest
+=====================
 
 - Create a manifest reusing current Arcadia's ingress resource and reference newly created APPolicy
 
@@ -323,6 +353,9 @@ Now, a new security policy for Arcadia must be applied to allow this request.
       rules:
       - host: "arcadia{{ site_ID }}.f5app.dev"
 
+Ingress - APPLY
+=====================
+
 - Apply manifest Ingress
 
 .. code-block:: bash
@@ -334,6 +367,9 @@ Now, a new security policy for Arcadia must be applied to allow this request.
 .. code-block:: bash
 
     ingress.networking.k8s.io/arcadia-ingress-external-master configured
+
+Ingress - CHECK
+=====================
 
 - Check apply status
 
@@ -369,6 +405,9 @@ The default actions for bot classes are:
     - block for malicious-bot
 
 Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
+
+APPolicy - Manifest
+=====================
 
 - On Jumphost, create a new manifest of App Protect Policy using `new core policy <https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/core/secure_medium.yaml>`_ and still referencing modifications set by AppDev
 
@@ -418,6 +457,9 @@ Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
       modificationsReference:
           link: https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/modifications/arcadia.f5app.dev.json
 
+APPolicy - APPLY
+=====================
+
 - Apply new Arcadia's APPolicy
 
 .. code-block:: bash
@@ -429,6 +471,9 @@ Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
 .. code-block:: bash
 
     appolicy.appprotect.f5.com/arcadia configured
+
+App Protect - configuration
+===========================
 
 - On IC, see configured WAF policies
 
@@ -457,11 +502,17 @@ Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
       }
     (...)
 
+App Protect - declarative policy
+================================
+
 - See content of Arcadia's WAF policy
 
 .. code-block:: bash
 
     cat /etc/nginx/waf/nac-policies/external-ingress-controller_arcadia
+
+App Protect - compilation status
+================================
 
 - See WAF compilation output
 
@@ -486,6 +537,9 @@ Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
         "version": "2021.04.29"
       }
     }
+
+CHECK
+================================
 
 - Test again with curl
 
