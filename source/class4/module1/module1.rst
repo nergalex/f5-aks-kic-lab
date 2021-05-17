@@ -417,26 +417,7 @@ Now, core policy is updated by SecOps to block ``untrusted-bot`` class.
 
     appolicy.appprotect.f5.com/arcadia configured
 
-- Log into IC
-
-.. code-block:: bash
-    :emphasize-lines: 3
-
-    kubectl get pods -n external-ingress-controller
-
-*output:*
-
-.. code-block:: bash
-    :emphasize-lines: 2
-
-    NAME                                              READY   STATUS    RESTARTS   AGE
-    nap-external-ingress-controller-7576b65b4-ps4ck   1/1     Running   0          8d
-
-.. code-block:: bash
-
-    kubectl exec --namespace external-ingress-controller -it nap-external-ingress-controller-7576b65b4-ps4ck bash
-
-- See configured WAF policies
+- On IC, see configured WAF policies
 
 .. code-block:: bash
 
