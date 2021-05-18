@@ -1,9 +1,7 @@
 lab 4 - API GW + OIDC
 ##############################################################
 
-In this class, we will deploy NGINX App Protect in CentOS host by installing the RPM packages from the official NGINX Plus Repo.
-
-.. warning:: In this lab, there are cert + keys to download the packages from official NGINX repo. It is forbidden to share them with anyone.
+This lab describes how to enable OpenID Connect integration and API protection.
 
 .. toctree::
    :maxdepth: 1

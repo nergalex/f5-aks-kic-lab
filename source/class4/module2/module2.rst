@@ -3,6 +3,7 @@ VirtualServer(Route) - Cafe
 
 .. contents:: Contents
     :local:
+    :depth: 1
 
 Introduction
 *******************************
@@ -16,7 +17,7 @@ Cafe application, configured by your own in lab 2, have been already deployed in
 Like an ``Ingress`` resource, a ``VirtualServer`` resource allows you to set a default policy at the http context in configuration file.
 More, a ``VirtualServerRoute`` allows you to set a location policy in the configuration file.
 
-In lab3, a WAF policy have been already applied to ``VirtualServer`` and each ``VirtualServerRoute`` resources.
+A WAF policy have been already applied to ``VirtualServer`` and each ``VirtualServerRoute`` resources.
 
 .. image:: ./_pictures/cafe_flow.svg
    :align: center
