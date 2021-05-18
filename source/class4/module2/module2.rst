@@ -1,4 +1,4 @@
-Cafe
+VirtualServer(Route) - Cafe
 ##############################################################
 
 .. contents:: Contents
@@ -254,10 +254,10 @@ App Protect
 
 **Capture The Flag**
 
-    **2.2 Two VirtualServerRoutes in a same namespace can reference same WAF policy. Is it true?**
+    **2.2 Two VirtualServerRoutes in same namespace can reference same WAF policy. Is it true?**
     | yes
 
-    **2.3 Two VirtualServerRoutes in 2 namespaces can reference one same WAF policy. Is it true?**
+    **2.3 Two VirtualServerRoutes in 2 namespaces can reference same WAF policy in another nameSpace. Is it true?**
     | yes
 
 

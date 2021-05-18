@@ -35,12 +35,12 @@ and deployed using `Helm <https://docs.nginx.com/nginx-ingress-controller/instal
 
 **Capture The Flag**
 
-    **3.1 What is the ingress-class name of the IC instance accessible from Internet?**
-    | nginx-external
-
-    **3.2 What is the version of deployed IC?**
+    **3.1 What is the version of deployed IC?**
     | Tips: *NGINX Ingress Controller* image's tag contains: {{IC version}}-{{last update of WAF signature}}. `docker commands <https://docs.docker.com/engine/reference/commandline/docker/>`_
     | 1.11.1
+
+    **3.2 What is the ingress-class name of the IC instance accessible from Internet?**
+    | nginx-external
 
     **3.3 Ingress Controller - for an ingress class name - watch for resources in Namespaces. What is the Helm configuration parameter to limit Namespace(s) to watch?**
     | controller.watchNamespace
