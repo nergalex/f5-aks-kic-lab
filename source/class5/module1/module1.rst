@@ -20,7 +20,7 @@ This Ingress Controller is an **Edge Proxy** that:
     - manages North/South traffic
     - protects published Application with a core WAF policy defined at Enterprise level
 
-In this lab, **Edge Proxy** protects an Web Browser based and API based Application when it is consumed from outside K8S cluster.
+In this lab, **Edge Proxy** protects an Web Browser based and API based Application when it is consumed from outside of K8S cluster.
 
 Micro Proxy - API GW
 ********************************
@@ -36,8 +36,8 @@ a threat model and according protection are defined per `API consumer profile <h
 
 In this lab, **Micro Proxy** publishes API endpoints of an Application in 2 ways:
 
-    - **Private API** consumed by another namespace and inside the same namespace. This communication generates cross namespace, or East/West, traffic inside K8S cluster.
-    - **Partner API** consumed by a user using an IDaaS
+    - **Private API** consumed by another namespace and inside the same namespace. This communication generates East/West traffic i.e. cross namespace traffic inside K8S cluster.
+    - **Partner API** consumed by a user authenticated by an IDaaS
 
 .. note::
     **Private API** could also generates **North/South traffic** regarding our K8S cluster point of view: for example a consumer hosted on another K8S cluster in another Cloud Service Provider
@@ -55,11 +55,11 @@ App components
 As described `here <https://clouddocs.f5.com/training/community/nginx/html/class6/module1/lab1/lab1.html>`_,
 Sentence app is split into:
 
-- a **web frontend service**, published publicly
-- a **middle-end API service** named ``generator``, published:
-    - internally to frontend server
-    - directly to authenticated partner. Partner are authenticated by an IDaaS: **Okta**
-- **backend API micro-services**, published internally to ``generator``
+    - a **web frontend service**, published publicly
+    - a **middle-end API service** named ``generator``, published:
+        - internally to frontend server
+        - directly to authenticated partners. Partners are authenticated by an IDaaS: **Okta**
+    - **backend API micro-services**, published internally to ``generator``
 
 A dedicated Ingress Controller acts as an API GW to handle **internal API** and **partner API** publication.
 
@@ -67,8 +67,8 @@ K8S resources
 ================================
 Sentence app is split into 2 namespaces:
 
-- **Front** that hosts web frontend service
-- **API** that hosts API GW, middle-end and backend API micro-services
+- **Front**: hosts web frontend service
+- **API**: hosts API GW, middle-end and backend API micro-services
 
 .. image:: ./_pictures/sentence_K8S.svg
    :align: center
