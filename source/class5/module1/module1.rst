@@ -1,4 +1,4 @@
-Architecture
+Introduction
 #################################################################
 
 .. image:: ./_pictures/sentence_overview.svg
@@ -10,9 +10,11 @@ Architecture
     :local:
     :depth: 1
 
-Edge Proxy - Web Application & API Protection
+Architecture overview
 *********************************************
 
+Edge Proxy - Web Application & API Protection
+=============================================
 In previous labs, we worked on an Ingress Controller hosted in an infra namespace ``external-ingress-controller`` with Ingress Class Name ``nginx-external``.
 This Ingress Controller is an **Edge Proxy** that:
     - is managed by Infrastructure Provider team
@@ -23,8 +25,7 @@ This Ingress Controller is an **Edge Proxy** that:
 In this lab, **Edge Proxy** protects an Web Browser based and API based Application when it is consumed from outside of K8S cluster.
 
 Micro Proxy - API GW
-********************************
-
+=============================================
 One of the defining characteristics of an API is that it should be reusable,
 i.e. an API endpoint can be consumed by another internal micro-service, partner application or anybody on Internet.
 `To reduce attack surface of APIs <https://www.f5.com/labs/articles/education/securing-apis--10-best-practices-for-keeping-your-data-and-infra>`_,
@@ -42,8 +43,9 @@ In this lab, **Micro Proxy** publishes API endpoints of an Application in 2 ways
 .. note::
     **Private API** could also generates **North/South traffic** regarding our K8S cluster point of view: for example a consumer hosted on another K8S cluster in another Cloud Service Provider
 
-Sentence
+App design
 ********************************
+An application named ***Sentence** has already been deployed.
 
 .. image:: ./_pictures/sentence_detailled.svg
    :align: center
@@ -53,7 +55,7 @@ Sentence
 App components
 ================================
 As described `here <https://clouddocs.f5.com/training/community/nginx/html/class6/module1/lab1/lab1.html>`_,
-Sentence app is split into:
+*Sentence* app is split into:
 
     - a **web frontend service**, published publicly
     - a **middle-end API service** named ``generator``, published:
@@ -67,12 +69,10 @@ K8S resources
 ================================
 Sentence app is split into 2 namespaces:
 
-- **Front**: hosts web frontend service
-- **API**: hosts API GW, middle-end and backend API micro-services
+    - **Front**: hosts web frontend service
+    - **API**: hosts API GW, middle-end and backend API micro-services
 
 .. image:: ./_pictures/sentence_K8S.svg
    :align: center
    :width: 900
    :alt: K8S resources
-
-
