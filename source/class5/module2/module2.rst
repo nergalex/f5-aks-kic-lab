@@ -3,7 +3,7 @@ Sentence
 
 .. contents:: Contents
     :local:
-    :depth: 1
+    :depth: 2
 
 Web UI access
 *********************************************
