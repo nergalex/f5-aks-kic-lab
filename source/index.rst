@@ -3,7 +3,7 @@ NGINX Ingress Controller workshop
 
 .. image:: ./_pictures/UFO_cow.png
    :align: center
-   :width: 900
+   :width: 700
    :alt: UFO
 
 Objectives
