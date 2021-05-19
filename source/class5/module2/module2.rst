@@ -141,27 +141,25 @@ Exercise 1: Flow 3 | Client >> Okta
 
 .. image:: ./_pictures/okta_OIDC_debugger.png
    :align: center
-   :width: 500
+   :width: 600
    :alt: OIDC debugger - query
 
 - Authenticate user with username ``cloudbuilder@acme.com`` and password ``F5-AKS-KIC-lab!``
 
 .. image:: ./_pictures/okta_OIDC_debugger_auth.png
    :align: center
-   :width: 500
+   :width: 200
    :alt: OIDC debugger - auth
 
 - You should receive a response code
 
 .. image:: ./_pictures/okta_OIDC_debugger_response.png
    :align: center
-   :width: 500
+   :width: 600
    :alt: OIDC debugger - response
 
 Exercise 2: API GW - K8S configuration
 =================================================
-
-NGINX Ingress Controller is configured to perform OpenID Connect authentication.
 
 - View OIDC configuration in VirtualServerRoute resource
 
@@ -217,7 +215,14 @@ NGINX Ingress Controller is configured to perform OpenID Connect authentication.
 Exercise 3: API GW - NGINX configuration
 =================================================
 
-- Connect to internal IC as API GW
+NGINX Ingress Controller is configured to perform OpenID Connect authentication.
+
+- Connect to internal IC (apigw)
+
+.. code-block:: bash
+kubectl get pods --namespace lab4-sentence-api
+kubectl exec --namespace lab4-sentence-api -it apigw-7795fd75c9-492rl bash
+
 - View configuration in Location block
 
 .. code-block:: bash
@@ -259,7 +264,7 @@ Exercise 3: API GW - NGINX configuration
         error_page 500 502 504 @oidc_error;
     }
 
-- View configuration of OIDC token request sent by NGINX Ingress Controller
+- View configuration of OIDC token request sent by NGINX Ingress Controller to Okta
 
 .. code-block:: bash
 
@@ -278,8 +283,266 @@ Exercise 3: API GW - NGINX configuration
         error_page 500 502 504 @oidc_error;
     }
 
+Exercise 4: API GW - OIDC flows
+=================================================
+Upon a first visit to a protected resource,
+API GW initiates the OpenID Connect authorization code flow and redirects the client to the OpenID Connect provider (Okta).
 
-Exercise 3: API GW - OIDC configuration
+- Using your Web brower, open Developper tools (F12 or Ctrl + Shift + i)
+- Browse on ``https://sentence-api{{site_ID}}.f5app.dev/``
+- Clic on request ``https://sentence-api{{site_ID}}.f5app.dev/``
+
+.. image:: ./_pictures/OIDC_flow_1.svg
+   :align: center
+   :width: 600
+   :alt: OIDC - flow 1
+
+**Capture The Flag**
+
+    **4.1 In parameters of the request, what is the PATH of the redirect uri?**
+    | /_codexch
+
+- Authenticate user with username ``cloudbuilder@acme.com`` and password ``F5-AKS-KIC-lab!``
+
+The client returns to API GW with an authorization code.
+
+.. image:: ./_pictures/OIDC_flow_2.svg
+   :align: center
+   :width: 600
+   :alt: OIDC - flow 2
+
+API GW exchanges that code for a set of tokens by communicating directly with the IdP.
+The ID Token received from the IdP is validated.
+
+.. code-block:: bash
+
+    grep -A 8 /_id_token_validation /etc/nginx/oidc/oidc.conf
+
+*output:*
+
+.. code-block:: nginx
+    :emphasize-lines: 1
+
+    location = /_id_token_validation {
+        # This location is called by oidcCodeExchange() and oidcRefreshRequest(). We use
+        # the auth_jwt_module to validate the OpenID Connect token response, as per:
+        #  https://openid.net/specs/openid-connect-core-1_0.html#IDTokenValidation
+        internal;
+        auth_jwt "" token=$arg_token;
+        js_content oidc.validateIdToken;
+        error_page 500 502 504 @oidc_error;
+    }
+
+API GW then stores the ID token in the key-value store,
+issues a session cookie to the client using a random string,
+(which becomes the key to obtain the ID token from the key-value store)
+and redirects the client to the original URI requested prior to authentication.
+
+- Clic on request ``https://sentence-api{{site_ID}}.f5app.dev/_codexch``
+
+.. image:: ./_pictures/OIDC_flow_3.svg
+   :align: center
+   :width: 600
+   :alt: OIDC - flow 3
+
+Subsequent requests to protected resources are authenticated by exchanging the session cookie for the ID Token in the key-value store.
+
+.. image:: ./_pictures/OIDC_flow_4.svg
+   :align: center
+   :width: 600
+   :alt: OIDC - flow 4
+
+JWT validation is performed on each request, as normal, so that the ID Token validity period is enforced.
+For more information on OpenID Connect and JWT validation with NGINX Plus,
+see Authenticating Users to `Existing Applications with OpenID Connect and NGINX Plus <https://www.nginx.com/blog/authenticating-users-existing-applications-openid-connect-nginx-plus/>`_.
+
+- Browse on ``https://sentence-api{{site_ID}}.f5app.dev/adjectives``
+
+**Capture The Flag**
+
+    **4.2 What is the cookie name that will be exchanged for the ID Token in the key-value store?**
+    | auth_token
+
+Exercise 5: WAF and API Protection (WAAP)
+=================================================
+The OpenAPI Specification defines the spec file format needed to describe RESTful APIs.
+The spec file can be written either in JSON or YAML.
+
+- View the difference for ``/name`` endpoint between Sentence's openAPI spec files:
+    - `Internal API <https://github.com/fchmainy/nginx-aks-demo/blob/main/k8s/apigw/oas_generator_v0.1.yaml>`_
+    - `Partner API <https://github.com/nergalex/f5-nap-policies/blob/master/policy/open-api-files/sentence-api.f5app.dev.yaml>`_
+
+API protection policy is using an OpenAPI Specification file to import the details of the APIs.
+NGINX App Protect will automatically create a policy for the following properties (depending on what’s included in the spec file):
+    - Methods
+    - URLs
+    - Parameters
+    - JSON profiles
+
+- Using a Web browser, access to ``https://sentence-api{{site_ID}}.f5app.dev/colors/1``
+
+*output:*
+
+.. code-block:: json
+
+    {
+      "id": 1,
+      "name": "red"
+    }
+
+- Using a Web browser, access to ``https://sentence-api{{site_ID}}.f5app.dev/colors/tata``
+
+*output:*
+
+.. code-block:: json
+
+    {"supportID": "17736894413136180189"}
+
+**Capture The Flag**
+
+    **5.1 For /colors/{id} endpoint, what is the defined type for parameter name 'id'?**
+    | integer
+
+- Connect to Kibana ``https://kibana{{site_ID}}.f5app.dev/``
+- Dashboard >> Overview >> add a filter ``vs_name is sentence-api{{site_ID}}f5app.dev``
+
+.. image:: ./_pictures/kibana_filter.png
+   :align: center
+   :width: 600
+   :alt: kibana filter
+
+**Capture The Flag**
+
+    **5.2 What is the vilation raised for request ``/colors/tata``?**
+    | Illegal parameter data type
+
+Exercise 6: WAAP configuration
 =================================================
 
-Upon a first visit to a protected resource, NGINX Plus initiates the OpenID Connect authorization code flow and redirects the client to the OpenID Connect provider (IdP). When the client returns to NGINX Plus with an authorization code, NGINX Plus exchanges that code for a set of tokens by communicating directly with the IdP.
+- View VirtualServer specifications
+
+.. code-block:: bash
+
+    kubectl describe virtualservers -n lab4-sentence-api sentence-api | grep -A 100 Spec
+
+*output:*
+
+.. code-block:: yaml
+    :emphasize-lines: 4
+
+      Host:                sentence-api1.f5app.dev
+      Ingress Class Name:  nginx-external
+      Policies:
+        Name:       waf-sentence-api
+        Namespace:  lab4-sentence-api
+      Routes:
+        Path:   /_codexch
+        Route:  lab4-sentence-api/codexch
+        Action:
+          Pass:  apigw
+        Path:    /
+      Tls:
+        Redirect:
+          Based On:  scheme
+          Code:      301
+          Enable:    true
+        Secret:      sentence-api-secret-tls
+      Upstreams:
+        Name:     apigw
+        Port:     80
+        Service:  apigw-microapigw
+
+- View WAF policy specifications
+
+.. code-block:: bash
+
+    kubectl describe policy -n lab4-sentence-api waf-sentence-api | grep -A 100 Spec
+
+*output:*
+
+.. code-block:: yaml
+    :emphasize-lines: 2
+
+      Waf:
+        Ap Policy:  external-ingress-controller/sentence-api
+        Enable:     true
+        Security Log:
+          Ap Log Conf:  external-ingress-controller/naplogformat
+          Enable:       true
+          Log Dest:     syslog:server=10.1.0.10:5144
+
+- View App Protect policy and the reference to OpenAPI spec file **partner API**
+
+.. code-block:: bash
+
+    kubectl describe appolicy -n external-ingress-controller sentence-api | grep -A 100 Spec
+
+*output:*
+
+.. code-block:: yaml
+    :emphasize-lines: 9
+
+  Policy:
+    Blocking - Settings:
+      Violations:
+        ...: ...
+    Description:      Based on NGINX App Protect API Security template Policy
+    Name:             sentence-api-security-level-api
+    Open - API - Files:
+      Link:  https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/open-api-files/sentence-api.f5app.dev.yaml
+    Template:
+      Name:  POLICY_TEMPLATE_NGINX_BASE
+
+Exercise 7: WAAP configuration and API infra endpoint
+=====================================================
+
+``/_codexch`` is not present in openAPI spec file because it is an infrastructure API endpoint required for OIDC.
+
+- View VirtualServerRoute resource for ``/_codexch`` endpoint
+
+.. code-block:: bash
+
+    kubectl describe virtualserverroute -n lab4-sentence-api codexch | grep -A 100 Spec
+
+*output:*
+
+.. code-block:: yaml
+    :emphasize-lines: 8
+
+  Host:                sentence-api1.f5app.dev
+  Ingress Class Name:  nginx-external
+  Subroutes:
+    Action:
+      Pass:  apigw
+    Path:    /_codexch
+    Policies:
+      Name:       waf-disable
+      Namespace:  lab4-sentence-api
+  Upstreams:
+    Name:     apigw
+    Port:     80
+    Service:  apigw-microapigw
+
+- View that WAF is disabled for ``/_codexch``
+
+.. code-block:: bash
+
+    kubectl describe policy -n lab4-sentence-api waf-disable | grep -A 2 Spec
+
+*output:*
+
+.. code-block:: yaml
+
+      Waf:
+        Enable:  false
+
+.. note:: Ingress resource type does not allow to disable a WAF policy on a Location, only VirtualServerRoute does
+
+Exercise 8: Rate Limit
+=====================================================
+
+
+
+
+
+
