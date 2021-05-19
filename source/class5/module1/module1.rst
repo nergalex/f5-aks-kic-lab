@@ -1,4 +1,4 @@
-Introduction
+Architecture
 #################################################################
 
 .. image:: ./_pictures/sentence_overview.svg
@@ -10,7 +10,7 @@ Introduction
     :local:
     :depth: 1
 
-Architecture overview
+Overview
 *********************************************
 
 Edge Proxy - Web Application & API Protection

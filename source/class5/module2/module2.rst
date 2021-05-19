@@ -101,7 +101,7 @@ Partner API access
    :width: 900
    :alt: API flows
 
-Flow 2-7: Functional view
+Flows 2-7: Functional view
 =============================================
 
 Partner API access enable OpenID Connect integration for NGINX Plus as described `here <https://github.com/fchmainy/nginx-aks-demo/blob/main/Docker/generator-via-api-gw/generator.py#L57>`_.
@@ -220,8 +220,9 @@ NGINX Ingress Controller is configured to perform OpenID Connect authentication.
 - Connect to internal IC (apigw)
 
 .. code-block:: bash
-kubectl get pods --namespace lab4-sentence-api
-kubectl exec --namespace lab4-sentence-api -it apigw-7795fd75c9-492rl bash
+
+    kubectl get pods --namespace lab4-sentence-api
+    kubectl exec --namespace lab4-sentence-api -it apigw-7795fd75c9-492rl bash
 
 - View configuration in Location block
 
@@ -268,20 +269,24 @@ kubectl exec --namespace lab4-sentence-api -it apigw-7795fd75c9-492rl bash
 
 .. code-block:: bash
 
-    grep -A 5 /_token /etc/nginx/oidc/oidc.conf
+    grep -A 10 /_token /etc/nginx/oidc/oidc.conf
 
 *output:*
 
 .. code-block:: nginx
-    :emphasize-lines: 1
+    :emphasize-lines: 8
 
-    #set $redir_location "/_codexch";
-    location = /_codexch {
-        # This location is called by the IdP after successful authentication
-        status_zone "OIDC code exchange";
-        js_content oidc.codeExchange;
-        error_page 500 502 504 @oidc_error;
-    }
+    location = /_token {
+        # This location is called by oidcCodeExchange(). We use the proxy_ directives
+        # to construct the OpenID Connect token request, as per:
+        #  http://openid.net/specs/openid-connect-core-1_0.html#TokenRequest
+        internal;
+        proxy_ssl_server_name on; # For SNI to the IdP
+        proxy_set_header      Content-Type "application/x-www-form-urlencoded";
+        proxy_set_body        "grant_type=authorization_code&client_id=$oidc_client&$args&redirect_uri=$redirect_base$redir_location";
+        proxy_method          POST;
+        proxy_pass            $oidc_token_endpoint;
+   }
 
 Exercise 4: API GW - OIDC flows
 =================================================
@@ -289,12 +294,12 @@ Upon a first visit to a protected resource,
 API GW initiates the OpenID Connect authorization code flow and redirects the client to the OpenID Connect provider (Okta).
 
 - Using your Web brower, open Developper tools (F12 or Ctrl + Shift + i)
-- Browse on ``https://sentence-api{{site_ID}}.f5app.dev/``
-- Clic on request ``https://sentence-api{{site_ID}}.f5app.dev/``
+- Browse to ``https://sentence-api{{site_ID}}.f5app.dev/``
+- Click on request ``https://sentence-api{{site_ID}}.f5app.dev/``
 
 .. image:: ./_pictures/OIDC_flow_1.svg
    :align: center
-   :width: 600
+   :width: 900
    :alt: OIDC - flow 1
 
 **Capture The Flag**
@@ -308,7 +313,7 @@ The client returns to API GW with an authorization code.
 
 .. image:: ./_pictures/OIDC_flow_2.svg
    :align: center
-   :width: 600
+   :width: 900
    :alt: OIDC - flow 2
 
 API GW exchanges that code for a set of tokens by communicating directly with the IdP.
@@ -338,11 +343,11 @@ issues a session cookie to the client using a random string,
 (which becomes the key to obtain the ID token from the key-value store)
 and redirects the client to the original URI requested prior to authentication.
 
-- Clic on request ``https://sentence-api{{site_ID}}.f5app.dev/_codexch``
+- Click on request ``https://sentence-api{{site_ID}}.f5app.dev/_codexch``
 
 .. image:: ./_pictures/OIDC_flow_3.svg
    :align: center
-   :width: 600
+   :width: 900
    :alt: OIDC - flow 3
 
 Subsequent requests to protected resources are authenticated by exchanging the session cookie for the ID Token in the key-value store.
@@ -360,7 +365,7 @@ see Authenticating Users to `Existing Applications with OpenID Connect and NGINX
 
 **Capture The Flag**
 
-    **4.2 What is the cookie name that will be exchanged for the ID Token in the key-value store?**
+    **4.2 What is the cookie name for which the value will be exchanged for the ID Token in the key-value store?**
     | auth_token
 
 Exercise 5: WAF and API Protection (WAAP)
@@ -372,7 +377,7 @@ The spec file can be written either in JSON or YAML.
     - `Internal API <https://github.com/fchmainy/nginx-aks-demo/blob/main/k8s/apigw/oas_generator_v0.1.yaml>`_
     - `Partner API <https://github.com/nergalex/f5-nap-policies/blob/master/policy/open-api-files/sentence-api.f5app.dev.yaml>`_
 
-API protection policy is using an OpenAPI Specification file to import the details of the APIs.
+`API protection <https://docs.nginx.com/nginx-app-protect/configuration/#openapi-specification-file-reference>`_ policy is using an OpenAPI Specification file to import the details of the APIs.
 NGINX App Protect will automatically create a policy for the following properties (depending on what’s included in the spec file):
     - Methods
     - URLs
@@ -390,7 +395,7 @@ NGINX App Protect will automatically create a policy for the following propertie
       "name": "red"
     }
 
-- Using a Web browser, access to ``https://sentence-api{{site_ID}}.f5app.dev/colors/tata``
+- Using a Web browser, access to ``https://sentence-api{{site_ID}}.f5app.dev/colors/tata`` and the error message in JSON format
 
 *output:*
 
