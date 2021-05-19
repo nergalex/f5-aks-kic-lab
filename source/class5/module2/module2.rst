@@ -413,7 +413,7 @@ NGINX App Protect will automatically create a policy for the following propertie
 
 .. image:: ./_pictures/kibana_filter.png
    :align: center
-   :width: 600
+   :width: 500
    :alt: kibana filter
 
 **Capture The Flag**
