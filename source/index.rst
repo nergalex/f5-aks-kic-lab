@@ -1,6 +1,11 @@
 NGINX Ingress Controller workshop
 ##################################################
 
+.. image:: ./_pictures/UFO_cow.png
+   :align: center
+   :width: 900
+   :alt: UFO
+
 Objectives
 **************************************
 - Discover **Edge & Micro Proxy architecture** to enable developers to operate their own workloads
@@ -12,15 +17,6 @@ Environment
 - NGINX Ingress Controller + App Protect
 - Azure Kubernetes Service (AKS)
 - Okta
-
-Content
-**************************************
-
-.. toctree::
-   :maxdepth: 2
-   :glob:
-
-   class*/class*
 
 
 
