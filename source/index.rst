@@ -12,11 +12,14 @@ Objectives
 - Understand **NGINX CRDs** to create your own API GW at scale without comprising on time to market due to complex configuration
 - Simplify consumption of **Security policies** (WAF, OIDC) in a fast pace to enhance developer productivity
 
-Environment
+Content
 **************************************
-- NGINX Ingress Controller + App Protect
-- Azure Kubernetes Service (AKS)
-- Okta
+
+.. toctree::
+   :maxdepth: 2
+   :glob:
+
+   class*/class*
 
 
 
