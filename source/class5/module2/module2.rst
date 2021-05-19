@@ -22,7 +22,7 @@ Exercise 1: Flow 2 | Client >> Frontend
 
 .. image:: ./_pictures/Sentence_front_output.png
    :align: center
-   :width: 800
+   :width: 600
    :alt: Sentence Web
 
 - Check that web frontend access is well protected by NGINX App Protect: ``https://sentence{{site_ID}}.f5app.dev?<script>``
@@ -108,10 +108,11 @@ Partner API access enable OpenID Connect integration for NGINX Plus as described
 
 .. image:: ./_pictures/OIDC_overview.svg
    :align: center
-   :width: 600
+   :width: 500
    :alt: OIDC
 
 Implementation done for this lab:
+
     - Okta as an identity provider (IdP)
     - authorization code flow
     - NGINX Ingress Controller is configured as a relying party
@@ -127,7 +128,158 @@ In this lab, both the client and NGINX Ingress Controller communicate directly w
 Exercise 1: Flow 3 | Client >> Okta
 =============================================
 
+- Using a Web Browser, connect to `oidcdebugger <https://oidcdebugger.com/>`_
+- Fill the form:
+    - Authorize URI: ``https://dev-431905.okta.com/oauth2/aus2zvhijqcz1rlq84x7/v1/authorize``
+    - Redirect URI: ``https://oidcdebugger.com/debug``
+    - Client ID: ``0oa2zvfps3gsoYGHm4x7``
+    - Scope: ``openid``
+    - State: ``France``
+    - Nonce: ``39pog581mp9``
+    - Response type: ``code``
+    - Response mode: ``query``
+
+.. image:: ./_pictures/okta_OIDC_debugger.png
+   :align: center
+   :width: 500
+   :alt: OIDC debugger - query
+
+- Authenticate user with username ``cloudbuilder@acme.com`` and password ``F5-AKS-KIC-lab!``
+
+.. image:: ./_pictures/okta_OIDC_debugger_auth.png
+   :align: center
+   :width: 500
+   :alt: OIDC debugger - auth
+
+- You should receive a response code
+
+.. image:: ./_pictures/okta_OIDC_debugger_response.png
+   :align: center
+   :width: 500
+   :alt: OIDC debugger - response
+
+Exercise 2: API GW - K8S configuration
+=================================================
+
+NGINX Ingress Controller is configured to perform OpenID Connect authentication.
+
+- View OIDC configuration in VirtualServerRoute resource
+
+.. code-block:: bash
+
+    kubectl describe virtualserverroute -n lab4-sentence-api generator | grep -A 13 Spec
+
+*output:*
+
+.. code-block:: yaml
+    :emphasize-lines: 8
+
+      Host:                sentence-api1.f5app.dev
+      Ingress Class Name:  sentence-api-nginx-internal
+      Subroutes:
+        Action:
+          Pass:  generator
+        Path:    /
+        Policies:
+          Name:       oidc-policy
+          Namespace:  lab4-sentence-api
+      Upstreams:
+        Name:     generator
+        Port:     80
+        Service:  generator
+
+- View OIDC policy resource
+
+.. code-block:: bash
+
+    kubectl describe policy -n lab4-sentence-api oidc-policy | grep -A 7 Spec
+
+*output:*
+
+.. code-block:: yaml
+
+      Oidc:
+        Auth Endpoint:   https://dev-431905.okta.com/oauth2/aus2zvhijqcz1rlq84x7/v1/authorize
+        Client ID:       0oa2zvfps3gsoYGHm4x7
+        Client Secret:   oidc-secret
+        Jwks URI:        https://dev-431905.okta.com/oauth2/aus2zvhijqcz1rlq84x7/v1/keys
+        Scope:           openid
+        Token Endpoint:  https://dev-431905.okta.com/oauth2/aus2zvhijqcz1rlq84x7/v1/token
+
+**Capture The Flag**
+
+    **2.1 What is the URI that publish Public Key used by IC to check signature of JWT?**
+    | https://dev-431905.okta.com/oauth2/aus2zvhijqcz1rlq84x7/v1/keys
+
+    **2.2 What is the secret length in bytes?**
+    | 40
+
+Exercise 3: API GW - NGINX configuration
+=================================================
+
+- Connect to internal IC as API GW
+- View configuration in Location block
+
+.. code-block:: bash
+
+    grep oidc /etc/nginx/conf.d/vs_lab4-sentence-api_sentence-api-internal.conf
+
+*output:*
+
+.. code-block:: nginx
+    :emphasize-lines: 1
+
+    include oidc/oidc.conf;
+    set $oidc_pkce_enable 0;
+    set $oidc_logout_redirect "/_logout";
+    set $oidc_hmac_key "sentence-api-internal";
+    set $oidc_authz_endpoint "https://dev-431905.okta.com/oauth2/aus2zvhijqcz1rlq84x7/v1/authorize";
+    set $oidc_token_endpoint "https://dev-431905.okta.com/oauth2/aus2zvhijqcz1rlq84x7/v1/token";
+    set $oidc_jwt_keyfile "https://dev-431905.okta.com/oauth2/aus2zvhijqcz1rlq84x7/v1/keys";
+    set $oidc_scopes "openid";
+    set $oidc_client "0oa2zvfps3gsoYGHm4x7";
+    set $oidc_client_secret "-lzR61blfzTcU05FEohmXZ0HwPhjZJPGAPmJpSk-";
+
+- View configuration of OIDC code exchange request received by client
+
+.. code-block:: bash
+
+    grep -A 5 _codexch /etc/nginx/oidc/oidc.conf
+
+*output:*
+
+.. code-block:: nginx
+    :emphasize-lines: 1
+
+    #set $redir_location "/_codexch";
+    location = /_codexch {
+        # This location is called by the IdP after successful authentication
+        status_zone "OIDC code exchange";
+        js_content oidc.codeExchange;
+        error_page 500 502 504 @oidc_error;
+    }
+
+- View configuration of OIDC token request sent by NGINX Ingress Controller
+
+.. code-block:: bash
+
+    grep -A 5 /_token /etc/nginx/oidc/oidc.conf
+
+*output:*
+
+.. code-block:: nginx
+    :emphasize-lines: 1
+
+    #set $redir_location "/_codexch";
+    location = /_codexch {
+        # This location is called by the IdP after successful authentication
+        status_zone "OIDC code exchange";
+        js_content oidc.codeExchange;
+        error_page 500 502 504 @oidc_error;
+    }
 
 
+Exercise 3: API GW - OIDC configuration
+=================================================
 
-
+Upon a first visit to a protected resource, NGINX Plus initiates the OpenID Connect authorization code flow and redirects the client to the OpenID Connect provider (IdP). When the client returns to NGINX Plus with an authorization code, NGINX Plus exchanges that code for a set of tokens by communicating directly with the IdP.
