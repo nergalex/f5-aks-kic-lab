@@ -354,7 +354,7 @@ Subsequent requests to protected resources are authenticated by exchanging the s
 
 .. image:: ./_pictures/OIDC_flow_4.svg
    :align: center
-   :width: 600
+   :width: 900
    :alt: OIDC - flow 4
 
 JWT validation is performed on each request, as normal, so that the ID Token validity period is enforced.
