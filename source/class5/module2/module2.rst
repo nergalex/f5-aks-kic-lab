@@ -541,8 +541,60 @@ Exercise 7: WAAP configuration and API infra endpoint
 Exercise 8: Rate Limit
 =====================================================
 
+The `rate limit policy <https://docs.nginx.com/nginx-ingress-controller/configuration/policy-resource/#ratelimit>`_ configures NGINX to limit the processing rate of requests.
+
+- View VirtualServer specification
+
+.. code-block:: bash
+
+     kubectl describe virtualservers -n lab4-sentence-api sentence-api-internal | grep -A 5 Spec
+
+*output:*
+
+.. code-block:: yaml
+    :emphasize-lines: 4
+
+      Host:                sentence-api1.f5app.dev
+      Ingress Class Name:  sentence-api-nginx-internal
+      Policies:
+        Name:       rate-limit-sentence-api
+        Namespace:  lab4-sentence-api
+
+- View Rate Limit Policy
+
+.. code-block:: bash
+
+     kubectl describe policy -n lab4-sentence-api rate-limit-sentence-api | grep -A 5 Spec
+
+*output:*
+
+.. code-block:: yaml
+    :emphasize-lines: 3
+
+      Rate Limit:
+        Key:        ${request_uri}
+        Rate:       5r/m
+        Zone Size:  10M
+
+- Using a Web browser, refresh page ``https://sentence-api{{site_ID}}.f5app.dev/`` quickly until a ``503`` response code
+- View Access logs of API GW
+
+.. code-block:: bash
+
+     kubectl logs --namespace lab4-sentence-api apigw-7795fd75c9-492rl
+
+*output:*
+
+.. code-block:: log
+    :emphasize-lines: 2,3
+
+    10.1.1.55 - - [19/May/2021:20:57:11 +0000] "GET /colors/1 HTTP/1.1" 302 145 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36 Edg/90.0.818.62" "91.165.208.158"
+    2021/05/19 20:57:13 [error] 175#175: *326 limiting requests, excess: 0.848 by zone "pol_rl_lab4-sentence-api_rate-limit-sentence-api_lab4-sentence-api_sentence-api-internal", client: 10.1.1.55, server: sentence-api1.f5app.dev, request: "GET /colors/1 HTTP/1.1", host: "sentence-api1.f5app.dev"
+    10.1.1.55 - - [19/May/2021:20:57:13 +0000] "GET /colors/1 HTTP/1.1" 503 599 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36 Edg/90.0.818.62" "91.165.208.158"
 
 
+**Capture The Flag**
 
-
+    **8.1 What is the rate limit threshold per second allowed in this configuration? (3 decimal places)**
+    | 0.083
 
