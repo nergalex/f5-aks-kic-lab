@@ -1,8 +1,9 @@
 # F5 AKS KIC lab
 
+[User guide](https://f5-aks-kic-lab.readthedocs.io/en/latest/)
+
 ![alt text][mow]
 
-[User guide](https://f5-aks-kic-lab.readthedocs.io/en/latest/)
 
 
 
