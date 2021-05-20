@@ -83,6 +83,8 @@ VirtualServerRoute
         Port:     80
         Service:  coffee
 
+_______________________________________________________________________
+
 **Capture The Flag**
 
     **1.1 What is the waf policy name that protects /tea?**
@@ -138,6 +140,8 @@ App Protect Policy
           Signature Id:  200000128
         Template:
           Name:  POLICY_TEMPLATE_NGINX_BASE
+
+_______________________________________________________________________
 
 **Capture The Flag**
 
@@ -201,6 +205,8 @@ NGINX
         app_protect_security_log_enable on;
         app_protect_security_log /etc/nginx/waf/nac-logconfs/external-ingress-controller_naplogformat syslog:server=10.1.0.10:5144;
 
+_______________________________________________________________________
+
 **Capture The Flag**
 
     **2.1 Which App Protect policy name protects /return_page?**
@@ -252,6 +258,8 @@ App Protect
         }
       }
     }
+
+_______________________________________________________________________
 
 **Capture The Flag**
 

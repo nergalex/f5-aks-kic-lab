@@ -33,6 +33,8 @@ Two *NGINX Ingress Controller* (IC) instances, *App Protect* module embedded,
 have been already build on Jumphost following this `guide <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/#building-the-image-and-pushing-it-to-the-private-registry>`_
 and deployed using `Helm <https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-helm/>`_
 
+_______________________________________________________________________
+
 **Capture The Flag**
 
     **3.1 What is the version of deployed IC?**
@@ -107,6 +109,7 @@ Exercise 5: Cryptonice
     $ docker run -v `pwd`:`pwd` -w `pwd` -i -t f5labs/cryptonice kibana{{site_ID}}.f5app.dev --json_out --no_console
     $ cat kibana{{site_ID}}.f5app.dev.json | jq .
 
+_______________________________________________________________________
 
 **Capture The Flag**
 
@@ -135,6 +138,8 @@ Using a simple RESTful JSON interface, it’s very easy to connect these stats t
 .. code-block:: bash
 
     $ curl 10.1.1.18:8080/api/6/nginx/
+
+_______________________________________________________________________
 
 **Capture The Flag**
 

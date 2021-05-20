@@ -11,15 +11,6 @@ Subtitle depth 1 - example
 Subtitle depth 2 - example
 ===========================================================
 
-_______________________________________________________________________
-
-**Capture The Flag**
-
-    **1.1 Question n°1 of exercise 1?**
-    | response >> will be moved to https://github.com/nergalex/f5-aks-kic-lab-admin/blob/master/CTFd/challenges.json
-
-_______________________________________________________________________
-
 - Step to do
 
 .. code-block:: bash
@@ -40,6 +31,14 @@ _______________________________________________________________________
         "input file well formated with line number": "here yaml"
 
 _______________________________________________________________________
+
+**Capture The Flag**
+
+    **1.1 Question n°1 of exercise 1?**
+    | response >> will be moved to https://github.com/nergalex/f5-aks-kic-lab-admin/blob/master/CTFd/challenges.json
+
+_______________________________________________________________________
+
 
     .. note::
         | * For that use case, a new application named cafe will be deployed.

@@ -204,6 +204,8 @@ Exercise 2: API GW - K8S configuration
         Scope:           openid
         Token Endpoint:  https://dev-431905.okta.com/oauth2/aus2zvhijqcz1rlq84x7/v1/token
 
+_______________________________________________________________________
+
 **Capture The Flag**
 
     **2.1 What is the URI that publish Public Key used by IC to check signature of JWT?**
@@ -302,6 +304,8 @@ API GW initiates the OpenID Connect authorization code flow and redirects the cl
    :width: 900
    :alt: OIDC - flow 1
 
+_______________________________________________________________________
+
 **Capture The Flag**
 
     **4.1 In parameters of the request, what is the PATH of the redirect uri?**
@@ -363,6 +367,8 @@ see Authenticating Users to `Existing Applications with OpenID Connect and NGINX
 
 - Browse on ``https://sentence-api{{site_ID}}.f5app.dev/adjectives``
 
+_______________________________________________________________________
+
 **Capture The Flag**
 
     **4.2 What is the cookie name for which the value will be exchanged for the ID Token in the key-value store?**
@@ -403,6 +409,8 @@ NGINX App Protect will automatically create a policy for the following propertie
 
     {"supportID": "17736894413136180189"}
 
+_______________________________________________________________________
+
 **Capture The Flag**
 
     **5.1 For /colors/{id} endpoint, what is the defined type for parameter name 'id'?**
@@ -415,6 +423,8 @@ NGINX App Protect will automatically create a policy for the following propertie
    :align: center
    :width: 500
    :alt: kibana filter
+
+_______________________________________________________________________
 
 **Capture The Flag**
 
@@ -597,6 +607,7 @@ The `rate limit policy <https://docs.nginx.com/nginx-ingress-controller/configur
     2021/05/19 20:57:13 [error] 175#175: *326 limiting requests, excess: 0.848 by zone "pol_rl_lab4-sentence-api_rate-limit-sentence-api_lab4-sentence-api_sentence-api-internal", client: 10.1.1.55, server: sentence-api1.f5app.dev, request: "GET /colors/1 HTTP/1.1", host: "sentence-api1.f5app.dev"
     10.1.1.55 - - [19/May/2021:20:57:13 +0000] "GET /colors/1 HTTP/1.1" 503 599 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36 Edg/90.0.818.62" "91.165.208.158"
 
+_______________________________________________________________________
 
 **Capture The Flag**
 

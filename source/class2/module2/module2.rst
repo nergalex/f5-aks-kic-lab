@@ -128,6 +128,8 @@ This enables easier management when using a large number of paths.
                     proxy_ignore_headers X-Accel-Expires Expires Cache-Control;
                     proxy_cache_valid any 30s;
 
+_______________________________________________________________________
+
 **Capture The Flag**
 
     **1.1 What is the cookie name that allow a login user to persist his session on "Money Transfer" micro-service of Arcadia across multiple ICs?**
@@ -160,6 +162,8 @@ These should be used as a last-resort solution in cases where annotations entrie
       nginx.org/server-snippets: |
         proxy_ignore_headers X-Accel-Expires Expires Cache-Control;
         proxy_cache_valid any 30s;
+
+_______________________________________________________________________
 
 **Capture The Flag**
 
