@@ -40,8 +40,8 @@ Page rendering generates requests to each micro-service routed by Ingress Contro
 - Connect to ``https://arcadia{{site_ID}}.f5app.dev/``
 - Login with user ``matt`` and password ``ilovef5``
 
-Master / Minions
-===================
+Exercise 1: Master / Minions
+============================
 
 Arcadia is published using `mergeable Ingress <https://github.com/nginxinc/kubernetes-ingress/tree/v1.11.1/examples/mergeable-ingress-types>`_.
 
@@ -128,13 +128,14 @@ This enables easier management when using a large number of paths.
                     proxy_ignore_headers X-Accel-Expires Expires Cache-Control;
                     proxy_cache_valid any 30s;
 
-.. note:: **Capture The Flag**
-    | **What is the cookie name that allow a login user to persist his session on "Money Transfer" micro-service of Arcadia across multiple ICs?**
+**Capture The Flag**
+
+    **1.1 What is the cookie name that allow a login user to persist his session on "Money Transfer" micro-service of Arcadia across multiple ICs?**
     | arcadia_app2
     | Tip:  `Session Persistence <https://github.com/nginxinc/kubernetes-ingress/tree/v1.11.1/examples/session-persistence>`_
 
-Advanced Configuration
-======================
+Exercise 2: Advanced Configuration
+==================================
 **Annotation**
 
 The Ingress resource only allows you to use basic NGINX features – host and path-based routing and TLS termination.
@@ -160,8 +161,9 @@ These should be used as a last-resort solution in cases where annotations entrie
         proxy_ignore_headers X-Accel-Expires Expires Cache-Control;
         proxy_cache_valid any 30s;
 
-.. note:: **Capture The Flag**
-    | **What is the nginx directive seen in configuration for snippet 'proxy_ignore_headers'?**
+**Capture The Flag**
+
+    **2.1 What is the nginx directive seen in configuration for snippet 'proxy_ignore_headers'?**
     | proxy_ignore_headers
 
 Disadvantages

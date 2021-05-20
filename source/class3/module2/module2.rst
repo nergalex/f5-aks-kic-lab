@@ -5,8 +5,35 @@ LAB 2B: Simple Traffic Splitting and Content-Based Routing
     :local:
     :depth: 1
 
-LAB 2B: Simple Traffic Splitting and Content-Based Routing
+Subtitle depth 1 - example
 ***********************************************************
+
+Subtitle depth 2 - example
+===========================================================
+
+**Capture The Flag**
+
+    **1.1 Question n°1 of exercise 1?**
+    | response >> will be moved to https://github.com/nergalex/f5-aks-kic-lab-admin/blob/master/CTFd/challenges.json
+
+.. code-block:: bash
+
+        command line to do
+
+*output*
+
+.. code-block:: json
+
+        {"output well formated": "here json"}
+
+*input*
+
+.. code-block:: yaml
+    :linenos:
+
+        "input file well formated with line number": "here yaml"
+
+_______________________________________________________________________
 
     .. note::
         | * For that use case, a new application named cafe will be deployed.
@@ -48,7 +75,7 @@ LAB 2B: Simple Traffic Splitting and Content-Based Routing
 - Step 3: copy and paste the manifest below into a new file named cafe.yaml.
 
 That manifest will be used to deploy the application into the cluster.
-The application cafe is composed of 2 micro services: cofee and tea.
+The application cafe is composed of 2 micro services: coffee and tea.
 
 
 .. code-block:: yaml
