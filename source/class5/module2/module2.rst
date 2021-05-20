@@ -374,8 +374,8 @@ _______________________________________________________________________
     **4.2 What is the cookie name for which the value will be exchanged for the ID Token in the key-value store?**
     | auth_token
 
-Exercise 5: WAF and API Protection (WAAP)
-=================================================
+Exercise 5: Web Application and API Protection (WAAP)
+=====================================================
 The OpenAPI Specification defines the spec file format needed to describe RESTful APIs.
 The spec file can be written either in JSON or YAML.
 
