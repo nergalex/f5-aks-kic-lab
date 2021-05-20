@@ -16,6 +16,8 @@ Subtitle depth 2 - example
     **1.1 Question n°1 of exercise 1?**
     | response >> will be moved to https://github.com/nergalex/f5-aks-kic-lab-admin/blob/master/CTFd/challenges.json
 
+- Step to do
+
 .. code-block:: bash
 
         command line to do
@@ -33,6 +35,7 @@ Subtitle depth 2 - example
 
         "input file well formated with line number": "here yaml"
 
+Line to delimit chapter:
 _______________________________________________________________________
 
     .. note::
