@@ -36,7 +36,12 @@ LAB 2B: Simple Traffic Splitting and Content-Based Routing
 
 .. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl create namespace cafe-ns
+        kubectl create namespace cafe-ns
+
+*output*
+
+.. code-block:: bash
+
         namespace/cafe created
 
 |
@@ -46,7 +51,7 @@ That manifest will be used to deploy the application into the cluster.
 The application cafe is composed of 2 micro services: cofee and tea.
 
 
-.. code-block:: bash
+.. code-block:: yaml
 
         apiVersion: apps/v1
         kind: Deployment
