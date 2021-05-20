@@ -1,4 +1,4 @@
-lab 8 - Application Delivery Network
+(future lab) - Application Delivery Network
 ##############################################################
 
 This lab describes how to :
