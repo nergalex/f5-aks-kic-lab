@@ -15,7 +15,7 @@ Subtitle depth 2 - example
 
 .. code-block:: bash
 
-        command line to do
+        command line to do, copy it by clicking on the top right icon
 
 *output*
 
