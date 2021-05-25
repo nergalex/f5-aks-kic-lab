@@ -55,7 +55,6 @@ The application cafe is composed of 2 micro services: coffee and tea.
 
 
 .. code-block:: yaml
-    :linenos:
 
         apiVersion: apps/v1
         kind: Deployment
