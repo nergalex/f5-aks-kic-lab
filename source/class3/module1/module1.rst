@@ -74,13 +74,13 @@ output:
 
 
 
-    .. note::
-        | The namespace of interest for the Labs 2 is external-ingress-controller.
-        | That namespace includes the NGINX Ingress Controller which will be used during the labs.
-        | Some new namespaces will be created later during the labs.
-        | The namespace arcadia will be used during the lab 3 WAF.
-        |
-        |
+.. note::
+    | The namespace of interest for the Labs 2 is external-ingress-controller.
+    | That namespace includes the NGINX Ingress Controller which will be used during the labs.
+    | Some new namespaces will be created later during the labs.
+    | The namespace arcadia will be used during the lab 3 WAF.
+    |
+    |
 
 
 - Step 4: Look at the pods in some NameSpaces with the command ``kubectl get pods``:
@@ -151,11 +151,11 @@ output:
 
 
 
-    .. note::
-        | The Ingress Class Name *nginx-external*  will be used as a reference into the deployment of the manifests.
-        | It allows to indicate which Ingress Controller must be used for a specific deployment.
-        |
-        |
+.. note::
+    | The Ingress Class Name *nginx-external*  will be used as a reference into the deployment of the manifests.
+    | It allows to indicate which Ingress Controller must be used for a specific deployment.
+    |
+    |
 
 
 - Step 6: Let's check the Public IP address attached to the external Ingress Controller:
@@ -174,7 +174,7 @@ output:
 
 
 
-    .. note::
+.. note::
         | Notice the EXTERNAL-IP address and write it somewhere.
         | It will be used later in our labs.
 
