@@ -44,12 +44,13 @@ output:
 
 
 .. note::
-| The VirtualServer and VirtualServerRoute resources are new load balancing configuration, introduced in release 1.5 as an alternative to the Ingress resource.
-| The resources enable use cases not supported with the Ingress resource, such as traffic splitting and advanced content-based routing.
-| The resources are implemented as Custom Resources.
-| The VirtualServer Custom Resource will be used in the labs 2.
-|
-|
+
+    | The VirtualServer and VirtualServerRoute resources are new load balancing configuration, introduced in release 1.5 as an alternative to the Ingress resource.
+    | The resources enable use cases not supported with the Ingress resource, such as traffic splitting and advanced content-based routing.
+    | The resources are implemented as Custom Resources.
+    | The VirtualServer Custom Resource will be used in the labs 2.
+    |
+    |
 
 
 - Step 3: Let's check the NameSpaces of the cluster:
