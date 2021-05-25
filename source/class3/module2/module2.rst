@@ -383,6 +383,7 @@ Deployment of a Virtual Server for TLS with Content-Based Routing
 | If you don't have the rights on the hosts file of your client then you can use the curl command with the EXTERNAL-IP address of the cluster you've seen on last step of LAB 2A:
 
 .. code-block:: bash
+
     $ curl https://cafe.example.com/coffee --resolve cafe.example.com:443:52.167.14.0 --insecure
     Server address: 10.22.1.55:8080
     Server name: coffee-6f4b79b975-5vmrd
