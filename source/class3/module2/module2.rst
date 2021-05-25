@@ -6,14 +6,6 @@ LAB 2B: TLS Traffic with Content-Based Routing
     :depth: 1
 
 
-**Capture The Flag**
-
-    **1.1 Question n°1 of exercise 1?**
-    | response >> will be moved to https://github.com/nergalex/f5-aks-kic-lab-admin/blob/master/CTFd/challenges.json
-
-
-
-
     .. note::
         | * For that use case, a new application named cafe will be deployed.
         |

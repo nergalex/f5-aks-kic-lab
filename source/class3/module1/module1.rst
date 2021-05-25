@@ -179,3 +179,11 @@ LAB 2A: Exploring and understanding the K8S cluster
         | It will be used later in our labs.
 
 
+
+
+**Capture The Flag**
+
+    **2.1 What is the name of the Custom Resource used for Advanced load balancing configuration and used as an alternative to the Ingress resource.**
+    | response >> VirtualServer
+
+
