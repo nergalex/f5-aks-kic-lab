@@ -42,11 +42,13 @@ output:
     virtualservers.k8s.nginx.org         2021-03-08T10:00:04Z
 
 
-.. note::
-    | The VirtualServer and VirtualServerRoute resources are new load balancing configuration, introduced in release 1.5 as an alternative to the Ingress resource.
-    | The resources enable use cases not supported with the Ingress resource, such as traffic splitting and advanced content-based routing.
-    | The resources are implemented as Custom Resources.
-    | The VirtualServer Custom Resource will be used in the labs 2.
+    .. note::
+        | The VirtualServer and VirtualServerRoute resources are new load balancing configuration, introduced in release 1.5 as an alternative to the Ingress resource.
+        | The resources enable use cases not supported with the Ingress resource, such as traffic splitting and advanced content-based routing.
+        | The resources are implemented as Custom Resources.
+        | The VirtualServer Custom Resource will be used in the labs 2.
+        |
+        |
 
 
 - Step 3: Let's check the NameSpaces of the cluster:
@@ -70,10 +72,11 @@ output:
         kube-system                   Active   30d
 
 
-| The namespace of interest for the Labs 2 is external-ingress-controller.
-| That namespace includes the NGINX Ingress Controller which will be used during the labs.
-| Some new namespaces will be created later during the labs.
-| The namespace arcadia will be used during the lab 3 WAF.
+    .. note::
+        | The namespace of interest for the Labs 2 is external-ingress-controller.
+        | That namespace includes the NGINX Ingress Controller which will be used during the labs.
+        | Some new namespaces will be created later during the labs.
+        | The namespace arcadia will be used during the lab 3 WAF.
 
 
 - Step 4: Look at the pods in some NameSpaces with the command ``kubectl get pods``:
@@ -142,9 +145,11 @@ output:
               .......
               .......
 
-.. note::
-    | The Ingress Class Name *nginx-external*  will be used as a reference into the deployment of the manifests.
-    | It allows to indicate which Ingress Controller must be used for a specific deployment.
+    .. note::
+        | The Ingress Class Name *nginx-external*  will be used as a reference into the deployment of the manifests.
+        | It allows to indicate which Ingress Controller must be used for a specific deployment.
+        |
+        |
 
 
 - Step 6: Let's check the Public IP address attached to the external Ingress Controller:
@@ -162,8 +167,8 @@ output:
         elb-nap-ingress-controller   LoadBalancer   10.200.0.15   52.167.14.0   80:31613/TCP,443:31094/TCP   30d
 
 
-.. note::
-    | Notice the EXTERNAL-IP address and write it somewhere.
-    | It will be used later in our labs.
+    .. note::
+        | Notice the EXTERNAL-IP address and write it somewhere.
+        | It will be used later in our labs.
 
 
