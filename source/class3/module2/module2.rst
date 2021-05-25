@@ -1,10 +1,6 @@
 LAB 2B: TLS Traffic with Content-Based Routing
 #############################################################
 
-.. contents:: Contents
-    :local:
-    :depth: 1
-
 
     .. note::
         | * For that use case, a new application named cafe will be deployed.
@@ -20,6 +16,12 @@ LAB 2B: TLS Traffic with Content-Based Routing
         |    - request for /tea are sent to service tea
         |    - request for /coffee are sent to service coffee
 
+
+
+
+.. contents:: Contents
+    :local:
+    :depth: 1
 
 
 Deployment of a new application named cafe
