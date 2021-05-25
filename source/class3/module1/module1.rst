@@ -63,7 +63,9 @@ output:
         kube-system                   Active   30d
 
 
-- Step 4: Look at the pods in each NameSpaces with the command ``kubectl get pods``:
+- Step 4: Look at the pods in some NameSpaces with the command ``kubectl get pods``:
+
+Namespace Default:
 
 .. code-block:: bash
 
@@ -77,25 +79,7 @@ output:
         No resources found in default namespace.
 
 
-.. code-block:: bash
-
-        $ kubectl get pods -n arcadia
-
-
-output:
-
-.. code-block:: bash
-
-        NAME                       READY   STATUS    RESTARTS   AGE
-        app2-6dcf6d5845-crpv6      1/1     Running   0          30d
-        app2-6dcf6d5845-wdxds      1/1     Running   0          30d
-        app3-b989dc6dc-6klxk       1/1     Running   0          30d
-        app3-b989dc6dc-9vpfm       1/1     Running   0          30d
-        backend-56c9b667d5-4x4w2   1/1     Running   0          30d
-        backend-56c9b667d5-zfgvc   1/1     Running   0          30d
-        main-84cf4949b9-f5x5t      1/1     Running   0          30d
-        main-84cf4949b9-pnkwt      1/1     Running   0          30d
-
+Namespace external-ingress-controller:
 
 .. code-block:: bash
 
@@ -110,20 +94,8 @@ output:
         nap-external-ingress-controller-54db45d656-fg4tq   1/1     Running   0          30d
 
 
-.. code-block:: bash
 
-        $ kubectl get pods -n internal-ingress-controller
-
-
-output:
-
-.. code-block:: bash
-
-        NAME                                               READY   STATUS    RESTARTS   AGE
-        nap-internal-ingress-controller-55fdb8cd95-2dz77   1/1     Running   0          30d
-
-
-Step 5: Let's check the Ingress Class Name attached to each NIC:
+- Step 5: Let's check the Ingress Class Name attached to each Externale Ingress Controller:
 
 .. code-block:: bash
 
@@ -151,32 +123,6 @@ output:
               .......
               .......
               -ingress-class=nginx-external        ****INGRESS CLASS NAME is nginx-external****
-              .......
-              .......
-
-
-.. code-block:: bash
-
-        $ kubectl describe pod nap-internal-ingress-controller-55fdb8cd95-2dz77 -n internal-ingress-controller
-
-
-output:
-
-.. code-block:: bash
-
-        Name:         nap-internal-ingress-controller-55fdb8cd95-2dz77
-        Namespace:    internal-ingress-controller
-        .......
-        .......
-            Ports:         80/TCP, 443/TCP, 9113/TCP, 8081/TCP
-            Host Ports:    0/TCP, 0/TCP, 0/TCP, 0/TCP
-            Args:
-              -nginx-plus=true
-              -nginx-reload-timeout=0
-              -enable-app-protect=true
-              .......
-              .......
-              -ingress-class=nginx-internal         ****INGRESS CLASS NAME is nginx-internal****
               .......
               .......
 
