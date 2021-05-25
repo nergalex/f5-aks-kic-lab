@@ -374,10 +374,12 @@ Deployment of a Virtual Server for TLS with Content-Based Routing
 
 
 |    - Open a browser and test some connections :
-    | https://cafe.example.com/tea and https://cafe.example.com/coffee should be successfull.
-    | https://cafe.example.com/ should receive an HTTP 404 Not Found page. -> This is because the path / hasn't been defined into the Routes field of the manifest above.
-
-
+|
+| https://cafe.example.com/tea and https://cafe.example.com/coffee should be successfull.
+|
+| https://cafe.example.com/ should receive an HTTP 404 Not Found page. -> This is because the path / hasn't been defined into the Routes field of the manifest above.
+|
+|
 | If you don't have the rights on the hosts file of your client then you can use the curl command with the EXTERNAL-IP address of the cluster you've seen on last step of LAB 2A:
 
 .. code-block:: bash
