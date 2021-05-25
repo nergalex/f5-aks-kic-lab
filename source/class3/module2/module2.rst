@@ -43,13 +43,13 @@ Deployment of a new application named cafe
 
 - Step 2: Create a new NameSpace called cafe-ns. We will deploy the application into it.
 
-*input*
+*input:*
 
 .. code-block:: bash
 
         kubectl create namespace cafe-ns
 
-*output*
+*output:*
 
 .. code-block:: bash
 
@@ -138,7 +138,7 @@ The application cafe is composed of 2 micro services: coffee and tea.
 |
 - Step 4: Deploy the application cafe
 
-*input*
+*input:*
 
 .. code-block:: bash
 
@@ -160,12 +160,14 @@ The application cafe is composed of 2 micro services: coffee and tea.
 NameSpace cafe should have been created and should be in status Active:
 
 *input:*
+
 .. code-block:: bash
 
         kubectl get namespaces
 
 
 *output:*
+
 .. code-block:: bash
 
         NAME                          STATUS   AGE
@@ -183,12 +185,14 @@ You should have 2 Pods for the coffee service and 1 Pod for tea service
 
 
 *input:*
+
 .. code-block:: bash
 
         kubectl get pods -n cafe-ns
 
 
 *output:*
+
 .. code-block:: bash
 
         NAME                      READY   STATUS    RESTARTS   AGE
@@ -200,12 +204,14 @@ You should have 2 Pods for the coffee service and 1 Pod for tea service
 You should have the services tea-svc and coffee-svc deployed:
 
 *input:*
+
 .. code-block:: bash
 
         kubectl get services -n cafe-ns
 
 
 *output:*
+
 .. code-block:: bash
 
         NAME         TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
@@ -238,12 +244,14 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 - Step 2: Deploy the manifest cafe-secret.
 
 *input:*
+
 .. code-block:: bash
 
         kubectl create -f cafe-secret.yaml
 
 
 *output:*
+
 .. code-block:: bash
 
         secret/cafe-secret created
@@ -252,12 +260,14 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 - Step 3: Verify the certificate and keys have been deployed into the namespace cafe-ns
 
 *input*:
+
 .. code-block:: bash
 
         kubectl describe secret cafe-secret -n cafe-ns
 
 
 *output:*
+
 .. code-block:: bash
 
         Name:         cafe-secret
@@ -330,13 +340,22 @@ Deployment of a Virtual Server for TLS with Content-Based Routing
 
 - step 2: Deploy the manifest:
 
+*input*:
+
 .. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server-lab-2B.yaml
+        kubectl apply -f cafe-virtual-server-lab-2B.yaml
+
+*output*:
+
+.. code-block:: bash
+
         virtualserver.k8s.nginx.org/app-cafe configured
 
 
 - step 3: Check the compilation status of the VirtualServer with the command below:
+
+*input*:
 
 .. code-block:: bash
         kubectl describe virtualserver app-cafe -n cafe-ns
@@ -358,7 +377,7 @@ Deployment of a Virtual Server for TLS with Content-Based Routing
     | https://cafe.example.com/ should receive an HTTP 404 Not Found page. -> This is because the path / hasn't been defined into the Routes field of the manifest above.
 
 
-| If you don't have the rights on the hosts file of your client then you can use the curl command with the EXTERNAL-IP address of the cluster you've seen on step 11 of LAB 2A above:
+| If you don't have the rights on the hosts file of your client then you can use the curl command with the EXTERNAL-IP address of the cluster you've seen on last step of LAB 2A:
 
 .. code-block:: bash
     $ curl https://cafe.example.com/coffee --resolve cafe.example.com:443:52.167.14.0 --insecure
