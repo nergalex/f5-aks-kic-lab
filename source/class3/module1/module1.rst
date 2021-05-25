@@ -63,7 +63,7 @@ output:
         kube-system                   Active   30d
 
 
-Step 4: Look at the pods in each NameSpaces with the command ``kubectl get pods``:
+- Step 4: Look at the pods in each NameSpaces with the command ``kubectl get pods``:
 
 .. code-block:: bash
 
