@@ -44,7 +44,7 @@ output:
 
 
 .. note::
-    | The VirtualServer and VirtualServerRoute resources are new load balancing configuration, introduced in release 1.5 as an alternative to the Ingress resource.
+    | The **VirtualServer** and **VirtualServerRoute** resources are new load balancing configuration, introduced in release 1.5 as an alternative to the Ingress resource.
     | The resources enable use cases not supported with the Ingress resource, such as traffic splitting and advanced content-based routing.
     | The resources are implemented as Custom Resources.
     | The VirtualServer Custom Resource will be used in the labs 2.
@@ -75,7 +75,7 @@ output:
 
 
 .. note::
-    | The namespace of interest for the Labs 2 is external-ingress-controller.
+    | The namespace of interest for the Labs 2 is **external-ingress-controller**.
     | That namespace includes the NGINX Ingress Controller which will be used during the labs.
     | Some new namespaces will be created later during the labs.
     | The namespace arcadia will be used during the lab 3 WAF.
@@ -152,7 +152,7 @@ output:
 
 
 .. note::
-    | The Ingress Class Name *nginx-external*  will be used as a reference into the deployment of the manifests.
+    | The Ingress Class Name **nginx-external**  will be used as a reference into the deployment of the manifests.
     | It allows to indicate which Ingress Controller must be used for a specific deployment.
     |
     |
@@ -175,7 +175,7 @@ output:
 
 
 .. note::
-        | Notice the EXTERNAL-IP address and write it somewhere.
+        | **Notice the EXTERNAL-IP address and write it somewhere.**
         | It will be used later in our labs.
 
 
