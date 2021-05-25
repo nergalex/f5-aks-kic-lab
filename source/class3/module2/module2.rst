@@ -1,6 +1,13 @@
 LAB 2B: TLS Traffic with Content-Based Routing
 #############################################################
 
+.. contents:: Contents
+    :local:
+    :depth: 1
+
+Deployment of a new application named cafe
+***********************************************************
+
 
     .. note::
         | * For that use case, a new application named cafe will be deployed.
@@ -17,15 +24,6 @@ LAB 2B: TLS Traffic with Content-Based Routing
         |    - request for /coffee are sent to service coffee
 
 
-
-
-.. contents:: Contents
-    :local:
-    :depth: 1
-
-
-Deployment of a new application named cafe
-***********************************************************
 
 - Step 1: Create the directory Lab2 and move into it
 
