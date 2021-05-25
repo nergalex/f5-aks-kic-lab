@@ -87,9 +87,17 @@ Copy and Paste the manifest below into a new file named cafe-virtual-server-Lab-
 
 - Step 2: Deploy the manifest:
 
+*input*:
+
 .. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server-lab-2C.yaml
+        kubectl apply -f cafe-virtual-server-lab-2C.yaml
+
+
+*output*:
+
+.. code-block:: bash
+
         virtualserver.k8s.nginx.org/app-cafe configured
 
 
@@ -118,5 +126,5 @@ With Curl, the command is:
 
 .. code-block:: bash
 
-        $ curl https://cafe.example.com/<PATH> --resolve cafe.example.com:443:<EXTERNAL_IP_Cluster> --insecure
+        curl https://cafe.example.com/<PATH> --resolve cafe.example.com:443:<EXTERNAL_IP_Cluster> --insecure
 
