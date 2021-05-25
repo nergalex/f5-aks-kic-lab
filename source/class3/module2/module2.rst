@@ -401,8 +401,9 @@ Deployment of a Virtual Server for TLS with Content-Based Routing
 
 
 
-
-
+|
+|
+|
 **Capture The Flag**
 
     **2b.1 What is the name of the field (in the specification of the VirtualServer CRD) which is used to select a certificate/key for decrypting TLS traffic?**

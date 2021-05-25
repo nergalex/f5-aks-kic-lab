@@ -176,7 +176,7 @@ LAB 2A: Exploring and understanding the K8S cluster
 
 .. note::
         | **Notice the EXTERNAL-IP address and write it somewhere.**
-        | It will be used later in our labs.
+        | **It will be used later in our labs.**
 
 |
 |

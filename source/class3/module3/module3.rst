@@ -130,7 +130,9 @@ With Curl, the command is:
 
 
 
-
+|
+|
+|
 **Capture The Flag**
 
     **2c.1 What is the name of the action which forwards requests to an upstream?**
