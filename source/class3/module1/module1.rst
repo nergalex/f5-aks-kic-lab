@@ -41,11 +41,18 @@ output:
     virtualserverroutes.k8s.nginx.org    2021-03-08T10:00:03Z
     virtualservers.k8s.nginx.org         2021-03-08T10:00:04Z
 
-- Step 7: Let's check the NameSpaces of the cluster:
+
+- Step 3: Let's check the NameSpaces of the cluster:
 
 .. code-block:: bash
 
-        harry@Azure:~$ kubectl get ns
+        $ kubectl get ns
+
+
+output:
+
+.. code-block:: bash
+
         NAME                          STATUS   AGE
         arcadia                       Active   30d
         default                       Active   30d
@@ -55,16 +62,30 @@ output:
         kube-public                   Active   30d
         kube-system                   Active   30d
 
-Step 8: Look at the pods in each NameSpaces with the command ``kubectl get pods``:
+
+Step 4: Look at the pods in each NameSpaces with the command ``kubectl get pods``:
 
 .. code-block:: bash
 
-        harry@Azure:~$ kubectl get pods -n default
+        $ kubectl get pods -n default
+
+
+output:
+
+.. code-block:: bash
+
         No resources found in default namespace.
 
+
 .. code-block:: bash
 
-        harry@Azure:~$ kubectl get pods -n arcadia
+        $ kubectl get pods -n arcadia
+
+
+output:
+
+.. code-block:: bash
+
         NAME                       READY   STATUS    RESTARTS   AGE
         app2-6dcf6d5845-crpv6      1/1     Running   0          30d
         app2-6dcf6d5845-wdxds      1/1     Running   0          30d
@@ -75,24 +96,44 @@ Step 8: Look at the pods in each NameSpaces with the command ``kubectl get pods`
         main-84cf4949b9-f5x5t      1/1     Running   0          30d
         main-84cf4949b9-pnkwt      1/1     Running   0          30d
 
+
 .. code-block:: bash
 
-        harry@Azure:~$ kubectl get pods -n external-ingress-controller
+        $ kubectl get pods -n external-ingress-controller
+
+
+output:
+
+.. code-block:: bash
+
         NAME                                               READY   STATUS    RESTARTS   AGE
         nap-external-ingress-controller-54db45d656-fg4tq   1/1     Running   0          30d
 
+
 .. code-block:: bash
 
-        harry@Azure:~$ kubectl get pods -n internal-ingress-controller
+        $ kubectl get pods -n internal-ingress-controller
+
+
+output:
+
+.. code-block:: bash
+
         NAME                                               READY   STATUS    RESTARTS   AGE
         nap-internal-ingress-controller-55fdb8cd95-2dz77   1/1     Running   0          30d
 
 
-Step 9: Let's check the Ingress Class Name attached to each NIC:
+Step 5: Let's check the Ingress Class Name attached to each NIC:
 
 .. code-block:: bash
 
-        harry@Azure:~$ kubectl describe pod nap-external-ingress-controller-54db45d656-fg4tq -n external-ingress-controller
+        $ kubectl describe pod nap-external-ingress-controller-54db45d656-fg4tq -n external-ingress-controller
+
+
+output:
+
+.. code-block:: bash
+
         Name:         nap-external-ingress-controller-54db45d656-fg4tq
         Namespace:    external-ingress-controller
         .......
@@ -116,7 +157,13 @@ Step 9: Let's check the Ingress Class Name attached to each NIC:
 
 .. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl describe pod nap-internal-ingress-controller-55fdb8cd95-2dz77 -n internal-ingress-controller
+        $ kubectl describe pod nap-internal-ingress-controller-55fdb8cd95-2dz77 -n internal-ingress-controller
+
+
+output:
+
+.. code-block:: bash
+
         Name:         nap-internal-ingress-controller-55fdb8cd95-2dz77
         Namespace:    internal-ingress-controller
         .......
@@ -134,13 +181,20 @@ Step 9: Let's check the Ingress Class Name attached to each NIC:
               .......
 
 
-- Step 10: Let's check the Public IP address attached to the external Ingress Controller:
+- Step 6: Let's check the Public IP address attached to the external Ingress Controller:
 
 .. code-block:: bash
 
-        harry@Azure:~$ kubectl get services -n external-ingress-controller
+        $ kubectl get services -n external-ingress-controller
+
+
+output:
+
+.. code-block:: bash
+
         NAME                         TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)                      AGE
         elb-nap-ingress-controller   LoadBalancer   10.200.0.15   52.167.14.0   80:31613/TCP,443:31094/TCP   30d
+
 
 .. note::
     | Notice the EXTERNAL-IP address and write it somewhere.
