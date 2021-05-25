@@ -372,6 +372,7 @@ Deployment of a Virtual Server for TLS with Content-Based Routing
 
         52.167.14.0         cafe.example.com
 
+
 |    - Open a browser and test some connections :
     | https://cafe.example.com/tea and https://cafe.example.com/coffee should be successfull.
     | https://cafe.example.com/ should receive an HTTP 404 Not Found page. -> This is because the path / hasn't been defined into the Routes field of the manifest above.
