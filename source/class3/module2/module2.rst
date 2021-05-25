@@ -139,12 +139,14 @@ The application cafe is composed of 2 micro services: coffee and tea.
 - Step 4: Deploy the application cafe
 
 *input*
+
 .. code-block:: bash
 
         kubectl create -f cafe.yaml
 
 
 *output:*
+
 .. code-block:: bash
 
         deployment.apps/coffee created
