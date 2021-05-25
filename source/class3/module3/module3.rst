@@ -128,3 +128,28 @@ With Curl, the command is:
 
         curl https://cafe.example.com/<PATH> --resolve cafe.example.com:443:<EXTERNAL_IP_Cluster> --insecure
 
+
+
+
+**Capture The Flag**
+
+    **2c.1 What is the name of the action which forwards requests to an upstream?**
+
+    | response >> pass
+    |
+
+    **2c.2 What is the name of the action which replies a preconfigured response?**
+
+    | response >> return
+    |
+
+    **2c.3 What is the name of the action which passes requests to an upstream with the ability to modify the request/response (for example, rewrite the URI or modify the headers)?**
+
+    | response >> proxy
+    |
+
+    **2c.4 What is the name of the action which redirects requests to a provided URL?**
+
+    | response >> redirect
+
+
