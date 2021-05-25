@@ -225,3 +225,18 @@ Use curl (see step 10 in Lab 2B for the command and options) to open 10 connecti
 
 2 connections should go to Server name: coffee-v2
 
+
+|
+|
+|
+**Capture The Flag**
+
+    **2d.1 What is the name of the field (in the specification of the VirtualServer CRD) which is used to setup canary or A/B testing?**
+
+    | response >> splits
+    |
+
+    **2d.2 What is the name of the field which allow to define a percentage of traffic as part of the splits configuration?**
+
+    | response >> weight
+    |
