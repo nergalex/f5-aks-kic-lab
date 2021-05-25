@@ -219,7 +219,6 @@ Deployment of a Certificate and Keys for TLS Traffic
 That manifest deploys a certificate and keys that will be used later for TLS traffic.
 
 .. code-block:: yaml
-    :linenos:
 
         apiVersion: v1
         kind: Secret
@@ -301,7 +300,6 @@ Deployment of a Virtual Server for TLS with Content-Based Routing
 |    - route: defines rules for matching client requests to actions like passing a request to an upstream.
 
 .. code-block:: yaml
-    :linenos:
 
         apiVersion: k8s.nginx.org/v1
         kind: VirtualServer
