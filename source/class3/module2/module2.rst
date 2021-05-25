@@ -6,14 +6,12 @@ LAB 2B: TLS Traffic with Content-Based Routing
     :depth: 1
 
 
-_______________________________________________________________________
-
 **Capture The Flag**
 
     **1.1 Question n°1 of exercise 1?**
     | response >> will be moved to https://github.com/nergalex/f5-aks-kic-lab-admin/blob/master/CTFd/challenges.json
 
-_______________________________________________________________________
+
 
 
     .. note::
@@ -29,6 +27,7 @@ _______________________________________________________________________
         |    - TLS activated and uses a specified cert and key from a K8S secret resource
         |    - request for /tea are sent to service tea
         |    - request for /coffee are sent to service coffee
+
 
 
 Deployment of a new application named cafe
@@ -139,13 +138,13 @@ The application cafe is composed of 2 micro services: coffee and tea.
 |
 - Step 4: Deploy the application cafe
 
-*input:*
+*input*
 .. code-block:: bash
 
         kubectl create -f cafe.yaml
 
 
-*output:**
+*output:*
 .. code-block:: bash
 
         deployment.apps/coffee created
