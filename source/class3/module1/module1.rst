@@ -28,6 +28,7 @@ LAB 2A: Exploring and understanding the K8S cluster
 
 
 output:
+
 .. code-block:: bash
 
     NAME                                 CREATED AT
