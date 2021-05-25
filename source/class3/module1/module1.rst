@@ -13,38 +13,19 @@ LAB 2A: Exploring and understanding the K8S cluster
         | The tool ``kubectl`` will be used during that workshop.
 
 
-- Step 1: Open you browser and go to the `Azure portal <https://portal.azure.com>`_
-
-- Step 2: Use the credentials which have been provided to you.
-
-- Step 3: On the window, open the cli window to access a shell (the red arrow below):
-
-    .. image:: ./_pictures/_01_AzurePortalOpenBash.png
-        :align: center
-        :width: 800
-
-
-- Step 4: You should see a page which looks like the one below
-
-    .. image:: ./_pictures/_02_bash_opened.png
-        :align: center
-        :width: 800
-
-- Step 5: Configure kubectl to connect to your Kubernetes cluster.
-
-| The name of the K8S Cluster is ``CloudBuilder``.
-| Use the resource group name which has been assigned to you. For instance ``rg-aksdistrict2``.
+- Step 1: logging with SSH to your attributed K8S Cluster
 
 .. code-block:: bash
 
-    harry@Azure:~$ az aks get-credentials --resource-group rg-aksdistrict2 --name CloudBuilder
-    Merged "CloudBuilder" as current context in /home/harry/.kube/config
+    $ ssh -i jumphost.key cyber@jumphost-aksdistrict{{site_ID}}.{{region}}.cloudapp.azure.com
 
-- Step 6: Let's verify the CRDs installed:
+
+- Step 2: Let's verify the CRDs installed:
 
 .. code-block:: bash
 
-    harry@Azure:~$ kubectl get crds
+    $ kubectl get crds
+
     NAME                                 CREATED AT
     aplogconfs.appprotect.f5.com         2021-03-08T10:00:03Z
     appolicies.appprotect.f5.com         2021-03-08T10:00:03Z
