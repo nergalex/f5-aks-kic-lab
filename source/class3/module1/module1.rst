@@ -27,7 +27,7 @@ LAB 2A: Exploring and understanding the K8S cluster
     $ kubectl get crds
 
 
-output:
+*output*:
 
 .. code-block:: bash
 
@@ -59,7 +59,7 @@ output:
         $ kubectl get ns
 
 
-output:
+*output:*
 
 .. code-block:: bash
 
@@ -92,7 +92,7 @@ output:
         $ kubectl get pods -n default
 
 
-output:
+*output:*
 
 .. code-block:: bash
 
@@ -109,7 +109,7 @@ output:
         $ kubectl get pods -n external-ingress-controller
 
 
-output:
+*output:*
 
 .. code-block:: bash
 
@@ -125,7 +125,7 @@ output:
         $ kubectl describe pod nap-external-ingress-controller-54db45d656-fg4tq -n external-ingress-controller
 
 
-output:
+*output:*
 
 .. code-block:: bash
 
@@ -165,7 +165,7 @@ output:
         $ kubectl get services -n external-ingress-controller
 
 
-output:
+*output:*
 
 .. code-block:: bash
 
