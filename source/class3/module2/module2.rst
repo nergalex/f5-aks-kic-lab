@@ -210,7 +210,8 @@ You should have the services tea-svc and coffee-svc deployed:
 
 That manifest deploys a certificate and keys that will be used later for TLS traffic.
 
-.. code-block:: bash
+.. code-block:: yaml
+    :linenos:
 
         apiVersion: v1
         kind: Secret
@@ -271,7 +272,8 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 |    - tls: allows to attach a secret with a TLS certificate and key. The secret must belong to the same namespace as the VirtualServer.
 |    - route: defines rules for matching client requests to actions like passing a request to an upstream.
 
-.. code-block:: bash
+.. code-block:: yaml
+    :linenos:
 
         apiVersion: k8s.nginx.org/v1
         kind: VirtualServer

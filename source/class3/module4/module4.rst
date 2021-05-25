@@ -23,7 +23,8 @@ LAB 2D: Canary or A/B Testing
 
 Create/Edit a new file named **cafe-v2.yaml** and copy/past the manifest below.
 
-.. code-block:: bash
+.. code-block:: yaml
+    :linenos:
 
         apiVersion: apps/v1
         kind: Deployment
@@ -127,7 +128,8 @@ Verify the services coffee-v1-svc and coffee-v2-svc are correctly deployed:
 
 - Step 2: Create/Edit a new file named **cafe-virtual-server-lab-2D.yaml** and copy/past the manifest below.
 
-.. code-block:: bash
+.. code-block:: yaml
+    :linenos:
 
         apiVersion: k8s.nginx.org/v1
         kind: VirtualServer

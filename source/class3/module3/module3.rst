@@ -20,7 +20,8 @@ LAB 2C: Advanced Traffic Splitting and Content-Based Routing
 
 Copy and Paste the manifest below into a new file named cafe-virtual-server-Lab-2C.yaml and deploy it.
 
-.. code-block:: bash
+.. code-block:: yaml
+    :linenos:
 
         apiVersion: k8s.nginx.org/v1
         kind: VirtualServer
