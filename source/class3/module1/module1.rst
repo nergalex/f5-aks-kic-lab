@@ -183,11 +183,12 @@ LAB 2A: Exploring and understanding the K8S cluster
 |
 **Capture The Flag**
 
-    **2.1 What kind of K8S Resource Definition can be used with NGINX+ for simplicity and advanced configuration of load balancing?**
+    **2a.1 What kind of K8S Resource Definition can be used with NGINX+ for simplicity and advanced configuration of load balancing?**
 
     | response >> Custom
+    |
 
-    **2.2 What is the name of the Custom Resource used for Advanced load balancing configuration and used as an alternative to the Ingress resource?**
+    **2a.2 What is the name of the Custom Resource used for Advanced load balancing configuration and used as an alternative to the Ingress resource?**
 
     | response >> VirtualServer
 

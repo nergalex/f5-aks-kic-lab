@@ -297,7 +297,7 @@ Deployment of a Virtual Server for TLS with Content-Based Routing
 |
 | The list is quite long and is available in the `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_. Some of those advanced features will be used later in the workshop.
 |
-| For this first deployment, we're going to use the features below:
+| For this first deployment, we're going to use the specifications below:
 |    - tls: allows to attach a secret with a TLS certificate and key. The secret must belong to the same namespace as the VirtualServer.
 |    - route: defines rules for matching client requests to actions like passing a request to an upstream.
 
@@ -399,3 +399,17 @@ Deployment of a Virtual Server for TLS with Content-Based Routing
     </body>
     </html>
 
+
+
+
+
+**Capture The Flag**
+
+    **2b.1 What is the name of the field (in the specification of the VirtualServer CRD) which is used to select a certificate/key for decrypting TLS traffic?**
+
+    | response >> tls
+    |
+
+    **2b.2 What is the name of the field (in the specification of the VirtualServer CRD) which is used to defines rules content-based load balancing?**
+
+    | response >> route
