@@ -29,8 +29,8 @@ Deployment of a new application named cafe
 
 .. code-block:: bash
 
-        $ mkdir lab2
-        $ cd lab2/
+        mkdir lab2
+        cd lab2/
 |
 
 - Step 2: Create a new NameSpace called cafe-ns. We will deploy the application into it.
