@@ -46,7 +46,7 @@ LAB 2A: Exploring and understanding the K8S cluster
 .. note::
     | The **VirtualServer** and **VirtualServerRoute** resources are new load balancing configuration, introduced in release 1.5 as an alternative to the Ingress resource.
     | The resources enable use cases not supported with the Ingress resource, such as traffic splitting and advanced content-based routing.
-    | The resources are implemented as Custom Resources.
+    | The resources are implemented as Custom Resource Definitions.
     | The VirtualServer Custom Resource will be used in the labs 2.
     |
     |
@@ -183,7 +183,12 @@ LAB 2A: Exploring and understanding the K8S cluster
 |
 **Capture The Flag**
 
-    **2.1 What is the name of the Custom Resource used for Advanced load balancing configuration and used as an alternative to the Ingress resource.**
+    **2.1 What kind of K8S Resource Definition can be used with NGINX+ for simplicity and advanced configuration of load balancing?**
+
+    | response >> Custom
+
+    **2.2 What is the name of the Custom Resource used for Advanced load balancing configuration and used as an alternative to the Ingress resource?**
+
     | response >> VirtualServer
 
 
