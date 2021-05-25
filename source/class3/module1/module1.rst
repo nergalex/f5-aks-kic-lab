@@ -26,6 +26,10 @@ LAB 2A: Exploring and understanding the K8S cluster
 
     $ kubectl get crds
 
+
+output:
+.. code-block:: bash
+
     NAME                                 CREATED AT
     aplogconfs.appprotect.f5.com         2021-03-08T10:00:03Z
     appolicies.appprotect.f5.com         2021-03-08T10:00:03Z
