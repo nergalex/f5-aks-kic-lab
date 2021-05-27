@@ -1,6 +1,6 @@
-# F5 AKS KIC lab
+# F5 K8S lab
 
-[User guide](https://f5-aks-kic-lab.readthedocs.io/en/latest/)
+[User guide](https://f5-k8s-ctfd.docs.emea.f5se.com/)
 
 ![alt text][mow]
 

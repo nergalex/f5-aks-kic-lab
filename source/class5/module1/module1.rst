@@ -45,7 +45,7 @@ In this lab, **Micro Proxy** publishes API endpoints of an Application in 2 ways
 
 App design
 ********************************
-An application named ***Sentence** has already been deployed.
+An application named **Sentence** has already been deployed.
 
 .. image:: ./_pictures/sentence_detailled.svg
    :align: center
