@@ -20,7 +20,7 @@ LAB 2C: Advanced Traffic Splitting and Content-Based Routing
 
 Copy and Paste the manifest below into a new file named cafe-virtual-server-Lab-2C.yaml and deploy it.
 
-.. code-block:: bash
+.. code-block:: yaml
 
         apiVersion: k8s.nginx.org/v1
         kind: VirtualServer
@@ -86,9 +86,17 @@ Copy and Paste the manifest below into a new file named cafe-virtual-server-Lab-
 
 - Step 2: Deploy the manifest:
 
+*input*:
+
 .. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server-lab-2C.yaml
+        kubectl apply -f cafe-virtual-server-lab-2C.yaml
+
+
+*output*:
+
+.. code-block:: bash
+
         virtualserver.k8s.nginx.org/app-cafe configured
 
 
@@ -117,5 +125,32 @@ With Curl, the command is:
 
 .. code-block:: bash
 
-        $ curl https://cafe.example.com/<PATH> --resolve cafe.example.com:443:<EXTERNAL_IP_Cluster> --insecure
+        curl https://cafe.example.com/<PATH> --resolve cafe.example.com:443:<EXTERNAL_IP_Cluster> --insecure
+
+
+
+|
+|
+|
+**Capture The Flag**
+
+    **2c.1 What is the name of the action which forwards requests to an upstream?**
+
+    | response >> pass
+    |
+
+    **2c.2 What is the name of the action which replies a preconfigured response?**
+
+    | response >> return
+    |
+
+    **2c.3 What is the name of the action which passes requests to an upstream with the ability to modify the request/response (for example, rewrite the URI or modify the headers)?**
+
+    | response >> proxy
+    |
+
+    **2c.4 What is the name of the action which redirects requests to a provided URL?**
+
+    | response >> redirect
+
 

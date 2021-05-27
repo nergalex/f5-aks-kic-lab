@@ -23,7 +23,7 @@ LAB 2D: Canary or A/B Testing
 
 Create/Edit a new file named **cafe-v2.yaml** and copy/past the manifest below.
 
-.. code-block:: bash
+.. code-block:: yaml
 
         apiVersion: apps/v1
         kind: Deployment
@@ -97,15 +97,26 @@ Create/Edit a new file named **cafe-v2.yaml** and copy/past the manifest below.
 
 Deploy the application:
 
+*input*:
+
 .. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl apply -f cafe-v2.yaml
+        kubectl apply -f cafe-v2.yaml
+
 
 Verify the pods coffee-v1 and coffee-v2 are correctly deployed:
 
+*input*:
+
 .. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl get pods -n cafe-ns
+        kubectl get pods -n cafe-ns
+
+
+*output*:
+
+.. code-block:: bash
+
         NAME                         READY   STATUS    RESTARTS   AGE
         coffee-6f4b79b975-4gqzg      1/1     Running   0          140m
         coffee-6f4b79b975-5vmrd      1/1     Running   0          140m
@@ -113,11 +124,20 @@ Verify the pods coffee-v1 and coffee-v2 are correctly deployed:
         coffee-v2-67499ff985-7h88c   1/1     Running   0          13m
         tea-6fb46d899f-k2sfc         1/1     Running   0          140m
 
+
 Verify the services coffee-v1-svc and coffee-v2-svc are correctly deployed:
+
+*input*:
 
 .. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl get services -n cafe-ns
+        kubectl get services -n cafe-ns
+
+
+*output*:
+
+.. code-block:: bash
+
         NAME            TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE
         coffee-svc      ClusterIP   10.200.0.100   <none>        80/TCP    63m
         coffee-v1-svc   ClusterIP   10.200.0.32    <none>        80/TCP    9m57s
@@ -127,7 +147,7 @@ Verify the services coffee-v1-svc and coffee-v2-svc are correctly deployed:
 
 - Step 2: Create/Edit a new file named **cafe-virtual-server-lab-2D.yaml** and copy/past the manifest below.
 
-.. code-block:: bash
+.. code-block:: yaml
 
         apiVersion: k8s.nginx.org/v1
         kind: VirtualServer
@@ -157,22 +177,39 @@ Verify the services coffee-v1-svc and coffee-v2-svc are correctly deployed:
 
 - Step 3: Deploy the new setup
 
+*input*:
+
 .. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server-lab-2D.yaml
+        kubectl apply -f cafe-virtual-server-lab-2D.yaml
+
+
+*output*:
+
+.. code-block:: bash
+
         virtualserver.k8s.nginx.org/cafe-vs configured
 
 
 - Step 4: Verify the status of the VirtualServer with the command below:
 
+*input*:
+
 .. code-block:: bash
 
         kubectl describe virtualserver cafe-vs -n cafe-ns
+
+
+ *output*:
+
+.. code-block:: bash
+
         . . .
         Events:
           Type    Reason          Age   From                      Message
           ----    ------          ----  ----                      -------
           Normal  AddedOrUpdated  5s    nginx-ingress-controller  Configuration for cafe-ns/cafe-vs was added or updated
+
 
 - Step 4: Test the setup
 
@@ -186,3 +223,18 @@ Use curl (see step 10 in Lab 2B for the command and options) to open 10 connecti
 
 2 connections should go to Server name: coffee-v2
 
+
+|
+|
+|
+**Capture The Flag**
+
+    **2d.1 What is the name of the field (in the specification of the VirtualServer CRD) which is used to setup canary or A/B testing?**
+
+    | response >> splits
+    |
+
+    **2d.2 What is the name of the field which allow to define a percentage of traffic as part of the splits configuration?**
+
+    | response >> weight
+    |

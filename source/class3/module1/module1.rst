@@ -13,38 +13,24 @@ LAB 2A: Exploring and understanding the K8S cluster
         | The tool ``kubectl`` will be used during that workshop.
 
 
-- Step 1: Open you browser and go to the `Azure portal <https://portal.azure.com>`_
-
-- Step 2: Use the credentials which have been provided to you.
-
-- Step 3: On the window, open the cli window to access a shell (the red arrow below):
-
-    .. image:: ./_pictures/_01_AzurePortalOpenBash.png
-        :align: center
-        :width: 800
-
-
-- Step 4: You should see a page which looks like the one below
-
-    .. image:: ./_pictures/_02_bash_opened.png
-        :align: center
-        :width: 800
-
-- Step 5: Configure kubectl to connect to your Kubernetes cluster.
-
-| The name of the K8S Cluster is ``CloudBuilder``.
-| Use the resource group name which has been assigned to you. For instance ``rg-aksdistrict2``.
+- Step 1: logging with SSH to your attributed K8S Cluster
 
 .. code-block:: bash
 
-    harry@Azure:~$ az aks get-credentials --resource-group rg-aksdistrict2 --name CloudBuilder
-    Merged "CloudBuilder" as current context in /home/harry/.kube/config
+    $ ssh -i jumphost.key cyber@jumphost-aksdistrict{{site_ID}}.{{region}}.cloudapp.azure.com
 
-- Step 6: Let's verify the CRDs installed:
+
+- Step 2: Let's verify the CRDs installed:
 
 .. code-block:: bash
 
-    harry@Azure:~$ kubectl get crds
+    $ kubectl get crds
+
+
+*output*:
+
+.. code-block:: bash
+
     NAME                                 CREATED AT
     aplogconfs.appprotect.f5.com         2021-03-08T10:00:03Z
     appolicies.appprotect.f5.com         2021-03-08T10:00:03Z
@@ -55,11 +41,28 @@ LAB 2A: Exploring and understanding the K8S cluster
     virtualserverroutes.k8s.nginx.org    2021-03-08T10:00:03Z
     virtualservers.k8s.nginx.org         2021-03-08T10:00:04Z
 
-- Step 7: Let's check the NameSpaces of the cluster:
+
+
+.. note::
+    | The **VirtualServer** and **VirtualServerRoute** resources are new load balancing configuration, introduced in release 1.5 as an alternative to the Ingress resource.
+    | The resources enable use cases not supported with the Ingress resource, such as traffic splitting and advanced content-based routing.
+    | The resources are implemented as Custom Resource Definitions.
+    | The VirtualServer Custom Resource will be used in the labs 2.
+    |
+    |
+
+
+- Step 3: Let's check the NameSpaces of the cluster:
 
 .. code-block:: bash
 
-        harry@Azure:~$ kubectl get ns
+        $ kubectl get ns
+
+
+*output:*
+
+.. code-block:: bash
+
         NAME                          STATUS   AGE
         arcadia                       Active   30d
         default                       Active   30d
@@ -69,44 +72,63 @@ LAB 2A: Exploring and understanding the K8S cluster
         kube-public                   Active   30d
         kube-system                   Active   30d
 
-Step 8: Look at the pods in each NameSpaces with the command ``kubectl get pods``:
+
+
+.. note::
+    | The namespace of interest for the Labs 2 is **external-ingress-controller**.
+    | That namespace includes the NGINX Ingress Controller which will be used during the labs.
+    | Some new namespaces will be created later during the labs.
+    | The namespace arcadia will be used during the lab 3 WAF.
+    |
+    |
+
+
+- Step 4: Look at the pods in some NameSpaces with the command ``kubectl get pods``:
+
+| Namespace Default:
 
 .. code-block:: bash
 
-        harry@Azure:~$ kubectl get pods -n default
+        $ kubectl get pods -n default
+
+
+*output:*
+
+.. code-block:: bash
+
         No resources found in default namespace.
 
-.. code-block:: bash
 
-        harry@Azure:~$ kubectl get pods -n arcadia
-        NAME                       READY   STATUS    RESTARTS   AGE
-        app2-6dcf6d5845-crpv6      1/1     Running   0          30d
-        app2-6dcf6d5845-wdxds      1/1     Running   0          30d
-        app3-b989dc6dc-6klxk       1/1     Running   0          30d
-        app3-b989dc6dc-9vpfm       1/1     Running   0          30d
-        backend-56c9b667d5-4x4w2   1/1     Running   0          30d
-        backend-56c9b667d5-zfgvc   1/1     Running   0          30d
-        main-84cf4949b9-f5x5t      1/1     Running   0          30d
-        main-84cf4949b9-pnkwt      1/1     Running   0          30d
+| The namespace default is empty.
+|
+|
+| Namespace external-ingress-controller:
 
 .. code-block:: bash
 
-        harry@Azure:~$ kubectl get pods -n external-ingress-controller
+        $ kubectl get pods -n external-ingress-controller
+
+
+*output:*
+
+.. code-block:: bash
+
         NAME                                               READY   STATUS    RESTARTS   AGE
         nap-external-ingress-controller-54db45d656-fg4tq   1/1     Running   0          30d
 
-.. code-block:: bash
-
-        harry@Azure:~$ kubectl get pods -n internal-ingress-controller
-        NAME                                               READY   STATUS    RESTARTS   AGE
-        nap-internal-ingress-controller-55fdb8cd95-2dz77   1/1     Running   0          30d
 
 
-Step 9: Let's check the Ingress Class Name attached to each NIC:
+- Step 5: Let's check the Ingress Class Name attached to the External Ingress Controller:
 
 .. code-block:: bash
 
-        harry@Azure:~$ kubectl describe pod nap-external-ingress-controller-54db45d656-fg4tq -n external-ingress-controller
+        $ kubectl describe pod nap-external-ingress-controller-54db45d656-fg4tq -n external-ingress-controller
+
+
+*output:*
+
+.. code-block:: bash
+
         Name:         nap-external-ingress-controller-54db45d656-fg4tq
         Namespace:    external-ingress-controller
         .......
@@ -128,36 +150,46 @@ Step 9: Let's check the Ingress Class Name attached to each NIC:
               .......
 
 
-.. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl describe pod nap-internal-ingress-controller-55fdb8cd95-2dz77 -n internal-ingress-controller
-        Name:         nap-internal-ingress-controller-55fdb8cd95-2dz77
-        Namespace:    internal-ingress-controller
-        .......
-        .......
-            Ports:         80/TCP, 443/TCP, 9113/TCP, 8081/TCP
-            Host Ports:    0/TCP, 0/TCP, 0/TCP, 0/TCP
-            Args:
-              -nginx-plus=true
-              -nginx-reload-timeout=0
-              -enable-app-protect=true
-              .......
-              .......
-              -ingress-class=nginx-internal         ****INGRESS CLASS NAME is nginx-internal****
-              .......
-              .......
+.. note::
+    | The Ingress Class Name **nginx-external**  will be used as a reference into the deployment of the manifests.
+    | It allows to indicate which Ingress Controller must be used for a specific deployment.
+    |
+    |
 
 
-- Step 10: Let's check the Public IP address attached to the external Ingress Controller:
+- Step 6: Let's check the Public IP address attached to the external Ingress Controller:
 
 .. code-block:: bash
 
-        harry@Azure:~$ kubectl get services -n external-ingress-controller
+        $ kubectl get services -n external-ingress-controller
+
+
+*output:*
+
+.. code-block:: bash
+
         NAME                         TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)                      AGE
         elb-nap-ingress-controller   LoadBalancer   10.200.0.15   52.167.14.0   80:31613/TCP,443:31094/TCP   30d
 
+
+
 .. note::
-    | Notice the EXTERNAL-IP address and write it somewhere.
-    | It will be used later in our labs.
+        | **Notice the EXTERNAL-IP address and write it somewhere.**
+        | **It will be used later in our labs.**
+
+|
+|
+|
+**Capture The Flag**
+
+    **2a.1 What kind of K8S Resource Definition can be used with NGINX+ for simplicity and advanced configuration of load balancing?**
+
+    | response >> Custom
+    |
+
+    **2a.2 What is the name of the Custom Resource used for Advanced load balancing configuration and used as an alternative to the Ingress resource?**
+
+    | response >> VirtualServer
 
 

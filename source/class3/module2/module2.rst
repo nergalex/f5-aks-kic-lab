@@ -1,43 +1,12 @@
-LAB 2B: Simple Traffic Splitting and Content-Based Routing
+LAB 2B: TLS Traffic with Content-Based Routing
 #############################################################
 
 .. contents:: Contents
     :local:
     :depth: 1
 
-Subtitle depth 1 - example
+Deployment of a new application named cafe
 ***********************************************************
-
-Subtitle depth 2 - example
-===========================================================
-
-- Step to do
-
-.. code-block:: bash
-
-        command line to do, copy it by clicking on the top right icon
-
-*output*
-
-.. code-block:: json
-
-        {"output well formated": "here json"}
-
-*input*
-
-.. code-block:: yaml
-    :linenos:
-
-        "input file well formated with line number": "here yaml"
-
-_______________________________________________________________________
-
-**Capture The Flag**
-
-    **1.1 Question n°1 of exercise 1?**
-    | response >> will be moved to https://github.com/nergalex/f5-aks-kic-lab-admin/blob/master/CTFd/challenges.json
-
-_______________________________________________________________________
 
 
     .. note::
@@ -55,22 +24,24 @@ _______________________________________________________________________
         |    - request for /coffee are sent to service coffee
 
 
+
 - Step 1: Create the directory Lab2 and move into it
 
 .. code-block:: bash
 
-        harry@Azure:~$ mkdir lab2
-        harry@Azure:~$ cd lab2/
-        harry@Azure:~/lab2$
+        mkdir lab2
+        cd lab2/
 |
 
 - Step 2: Create a new NameSpace called cafe-ns. We will deploy the application into it.
+
+*input:*
 
 .. code-block:: bash
 
         kubectl create namespace cafe-ns
 
-*output*
+*output:*
 
 .. code-block:: bash
 
@@ -84,7 +55,6 @@ The application cafe is composed of 2 micro services: coffee and tea.
 
 
 .. code-block:: yaml
-    :linenos:
 
         apiVersion: apps/v1
         kind: Deployment
@@ -159,9 +129,17 @@ The application cafe is composed of 2 micro services: coffee and tea.
 |
 - Step 4: Deploy the application cafe
 
+*input:*
+
 .. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl create -f cafe.yaml
+        kubectl create -f cafe.yaml
+
+
+*output:*
+
+.. code-block:: bash
+
         deployment.apps/coffee created
         service/coffee-svc created
         deployment.apps/tea created
@@ -172,9 +150,17 @@ The application cafe is composed of 2 micro services: coffee and tea.
 
 NameSpace cafe should have been created and should be in status Active:
 
+*input:*
+
 .. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl get namespaces
+        kubectl get namespaces
+
+
+*output:*
+
+.. code-block:: bash
+
         NAME                          STATUS   AGE
         arcadia                       Active   2d3h
         cafe-ns                       Active   13s
@@ -188,29 +174,51 @@ NameSpace cafe should have been created and should be in status Active:
 The services of the application cafe should have been deployed in the NameSpace cafe-ns and should be in status Running.
 You should have 2 Pods for the coffee service and 1 Pod for tea service
 
+
+*input:*
+
 .. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl get pods -n cafe-ns
+        kubectl get pods -n cafe-ns
+
+
+*output:*
+
+.. code-block:: bash
+
         NAME                      READY   STATUS    RESTARTS   AGE
         coffee-6f4b79b975-pxjxp   1/1     Running   0          21s
         coffee-6f4b79b975-xpfvr   1/1     Running   0          21s
         tea-6fb46d899f-j2mqs      1/1     Running   0          21s
+|
 
 You should have the services tea-svc and coffee-svc deployed:
 
+*input:*
+
 .. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl get services -n cafe-ns
+        kubectl get services -n cafe-ns
+
+
+*output:*
+
+.. code-block:: bash
+
         NAME         TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
         coffee-svc   ClusterIP   10.200.0.91   <none>        80/TCP    16m
         tea-svc      ClusterIP   10.200.0.88   <none>        80/TCP    16m
 
 |
-- Step 6: Copy and Past the manifest below into a new file called **cafe-secret.yaml**.
+
+Deployment of a Certificate and Keys for TLS Traffic
+*********************************************************
+
+- Step 1: Copy and Past the manifest below into a new file called **cafe-secret.yaml**.
 
 That manifest deploys a certificate and keys that will be used later for TLS traffic.
 
-.. code-block:: bash
+.. code-block:: yaml
 
         apiVersion: v1
         kind: Secret
@@ -223,19 +231,35 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
           tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBcWVpcCs3TXZOYWRJN2lmM01wUHJ3Z0pwYkg0N1JUTnBybVRTdENyWG5LaHRuNDFrCkcrZWNVTldCUU5semtzQndHTDBuY0NObzJhN2x2S2wxd2k5cTIrQW1RaGNjS1ZSQXEzTVhZNXQ3WGxZa1YxYkcKQ0pwaVJ6ejBza0lLWXFHN1BjZXc1UzNPaUFRTkdZMURzcGRENmh2VWlYc1RGZTkxaUNHdWF3MVVoZHErSkVwRwp3SStBM0kreTEzaFpWVng5aU9WOEZ3cWJRcCt1eVFvT05uL3BQTUlNM0VWYWZGMlpHVm1WWThLdlVWQ2cxNWhRCmRtTWpkVnhGbldkSHNFYmltRkNaYkp1dmRySkRxeWtJOUw1S0Q1K05SQlAvazJsUkthaTAwYUZHTjY4NE93NUgKYzMzUVlzeFR0bmJEelJjZGdsdEkxNURTN3lxTnVRbWF6b1Z3QndJREFRQUJBb0lCQVFDUFNkU1luUXRTUHlxbApGZlZGcFRPc29PWVJoZjhzSStpYkZ4SU91UmF1V2VoaEp4ZG01Uk9ScEF6bUNMeUw1VmhqdEptZTIyM2dMcncyCk45OUVqVUtiL1ZPbVp1RHNCYzZvQ0Y2UU5SNThkejhjbk9SVGV3Y290c0pSMXBuMWhobG5SNUhxSkpCSmFzazEKWkVuVVFmY1hackw5NGxvOUpIM0UrVXFqbzFGRnM4eHhFOHdvUEJxalpzVjdwUlVaZ0MzTGh4bndMU0V4eUZvNApjeGI5U09HNU9tQUpvelN0Rm9RMkdKT2VzOHJKNXFmZHZ5dGdnOXhiTGFRTC94MGtwUTYyQm9GTUJEZHFPZVBXCktmUDV6WjYvMDcvdnBqNDh5QTFRMzJQem9idWJzQkxkM0tjbjMyamZtMUU3cHJ0V2wrSmVPRmlPem5CUUZKYk4KNHFQVlJ6NWhBb0dCQU50V3l4aE5DU0x1NFArWGdLeWNrbGpKNkY1NjY4Zk5qNUN6Z0ZScUowOXpuMFRsc05ybwpGVExaY3hEcW5SM0hQWU00MkpFUmgySi9xREZaeW5SUW8zY2czb2VpdlVkQlZHWTgrRkkxVzBxZHViL0w5K3l1CmVkT1pUUTVYbUdHcDZyNmpleHltY0ppbS9Pc0IzWm5ZT3BPcmxEN1NQbUJ2ek5MazRNRjZneGJYQW9HQkFNWk8KMHA2SGJCbWNQMHRqRlhmY0tFNzdJbUxtMHNBRzR1SG9VeDBlUGovMnFyblRuT0JCTkU0TXZnRHVUSnp5K2NhVQprOFJxbWRIQ2JIelRlNmZ6WXEvOWl0OHNaNzdLVk4xcWtiSWN1YytSVHhBOW5OaDFUanNSbmU3NFowajFGQ0xrCmhIY3FIMHJpN1BZU0tIVEU4RnZGQ3haWWRidUI4NENtWmlodnhicFJBb0dBSWJqcWFNWVBUWXVrbENkYTVTNzkKWVNGSjFKelplMUtqYS8vdER3MXpGY2dWQ0thMzFqQXdjaXowZi9sU1JxM0hTMUdHR21lemhQVlRpcUxmZVpxYwpSMGlLYmhnYk9jVlZrSkozSzB5QXlLd1BUdW14S0haNnpJbVpTMGMwYW0rUlk5WUdxNVQ3WXJ6cHpjZnZwaU9VCmZmZTNSeUZUN2NmQ21mb09oREN0enVrQ2dZQjMwb0xDMVJMRk9ycW40M3ZDUzUxemM1em9ZNDR1QnpzcHd3WU4KVHd2UC9FeFdNZjNWSnJEakJDSCtULzZzeXNlUGJKRUltbHpNK0l3eXRGcEFOZmlJWEV0LzQ4WGY2ME54OGdXTQp1SHl4Wlp4L05LdER3MFY4dlgxUE9ucTJBNWVpS2ErOGpSQVJZS0pMWU5kZkR1d29seHZHNmJaaGtQaS80RXRUCjNZMThzUUtCZ0h0S2JrKzdsTkpWZXN3WEU1Y1VHNkVEVXNEZS8yVWE3ZlhwN0ZjanFCRW9hcDFMU3crNlRYcDAKWmdybUtFOEFSek00NytFSkhVdmlpcS9udXBFMTVnMGtKVzNzeWhwVTl6WkxPN2x0QjBLSWtPOVpSY21Vam84UQpjcExsSE1BcWJMSjhXWUdKQ2toaVd4eWFsNmhZVHlXWTRjVmtDMHh0VGwvaFVFOUllTktvCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
 
 |
-- Step 7: Deploy the manifest cafe-secret.
+- Step 2: Deploy the manifest cafe-secret.
+
+*input:*
 
 .. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl create -f cafe-secret.yaml
+        kubectl create -f cafe-secret.yaml
+
+
+*output:*
+
+.. code-block:: bash
+
         secret/cafe-secret created
 
 |
-- Step 8: Verify the certificate and keys have been deployed into the namespace cafe-ns
+- Step 3: Verify the certificate and keys have been deployed into the namespace cafe-ns
+
+*input*:
 
 .. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl describe secret cafe-secret -n cafe-ns
+        kubectl describe secret cafe-secret -n cafe-ns
+
+
+*output:*
+
+.. code-block:: bash
+
         Name:         cafe-secret
         Namespace:    cafe-ns
         Labels:       <none>
@@ -249,7 +273,11 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
         tls.key:  1675 bytes
 
 |
-- Step 9: Copy/Paste the manifest below into a new file named **cafe-virtual-server-lab-2B.yaml** and deploy it.
+
+Deployment of a Virtual Server for TLS with Content-Based Routing
+*************************************************************************
+
+- Step 1: Copy/Paste the manifest below into a new file named **cafe-virtual-server-lab-2B.yaml** and deploy it.
 
 | That manifest uses the custom resources **VirtualServer**.
 |
@@ -267,11 +295,11 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 |
 | The list is quite long and is available in the `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_. Some of those advanced features will be used later in the workshop.
 |
-| For this first deployment, we're going to use the features below:
+| For this first deployment, we're going to use the specifications below:
 |    - tls: allows to attach a secret with a TLS certificate and key. The secret must belong to the same namespace as the VirtualServer.
 |    - route: defines rules for matching client requests to actions like passing a request to an upstream.
 
-.. code-block:: bash
+.. code-block:: yaml
 
         apiVersion: k8s.nginx.org/v1
         kind: VirtualServer
@@ -299,21 +327,30 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
               pass: coffee
 
 
-- Deploy the manifest:
+- step 2: Deploy the manifest:
+
+*input*:
 
 .. code-block:: bash
 
-        harry@Azure:~/lab2$ kubectl apply -f cafe-virtual-server-lab-2B.yaml
+        kubectl apply -f cafe-virtual-server-lab-2B.yaml
+
+*output*:
+
+.. code-block:: bash
+
         virtualserver.k8s.nginx.org/app-cafe configured
 
 
-- Check the compilation status of the VirtualServer with the command below:
+- step 3: Check the compilation status of the VirtualServer with the command below:
+
+*input*:
 
 .. code-block:: bash
         kubectl describe virtualserver app-cafe -n cafe-ns
 
 
-- Step 10: Test the setup
+- Step 4: Test the setup
 |
 | If you have the rights to modify the hosts file of your client:
 |
@@ -324,14 +361,18 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 
         52.167.14.0         cafe.example.com
 
+
 |    - Open a browser and test some connections :
-    | https://cafe.example.com/tea and https://cafe.example.com/coffee should be successfull.
-    | https://cafe.example.com/ should receive an HTTP 404 Not Found page. -> This is because the path / hasn't been defined into the Routes field of the manifest above.
-
-
-| If you don't have the rights on the hosts file of your client then you can use the curl command with the EXTERNAL-IP address of the cluster you've seen on step 11 of LAB 2A above:
+|
+| https://cafe.example.com/tea and https://cafe.example.com/coffee should be successfull.
+|
+| https://cafe.example.com/ should receive an HTTP 404 Not Found page. -> This is because the path / hasn't been defined into the Routes field of the manifest above.
+|
+|
+| If you don't have the rights on the hosts file of your client then you can use the curl command with the EXTERNAL-IP address of the cluster you've seen on last step of LAB 2A:
 
 .. code-block:: bash
+
     $ curl https://cafe.example.com/coffee --resolve cafe.example.com:443:52.167.14.0 --insecure
     Server address: 10.22.1.55:8080
     Server name: coffee-6f4b79b975-5vmrd
@@ -355,3 +396,18 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
     </body>
     </html>
 
+
+
+|
+|
+|
+**Capture The Flag**
+
+    **2b.1 What is the name of the field (in the specification of the VirtualServer CRD) which is used to select a certificate/key for decrypting TLS traffic?**
+
+    | response >> tls
+    |
+
+    **2b.2 What is the name of the field (in the specification of the VirtualServer CRD) which is used to defines rules content-based load balancing?**
+
+    | response >> route
