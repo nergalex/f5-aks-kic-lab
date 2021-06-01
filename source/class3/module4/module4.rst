@@ -5,7 +5,7 @@ LAB 2D: Canary or A/B Testing
     :local:
     :depth: 1
 
-LAB 2D: Canary or A/B Testing
+Exercise 1: Deploy
 *******************************
 
     .. note::
@@ -24,6 +24,7 @@ LAB 2D: Canary or A/B Testing
 Create/Edit a new file named **cafe-v2.yaml** and copy/past the manifest below.
 
 .. code-block:: yaml
+    :linenos:
 
         apiVersion: apps/v1
         kind: Deployment
@@ -144,10 +145,13 @@ Verify the services coffee-v1-svc and coffee-v2-svc are correctly deployed:
         coffee-v2-svc   ClusterIP   10.200.0.76    <none>        80/TCP    9m56s
         tea-svc         ClusterIP   10.200.0.51    <none>        80/TCP    63m
 
+Exercise 2: Publish
+*************************************************************
 
 - Step 2: Create/Edit a new file named **cafe-virtual-server-lab-2D.yaml** and copy/past the manifest below.
 
 .. code-block:: yaml
+    :lineos:
 
         apiVersion: k8s.nginx.org/v1
         kind: VirtualServer
@@ -210,18 +214,18 @@ Verify the services coffee-v1-svc and coffee-v2-svc are correctly deployed:
           ----    ------          ----  ----                      -------
           Normal  AddedOrUpdated  5s    nginx-ingress-controller  Configuration for cafe-ns/cafe-vs was added or updated
 
+Exercise 3: Test
+*************************************************************
 
-- Step 4: Test the setup
-
-Use curl (see step 10 in Lab 2B for the command and options) to open 10 connections on https://cafe.example.com/coffee
+- Do 10 connections on ``cafev2``
 
 .. code-block:: bash
 
-        $ curl http://cafev2.example.com/coffee --resolve cafev2.example.com:80:52.167.14.0
+        curl http://cafev2.example.com/coffee --resolve cafev2.example.com:<EXTERNAL_IP_Cluster> --insecure
 
-8 connections should go to Server name: coffee-v1
-
-2 connections should go to Server name: coffee-v2
+- Check that you have around:
+    - 8 connections to Server name: coffee-v1
+    - 2 connections to Server name: coffee-v2
 
 
 |
