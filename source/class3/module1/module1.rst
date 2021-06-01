@@ -1,30 +1,23 @@
-LAB 2A: Exploring and understanding the K8S cluster
+lab 2A: Exploring and understanding the K8S cluster
 ####################################################
 
 .. contents:: Contents
     :local:
     :depth: 1
 
-LAB 2A: Exploring and understanding the K8S cluster
+Exercise 1: Jumphost
+*********************
+
+- Follow `this link <https://f5-k8s-ctfd.docs.emea.f5se.com/en/latest/class2/module1/module1.html#exercise-1-jumphost>`_ to log into your lab System
+
+Exercise 2: CRD
 ****************************************************
 
-    .. note::
-        | In order to be independant of a specific K8S distribution, standard tools will be used for managing the cluster.
-        | The tool ``kubectl`` will be used during that workshop.
-
-
-- Step 1: logging with SSH to your attributed K8S Cluster
+- Verify CRDs installed:
 
 .. code-block:: bash
 
-    $ ssh -i jumphost.key cyber@jumphost-aksdistrict{{site_ID}}.{{region}}.cloudapp.azure.com
-
-
-- Step 2: Let's verify the CRDs installed:
-
-.. code-block:: bash
-
-    $ kubectl get crds
+    kubectl get crds
 
 
 *output*:
@@ -41,23 +34,20 @@ LAB 2A: Exploring and understanding the K8S cluster
     virtualserverroutes.k8s.nginx.org    2021-03-08T10:00:03Z
     virtualservers.k8s.nginx.org         2021-03-08T10:00:04Z
 
-
-
 .. note::
     | The **VirtualServer** and **VirtualServerRoute** resources are new load balancing configuration, introduced in release 1.5 as an alternative to the Ingress resource.
     | The resources enable use cases not supported with the Ingress resource, such as traffic splitting and advanced content-based routing.
     | The resources are implemented as Custom Resource Definitions.
     | The VirtualServer Custom Resource will be used in the labs 2.
-    |
-    |
 
+Exercise 3: NameSpaces
+****************************************************
 
-- Step 3: Let's check the NameSpaces of the cluster:
+- Check NameSpaces of the cluster:
 
 .. code-block:: bash
 
-        $ kubectl get ns
-
+        kubectl get ns
 
 *output:*
 
@@ -72,25 +62,22 @@ LAB 2A: Exploring and understanding the K8S cluster
         kube-public                   Active   30d
         kube-system                   Active   30d
 
-
-
 .. note::
     | The namespace of interest for the Labs 2 is **external-ingress-controller**.
     | That namespace includes the NGINX Ingress Controller which will be used during the labs.
     | Some new namespaces will be created later during the labs.
     | The namespace arcadia will be used during the lab 3 WAF.
-    |
-    |
 
+Exercise 4: PODs
+****************************************************
 
-- Step 4: Look at the pods in some NameSpaces with the command ``kubectl get pods``:
+- Look at the pods in some NameSpaces:
 
 | Namespace Default:
 
 .. code-block:: bash
 
-        $ kubectl get pods -n default
-
+        kubectl get pods -n default
 
 *output:*
 
@@ -98,16 +85,13 @@ LAB 2A: Exploring and understanding the K8S cluster
 
         No resources found in default namespace.
 
+The namespace default is empty.
 
-| The namespace default is empty.
-|
-|
-| Namespace external-ingress-controller:
+Namespace external-ingress-controller:
 
 .. code-block:: bash
 
-        $ kubectl get pods -n external-ingress-controller
-
+        kubectl get pods -n external-ingress-controller
 
 *output:*
 
@@ -116,14 +100,14 @@ LAB 2A: Exploring and understanding the K8S cluster
         NAME                                               READY   STATUS    RESTARTS   AGE
         nap-external-ingress-controller-54db45d656-fg4tq   1/1     Running   0          30d
 
+Exercise 5: Ingress Class Name
+****************************************************
 
-
-- Step 5: Let's check the Ingress Class Name attached to the External Ingress Controller:
+- Check the Ingress Class Name attached to the External Ingress Controller:
 
 .. code-block:: bash
 
-        $ kubectl describe pod nap-external-ingress-controller-54db45d656-fg4tq -n external-ingress-controller
-
+        kubectl describe pod nap-external-ingress-controller-54db45d656-fg4tq -n external-ingress-controller
 
 *output:*
 
@@ -149,21 +133,18 @@ LAB 2A: Exploring and understanding the K8S cluster
               .......
               .......
 
-
-
 .. note::
     | The Ingress Class Name **nginx-external**  will be used as a reference into the deployment of the manifests.
     | It allows to indicate which Ingress Controller must be used for a specific deployment.
-    |
-    |
 
+Exercise 6: Public IP address
+****************************************************
 
-- Step 6: Let's check the Public IP address attached to the external Ingress Controller:
+- Show the Public IP address attached to the external Ingress Controller:
 
 .. code-block:: bash
 
-        $ kubectl get services -n external-ingress-controller
-
+    kubectl get services -n external-ingress-controller
 
 *output:*
 
@@ -172,24 +153,16 @@ LAB 2A: Exploring and understanding the K8S cluster
         NAME                         TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)                      AGE
         elb-nap-ingress-controller   LoadBalancer   10.200.0.15   52.167.14.0   80:31613/TCP,443:31094/TCP   30d
 
-
-
 .. note::
-        | **Notice the EXTERNAL-IP address and write it somewhere.**
-        | **It will be used later in our labs.**
+    | **Notice the EXTERNAL-IP address and write it somewhere.**
+    | **It will be used later in our labs.**
 
-|
-|
-|
 **Capture The Flag**
 
     **2a.1 What kind of K8S Resource Definition can be used with NGINX+ for simplicity and advanced configuration of load balancing?**
-
     | response >> Custom
-    |
 
     **2a.2 What is the name of the Custom Resource used for Advanced load balancing configuration and used as an alternative to the Ingress resource?**
-
     | response >> VirtualServer
 
 
