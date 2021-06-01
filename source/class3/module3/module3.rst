@@ -5,7 +5,7 @@ LAB 2C: Advanced Traffic Splitting and Content-Based Routing
     :local:
     :depth: 1
 
-LAB 2C: Advanced Traffic Splitting and Content-Based Routing
+Exercise 1: Deploy
 *************************************************************
 |
 - For that new deployment we use a lot more features available in the Custom Resource VirtualServer.
@@ -16,11 +16,12 @@ LAB 2C: Advanced Traffic Splitting and Content-Based Routing
 |
 |
 
-- Step 1: Let's modify the deployment done in the previous lab.
+- Step 1: Modify the deployment done in the previous lab.
 
 Copy and Paste the manifest below into a new file named cafe-virtual-server-Lab-2C.yaml and deploy it.
 
 .. code-block:: yaml
+    :linenos:
 
         apiVersion: k8s.nginx.org/v1
         kind: VirtualServer
@@ -92,7 +93,6 @@ Copy and Paste the manifest below into a new file named cafe-virtual-server-Lab-
 
         kubectl apply -f cafe-virtual-server-lab-2C.yaml
 
-
 *output*:
 
 .. code-block:: bash
@@ -106,28 +106,24 @@ Copy and Paste the manifest below into a new file named cafe-virtual-server-Lab-
 
         kubectl describe virtualserver app-cafe -n cafe-ns
 
+Exercise 2: Test
+*************************************************************
 
-- Step 4: Test the setup
+- Test the pages below using the following command:
 
-Test the requests below with a browser or curl:
+    - https://cafe.example.com/coffee         -> request is sent to the service coffee
 
-https://cafe.example.com/coffee         -> request is sent to the service coffee
+    - https://cafe.example.com/tea            -> request is sent to the service tea
 
-https://cafe.example.com/tea            -> request is sent to the service tea
+    - https://cafe.example.com/redirect       -> client is redirected to www.nginx.com
 
-https://cafe.example.com/redirect       -> client is redirected to www.nginx.com
+    - https://cafe.example.com/return_page    -> custom page Hello World is returned
 
-https://cafe.example.com/return_page    -> custom page Hello World is returned
-
-https://cafe.example.com/proxy          -> requests go to coffee you should see custom headers in the responses
-
-With Curl, the command is:
+    - https://cafe.example.com/proxy          -> requests go to coffee you should see custom headers in the responses
 
 .. code-block:: bash
 
         curl https://cafe.example.com/<PATH> --resolve cafe.example.com:443:<EXTERNAL_IP_Cluster> --insecure
-
-
 
 |
 |

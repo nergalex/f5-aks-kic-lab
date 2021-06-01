@@ -340,32 +340,16 @@ Exercise 3: Deploy a Virtual Server for TLS with Content-Based Routing
         kubectl describe virtualserver app-cafe -n cafe-ns
 
 
-- Step 4: Test the setup
-|
-| If you have the rights to modify the hosts file of your client:
-|
-|    - Edit the host file of your client
-|    - Add a line with hostname *cafe.example.com* and the EXTERNAL-IP address of the cluster you've seen on step 11 of LAB 2A above.
+Exercise 3: Test
+*************************************************************************
 
-.. code-block:: bash
-
-        52.167.14.0         cafe.example.com
-
-
-|    - Open a browser and test some connections :
-|
-| https://cafe.example.com/tea and https://cafe.example.com/coffee should be successfull.
-|
-| https://cafe.example.com/ should receive an HTTP 404 Not Found page. -> This is because the path / hasn't been defined into the Routes field of the manifest above.
-|
-|
-| If you don't have the rights on the hosts file of your client then you can use the curl command with the EXTERNAL-IP address of the cluster you've seen on last step of LAB 2A:
+- Test ``coffee`` and ``tea`` pages using ``<EXTERNAL_IP_Cluster>`` address saved during LAB 2A.
 
 *input*:
 
 .. code-block:: bash
 
-    curl https://cafe.example.com/coffee --resolve cafe.example.com:443:52.167.14.0 --insecure
+    curl https://cafe.example.com/coffee --resolve cafe.example.com:443:<EXTERNAL_IP_Cluster> --insecure
 
 *output*:
 
@@ -381,7 +365,7 @@ Exercise 3: Deploy a Virtual Server for TLS with Content-Based Routing
 
 .. code-block:: bash
 
-    curl https://cafe.example.com/tea --resolve cafe.example.com:443:52.167.14.0 --insecure
+    curl https://cafe.example.com/tea --resolve cafe.example.com:443:<EXTERNAL_IP_Cluster> --insecure
 
 *output*:
 
@@ -393,11 +377,13 @@ Exercise 3: Deploy a Virtual Server for TLS with Content-Based Routing
     URI: /tea
     Request ID: a7874c6a4389b72e75f608ce9ed0075b
 
+- Test https://cafe.example.com/ and get an ``404 Not Found page`` because path ``/`` hasn't been defined into the ``Routes`` field of the manifest above.
+
 *input*:
 
 .. code-block:: bash
 
-    curl https://cafe.example.com/ --resolve cafe.example.com:443:52.167.14.0 --insecure
+    curl https://cafe.example.com/ --resolve cafe.example.com:443:<EXTERNAL_IP_Cluster> --insecure
 
 *output*:
 
@@ -411,8 +397,6 @@ Exercise 3: Deploy a Virtual Server for TLS with Content-Based Routing
     </body>
     </html>
 
-|
-|
 |
 **Capture The Flag**
 
