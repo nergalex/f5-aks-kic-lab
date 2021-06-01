@@ -1,4 +1,4 @@
-LAB 2C: Advanced Traffic Splitting and Content-Based Routing
+LAB 2C: Traffic Splitting
 ##############################################################
 
 .. contents:: Contents

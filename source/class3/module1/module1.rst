@@ -1,4 +1,4 @@
-lab 2A: Exploring and understanding the K8S cluster
+lab 2A: Introduction
 ####################################################
 
 .. contents:: Contents
@@ -13,7 +13,7 @@ Exercise 1: Jumphost
 Exercise 2: CRD
 ****************************************************
 
-- Verify CRDs installed:
+- Show CRDs installed:
 
 .. code-block:: bash
 
@@ -43,7 +43,7 @@ Exercise 2: CRD
 Exercise 3: NameSpaces
 ****************************************************
 
-- Check NameSpaces of the cluster:
+- Show NameSpaces of the cluster:
 
 .. code-block:: bash
 
@@ -71,9 +71,7 @@ Exercise 3: NameSpaces
 Exercise 4: PODs
 ****************************************************
 
-- Look at the pods in some NameSpaces:
-
-| Namespace Default:
+- Show pods in ``default`` NameSpaces:
 
 .. code-block:: bash
 
@@ -85,9 +83,7 @@ Exercise 4: PODs
 
         No resources found in default namespace.
 
-The namespace default is empty.
-
-Namespace external-ingress-controller:
+- Show pods in ``external-ingress-controller`` NameSpaces:
 
 .. code-block:: bash
 
@@ -112,14 +108,13 @@ Exercise 5: Ingress Class Name
 *output:*
 
 .. code-block:: bash
+    :emphasize-lines: 14
 
         Name:         nap-external-ingress-controller-54db45d656-fg4tq
         Namespace:    external-ingress-controller
         .......
-        .......
         Containers:
           external-nginx-plus-ingress-nginx-ingress:
-            .......
             .......
             Ports:         80/TCP, 443/TCP, 9113/TCP, 8081/TCP
             Host Ports:    0/TCP, 0/TCP, 0/TCP, 0/TCP
@@ -128,10 +123,7 @@ Exercise 5: Ingress Class Name
               -nginx-reload-timeout=0
               -enable-app-protect=true
               .......
-              .......
-              -ingress-class=nginx-external        ****INGRESS CLASS NAME is nginx-external****
-              .......
-              .......
+              -ingress-class=nginx-external
 
 .. note::
     | The Ingress Class Name **nginx-external**  will be used as a reference into the deployment of the manifests.
@@ -154,8 +146,8 @@ Exercise 6: Public IP address
         elb-nap-ingress-controller   LoadBalancer   10.200.0.15   52.167.14.0   80:31613/TCP,443:31094/TCP   30d
 
 .. note::
-    | **Notice the EXTERNAL-IP address and write it somewhere.**
-    | **It will be used later in our labs.**
+    | **Notice the EXTERNAL-IP address and write it somewhere. It will be used later in our labs.**
+
 
 **Capture The Flag**
 

@@ -1,4 +1,4 @@
-lab 2B: TLS Traffic with Content-Based Routing
+lab 2B: Content-Based Routing
 #############################################################
 
 .. contents:: Contents
@@ -407,4 +407,4 @@ Exercise 3: Test
 
     **2b.2 What is the name of the field (in the specification of the VirtualServer CRD) which is used to defines rules content-based load balancing?**
 
-    | response >> route
+        | response >> route
