@@ -133,7 +133,6 @@ _______________________________________________________________________
 **Capture The Flag**
 
     **1.1 What is the cookie name that allow a login user to persist his session on "Money Transfer" micro-service of Arcadia across multiple ICs?**
-    | arcadia_app2
     | Tip:  `Session Persistence <https://github.com/nginxinc/kubernetes-ingress/tree/v1.11.1/examples/session-persistence>`_
 
 Exercise 2: Advanced Configuration
@@ -168,7 +167,6 @@ _______________________________________________________________________
 **Capture The Flag**
 
     **2.1 What is the nginx directive seen in configuration for snippet 'proxy_ignore_headers'?**
-    | proxy_ignore_headers
 
 Disadvantages
 =============

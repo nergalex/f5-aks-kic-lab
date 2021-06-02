@@ -209,10 +209,8 @@ _______________________________________________________________________
 **Capture The Flag**
 
     **2.1 What is the URI that publish Public Key used by IC to check signature of JWT?**
-    | https://dev-431905.okta.com/oauth2/aus2zvhijqcz1rlq84x7/v1/keys
 
     **2.2 What is the secret length in bytes?**
-    | 40
 
 Exercise 3: API GW - NGINX configuration
 =================================================
@@ -309,7 +307,6 @@ _______________________________________________________________________
 **Capture The Flag**
 
     **4.1 In parameters of the request, what is the PATH of the redirect uri?**
-    | /_codexch
 
 - Authenticate user with username ``cloudbuilder@acme.com`` and password ``F5-AKS-KIC-lab!``
 
@@ -372,7 +369,6 @@ _______________________________________________________________________
 **Capture The Flag**
 
     **4.2 What is the cookie name for which the value will be exchanged for the ID Token in the key-value store?**
-    | auth_token
 
 Exercise 5: Web Application and API Protection (WAAP)
 =====================================================
@@ -414,7 +410,6 @@ _______________________________________________________________________
 **Capture The Flag**
 
     **5.1 For /colors/{id} endpoint, what is the defined type for parameter name 'id'?**
-    | integer
 
 - Connect to Kibana ``https://kibana{{site_ID}}.f5app.dev/``
 - Dashboard >> Overview >> add a filter ``vs_name is sentence-api{{site_ID}}f5app.dev``
@@ -429,7 +424,6 @@ _______________________________________________________________________
 **Capture The Flag**
 
     **5.2 What is the violation raised for request ``/colors/tata``?**
-    | Illegal parameter data type
 
 Exercise 6: WAAP configuration
 =================================================
@@ -612,5 +606,4 @@ _______________________________________________________________________
 **Capture The Flag**
 
     **8.1 What is the rate limit threshold per second allowed in this configuration? (3 decimal places)**
-    | 0.083
 
