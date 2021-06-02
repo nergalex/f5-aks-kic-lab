@@ -8,38 +8,7 @@ Exercise 1: Jumphost
 *********************
 Logging into your lab System:
 
-- Copy-paste private SSH key below to a file ``jumphost.key``
-
-.. code-block:: bash
-
-    -----BEGIN RSA PRIVATE KEY-----
-    MIIEpAIBAAKCAQEAy1HQbkewfrUuPaquHEFuGl44mEe7wOCjbOVl3bAZFGSCsxLm
-    7yDszO/mM1dM/mK6JIqLtoChjB8PBuMZVoUuYvFvOgED80eL4rdob/V90Gh+USd5
-    +jxBcBoeoi8SlLthVyatlGKylrXeLaJ5gMJkDl3lMPOtvG8TLU+08wEhWCMoYhE4
-    BMkvBpgzocdZEiGPttWK6TobDmRlIkvXUKHiMVwGZVdwLFdy1G7eW4OMTWiI6TAr
-    /eD2aGEiskQkVZi7hDdEr5tehPmieNdmlkA+/xbf8U92oLuaY1N0QhiJ8SKKrRPy
-    cyJuKQo5fJk6ELDg/yJ1J7Hh8ps/Sy5tCDh1rQIDAQABAoIBAQCrg5/Vd+peaQ7R
-    /IqV0WhFHBiX9WNgSN/z++wbv/LYLhXHZHmlXdwE4ZcK1mlf6v7l1m4XjZk5r/Wo
-    NKlqQD0qQEs43iRr9H3/ygJy99+jkJKGeUu/mVcGbzJKVHVTPGLX9wvUshG/azo6
-    uuXOha2MJQ8zZUy5OeYugh++IsTzKGwkrwJ/njG2prXuSV0NLlJdtiGnrYFtp8Gw
-    tqbLfY0Y+rBzxpC68dLposYEUzZ5JPOzKi3ZtFtn3eKIk28eF/2UQsPq5n7onaS+
-    y3KQOI/itoeMBPGuJ/FJ0azaNT2Xe2RsY61/38emRjCK5RyzuNCAcy5P+UhnB89A
-    sEDnUbVBAoGBAO4AlQw3Q+FtSo5OjVxl/w+F4c5sirD+x78YpNLQGvIBMvAJsv3c
-    S4iEx8kiTXYcQz927sJNcR2QM+AlbM5fDkaXuvV69oWMNUfNqCr1vcWnmRx9dLNs
-    yeAQcSIwB4Thh61wWtkhcsNaJUAjIPwqpRVZyCPAHkFiBZYJD2crurl9AoGBANqx
-    0dvNcYPm6yt44EvaMEFtt20hKpA0613I+KbfJWu10oRmnw8Rf8bmMX3ebHNGDiTl
-    ltZRXbj52ByN6mRVdkYPuiPruYh5RrBJGWqvJqBj0gwtbRzKKmroAtjbcH9+dwwe
-    LyClja5h+bEj6hJlNmZwel8rpmNx12ZYMoKYruPxAoGARVwAE8ZLTvfFwYEc6y+C
-    TGjM7JZvOLOXTJaG+jTRlXNJ//AjrJ21mXxwqKoJfwEvi+BCJnfhHid3JrxhYCcN
-    hv8S6hVCoJrCsEE74AEro9163nWlO+DZWCYSgk8S8eOz4ZSbtSltQ4cS0gUqyLI4
-    1+cJT3nel1lUnWvYhE2XJhUCgYEAgS/t4kQYPGzamxGKngRD4UKoykR/WjSInRwt
-    FpZXCqubsi7U4xfZPWuZ7NrJgcbucAlX8z6ZeL3OVf/XaHG7rmN39+Q181KA2X41
-    D3pr/O86k4r6G7mpGQH5PJVUfVv9gyEJgeWKLmseDvBCQ5+aZSUohLPKVJBZR9Ht
-    9IuxNGECgYB8T+xqhiLbp5j0nGBdTf7J+gUXbs5iL3SJgJnq1hwM7yaOe+6Oe1/o
-    wBrsHHgxtEYlf+DPlmmh+PoRPkf5pBDkx0Zuxy+6JGi1+q2JWL2LpeNo285I6dvQ
-    WNcZh4AOQ2VetS3iARmy85TvgTvzLRQE+kTLiYdZJ125loRdNlrncg==
-    -----END RSA PRIVATE KEY-----
-
+- Copy-paste private SSH key `here <https://raw.githubusercontent.com/nergalex/f5-aks-kic-lab/master/source/class2/module1/_files/jumphost.pem>`_ to a local file ``jumphost.key``
 - Ask F5 for your ``{{site_ID}}`` and your Azure ``{{region}}``
 - Open an SSH session to ``jumphost-aksdistrict{{site_ID}}.{{region}}.cloudapp.azure.com``. Log in as user ``cyber`` authenticated with private key ``jumphost.key``.
 
@@ -109,7 +78,7 @@ Security dashboards are available on Kibana. Mode details `here <https://github.
    :width: 900
    :alt: NAP logs
 
-- Download CA CRT `ca_demo.crt <https://f5-my.sharepoint.com/:f:/r/personal/al_dacosta_f5_com/Documents/Lab/f5-aks-kic-lab?csf=1&web=1&e=NcV9gX>`_
+- Download CA CRT `ca_demo.crt <https://raw.githubusercontent.com/nergalex/f5-aks-kic-lab/master/source/class2/module1/_files/ca_demo.crt>`_
 - Open ``ca_demo.crt`` >> ``Install Certificate...`` >> ``Current user`` >> Place certificate in ``Trusted Root Certification Authorities``
 
 .. image:: ./_pictures/CA_CRT.png
