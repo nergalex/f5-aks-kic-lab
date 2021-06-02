@@ -1,12 +1,13 @@
-lab 2B: Content-Based Routing
+Exercise 2: TLS Traffic with Content-Based Routing
 #############################################################
 
 .. contents:: Contents
     :local:
-    :depth: 2
+    :depth: 1
 
-Exercise 1: Deploy cafe app
+Deployment of a new application named cafe
 ***********************************************************
+
 
     .. note::
         | * For that use case, a new application named cafe will be deployed.
@@ -21,6 +22,8 @@ Exercise 1: Deploy cafe app
         |    - TLS activated and uses a specified cert and key from a K8S secret resource
         |    - request for /tea are sent to service tea
         |    - request for /coffee are sent to service coffee
+
+
 
 - Step 1: Create the directory Lab2 and move into it
 
@@ -50,8 +53,8 @@ Exercise 1: Deploy cafe app
 That manifest will be used to deploy the application into the cluster.
 The application cafe is composed of 2 micro services: coffee and tea.
 
+
 .. code-block:: yaml
-    :linenos:
 
         apiVersion: apps/v1
         kind: Deployment
@@ -132,6 +135,7 @@ The application cafe is composed of 2 micro services: coffee and tea.
 
         kubectl create -f cafe.yaml
 
+
 *output:*
 
 .. code-block:: bash
@@ -152,6 +156,7 @@ NameSpace cafe should have been created and should be in status Active:
 
         kubectl get namespaces
 
+
 *output:*
 
 .. code-block:: bash
@@ -169,11 +174,13 @@ NameSpace cafe should have been created and should be in status Active:
 The services of the application cafe should have been deployed in the NameSpace cafe-ns and should be in status Running.
 You should have 2 Pods for the coffee service and 1 Pod for tea service
 
+
 *input:*
 
 .. code-block:: bash
 
         kubectl get pods -n cafe-ns
+
 
 *output:*
 
@@ -193,6 +200,7 @@ You should have the services tea-svc and coffee-svc deployed:
 
         kubectl get services -n cafe-ns
 
+
 *output:*
 
 .. code-block:: bash
@@ -203,7 +211,7 @@ You should have the services tea-svc and coffee-svc deployed:
 
 |
 
-Exercise 2: Deploy Certificate and Keys for TLS Traffic
+Deployment of a Certificate and Keys for TLS Traffic
 *********************************************************
 
 - Step 1: Copy and Past the manifest below into a new file called **cafe-secret.yaml**.
@@ -231,6 +239,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 
         kubectl create -f cafe-secret.yaml
 
+
 *output:*
 
 .. code-block:: bash
@@ -245,6 +254,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 .. code-block:: bash
 
         kubectl describe secret cafe-secret -n cafe-ns
+
 
 *output:*
 
@@ -264,10 +274,10 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 
 |
 
-Exercise 3: Deploy a Virtual Server for TLS with Content-Based Routing
+Deployment of a Virtual Server for TLS with Content-Based Routing
 *************************************************************************
 
-- Step 1: Copy/Paste the manifest below into a new file named **cafe-virtual-server-lab-2B.yaml** and deploy it.
+- Step 1: Copy/Paste the manifest below into a new file named **cafe-virtual-server-lab-2B.yaml**.
 
 | That manifest uses the custom resources **VirtualServer**.
 |
@@ -290,7 +300,6 @@ Exercise 3: Deploy a Virtual Server for TLS with Content-Based Routing
 |    - route: defines rules for matching client requests to actions like passing a request to an upstream.
 
 .. code-block:: yaml
-    :linenos:
 
         apiVersion: k8s.nginx.org/v1
         kind: VirtualServer
@@ -317,6 +326,7 @@ Exercise 3: Deploy a Virtual Server for TLS with Content-Based Routing
             action:
               pass: coffee
 
+
 - step 2: Deploy the manifest:
 
 *input*:
@@ -340,55 +350,27 @@ Exercise 3: Deploy a Virtual Server for TLS with Content-Based Routing
         kubectl describe virtualserver app-cafe -n cafe-ns
 
 
-Exercise 3: Test
-*************************************************************************
+- Step 4: Test the setup
 
-- Test ``coffee`` and ``tea`` pages using ``<EXTERNAL_IP_Cluster>`` address saved during LAB 2A.
-
-*input*:
+Test by using the curl command with the EXTERNAL-IP address of the cluster you've seen on last step of LAB 2A:
 
 .. code-block:: bash
 
-    curl https://cafe.example.com/coffee --resolve cafe.example.com:443:<EXTERNAL_IP_Cluster> --insecure
-
-*output*:
-
-.. code-block:: html
-
+    $ curl https://cafe.example.com/coffee --resolve cafe.example.com:443:52.167.14.0 --insecure
     Server address: 10.22.1.55:8080
     Server name: coffee-6f4b79b975-5vmrd
     Date: 05/May/2021:14:01:43 +0000
     URI: /coffee
     Request ID: 197d3c08b40fea8ba4428ab7d53440de
 
-*input*:
-
-.. code-block:: bash
-
-    curl https://cafe.example.com/tea --resolve cafe.example.com:443:<EXTERNAL_IP_Cluster> --insecure
-
-*output*:
-
-.. code-block:: html
-
+    $ curl https://cafe.example.com/tea --resolve cafe.example.com:443:52.167.14.0 --insecure
     Server address: 10.22.1.31:8080
     Server name: tea-6fb46d899f-k2sfc
     Date: 05/May/2021:14:01:57 +0000
     URI: /tea
     Request ID: a7874c6a4389b72e75f608ce9ed0075b
 
-- Test https://cafe.example.com/ and get an ``404 Not Found page`` because path ``/`` hasn't been defined into the ``Routes`` field of the manifest above.
-
-*input*:
-
-.. code-block:: bash
-
-    curl https://cafe.example.com/ --resolve cafe.example.com:443:<EXTERNAL_IP_Cluster> --insecure
-
-*output*:
-
-.. code-block:: html
-
+    $ curl https://cafe.example.com/ --resolve cafe.example.com:443:52.167.14.0 --insecure
     <html>
     <head><title>404 Not Found</title></head>
     <body>
@@ -397,6 +379,10 @@ Exercise 3: Test
     </body>
     </html>
 
+
+
+|
+|
 |
 **Capture The Flag**
 
@@ -407,4 +393,4 @@ Exercise 3: Test
 
     **2b.2 What is the name of the field (in the specification of the VirtualServer CRD) which is used to defines rules content-based load balancing?**
 
-        | response >> route
+    | response >> route
