@@ -428,7 +428,7 @@ _______________________________________________________________________
 
 **Capture The Flag**
 
-    **5.2 What is the vilation raised for request ``/colors/tata``?**
+    **5.2 What is the violation raised for request ``/colors/tata``?**
     | Illegal parameter data type
 
 Exercise 6: WAAP configuration
