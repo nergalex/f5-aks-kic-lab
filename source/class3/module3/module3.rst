@@ -1,11 +1,11 @@
-LAB 2C: Traffic Splitting
+LAB 2C: Advanced Content-Based Routing
 ##############################################################
 
 .. contents:: Contents
     :local:
     :depth: 1
 
-Exercise 1: Deploy
+Objectives
 *************************************************************
 |
 - For that new deployment we use a lot more features available in the Custom Resource VirtualServer.
@@ -21,7 +21,6 @@ Exercise 1: Deploy
 Copy and Paste the manifest below into a new file named cafe-virtual-server-Lab-2C.yaml and deploy it.
 
 .. code-block:: yaml
-    :linenos:
 
         apiVersion: k8s.nginx.org/v1
         kind: VirtualServer
@@ -106,10 +105,10 @@ Copy and Paste the manifest below into a new file named cafe-virtual-server-Lab-
 
         kubectl describe virtualserver app-cafe -n cafe-ns
 
-Exercise 2: Test
-*************************************************************
 
-- Test the pages below using the following command:
+- Step 4: Test the setup
+
+- Test the pages below using the following curl command:
 
     - https://cafe.example.com/coffee         -> request is sent to the service coffee
 
@@ -132,21 +131,15 @@ Exercise 2: Test
 
     **2c.1 What is the name of the action which forwards requests to an upstream?**
 
-    | response >> pass
-    |
 
     **2c.2 What is the name of the action which replies a preconfigured response?**
 
-    | response >> return
-    |
 
     **2c.3 What is the name of the action which passes requests to an upstream with the ability to modify the request/response (for example, rewrite the URI or modify the headers)?**
 
-    | response >> proxy
-    |
 
     **2c.4 What is the name of the action which redirects requests to a provided URL?**
 
-    | response >> redirect
+
 
 
