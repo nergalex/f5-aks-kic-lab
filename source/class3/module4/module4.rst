@@ -1,11 +1,11 @@
-LAB 2D: Canary or A/B Testing
+Exercise: Canary or A/B Testing
 ###############################
 
 .. contents:: Contents
     :local:
     :depth: 1
 
-Exercise 1: Deploy
+Objectives
 *******************************
 
     .. note::
@@ -145,13 +145,10 @@ Verify the services coffee-v1-svc and coffee-v2-svc are correctly deployed:
         coffee-v2-svc   ClusterIP   10.200.0.76    <none>        80/TCP    9m56s
         tea-svc         ClusterIP   10.200.0.51    <none>        80/TCP    63m
 
-Exercise 2: Publish
-*************************************************************
 
 - Step 2: Create/Edit a new file named **cafe-virtual-server-lab-2D.yaml** and copy/past the manifest below.
 
 .. code-block:: yaml
-    :lineos:
 
         apiVersion: k8s.nginx.org/v1
         kind: VirtualServer
@@ -160,7 +157,7 @@ Exercise 2: Publish
           namespace: cafe-ns
         spec:
           ingressClassName: nginx-external
-          host: cafev2.example.com
+          host: cafe.example.com
           upstreams:
           - name: coffee-v1
             service: coffee-v1-svc
@@ -214,14 +211,13 @@ Exercise 2: Publish
           ----    ------          ----  ----                      -------
           Normal  AddedOrUpdated  5s    nginx-ingress-controller  Configuration for cafe-ns/cafe-vs was added or updated
 
-Exercise 3: Test
-*************************************************************
 
-- Do 10 connections on ``cafev2``
+- Step 4: Test the setup by sending 10 connections with curl
 
 .. code-block:: bash
 
-        curl http://cafev2.example.com/coffee --resolve cafev2.example.com:<EXTERNAL_IP_Cluster> --insecure
+        curl http://cafe.example.com/coffee --resolve cafe.example.com:<EXTERNAL_IP_Cluster> --insecure
+
 
 - Check that you have around:
     - 8 connections to Server name: coffee-v1
@@ -235,10 +231,5 @@ Exercise 3: Test
 
     **2d.1 What is the name of the field (in the specification of the VirtualServer CRD) which is used to setup canary or A/B testing?**
 
-    | response >> splits
-    |
 
     **2d.2 What is the name of the field which allow to define a percentage of traffic as part of the splits configuration?**
-
-    | response >> weight
-    |

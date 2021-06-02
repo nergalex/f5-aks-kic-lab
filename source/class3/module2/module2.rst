@@ -1,4 +1,4 @@
-Exercise 2: TLS Traffic with Content-Based Routing
+Exercise 3: TLS Traffic with Content-Based Routing
 #############################################################
 
 .. contents:: Contents
@@ -347,6 +347,7 @@ Deployment of a Virtual Server for TLS with Content-Based Routing
 *input*:
 
 .. code-block:: bash
+
         kubectl describe virtualserver app-cafe -n cafe-ns
 
 
@@ -354,43 +355,71 @@ Deployment of a Virtual Server for TLS with Content-Based Routing
 
 Test by using the curl command with the EXTERNAL-IP address of the cluster you've seen on last step of LAB 2A:
 
+*input*:
+
 .. code-block:: bash
 
-    $ curl https://cafe.example.com/coffee --resolve cafe.example.com:443:52.167.14.0 --insecure
-    Server address: 10.22.1.55:8080
-    Server name: coffee-6f4b79b975-5vmrd
-    Date: 05/May/2021:14:01:43 +0000
-    URI: /coffee
-    Request ID: 197d3c08b40fea8ba4428ab7d53440de
+        curl https://cafe.example.com/coffee --resolve cafe.example.com:443:52.167.14.0 --insecure
 
-    $ curl https://cafe.example.com/tea --resolve cafe.example.com:443:52.167.14.0 --insecure
-    Server address: 10.22.1.31:8080
-    Server name: tea-6fb46d899f-k2sfc
-    Date: 05/May/2021:14:01:57 +0000
-    URI: /tea
-    Request ID: a7874c6a4389b72e75f608ce9ed0075b
 
-    $ curl https://cafe.example.com/ --resolve cafe.example.com:443:52.167.14.0 --insecure
-    <html>
-    <head><title>404 Not Found</title></head>
-    <body>
-    <center><h1>404 Not Found</h1></center>
-    <hr><center>nginx/1.19.5</center>
-    </body>
-    </html>
+*output*:
+
+.. code-block:: bash
+
+        Server address: 10.22.1.55:8080
+        Server name: coffee-6f4b79b975-5vmrd
+        Date: 05/May/2021:14:01:43 +0000
+        URI: /coffee
+        Request ID: 197d3c08b40fea8ba4428ab7d53440de
+
+
+*input*:
+
+.. code-block:: bash
+
+        curl https://cafe.example.com/tea --resolve cafe.example.com:443:52.167.14.0 --insecure
 
 
 
-|
+*output*:
+
+.. code-block:: bash
+
+        Server address: 10.22.1.31:8080
+        Server name: tea-6fb46d899f-k2sfc
+        Date: 05/May/2021:14:01:57 +0000
+        URI: /tea
+        Request ID: a7874c6a4389b72e75f608ce9ed0075b
+
+
+*input*:
+
+.. code-block:: bash
+
+        curl https://cafe.example.com/ --resolve cafe.example.com:443:52.167.14.0 --insecure
+
+
+
+*output*:
+
+.. code-block:: html
+
+        <html>
+        <head><title>404 Not Found</title></head>
+        <body>
+        <center><h1>404 Not Found</h1></center>
+        <hr><center>nginx/1.19.5</center>
+        </body>
+        </html>
+
+
 |
 |
 **Capture The Flag**
 
     **2b.1 What is the name of the field (in the specification of the VirtualServer CRD) which is used to select a certificate/key for decrypting TLS traffic?**
 
-    | response >> tls
-    |
 
     **2b.2 What is the name of the field (in the specification of the VirtualServer CRD) which is used to defines rules content-based load balancing?**
 
-    | response >> route
+
