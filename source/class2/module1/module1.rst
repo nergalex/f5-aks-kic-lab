@@ -38,7 +38,7 @@ _______________________________________________________________________
 **Capture The Flag**
 
     **3.1 What is the version of deployed IC?**
-    | Tips: *NGINX Ingress Controller* image's tag contains: {{IC version}}-{{last update of WAF signature}}. `docker commands <https://docs.docker.com/engine/reference/commandline/docker/>`_
+    | Tips: *NGINX Ingress Controller* image's tag contains: {{IC version}}-{{last update of WAF signature}}. Use `docker commands <https://docs.docker.com/engine/reference/commandline/docker/>`_
     | 1.11.1
 
     **3.2 What is the ingress-class name of the IC instance accessible from Internet?**
