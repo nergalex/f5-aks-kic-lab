@@ -1,4 +1,4 @@
-LAB 2D: Canary or A/B Testing
+Exercise 4: Canary or A/B Testing
 ###############################
 
 .. contents:: Contents
@@ -160,7 +160,7 @@ Exercise 2: Publish
           namespace: cafe-ns
         spec:
           ingressClassName: nginx-external
-          host: cafev2.example.com
+          host: cafe.example.com
           upstreams:
           - name: coffee-v1
             service: coffee-v1-svc
@@ -217,11 +217,11 @@ Exercise 2: Publish
 Exercise 3: Test
 *************************************************************
 
-- Do 10 connections on ``cafev2``
+- Do 10 connections on ``cafe``
 
 .. code-block:: bash
 
-        curl http://cafev2.example.com/coffee --resolve cafev2.example.com:<EXTERNAL_IP_Cluster> --insecure
+        curl http://cafe.example.com/coffee --resolve cafe.example.com:<EXTERNAL_IP_Cluster> --insecure
 
 - Check that you have around:
     - 8 connections to Server name: coffee-v1

@@ -1,19 +1,25 @@
-lab 2A: Introduction
+LAB 2A: Exploring and understanding the K8S cluster
 ####################################################
 
 .. contents:: Contents
     :local:
     :depth: 1
 
-Exercise 1: Jumphost
-*********************
-
-- Follow `this link <https://f5-k8s-ctfd.docs.emea.f5se.com/en/latest/class2/module1/module1.html#exercise-1-jumphost>`_ to log into your lab System
-
-Exercise 2: CRD
+LAB 2A: Exploring and understanding the K8S cluster
 ****************************************************
 
-- Show CRDs installed:
+    .. note::
+        | In order to be independant of a specific K8S distribution, standard tools will be used for managing the cluster.
+        | The tool ``kubectl`` will be used during that workshop.
+
+
+- Step 1: logging with SSH to your attributed K8S Cluster
+
+| Follow `this link <https://f5-k8s-ctfd.docs.emea.f5se.com/en/latest/class2/module1/module1.html#exercise-1-jumphost>`_ to log into your lab System
+|
+
+
+- Step 2: Let's verify the CRDs installed:
 
 .. code-block:: bash
 
@@ -39,11 +45,11 @@ Exercise 2: CRD
     | The resources enable use cases not supported with the Ingress resource, such as traffic splitting and advanced content-based routing.
     | The resources are implemented as Custom Resource Definitions.
     | The VirtualServer Custom Resource will be used in the labs 2.
+    |
+    |
 
-Exercise 3: NameSpaces
-****************************************************
 
-- Show NameSpaces of the cluster:
+- Step 3: Let's check the NameSpaces of the cluster:
 
 .. code-block:: bash
 
@@ -67,11 +73,13 @@ Exercise 3: NameSpaces
     | That namespace includes the NGINX Ingress Controller which will be used during the labs.
     | Some new namespaces will be created later during the labs.
     | The namespace arcadia will be used during the lab 3 WAF.
+    |
+    |
 
-Exercise 4: PODs
-****************************************************
 
-- Show pods in ``default`` NameSpaces:
+- Step 4: Look at the pods in some NameSpaces with the command ``kubectl get pods``:
+
+| Namespace Default:
 
 .. code-block:: bash
 
@@ -83,7 +91,11 @@ Exercise 4: PODs
 
         No resources found in default namespace.
 
-- Show pods in ``external-ingress-controller`` NameSpaces:
+
+| The namespace default is empty.
+|
+|
+| Namespace external-ingress-controller:
 
 .. code-block:: bash
 
@@ -96,10 +108,9 @@ Exercise 4: PODs
         NAME                                               READY   STATUS    RESTARTS   AGE
         nap-external-ingress-controller-54db45d656-fg4tq   1/1     Running   0          30d
 
-Exercise 5: Ingress Class Name
-****************************************************
 
-- Check the Ingress Class Name attached to the External Ingress Controller:
+
+- Step 5: Let's check the Ingress Class Name attached to the External Ingress Controller:
 
 .. code-block:: bash
 
@@ -128,11 +139,11 @@ Exercise 5: Ingress Class Name
 .. note::
     | The Ingress Class Name **nginx-external**  will be used as a reference into the deployment of the manifests.
     | It allows to indicate which Ingress Controller must be used for a specific deployment.
+    |
+    |
 
-Exercise 6: Public IP address
-****************************************************
 
-- Show the Public IP address attached to the external Ingress Controller:
+- Step 6: Let's check the Public IP address attached to the external Ingress Controller:
 
 .. code-block:: bash
 
@@ -145,16 +156,21 @@ Exercise 6: Public IP address
         NAME                         TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)                      AGE
         elb-nap-ingress-controller   LoadBalancer   10.200.0.15   52.167.14.0   80:31613/TCP,443:31094/TCP   30d
 
+
+
 .. note::
-    | **Notice the EXTERNAL-IP address and write it somewhere. It will be used later in our labs.**
+        | **Notice the EXTERNAL-IP address and write it somewhere.**
+        | **It will be used later in our labs.**
 
-
+|
+|
+|
 **Capture The Flag**
 
     **2a.1 What kind of K8S Resource Definition can be used with NGINX+ for simplicity and advanced configuration of load balancing?**
-    | response >> Custom
+
 
     **2a.2 What is the name of the Custom Resource used for Advanced load balancing configuration and used as an alternative to the Ingress resource?**
-    | response >> VirtualServer
+
 
 
