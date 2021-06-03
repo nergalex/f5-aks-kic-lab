@@ -114,7 +114,7 @@ Step 4: Test the setup
 
 - Test with the curl command below.
 - Replace {{EXTERNAL_IP_NIC}} by the IP address of the NGINX Ingress Controller you've noticed on the last step of Exercise 1.
-- Replace {{PATH}} by the path below
+- Replace {{PATH}} with:
     - https://cafe.example.com/coffee         -> request is sent to the service coffee
     - https://cafe.example.com/tea            -> request is sent to the service tea
     - https://cafe.example.com/redirect       -> client is redirected to www.nginx.com
@@ -128,7 +128,9 @@ Step 4: Test the setup
         curl {{PATH}} --resolve cafe.example.com:443:{{EXTERNAL_IP_NIC}} --insecure
 
 
-
+|
+|
+|
 **Capture The Flag**
 
     **2c.1 What is the name of the action which forwards requests to an upstream?**
