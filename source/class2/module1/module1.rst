@@ -29,13 +29,14 @@ Logging into your Azure Kubernetes Service (AKS), a Managed Kubernetes Services:
 Exercise 3: NGINX Ingress Controller
 ************************************
 
-An *NGINX Ingress Controller* (IC) is hosted in a namespace owned by Infra Ops, it can be called *infrastructure namespace*.
-An *infrastructure namespace* can host multiple ICs.
+This lab use 2 *NGINX Ingress Controller* (IC) hosted in namespaces owned by Infra Ops,
+this kind of namespace is called an *infrastructure namespace*.
+An *infrastructure namespace* can host one or several ICs.
 An IC is associated to a unique *Ingress Class* name.
 Therefore an *infrastructure namespace* can propose to Applications several *Ingress Classes*,
 for example "silver", "gold" and "platinium".
-Because an *Ingress Class* could offer different service level,
-for example: ADC, API GW, WAF, open source, supported etc.
+Because an *Ingress Class* could offer different service level or be managed by different Infra Ops team,
+for example: ADC, API GW, WAF, open source, supported, SRE team for digital factory etc.
 
 In order to published, an Application have to select an *Ingress Class*.
 However an Application, that is hosted in its namespace, cannot use every existing *Ingress Class*
