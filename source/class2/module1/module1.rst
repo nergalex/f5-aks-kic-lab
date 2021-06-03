@@ -29,7 +29,7 @@ Logging into your Azure Kubernetes Service (AKS), a Managed Kubernetes Services:
 Exercise 3: NGINX Ingress Controller
 ************************************
 
-This lab use 2 *NGINX Ingress Controller* (IC) hosted in namespaces owned by Infra Ops,
+In this lab, *NGINX Ingress Controller* (IC) is hosted in namespaces owned by Infra Ops,
 this kind of namespace is called an *infrastructure namespace*.
 An *infrastructure namespace* can host one or several ICs.
 An IC is associated to a unique *Ingress Class* name.
