@@ -112,7 +112,9 @@ Step 3: Check the compilation status of the VirtualServer with the command below
 Step 4: Test the setup
 *************************************************************
 
-- Test with the curl command by replacing {{PATH}} by the path below, and {{EXTERNAL_IP_NIC}} by the IP address of the NGINX Ingress Controller you've noticed on the last step of Exercise 1.
+- Test with the curl command below.
+- Replace {{PATH}} by the path below
+- Replace {{EXTERNAL_IP_NIC}} by the IP address of the NGINX Ingress Controller you've noticed on the last step of Exercise 1.
 
     - https://cafe.example.com/coffee         -> request is sent to the service coffee
 
