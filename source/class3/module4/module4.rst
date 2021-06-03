@@ -1,4 +1,4 @@
-Exercise: Canary or A/B Testing
+Exercise 4: Canary or A/B Testing
 ###############################
 
 .. contents:: Contents
@@ -8,7 +8,6 @@ Exercise: Canary or A/B Testing
 Objectives
 *******************************
 
-    .. note::
         | * For that use case, we're going to use a new cafe application with two versions of the service coffee-svc.
         |
         | * The aim is to pass 80% of requests to the coffee-v1-svc and the remaining 20% to coffee-v2-svc.
@@ -19,7 +18,8 @@ Objectives
         |
 
 
-- Step 1: Deploy the new application cafe-v2:
+Step 1: Deploy the new application cafe-v2
+*******************************************
 
 Create/Edit a new file named **cafe-v2.yaml** and copy/past the manifest below.
 
@@ -146,7 +146,13 @@ Verify the services coffee-v1-svc and coffee-v2-svc are correctly deployed:
         tea-svc         ClusterIP   10.200.0.51    <none>        80/TCP    63m
 
 
-- Step 2: Create/Edit a new file named **cafe-virtual-server-lab-2D.yaml** and copy/past the manifest below.
+
+Step 2: Create a new manifest for the 80/20 traffic splitting
+**************************************************************************
+
+Create/Edit a new file named **cafe-virtual-server-lab-2D.yaml**
+
+Copy/past the manifest below into the file **cafe-virtual-server-lab-2D.yaml**
 
 .. code-block:: yaml
 
@@ -176,7 +182,9 @@ Verify the services coffee-v1-svc and coffee-v2-svc are correctly deployed:
                 pass: coffee-v2
 
 
-- Step 3: Deploy the new setup
+
+Step 3: Deploy the new manifest
+************************************
 
 *input*:
 
@@ -192,7 +200,8 @@ Verify the services coffee-v1-svc and coffee-v2-svc are correctly deployed:
         virtualserver.k8s.nginx.org/cafe-vs configured
 
 
-- Step 4: Verify the status of the VirtualServer with the command below:
+Step 4: Check the status of the VirtualServer Resource
+*******************************************************
 
 *input*:
 
@@ -212,7 +221,10 @@ Verify the services coffee-v1-svc and coffee-v2-svc are correctly deployed:
           Normal  AddedOrUpdated  5s    nginx-ingress-controller  Configuration for cafe-ns/cafe-vs was added or updated
 
 
-- Step 4: Test the setup by sending 10 connections with curl
+Step 4: Test the setup
+**************************
+
+- Send 10 connections with curl:
 
 .. code-block:: bash
 

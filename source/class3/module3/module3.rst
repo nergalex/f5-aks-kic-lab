@@ -1,4 +1,4 @@
-LAB 2C: Advanced Content-Based Routing
+Exercise 3: Advanced Content-Based Routing
 ##############################################################
 
 .. contents:: Contents

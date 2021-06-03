@@ -1,11 +1,11 @@
-LAB 2A: Exploring and understanding the K8S cluster
+Exercise 1: Exploring and understanding the K8S cluster
 ####################################################
 
 .. contents:: Contents
     :local:
     :depth: 1
 
-LAB 2A: Exploring and understanding the K8S cluster
+Objectives
 ****************************************************
 
     .. note::

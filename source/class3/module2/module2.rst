@@ -1,15 +1,13 @@
-Exercise 3: TLS Traffic with Content-Based Routing
+Exercise 2: TLS Traffic with Content-Based Routing
 #############################################################
 
 .. contents:: Contents
     :local:
     :depth: 1
 
-Deployment of a new application named cafe
+Objectives
 ***********************************************************
 
-
-    .. note::
         | * For that use case, a new application named cafe will be deployed.
         |
         | * The application cafe is composed of 2 services: **cofee-svc** and **tea-svc**.
@@ -24,6 +22,9 @@ Deployment of a new application named cafe
         |    - request for /coffee are sent to service coffee
 
 
+
+Deployment of a new application named cafe
+***********************************************************
 
 - Step 1: Create the directory Lab2 and move into it
 
