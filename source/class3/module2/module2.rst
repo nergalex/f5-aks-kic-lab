@@ -340,7 +340,8 @@ Deployment of a Virtual Server for TLS with Content-Based Routing
         kubectl describe virtualserver app-cafe -n cafe-ns
 
 
-- Step 4: Test the setup
+Test the setup
+*************************************************************
 
 | Test by using the curl command below.
 | Replace {{EXTERNAL_IP_NIC}} by the IP address of the NGINX Ingress Controller you've noticed on the last step of Exercise 1.
