@@ -128,9 +128,9 @@ Step 4: Test the setup
 
 
 
-.. code-block:: bash
+    .. code-block:: bash
 
-        curl {{PATH}} --resolve cafe.example.com:443:{{EXTERNAL_IP_NIC}} --insecure
+            curl {{PATH}} --resolve cafe.example.com:443:{{EXTERNAL_IP_NIC}} --insecure
 
 
 
