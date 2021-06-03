@@ -150,14 +150,15 @@ _______________________________________________________________________
 Extra time: NGINX+ dashboard
 *****************************************
 
-- On your ssh client, configure ssh port forwarding on Jumphost session as described `here <https://blog.devolutions.net/2017/4/how-to-configure-an-ssh-tunnel-on-putty>`_
+- FOR Windows:
+    - On your ssh client, configure ssh port forwarding on Jumphost session as described `here <https://blog.devolutions.net/2017/4/how-to-configure-an-ssh-tunnel-on-putty>`_
 
 .. image:: ./_pictures/securecrt.png
    :align: center
    :width: 900
    :alt: SecureCRT
 
-- On your web browser, connect to ``http://127.1.1.1/dashboard.html``
+    - On your web browser, connect to ``http://127.1.1.1/dashboard.html``
 
 .. image:: ./_pictures/nginx_plush_dashboard.png
    :align: center
