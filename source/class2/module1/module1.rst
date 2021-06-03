@@ -35,6 +35,8 @@ An *infrastructure namespace* can host one or several ICs.
 An IC is associated to a unique *Ingress Class* name.
 Therefore an *infrastructure namespace* can propose to Applications several *Ingress Classes*,
 for example "silver", "gold" and "platinium".
+
+Why different *Ingress Class*?
 Because an *Ingress Class* could offer different service level or be managed by different Infra Ops team,
 for example: ADC, API GW, WAF, open source, supported, SRE team for digital factory etc.
 
