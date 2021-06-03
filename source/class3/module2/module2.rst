@@ -1,39 +1,28 @@
-Exercise 3: TLS Traffic with Content-Based Routing
+Exercise 2: TLS Traffic with Content-Based Routing
 #############################################################
 
 .. contents:: Contents
     :local:
     :depth: 1
 
+Objectives
+***********************************************************
+
+- For that use case, a new application named cafe will be deployed.
+- The application cafe is composed of 2 services: **cofee-svc** and **tea-svc**.
+- The custom resource **VirtualServer** will be used.
+- The setup we want to deploy is :
+    - listens for hostname cafe.example.com
+    - TLS activated and uses a specified cert and key from a K8S secret resource
+    - request for /tea are sent to service tea
+    - request for /coffee are sent to service coffee
+
+
+
 Deployment of a new application named cafe
 ***********************************************************
 
-
-    .. note::
-        | * For that use case, a new application named cafe will be deployed.
-        |
-        | * The application cafe is composed of 2 services: **cofee-svc** and **tea-svc**.
-        |
-        | * The custom resource **VirtualServer** will be used.
-        |
-        | * The setup we want to deploy is :
-        |
-        |    - listens for hostname cafe.example.com
-        |    - TLS activated and uses a specified cert and key from a K8S secret resource
-        |    - request for /tea are sent to service tea
-        |    - request for /coffee are sent to service coffee
-
-
-
-- Step 1: Create the directory Lab2 and move into it
-
-.. code-block:: bash
-
-        mkdir lab2
-        cd lab2/
-|
-
-- Step 2: Create a new NameSpace called cafe-ns. We will deploy the application into it.
+- Step 1: Create a new NameSpace called cafe-ns. We will deploy the application into it.
 
 *input:*
 
@@ -48,7 +37,7 @@ Deployment of a new application named cafe
         namespace/cafe created
 
 |
-- Step 3: copy and paste the manifest below into a new file named cafe.yaml.
+- Step 2: copy and paste the manifest below into a new file named cafe.yaml.
 
 That manifest will be used to deploy the application into the cluster.
 The application cafe is composed of 2 micro services: coffee and tea.
@@ -127,7 +116,7 @@ The application cafe is composed of 2 micro services: coffee and tea.
             app: tea
 
 |
-- Step 4: Deploy the application cafe
+- Step 3: Deploy the application cafe
 
 *input:*
 
@@ -146,7 +135,7 @@ The application cafe is composed of 2 micro services: coffee and tea.
         service/tea-svc created
 
 |
-- Step 5: Let's check everything is ok.
+- Step 4: Check everything is ok.
 
 NameSpace cafe should have been created and should be in status Active:
 
@@ -277,7 +266,7 @@ That manifest deploys a certificate and keys that will be used later for TLS tra
 Deployment of a Virtual Server for TLS with Content-Based Routing
 *************************************************************************
 
-- Step 1: Copy/Paste the manifest below into a new file named **cafe-virtual-server-lab-2B.yaml**.
+- Step 1: Copy/Paste the manifest below into a new file named **cafe-virtual-server-lab2-ex2.yaml**.
 
 | That manifest uses the custom resources **VirtualServer**.
 |
@@ -333,7 +322,7 @@ Deployment of a Virtual Server for TLS with Content-Based Routing
 
 .. code-block:: bash
 
-        kubectl apply -f cafe-virtual-server-lab-2B.yaml
+        kubectl apply -f cafe-virtual-server-lab2-ex2.yaml
 
 *output*:
 
@@ -353,13 +342,14 @@ Deployment of a Virtual Server for TLS with Content-Based Routing
 
 - Step 4: Test the setup
 
-Test by using the curl command with the EXTERNAL-IP address of the cluster you've seen on last step of LAB 2A:
+| Test by using the curl command below.
+| Replace {{EXTERNAL_IP_NIC}} by the IP address of the NGINX Ingress Controller you've noticed on the last step of Exercise 1.
 
 *input*:
 
 .. code-block:: bash
 
-        curl https://cafe.example.com/coffee --resolve cafe.example.com:443:52.167.14.0 --insecure
+        curl https://cafe.example.com/coffee --resolve cafe.example.com:443:{{EXTERNAL_IP_NIC}} --insecure
 
 
 *output*:
@@ -377,7 +367,7 @@ Test by using the curl command with the EXTERNAL-IP address of the cluster you'v
 
 .. code-block:: bash
 
-        curl https://cafe.example.com/tea --resolve cafe.example.com:443:52.167.14.0 --insecure
+        curl https://cafe.example.com/tea --resolve cafe.example.com:443:{{EXTERNAL-IP}} --insecure
 
 
 
@@ -396,7 +386,7 @@ Test by using the curl command with the EXTERNAL-IP address of the cluster you'v
 
 .. code-block:: bash
 
-        curl https://cafe.example.com/ --resolve cafe.example.com:443:52.167.14.0 --insecure
+        curl https://cafe.example.com/ --resolve cafe.example.com:443:{{EXTERNAL-IP}} --insecure
 
 
 

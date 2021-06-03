@@ -151,16 +151,41 @@ _______________________________________________________________________
 Extra time: NGINX+ dashboard
 *****************************************
 
-- On your ssh client, configure ssh port forwarding on Jumphost session as described `here <https://blog.devolutions.net/2017/4/how-to-configure-an-ssh-tunnel-on-putty>`_
+- For Windows Users:
+    - On your ssh client, configure ssh port forwarding on Jumphost session as described `here <https://blog.devolutions.net/2017/4/how-to-configure-an-ssh-tunnel-on-putty>`_
 
-.. image:: ./_pictures/securecrt.png
-   :align: center
-   :width: 900
-   :alt: SecureCRT
 
-- On your web browser, connect to ``http://127.1.1.1/dashboard.html``
+    .. image:: ./_pictures/securecrt.png
+       :align: center
+       :width: 900
+       :alt: SecureCRT
 
-.. image:: ./_pictures/nginx_plush_dashboard.png
-   :align: center
-   :width: 900
-   :alt: SecureCRT
+
+    - On your web browser, connect to ``http://127.1.1.1/dashboard.html``
+
+
+    .. image:: ./_pictures/nginx_plush_dashboard.png
+       :align: center
+       :width: 900
+       :alt: SecureCRT
+
+
+- For Mac Users:
+    - Run the command below
+    - Replace {{IC_POD_IP}} with the IP address found in exercise 6 above
+    - Replace {{site_ID} and {{region}} with your allocated site ID and Azure region.
+
+
+    .. code-block:: bash
+
+        ssh -L 8090:{{IC_POD_IP}}:8080 -i jumphost.pem cyber@jumphost-aksdistrict{{site_ID}}.{{region}}.cloudapp.azure.com
+
+
+    - On your browser, connect to ``http://127.0.0.1:8090/dashboard.html``
+
+
+    .. image:: ../../_pictures/nginx_plush_dashboard_2.png
+       :align: center
+       :width: 900
+       :alt: SecureCRT
+

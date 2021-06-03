@@ -1,4 +1,4 @@
-LAB 2C: Advanced Content-Based Routing
+Exercise 3: Advanced Content-Based Routing
 ##############################################################
 
 .. contents:: Contents
@@ -16,9 +16,9 @@ Objectives
 |
 |
 
-- Step 1: Modify the deployment done in the previous lab.
+- Step 1: Create a new manifest for the deployment
 
-Copy and Paste the manifest below into a new file named cafe-virtual-server-Lab-2C.yaml and deploy it.
+Copy and Paste the manifest below into a new file named **cafe-virtual-server-Lab2-ex3.yaml**.
 
 .. code-block:: yaml
 
@@ -84,13 +84,13 @@ Copy and Paste the manifest below into a new file named cafe-virtual-server-Lab-
                 body: "Hello World\n\n\n\nRequest is ${request_uri}\nRequest Method is ${request_method}\nRequest Scheme is ${scheme}\nRequest Host is ${host}\nRequest Lengthis ${request_length}\nNGINX Version is ${nginx_version}\nClient IP address is ${remote_addr}\nClient Port is : ${remote_port}\nLocal Time is ${time_local}\nServer IP Address is ${server_addr}\nServer Port is ${server_port}\nProtocol is ${server_protocol}\n"
 
 
-- Step 2: Deploy the manifest:
+- Step 2: Deploy the manifest
 
 *input*:
 
 .. code-block:: bash
 
-        kubectl apply -f cafe-virtual-server-lab-2C.yaml
+        kubectl apply -f cafe-virtual-server-lab2-ex3.yaml
 
 *output*:
 
@@ -99,7 +99,7 @@ Copy and Paste the manifest below into a new file named cafe-virtual-server-Lab-
         virtualserver.k8s.nginx.org/app-cafe configured
 
 
-- Step 3: Check the compilation status of the VirtualServer with the command below:
+- Step 3: Check the compilation status of the VirtualServer with the command below
 
 .. code-block:: bash
 
@@ -108,7 +108,7 @@ Copy and Paste the manifest below into a new file named cafe-virtual-server-Lab-
 
 - Step 4: Test the setup
 
-- Test the pages below using the following curl command:
+- Test with the curl command by replacing {{PATH}} by the path below, and {{EXTERNAL_IP_NIC}} by the IP address of the NGINX Ingress Controller you've noticed on the last step of Exercise 1.
 
     - https://cafe.example.com/coffee         -> request is sent to the service coffee
 
@@ -120,9 +120,10 @@ Copy and Paste the manifest below into a new file named cafe-virtual-server-Lab-
 
     - https://cafe.example.com/proxy          -> requests go to coffee you should see custom headers in the responses
 
+
 .. code-block:: bash
 
-        curl https://cafe.example.com/<PATH> --resolve cafe.example.com:443:<EXTERNAL_IP_Cluster> --insecure
+        curl {{PATH}} --resolve cafe.example.com:443:{{EXTERNAL_IP_NIC}} --insecure
 
 |
 |

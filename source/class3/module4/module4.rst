@@ -1,4 +1,4 @@
-Exercise: Canary or A/B Testing
+Exercise 4: Canary or A/B Testing
 ###############################
 
 .. contents:: Contents
@@ -8,20 +8,16 @@ Exercise: Canary or A/B Testing
 Objectives
 *******************************
 
-    .. note::
-        | * For that use case, we're going to use a new cafe application with two versions of the service coffee-svc.
-        |
-        | * The aim is to pass 80% of requests to the coffee-v1-svc and the remaining 20% to coffee-v2-svc.
-        |
-        | * We're going to use another field named **splits** and available in the custom resource **VirtualServer**.
-        |
-        | * The split defines a weight for an action as part of the splits configuration.
-        |
+- For that use case, we're going to use a new cafe application with two versions of the service coffee-svc.
+- The aim is to pass 80% of requests to the coffee-v1-svc and the remaining 20% to coffee-v2-svc.
+- We're going to use another field named **splits** and available in the custom resource **VirtualServer**.
+- The split defines a weight for an action as part of the splits configuration.
 
 
-- Step 1: Deploy the new application cafe-v2:
+Step 1: Deploy the new application cafe-v2
+*******************************************
 
-Create/Edit a new file named **cafe-v2.yaml** and copy/past the manifest below.
+- Create a new file named **cafe-v2.yaml** and copy/past the manifest below.
 
 .. code-block:: yaml
     :linenos:
@@ -96,7 +92,7 @@ Create/Edit a new file named **cafe-v2.yaml** and copy/past the manifest below.
           selector:
             app: coffee-v2
 
-Deploy the application:
+- Deploy the application:
 
 *input*:
 
@@ -105,7 +101,7 @@ Deploy the application:
         kubectl apply -f cafe-v2.yaml
 
 
-Verify the pods coffee-v1 and coffee-v2 are correctly deployed:
+- Check the pods coffee-v1 and coffee-v2 are correctly deployed:
 
 *input*:
 
@@ -126,7 +122,7 @@ Verify the pods coffee-v1 and coffee-v2 are correctly deployed:
         tea-6fb46d899f-k2sfc         1/1     Running   0          140m
 
 
-Verify the services coffee-v1-svc and coffee-v2-svc are correctly deployed:
+- Check the services coffee-v1-svc and coffee-v2-svc are correctly deployed:
 
 *input*:
 
@@ -146,7 +142,13 @@ Verify the services coffee-v1-svc and coffee-v2-svc are correctly deployed:
         tea-svc         ClusterIP   10.200.0.51    <none>        80/TCP    63m
 
 
-- Step 2: Create/Edit a new file named **cafe-virtual-server-lab-2D.yaml** and copy/past the manifest below.
+
+Step 2: Create a new manifest for the 80/20 traffic splitting
+**************************************************************************
+
+- Create/Edit a new file named **cafe-virtual-server-lab2-ex4.yaml**
+
+Copy/past the manifest below into the file **cafe-virtual-server-lab2-ex4.yaml**
 
 .. code-block:: yaml
 
@@ -176,13 +178,15 @@ Verify the services coffee-v1-svc and coffee-v2-svc are correctly deployed:
                 pass: coffee-v2
 
 
-- Step 3: Deploy the new setup
+
+Step 3: Deploy the new manifest
+************************************
 
 *input*:
 
 .. code-block:: bash
 
-        kubectl apply -f cafe-virtual-server-lab-2D.yaml
+        kubectl apply -f cafe-virtual-server-lab2-ex4.yaml
 
 
 *output*:
@@ -192,7 +196,8 @@ Verify the services coffee-v1-svc and coffee-v2-svc are correctly deployed:
         virtualserver.k8s.nginx.org/cafe-vs configured
 
 
-- Step 4: Verify the status of the VirtualServer with the command below:
+Step 4: Check the status of the VirtualServer Resource
+*******************************************************
 
 *input*:
 
@@ -212,11 +217,17 @@ Verify the services coffee-v1-svc and coffee-v2-svc are correctly deployed:
           Normal  AddedOrUpdated  5s    nginx-ingress-controller  Configuration for cafe-ns/cafe-vs was added or updated
 
 
-- Step 4: Test the setup by sending 10 connections with curl
+Step 4: Test the setup
+**************************
+
+- Send 10 connections with curl:
+
+Replace {{EXTERNAL_IP_NIC}} by the IP address of the NGINX Ingress Controller you've noticed on the last step of Exercise 1.
+
 
 .. code-block:: bash
 
-        curl http://cafe.example.com/coffee --resolve cafe.example.com:<EXTERNAL_IP_Cluster> --insecure
+        curl http://cafe.example.com/coffee --resolve cafe.example.com:{{EXTERNAL_IP_NIC}} --insecure
 
 
 - Check that you have around:

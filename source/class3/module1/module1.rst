@@ -1,25 +1,21 @@
-LAB 2A: Exploring and understanding the K8S cluster
+Exercise 1: Exploring the K8S cluster
 ####################################################
 
 .. contents:: Contents
     :local:
     :depth: 1
 
-LAB 2A: Exploring and understanding the K8S cluster
-****************************************************
-
-    .. note::
-        | In order to be independant of a specific K8S distribution, standard tools will be used for managing the cluster.
-        | The tool ``kubectl`` will be used during that workshop.
 
 
-- Step 1: logging with SSH to your attributed K8S Cluster
+Step 1: Login to your attributed K8S Cluster
+*********************************************************
 
-| Follow `this link <https://f5-k8s-ctfd.docs.emea.f5se.com/en/latest/class2/module1/module1.html#exercise-1-jumphost>`_ to log into your lab System
-|
+Follow `this link <https://f5-k8s-ctfd.docs.emea.f5se.com/en/latest/class2/module1/module1.html#exercise-1-jumphost>`_ to log into your lab System
 
 
-- Step 2: Let's verify the CRDs installed:
+
+Step 2: Check the installed CRDs
+*********************************************************
 
 .. code-block:: bash
 
@@ -49,7 +45,8 @@ LAB 2A: Exploring and understanding the K8S cluster
     |
 
 
-- Step 3: Let's check the NameSpaces of the cluster:
+Step 3: Check the NameSpaces of the cluster
+*********************************************************
 
 .. code-block:: bash
 
@@ -77,25 +74,8 @@ LAB 2A: Exploring and understanding the K8S cluster
     |
 
 
-- Step 4: Look at the pods in some NameSpaces with the command ``kubectl get pods``:
-
-| Namespace Default:
-
-.. code-block:: bash
-
-        kubectl get pods -n default
-
-*output:*
-
-.. code-block:: bash
-
-        No resources found in default namespace.
-
-
-| The namespace default is empty.
-|
-|
-| Namespace external-ingress-controller:
+Step 4: Check the pods in the NameSpace used for the NIC
+*********************************************************
 
 .. code-block:: bash
 
@@ -110,7 +90,8 @@ LAB 2A: Exploring and understanding the K8S cluster
 
 
 
-- Step 5: Let's check the Ingress Class Name attached to the External Ingress Controller:
+Step 5: Check the Ingress Class Name attached to the NIC
+*********************************************************
 
 .. code-block:: bash
 
@@ -139,11 +120,10 @@ LAB 2A: Exploring and understanding the K8S cluster
 .. note::
     | The Ingress Class Name **nginx-external**  will be used as a reference into the deployment of the manifests.
     | It allows to indicate which Ingress Controller must be used for a specific deployment.
-    |
-    |
 
 
-- Step 6: Let's check the Public IP address attached to the external Ingress Controller:
+Step 6: Check the Public IP address attached to the NIC
+*********************************************************
 
 .. code-block:: bash
 
