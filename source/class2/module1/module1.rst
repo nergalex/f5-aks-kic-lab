@@ -183,7 +183,7 @@ Extra time: NGINX+ dashboard
     - On your browser, connect to ``http://127.0.0.1:8090/dashboard.html``
 
 
-    .. image:: ../_pictures/nginx_plush_dashboard_2.png
+    .. image:: ../../_pictures/nginx_plush_dashboard_2.png
        :align: center
        :width: 900
        :alt: SecureCRT
