@@ -113,8 +113,8 @@ Step 4: Test the setup
 *************************************************************
 
 - Test with the curl command below.
-- Replace {{PATH}} by the path below
 - Replace {{EXTERNAL_IP_NIC}} by the IP address of the NGINX Ingress Controller you've noticed on the last step of Exercise 1.
+- Replace {{PATH}} by the path below
     - https://cafe.example.com/coffee         -> request is sent to the service coffee
     - https://cafe.example.com/tea            -> request is sent to the service tea
     - https://cafe.example.com/redirect       -> client is redirected to www.nginx.com
