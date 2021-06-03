@@ -29,11 +29,7 @@ Logging into your Azure Kubernetes Service (AKS), a Managed Kubernetes Services:
 Exercise 3: NGINX Ingress Controller
 ************************************
 
-Two *NGINX Ingress Controller* (IC) instances, *App Protect* module embedded,
-have been already build on Jumphost following this `guide <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/#building-the-image-and-pushing-it-to-the-private-registry>`_
-and deployed using `Helm <https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-helm/>`_
-
-An IC is hosted in a namespace owned by Infra Ops, it can be called *infrastructure namespace*.
+An *NGINX Ingress Controller* (IC) is hosted in a namespace owned by Infra Ops, it can be called *infrastructure namespace*.
 An *infrastructure namespace* can host multiple ICs.
 An IC is associated to a unique *Ingress Class* name.
 Therefore an *infrastructure namespace* can propose to Applications several *Ingress Classes*,
@@ -45,6 +41,10 @@ In order to published, an Application have to select an *Ingress Class*.
 However an Application, that is hosted in its namespace, cannot use every existing *Ingress Class*
 because an *Ingress Class* can watch all or some *applicative namespace*.
 For example an *infrastructure namespace* dedicated for non-production should only watch non-production *applicative namespace*.
+
+Two ICs instances, *App Protect* module embedded,
+have been already build on Jumphost following this `guide <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/#building-the-image-and-pushing-it-to-the-private-registry>`_
+and deployed using `Helm <https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-helm/>`_
 
 - Show Arcadia application published by IC facing Internet
 
