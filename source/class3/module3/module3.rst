@@ -127,14 +127,13 @@ Step 4: Test the setup
     - https://cafe.example.com/proxy          -> requests go to coffee you should see custom headers in the responses
 
 
+
 .. code-block:: bash
 
         curl {{PATH}} --resolve cafe.example.com:443:{{EXTERNAL_IP_NIC}} --insecure
 
 
-|
-|
-|
+
 **Capture The Flag**
 
     **2c.1 What is the name of the action which forwards requests to an upstream?**
