@@ -115,22 +115,17 @@ Step 4: Test the setup
 - Test with the curl command below.
 - Replace {{PATH}} by the path below
 - Replace {{EXTERNAL_IP_NIC}} by the IP address of the NGINX Ingress Controller you've noticed on the last step of Exercise 1.
-
     - https://cafe.example.com/coffee         -> request is sent to the service coffee
-
     - https://cafe.example.com/tea            -> request is sent to the service tea
-
     - https://cafe.example.com/redirect       -> client is redirected to www.nginx.com
-
     - https://cafe.example.com/return_page    -> custom page Hello World is returned
-
     - https://cafe.example.com/proxy          -> requests go to coffee you should see custom headers in the responses
 
 
 
-    .. code-block:: bash
+.. code-block:: bash
 
-            curl {{PATH}} --resolve cafe.example.com:443:{{EXTERNAL_IP_NIC}} --insecure
+        curl {{PATH}} --resolve cafe.example.com:443:{{EXTERNAL_IP_NIC}} --insecure
 
 
 
