@@ -101,7 +101,7 @@ Step 2: Deploy the manifest
         virtualserver.k8s.nginx.org/app-cafe configured
 
 
-Step 3: Check the compilation status of the VirtualServer with the command below
+Step 3: Check the compilation status of the VirtualServer
 *************************************************************
 
 .. code-block:: bash
