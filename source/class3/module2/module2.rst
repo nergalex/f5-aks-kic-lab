@@ -1,4 +1,4 @@
-Exercise 2: TLS Traffic with Content-Based Routing
+Exercise 2: Basic Content-Based Routing
 #############################################################
 
 .. contents:: Contents
