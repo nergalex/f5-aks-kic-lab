@@ -16,7 +16,8 @@ Objectives
 |
 |
 
-- Step 1: Create a new manifest for the deployment
+Step 1: Create a new manifest for the deployment
+*************************************************************
 
 Copy and Paste the manifest below into a new file named **cafe-virtual-server-Lab2-ex3.yaml**.
 
@@ -84,7 +85,8 @@ Copy and Paste the manifest below into a new file named **cafe-virtual-server-La
                 body: "Hello World\n\n\n\nRequest is ${request_uri}\nRequest Method is ${request_method}\nRequest Scheme is ${scheme}\nRequest Host is ${host}\nRequest Lengthis ${request_length}\nNGINX Version is ${nginx_version}\nClient IP address is ${remote_addr}\nClient Port is : ${remote_port}\nLocal Time is ${time_local}\nServer IP Address is ${server_addr}\nServer Port is ${server_port}\nProtocol is ${server_protocol}\n"
 
 
-- Step 2: Deploy the manifest
+Step 2: Deploy the manifest
+*************************************************************
 
 *input*:
 
@@ -99,31 +101,32 @@ Copy and Paste the manifest below into a new file named **cafe-virtual-server-La
         virtualserver.k8s.nginx.org/app-cafe configured
 
 
-- Step 3: Check the compilation status of the VirtualServer with the command below
+Step 3: Check the compilation status of the VirtualServer
+*************************************************************
 
 .. code-block:: bash
 
         kubectl describe virtualserver app-cafe -n cafe-ns
 
 
-- Step 4: Test the setup
+Step 4: Test the setup
+*************************************************************
 
-- Test with the curl command by replacing {{PATH}} by the path below, and {{EXTERNAL_IP_NIC}} by the IP address of the NGINX Ingress Controller you've noticed on the last step of Exercise 1.
-
+- Test with the curl command below.
+- Replace {{EXTERNAL_IP_NIC}} by the IP address of the NGINX Ingress Controller you've noticed on the last step of Exercise 1.
+- Replace {{PATH}} with:
     - https://cafe.example.com/coffee         -> request is sent to the service coffee
-
     - https://cafe.example.com/tea            -> request is sent to the service tea
-
     - https://cafe.example.com/redirect       -> client is redirected to www.nginx.com
-
     - https://cafe.example.com/return_page    -> custom page Hello World is returned
-
     - https://cafe.example.com/proxy          -> requests go to coffee you should see custom headers in the responses
+
 
 
 .. code-block:: bash
 
         curl {{PATH}} --resolve cafe.example.com:443:{{EXTERNAL_IP_NIC}} --insecure
+
 
 |
 |

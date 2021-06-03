@@ -14,13 +14,12 @@ Objectives
 - The split defines a weight for an action as part of the splits configuration.
 
 
-Step 1: Deploy the new application cafe-v2
-*******************************************
+Step 1: Deploy the new version of application cafe
+****************************************************
 
 - Create a new file named **cafe-v2.yaml** and copy/past the manifest below.
 
 .. code-block:: yaml
-    :linenos:
 
         apiVersion: apps/v1
         kind: Deployment
