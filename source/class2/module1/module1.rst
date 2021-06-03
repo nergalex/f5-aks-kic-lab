@@ -44,11 +44,12 @@ _______________________________________________________________________
 **Capture The Flag**
 
     **3.1 What is the version of deployed IC?**
-    | Tips: *NGINX Ingress Controller* image's tag contains: {{IC version}}-{{last update of WAF signature}}. Use `docker commands <https://docs.docker.com/engine/reference/commandline/docker/>`_ to show images
+    | Tips: *NGINX Ingress Controller* image's tag contains: {{IC version}}-{{last update of WAF signature}}. Use `docker commands <https://docs.docker.com/engine/reference/commandline/image_ls/>`_ to show images
 
     **3.2 What is the ingress-class name of the IC instance accessible from Internet?**
 
-    **3.3 Ingress Controller - for an ingress class name - watch for resources in Namespaces. What is the Helm configuration parameter to limit Namespace(s) to watch?**
+    **3.3 What is the Helm configuration parameter to limit Namespace(s) to watch?**
+    | Tips: Configuration parameter for *NGINX Ingress Controller* `here <https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-helm/#configuration>`_
 
 Exercise 4: Kibana
 *****************************************
