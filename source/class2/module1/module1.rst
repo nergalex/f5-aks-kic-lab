@@ -20,7 +20,7 @@ Exercise 2: Kubernetes cluster
 *********************
 Logging into your Azure Kubernetes Service (AKS), a Managed Kubernetes Services:
 
-- On Jumphost, communicate with K8S API using kubectl
+- On Jumphost, test good communication with K8S API using kubectl
 
 .. code-block:: bash
 
@@ -33,19 +33,22 @@ Two *NGINX Ingress Controller* (IC) instances, *App Protect* module embedded,
 have been already build on Jumphost following this `guide <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/#building-the-image-and-pushing-it-to-the-private-registry>`_
 and deployed using `Helm <https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-helm/>`_
 
+- Show Arcadia application published by IC facing Internet
+
+.. code-block:: bash
+
+    kubectl get ingresses -n lab1-arcadia
+
 _______________________________________________________________________
 
 **Capture The Flag**
 
     **3.1 What is the version of deployed IC?**
-    | Tips: *NGINX Ingress Controller* image's tag contains: {{IC version}}-{{last update of WAF signature}}. `docker commands <https://docs.docker.com/engine/reference/commandline/docker/>`_
-    | 1.11.1
+    | Tips: *NGINX Ingress Controller* image's tag contains: {{IC version}}-{{last update of WAF signature}}. Use `docker commands <https://docs.docker.com/engine/reference/commandline/docker/>`_ to show images
 
     **3.2 What is the ingress-class name of the IC instance accessible from Internet?**
-    | nginx-external
 
     **3.3 Ingress Controller - for an ingress class name - watch for resources in Namespaces. What is the Helm configuration parameter to limit Namespace(s) to watch?**
-    | controller.watchNamespace
 
 Exercise 4: Kibana
 *****************************************
@@ -114,7 +117,6 @@ _______________________________________________________________________
 **Capture The Flag**
 
     **5.1 What is the cipher suite supported?**
-    | ECDHE-RSA-AES256-GCM-SHA384
 
 Exercise 6: NGINX+ API
 *****************************************
@@ -144,7 +146,6 @@ _______________________________________________________________________
 **Capture The Flag**
 
     **6.1 Which build of NGINX is used by IC?**
-    | nginx-plus-r23
 
 Extra time: NGINX+ dashboard
 *****************************************

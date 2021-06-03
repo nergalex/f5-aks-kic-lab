@@ -53,10 +53,8 @@ _______________________________________________________________________
 **Capture The Flag**
 
     **2.1 What is the name of Threat Campaigns package?**
-    | app-protect-threat-campaigns
 
     **2.2 How many signature attack update were released in April?**
-    | 10
     | Tip: ``yum list --showduplicates {{ package name }}``
 
 Directive
@@ -174,7 +172,6 @@ _______________________________________________________________________
 **Capture The Flag**
 
     **2.3 Which request type are logged by App Protect for Arcadia application?**
-    | all
     | Tip: `App Protect Logs <https://docs.nginx.com/nginx-ingress-controller/app-protect/configuration/#app-protect-logs>`_
 
 Exercise 3: Monitoring
@@ -218,16 +215,12 @@ _______________________________________________________________________
 **Capture The Flag**
 
     **3.1 What is the policy name?**
-    | generic-security-level-low
 
     **3.2 What is the client_class for curl?**
-    | Untrusted Bot
 
     **3.3 Which violations are raised?**
-    | Illegal meta character in value, Attack signature detected, Violation Rating Threat detected, Bot Client Detected
 
     **3.4 Which attack signatures are detected?**
-    | 200001475, 200000098
 
 Exercise 4: Modifications
 *************************
@@ -565,10 +558,8 @@ _______________________________________________________________________
 **Capture The Flag**
 
     **5.1 What is the violation rating?**
-    | 3
 
     **5.2 What are the violations?**
-    | Illegal meta character in value, Bot Client Detected
 
 Exercise 6: Checks of the trusted bot’s authenticity
 ****************************************************
@@ -589,8 +580,6 @@ _______________________________________________________________________
 **Capture The Flag**
 
     **6.1 What is the bot anomaly?**
-    | Search Engine Verification Failed
 
     **6.2 What is the client class?**
-    | Malicious Bot
 

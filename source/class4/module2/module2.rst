@@ -88,7 +88,6 @@ _______________________________________________________________________
 **Capture The Flag**
 
     **1.1 What is the waf policy name that protects /tea?**
-    | waf-cafe-tea
 
 WAF Policy
 ===============================
@@ -146,7 +145,6 @@ _______________________________________________________________________
 **Capture The Flag**
 
     **1.2 In which namespace are located all APPolicies?**
-    | external-ingress-controller
 
 Exercise 2: Ingress Controller configuration
 ********************************************
@@ -210,7 +208,6 @@ _______________________________________________________________________
 **Capture The Flag**
 
     **2.1 Which App Protect policy name protects /return_page?**
-    | external-ingress-controller_generic-security-level-low
 
 App Protect
 ===============================
@@ -264,10 +261,8 @@ _______________________________________________________________________
 **Capture The Flag**
 
     **2.2 Two VirtualServerRoutes in same namespace can reference same WAF policy. Is it true?**
-    | yes
 
     **2.3 Two VirtualServerRoutes in 2 namespaces can reference same WAF policy in another nameSpace. Is it true?**
-    | yes
 
 
 
