@@ -30,9 +30,9 @@ Exercise 3: NGINX Ingress Controller
 ************************************
 
 In this lab, *NGINX Ingress Controller* (IC) is hosted in namespaces owned by Infra Ops,
-this kind of namespace is called an *infrastructure namespace*.
+this kind of namespace is called an **infrastructure namespace**.
 An *infrastructure namespace* can host one or several ICs.
-An IC is associated to a unique *Ingress Class* name.
+An IC is associated to a unique **Ingress Class** name.
 Therefore an *infrastructure namespace* can propose to Applications several *Ingress Classes*,
 for example "silver", "gold" and "platinium".
 
@@ -42,7 +42,7 @@ for example: ADC, API GW, WAF, open source, supported, SRE team for digital fact
 
 In order to published, an Application have to select an *Ingress Class*.
 However an Application, that is hosted in its namespace, cannot use every existing *Ingress Class*
-because an *Ingress Class* can watch all or some *applicative namespace*.
+because an *Ingress Class* can **watch** all or some *applicative namespace*.
 For example an *infrastructure namespace* dedicated for non-production should only watch non-production *applicative namespace*.
 
 Two ICs instances, *App Protect* module embedded,
