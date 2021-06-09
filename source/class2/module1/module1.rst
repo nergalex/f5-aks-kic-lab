@@ -225,7 +225,7 @@ Extra time 2: NGINX+ dashboard
 
     .. code-block:: bash
 
-        ssh -L 8090:{{IC_POD_IP}}:8080 -i jumphost.pem cyber@jumphost-aksdistrict{{site_ID}}.{{region}}.cloudapp.azure.com
+        ssh -L 8090:{{IC_POD_IP}}:8080 -i jumphost.key cyber@jumphost-aksdistrict{{site_ID}}.{{region}}.cloudapp.azure.com
 
 
     - On your browser, connect to ``http://127.0.0.1:8090/dashboard.html``
