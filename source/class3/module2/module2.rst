@@ -6,25 +6,32 @@ Exercise 1: Basic Content-Based Routing
     :depth: 1
 
 
+Description of the K8S Environment
+***********************************************************
+
+- For that use case, the **application named cafe** has been deployed
+- The application cafe is composed of **2 services**: **cofee-svc** and **tea-svc**
+- The application has been deployed in the **NameSpace cafe-ns**
+- The Custom Resource Definitions **VirtualServer** and **VirtualServerRoute** have been installed
+
+.. note::
+    | The **VirtualServer** and **VirtualServerRoute** resources are new resources for load balancing configuration, introduced in release 1.5 as an alternative to the Ingress resource.
+    | These custom resources enable use cases not supported with the Ingress resource, such as traffic splitting and advanced content-based routing.
+    | These resources are implemented as Custom Resource Definitions.
+    |
+
+
+
 Objectives
 ***********************************************************
 
-- For that use case, the **application named cafe** has been deployed.
-- The application cafe is composed of **2 services**: **cofee-svc** and **tea-svc**.
-- The application has been deployed in the **NameSpace cafe-ns**.
-- The custom resource **VirtualServer** will be used.
-- The setup we want to deploy is :
+- Use the new resource **VirtualServer** to deploy the setup below:
     - listens for hostname cafe.example.com
     - TLS activated and uses a specified cert and key from a K8S secret resource
     - request for /tea are sent to service tea
     - request for /coffee are sent to service coffee
 
 
-.. note::
-    | The **VirtualServer** and **VirtualServerRoute** resources are new load balancing configuration, introduced in release 1.5 as an alternative to the Ingress resource.
-    | The resources enable use cases not supported with the Ingress resource, such as traffic splitting and advanced content-based routing.
-    | The resources are implemented as Custom Resource Definitions.
-    |
 
 
 Check the K8S environment
