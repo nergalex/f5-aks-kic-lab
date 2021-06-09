@@ -19,7 +19,7 @@ Objectives
 Step 1: Create a new manifest for the deployment
 *************************************************************
 
-Copy and Paste the manifest below into a new file named **cafe-virtual-server-Lab2-ex3.yaml**.
+Copy and Paste the manifest below into a new file named **cafe-virtual-server-lab2-ex3.yaml**.
 
 .. code-block:: yaml
 

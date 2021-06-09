@@ -216,7 +216,7 @@ Step 4: Check the status of the VirtualServer Resource
           Normal  AddedOrUpdated  5s    nginx-ingress-controller  Configuration for cafe-ns/cafe-vs was added or updated
 
 
-Step 4: Test the setup
+Step 5: Test the setup
 **************************
 
 - Send 10 connections with curl:
