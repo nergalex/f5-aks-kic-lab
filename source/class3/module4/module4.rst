@@ -5,100 +5,27 @@ Exercise 3: Canary or A/B Testing
     :local:
     :depth: 1
 
+Description of the Environment for the Exercise
+***********************************************************
+
+- A new version of the application cafe has been deployed.
+- That application has been deployed into the namespace cafe-ns.
+- That application has two versions of the service coffee-svc:
+    - service **coffee-v1-svc**
+    - service **coffee-v2-svc**
+
+
 Objectives
 *******************************
 
-- For that use case, we're going to use a new cafe application with two versions of the service coffee-svc.
-- The aim is to pass 80% of requests to the coffee-v1-svc and the remaining 20% to coffee-v2-svc.
-- We're going to use another field named **splits** and available in the custom resource **VirtualServer**.
-- The split defines a weight for an action as part of the splits configuration.
+- Deploy the setup below by using the field **splits** available in the custom resource **VirtualServer**
+    - Pass 80% of requests to the coffee-v1-svc
+    - Pass the remaining 20% to coffee-v2-svc
 
 
-Step 1: Deploy the new version of application cafe
-****************************************************
 
-- Create a new file named **cafe-v2.yaml** and copy/past the manifest below.
-
-.. code-block:: yaml
-
-        apiVersion: apps/v1
-        kind: Deployment
-        metadata:
-          name: coffee-v1
-          namespace: cafe-ns
-        spec:
-          replicas: 1
-          selector:
-            matchLabels:
-              app: coffee-v1
-          template:
-            metadata:
-              labels:
-                app: coffee-v1
-            spec:
-              containers:
-              - name: coffee-v1
-                image: nginxdemos/nginx-hello:plain-text
-                ports:
-                - containerPort: 8080
-        ---
-        apiVersion: v1
-        kind: Service
-        metadata:
-          name: coffee-v1-svc
-          namespace: cafe-ns
-        spec:
-          ports:
-          - port: 80
-            targetPort: 8080
-            protocol: TCP
-            name: http
-          selector:
-            app: coffee-v1
-        ---
-        apiVersion: apps/v1
-        kind: Deployment
-        metadata:
-          name: coffee-v2
-          namespace: cafe-ns
-        spec:
-          replicas: 1
-          selector:
-            matchLabels:
-              app: coffee-v2
-          template:
-            metadata:
-              labels:
-                app: coffee-v2
-            spec:
-              containers:
-              - name: coffee-v2
-                image: nginxdemos/nginx-hello:plain-text
-                ports:
-                - containerPort: 8080
-        ---
-        apiVersion: v1
-        kind: Service
-        metadata:
-          name: coffee-v2-svc
-          namespace: cafe-ns
-        spec:
-          ports:
-          - port: 80
-            targetPort: 8080
-            protocol: TCP
-            name: http
-          selector:
-            app: coffee-v2
-
-- Deploy the application:
-
-*input*:
-
-.. code-block:: bash
-
-        kubectl apply -f cafe-v2.yaml
-
+Check the Environment is up and running
+*******************************************************
 
 - Check the pods coffee-v1 and coffee-v2 are correctly deployed:
 
@@ -112,6 +39,7 @@ Step 1: Deploy the new version of application cafe
 *output*:
 
 .. code-block:: bash
+    :emphasize-lines: 4,5
 
         NAME                         READY   STATUS    RESTARTS   AGE
         coffee-6f4b79b975-4gqzg      1/1     Running   0          140m
@@ -133,6 +61,7 @@ Step 1: Deploy the new version of application cafe
 *output*:
 
 .. code-block:: bash
+    :emphasize-lines: 3,4
 
         NAME            TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE
         coffee-svc      ClusterIP   10.200.0.100   <none>        80/TCP    63m
@@ -142,12 +71,12 @@ Step 1: Deploy the new version of application cafe
 
 
 
-Step 2: Create a new manifest for the 80/20 traffic splitting
+Step 1: Create a new manifest for the 80/20 traffic splitting
 **************************************************************************
 
-- Create/Edit a new file named **cafe-virtual-server-lab2-ex4.yaml**
+- Create/Edit a new file named **cafe-virtual-server-lab2-ex3.yaml**
 
-Copy/past the manifest below into the file **cafe-virtual-server-lab2-ex4.yaml**
+Copy/past the manifest below into the file **cafe-virtual-server-lab2-ex3.yaml**
 
 .. code-block:: yaml
 
@@ -178,31 +107,31 @@ Copy/past the manifest below into the file **cafe-virtual-server-lab2-ex4.yaml**
 
 
 
-Step 3: Deploy the new manifest
+Step 2: Deploy the new manifest
 ************************************
 
 *input*:
 
 .. code-block:: bash
 
-        kubectl apply -f cafe-virtual-server-lab2-ex4.yaml
+        kubectl apply -f cafe-virtual-server-lab2-ex3.yaml
 
 
 *output*:
 
 .. code-block:: bash
 
-        virtualserver.k8s.nginx.org/cafe-vs configured
+        virtualserver.k8s.nginx.org/app-cafe configured
 
 
-Step 4: Check the status of the VirtualServer Resource
+Step 3: Check the status of the VirtualServer Resource
 *******************************************************
 
 *input*:
 
 .. code-block:: bash
 
-    kubectl describe virtualserver cafe-vs -n cafe-ns
+    kubectl describe virtualserver app-cafe -n cafe-ns
 
 
  *output*:
@@ -212,10 +141,10 @@ Step 4: Check the status of the VirtualServer Resource
         Events:
           Type    Reason          Age   From                      Message
           ----    ------          ----  ----                      -------
-          Normal  AddedOrUpdated  5s    nginx-ingress-controller  Configuration for cafe-ns/cafe-vs was added or updated
+          Normal  AddedOrUpdated  5s    nginx-ingress-controller  Configuration for cafe-ns/app-cafe was added or updated
 
 
-Step 5: Test the setup
+Step 4: Test the setup
 **************************
 
 - Send 10 connections with curl:

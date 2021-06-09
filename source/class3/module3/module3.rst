@@ -5,21 +5,22 @@ Exercise 2: Advanced Content-Based Routing
     :local:
     :depth: 1
 
+
 Objectives
 *************************************************************
 |
-- For that new deployment we use a lot more features available in the Custom Resource VirtualServer.
+- Deploying the setup belowUsing by using more features available in the resource VirtualServer compared to exercise 1
     - if path is */redirect* then the action is **redirect** to http://www.nginx.com.
     - if path is */proxy* then the action is **proxy** to add/rewrite/ignore some headers.
     - if path is */return_page* then the action is **return** to reply with a custom web page.
     - in each action, variables could be used like: $request_uri, $request_method, $request_body, $scheme, $host, $request_time, $request_length, $connection, $remote_addr, $remote_port, $ssl_cipher, $ssl_client_cert, etc
 |
-|
+
 
 Step 1: Create a new manifest for the deployment
 *************************************************************
 
-Copy and Paste the manifest below into a new file named **cafe-virtual-server-lab2-ex3.yaml**.
+Copy and Paste the manifest below into a new file named **cafe-virtual-server-lab2-ex2.yaml**.
 
 .. code-block:: yaml
 
@@ -92,7 +93,7 @@ Step 2: Deploy the manifest
 
 .. code-block:: bash
 
-        kubectl apply -f cafe-virtual-server-lab2-ex3.yaml
+        kubectl apply -f cafe-virtual-server-lab2-ex2.yaml
 
 *output*:
 

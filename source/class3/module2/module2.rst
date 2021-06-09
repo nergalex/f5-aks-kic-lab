@@ -6,7 +6,7 @@ Exercise 1: Basic Content-Based Routing
     :depth: 1
 
 
-Description of the K8S Environment
+Description of the Environment for the Exercise
 ***********************************************************
 
 - For that use case, the **application named cafe** has been deployed
@@ -35,8 +35,8 @@ Objectives
 
 
 
-Check the K8S environment
-***************************
+Check the Environment is up and running
+*******************************************************
 
 - Step 1: Check namespace **cafe-ns** has been deployed and is **Active**:
 
@@ -131,7 +131,7 @@ Check the K8S environment
 Deploy a Virtual Server for TLS with Content-Based Routing
 *************************************************************************
 
-- Step 1: Copy/Paste the manifest below into a new file named **cafe-virtual-server-lab2-ex2.yaml**.
+- Step 1: Copy/Paste the manifest below into a new file named **cafe-virtual-server-lab2-ex1.yaml**.
 
 | That manifest uses the custom resources **VirtualServer**.
 |
@@ -187,7 +187,7 @@ Deploy a Virtual Server for TLS with Content-Based Routing
 
 .. code-block:: bash
 
-        kubectl apply -f cafe-virtual-server-lab2-ex2.yaml
+        kubectl apply -f cafe-virtual-server-lab2-ex1.yaml
 
 *output*:
 
