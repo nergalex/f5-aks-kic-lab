@@ -202,7 +202,7 @@ Step 4: Check the status of the VirtualServer Resource
 
 .. code-block:: bash
 
-        kubectl describe virtualserver cafe-vs -n cafe-ns
+    kubectl describe virtualserver cafe-vs -n cafe-ns
 
 
  *output*:
