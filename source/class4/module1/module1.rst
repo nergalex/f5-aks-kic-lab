@@ -55,7 +55,7 @@ _______________________________________________________________________
     **2.1 What is the name of Threat Campaigns package?**
 
     **2.2 How many signature attack update were released in April?**
-    | Tip: ``yum list --showduplicates {{ package name }}``
+    | Tip: On jumphost ``yum list --showduplicates {{ package name }}``
 
 Directive
 =====================
