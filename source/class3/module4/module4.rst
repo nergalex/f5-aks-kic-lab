@@ -154,7 +154,7 @@ Copy/past the manifest below into the file **cafe-virtual-server-lab2-ex4.yaml**
         apiVersion: k8s.nginx.org/v1
         kind: VirtualServer
         metadata:
-          name: cafe-vs
+          name: app-cafe
           namespace: cafe-ns
         spec:
           ingressClassName: nginx-external
@@ -226,7 +226,7 @@ Replace {{EXTERNAL_IP_NIC}} by the IP address of the NGINX Ingress Controller yo
 
 .. code-block:: bash
 
-        curl http://cafe.example.com/coffee --resolve cafe.example.com:{{EXTERNAL_IP_NIC}} --insecure
+        curl http://cafe.example.com/coffee --resolve cafe.example.com:{{EXTERNAL_IP_NIC}}
 
 
 - Check that you have around:
