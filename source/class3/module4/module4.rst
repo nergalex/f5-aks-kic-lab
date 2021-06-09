@@ -209,7 +209,6 @@ Step 4: Check the status of the VirtualServer Resource
 
 .. code-block:: bash
 
-        . . .
         Events:
           Type    Reason          Age   From                      Message
           ----    ------          ----  ----                      -------
