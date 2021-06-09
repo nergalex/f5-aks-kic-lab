@@ -1,4 +1,4 @@
-Exercise 4: Canary or A/B Testing
+Exercise 3: Canary or A/B Testing
 ###############################
 
 .. contents:: Contents

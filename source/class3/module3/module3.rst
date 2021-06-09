@@ -1,4 +1,4 @@
-Exercise 3: Advanced Content-Based Routing
+Exercise 2: Advanced Content-Based Routing
 ##############################################################
 
 .. contents:: Contents
