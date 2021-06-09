@@ -12,6 +12,7 @@ Description of the K8S Environment
 - For that use case, the **application named cafe** has been deployed
 - The application cafe is composed of **2 services**: **cofee-svc** and **tea-svc**
 - The application has been deployed in the **NameSpace cafe-ns**
+- For TLS, a certificate and keys have been deployed into the namespace cafe-ns under the name of **cafe-secret**
 - The Custom Resource Definitions **VirtualServer** and **VirtualServerRoute** have been installed
 
 .. note::
