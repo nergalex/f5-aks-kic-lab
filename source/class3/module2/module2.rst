@@ -153,7 +153,12 @@ Deploy a Virtual Server for TLS with Content-Based Routing
 |    - tls: allows to attach a secret with a TLS certificate and key. The secret must belong to the same namespace as the VirtualServer.
 |    - route: defines rules for matching client requests to actions like passing a request to an upstream.
 
+
+**REPLACE {{SITE_ID}} in the hostname by your allocated site ID before saving and applying the manifest below in cafe-virtual-server-lab2-ex1.yaml.**
+
+
 .. code-block:: yaml
+    :emphasize-lines: 8
 
         apiVersion: k8s.nginx.org/v1
         kind: VirtualServer
@@ -162,7 +167,7 @@ Deploy a Virtual Server for TLS with Content-Based Routing
           namespace: cafe-ns
         spec:
           ingressClassName: nginx-external
-          host: cafe.example.com
+          host: lab2-cafe{{SITE_ID}}.com
           tls:
             secret: cafe-secret
           upstreams:
@@ -208,36 +213,15 @@ Deploy a Virtual Server for TLS with Content-Based Routing
 Test the setup
 *************************************************************
 
-
-- Check the Public IP address attached to the NGINX Ingress Controller
-
-.. code-block:: bash
-
-    kubectl get services -n external-ingress-controller
-
-*output:*
-
-.. code-block:: bash
-
-        NAME                         TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)                      AGE
-        elb-nap-ingress-controller   LoadBalancer   10.200.0.15   52.167.14.0   80:31613/TCP,443:31094/TCP   30d
-
-
-
-.. note::
-        | **Notice the EXTERNAL-IP address and write it somewhere.**
-        | **It will be used for the commands below and in the others exercises.**
-
-
 - Run the curl command below.
 
-- Replace {{EXTERNAL_IP_NIC}} by the IP address of the NGINX Ingress Controller you've noticed above.
+- Replace {{SITE_ID}} by your allocated site ID.
 
 *input*:
 
 .. code-block:: bash
 
-        curl https://cafe.example.com/coffee --resolve cafe.example.com:443:{{EXTERNAL_IP_NIC}} --insecure
+        curl https://lab2-cafe{{SITE_ID}}.com/coffee --insecure
 
 
 *output*:
@@ -255,7 +239,7 @@ Test the setup
 
 .. code-block:: bash
 
-        curl https://cafe.example.com/tea --resolve cafe.example.com:443:{{EXTERNAL-IP}} --insecure
+        curl https://lab2-cafe{{SITE_ID}}.com/tea --insecure
 
 
 
@@ -274,7 +258,7 @@ Test the setup
 
 .. code-block:: bash
 
-        curl https://cafe.example.com/ --resolve cafe.example.com:443:{{EXTERNAL-IP}} --insecure
+        curl https://lab2-cafe{{SITE_ID}}.com/ --insecure
 
 
 
