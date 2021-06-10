@@ -75,10 +75,11 @@ Step 1: Create a new manifest for the 80/20 traffic splitting
 **************************************************************************
 
 - Create/Edit a new file named **cafe-virtual-server-lab2-ex3.yaml**
-
-Copy/past the manifest below into the file **cafe-virtual-server-lab2-ex3.yaml**
+- Copy/past the manifest below into the file **cafe-virtual-server-lab2-ex3.yaml**
+- REPLACE {{SITE_ID}} in the field host by your allocated site ID before saving and applying cafe-virtual-server-lab2-ex1.yaml.
 
 .. code-block:: yaml
+    :emphasize-lines: 8
 
         apiVersion: k8s.nginx.org/v1
         kind: VirtualServer
@@ -87,7 +88,7 @@ Copy/past the manifest below into the file **cafe-virtual-server-lab2-ex3.yaml**
           namespace: cafe-ns
         spec:
           ingressClassName: nginx-external
-          host: cafe.example.com
+          host: lab2-cafe{{SITE_ID}}.com
           upstreams:
           - name: coffee-v1
             service: coffee-v1-svc
@@ -147,14 +148,12 @@ Step 3: Check the status of the VirtualServer Resource
 Step 4: Test the setup
 **************************
 
-- Send 10 connections with curl:
-
-Replace {{EXTERNAL_IP_NIC}} by the IP address of the NGINX Ingress Controller you've noticed on the last step of Exercise 1.
-
+- Send 10 connections with curl.
+- REPLACE {{SITE_ID}} by your allocated site ID in the curl command below.
 
 .. code-block:: bash
 
-        curl http://cafe.example.com/coffee --resolve cafe.example.com:{{EXTERNAL_IP_NIC}}
+        curl http://lab2-cafe{{SITE_ID}}.com/coffee
 
 
 - Check that you have around:

@@ -20,9 +20,11 @@ Objectives
 Step 1: Create a new manifest for the deployment
 *************************************************************
 
-Copy and Paste the manifest below into a new file named **cafe-virtual-server-lab2-ex2.yaml**.
+- Copy and Paste the manifest below into a new file named **cafe-virtual-server-lab2-ex2.yaml**.
+- REPLACE {{SITE_ID}} in the field host by your allocated site ID before saving and applying cafe-virtual-server-lab2-ex1.yaml.
 
 .. code-block:: yaml
+    :emphasize-lines: 8
 
         apiVersion: k8s.nginx.org/v1
         kind: VirtualServer
@@ -31,7 +33,7 @@ Copy and Paste the manifest below into a new file named **cafe-virtual-server-la
           namespace: cafe-ns
         spec:
           ingressClassName: nginx-external
-          host: cafe.example.com
+          host: lab2-cafe{{SITE_ID}}.com
           tls:
             secret: cafe-secret
           upstreams:
@@ -114,19 +116,19 @@ Step 4: Test the setup
 *************************************************************
 
 - Test with the curl command below.
-- Replace {{EXTERNAL_IP_NIC}} by the IP address of the NGINX Ingress Controller you've noticed on the last step of Exercise 1.
+- REPLACE {{SITE_ID}} in the field host by your allocated site ID.
 - Replace {{PATH}} with:
-    - https://cafe.example.com/coffee         -> request is sent to the service coffee
-    - https://cafe.example.com/tea            -> request is sent to the service tea
-    - https://cafe.example.com/redirect       -> client is redirected to www.nginx.com
-    - https://cafe.example.com/return_page    -> custom page Hello World is returned
-    - https://cafe.example.com/proxy          -> requests go to coffee you should see custom headers in the responses
+    - https://lab2-cafe{{SITE_ID}}.com/coffee         -> request is sent to the service coffee
+    - https://lab2-cafe{{SITE_ID}}.com/tea            -> request is sent to the service tea
+    - https://lab2-cafe{{SITE_ID}}.com/redirect       -> client is redirected to www.nginx.com
+    - https://lab2-cafe{{SITE_ID}}.com/return_page    -> custom page Hello World is returned
+    - https://lab2-cafe{{SITE_ID}}.com/proxy          -> requests go to coffee you should see custom headers in the responses
 
 
 
 .. code-block:: bash
 
-        curl {{PATH}} --resolve cafe.example.com:443:{{EXTERNAL_IP_NIC}} --insecure
+        curl {{PATH}} --insecure
 
 
 |

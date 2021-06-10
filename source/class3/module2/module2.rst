@@ -154,8 +154,7 @@ Deploy a Virtual Server for TLS with Content-Based Routing
 |    - route: defines rules for matching client requests to actions like passing a request to an upstream.
 
 
-**REPLACE {{SITE_ID}} in the hostname by your allocated site ID before saving and applying the manifest below in cafe-virtual-server-lab2-ex1.yaml.**
-
+**REPLACE {{SITE_ID}} in the field host by your allocated site ID before saving and applying the manifest below in cafe-virtual-server-lab2-ex1.yaml.**
 
 .. code-block:: yaml
     :emphasize-lines: 8
