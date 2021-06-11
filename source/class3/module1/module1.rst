@@ -1,5 +1,5 @@
-Exercise 1: Exploring the K8S cluster
-####################################################
+TO BE DELETED AFTER TEST Exercise 1: Exploring the K8S cluster
+###############################################################
 
 .. contents:: Contents
     :local:

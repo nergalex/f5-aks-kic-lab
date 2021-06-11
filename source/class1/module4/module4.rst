@@ -25,6 +25,12 @@ Pre-requisites
 Logging into your lab System:
 
 - Copy-paste private SSH key `here <https://raw.githubusercontent.com/nergalex/f5-aks-kic-lab/master/source/class2/module1/_files/jumphost.key>`_ to a local file ``jumphost.key``
+- On Mac/Linux, modify the rights of your local file ``jumphost.key`` with the command: below:
+
+.. code-block:: bash
+
+    chmod 600 jumphost.key
+
 - Ask F5 for your ``{{site_ID}}`` and your Azure ``{{region}}``
 - For each command line during Labs, use top right icon to copy it. Replace any variable noted as ``{{variable}}``
 - Open an SSH session to ``jumphost-aksdistrict{{site_ID}}.{{region}}.cloudapp.azure.com``. Log in as user ``cyber`` authenticated with private key ``jumphost.key``.
