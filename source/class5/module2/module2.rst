@@ -16,7 +16,7 @@ Web UI access
 Exercise 1: Flow 2 | Client >> Frontend
 ============================================
 
-- Using your web browser, try to access to ``https://sentence{{site_ID}}.f5app.dev``
+- Using your web browser, try to access to ``https://sentence-front{{site_ID}}.f5app.dev``
 
 *output:*
 
@@ -25,7 +25,7 @@ Exercise 1: Flow 2 | Client >> Frontend
    :width: 600
    :alt: Sentence Web
 
-- Check that web frontend access is well protected by NGINX App Protect: ``https://sentence{{site_ID}}.f5app.dev?<script>``
+- Check that web frontend access is well protected by NGINX App Protect: ``https://sentence-front{{site_ID}}.f5app.dev?<script>``
 
 *output:*
 
