@@ -13,7 +13,7 @@ Objectives
     - if path is */redirect* then the action is **redirect** to http://www.nginx.com.
     - if path is */proxy* then the action is **proxy** to add/rewrite/ignore some headers.
     - if path is */return_page* then the action is **return** to reply with a custom web page.
-    - in each action, some variables could be used like: $request_uri, $request_method, $request_body, $scheme, $host, etc (cf `here https://docs.nginx.com/nginx-ingress-controller/configuration/virtualserver-and-virtualserverroute-resources/#action-return>`_ for a complete list of available variables).
+    - in each action, some variables could be used like: $request_uri, $request_method, $request_body, $scheme, $host, etc (cf `here <https://docs.nginx.com/nginx-ingress-controller/configuration/virtualserver-and-virtualserverroute-resources/#action-return>`_ for a complete list of available variables).
 |
 
 
@@ -136,16 +136,16 @@ Step 4: Test the setup
 **Capture The Flag**
 
     **2.1 What is the name of the action which forwards requests to an upstream?**
-
+    | Tips: `here <https://docs.nginx.com/nginx-ingress-controller/configuration/virtualserver-and-virtualserverroute-resources/#action>`_
 
     **2.2 What is the name of the action which replies a preconfigured response?**
-
+    | Tips: `here <https://docs.nginx.com/nginx-ingress-controller/configuration/virtualserver-and-virtualserverroute-resources/#action>`_
 
     **2.3 What is the name of the action which passes requests to an upstream with the ability to modify the request/response (for example, rewrite the URI or modify the headers)?**
-
+    | Tips: `here <https://docs.nginx.com/nginx-ingress-controller/configuration/virtualserver-and-virtualserverroute-resources/#action>`_
 
     **2.4 What is the name of the action which redirects requests to a provided URL?**
-
+    | Tips: `here <https://docs.nginx.com/nginx-ingress-controller/configuration/virtualserver-and-virtualserverroute-resources/#action>`_
 
 
 
