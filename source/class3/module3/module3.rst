@@ -80,30 +80,36 @@ Step 1: Create a new manifest for the 80/20 traffic splitting
 .. code-block:: yaml
     :emphasize-lines: 8
 
-        apiVersion: k8s.nginx.org/v1
-        kind: VirtualServer
-        metadata:
-          name: app-cafe
-          namespace: lab2-cafeapp
-        spec:
-          ingressClassName: nginx-external
-          host: lab2-cafe{{SITE_ID}}.com
-          upstreams:
-          - name: coffee-v1
-            service: coffee-v1-svc
-            port: 80
-          - name: coffee-v2
-            service: coffee-v2-svc
-            port: 80
-          routes:
-          - path: /coffee
-            splits:
-            - weight: 80
-              action:
-                pass: coffee-v1
-            - weight: 20
-              action:
-                pass: coffee-v2
+    apiVersion: k8s.nginx.org/v1
+    kind: VirtualServer
+    metadata:
+      name: cafeapp
+      namespace: lab2-cafeapp
+    spec:
+      ingressClassName: nginx-external
+      host: cafeapp{{SITE_ID}}.f5app.dev
+      tls:
+        secret: cafeapp-secret-tls
+        redirect:
+          enable: true
+          code: 301
+          basedOn: scheme
+      upstreams:
+      - name: coffee-v1
+        service: coffee-v1
+        port: 80
+      - name: coffee-v2
+        service: coffee-v2
+        port: 80
+      routes:
+      - path: /coffee
+        splits:
+        - weight: 80
+          action:
+            pass: coffee-v1
+        - weight: 20
+          action:
+            pass: coffee-v2
 
 
 
@@ -121,7 +127,7 @@ Step 2: Deploy the new manifest
 
 .. code-block:: bash
 
-        virtualserver.k8s.nginx.org/app-cafe configured
+        virtualserver.k8s.nginx.org/cafeapp configured
 
 
 Step 3: Check the status of the VirtualServer Resource
@@ -131,7 +137,7 @@ Step 3: Check the status of the VirtualServer Resource
 
 .. code-block:: bash
 
-    kubectl describe virtualserver app-cafe -n lab2-cafeapp
+    kubectl describe virtualserver cafeapp -n lab2-cafeapp
 
 
  *output*:
@@ -152,7 +158,7 @@ Step 4: Test the setup
 
 .. code-block:: bash
 
-        curl http://lab2-cafe{{SITE_ID}}.com/coffee
+        curl https://cafeapp{{SITE_ID}}.f5app.dev/coffee
 
 
 - Check that you have around:
@@ -160,7 +166,6 @@ Step 4: Test the setup
     - 2 connections to Server name: coffee-v2
 
 
-|
 |
 |
 **Capture The Flag**

@@ -163,30 +163,34 @@ Deploy a Virtual Server for TLS with Content-Based Routing
 .. code-block:: yaml
     :emphasize-lines: 8
 
-        apiVersion: k8s.nginx.org/v1
-        kind: VirtualServer
-        metadata:
-          name: cafeapp
-          namespace: lab2-cafeapp
-        spec:
-          ingressClassName: nginx-external
-          host: cafeapp{{SITE_ID}}.com
-          tls:
-            secret: cafeapp-secret-tls
-          upstreams:
-          - name: tea
-            service: tea
-            port: 80
-          - name: coffee
-            service: coffee
-            port: 80
-          routes:
-          - path: /tea
-            action:
-              pass: tea
-          - path: /coffee
-            action:
-              pass: coffee
+    apiVersion: k8s.nginx.org/v1
+    kind: VirtualServer
+    metadata:
+      name: cafeapp
+      namespace: lab2-cafeapp
+    spec:
+      ingressClassName: nginx-external
+      host: cafeapp{{SITE_ID}}.f5app.dev
+      tls:
+        secret: cafeapp-secret-tls
+        redirect:
+          enable: true
+          code: 301
+          basedOn: scheme
+      upstreams:
+      - name: tea
+        service: tea
+        port: 80
+      - name: coffee
+        service: coffee
+        port: 80
+      routes:
+      - path: /tea
+        action:
+          pass: tea
+      - path: /coffee
+        action:
+          pass: coffee
 
 
 - step 2: Deploy the manifest:
@@ -224,7 +228,7 @@ Test the setup
 
 .. code-block:: bash
 
-        curl https://cafeapp{{SITE_ID}}.com/coffee --insecure
+        curl https://cafeapp{{SITE_ID}}.f5app.dev/coffee --insecure
 
 
 *output*:
@@ -242,7 +246,7 @@ Test the setup
 
 .. code-block:: bash
 
-        curl https://cafeapp{{SITE_ID}}.com/tea --insecure
+        curl https://cafeapp{{SITE_ID}}.f5app.dev/tea --insecure
 
 
 
@@ -261,7 +265,7 @@ Test the setup
 
 .. code-block:: bash
 
-        curl https://cafeapp{{SITE_ID}}.com/
+        curl https://cafeapp{{SITE_ID}}.f5app.dev/
 
 
 
