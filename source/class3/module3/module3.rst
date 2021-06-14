@@ -140,7 +140,7 @@ Step 3: Check the status of the VirtualServer Resource
     kubectl describe virtualserver cafeapp -n lab2-cafeapp
 
 
- *output*:
+*output*:
 
 .. code-block:: bash
 
