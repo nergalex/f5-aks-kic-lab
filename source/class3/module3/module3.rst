@@ -18,7 +18,7 @@ Description of the Environment for the Exercise
 Objectives
 *******************************
 
-- Deploy the setup below by using the field **splits** available in the custom resource **VirtualServer**
+- Deploy the setup below by using the field **splits** available in the CRD **VirtualServer**
     - Pass 80% of requests to the coffee-v1
     - Pass the remaining 20% to coffee-v2
 
@@ -148,7 +148,7 @@ Step 4: Test the setup
 **************************
 
 - Send 10 connections with curl.
-- REPLACE {{SITE_ID}} by your allocated site ID in the curl command below.
+- REPLACE {{SITE_ID}} by your allocated SITE ID in the curl command below.
 
 .. code-block:: bash
 
@@ -165,7 +165,8 @@ Step 4: Test the setup
 |
 **Capture The Flag**
 
-    **2d.1 What is the name of the field (in the specification of the VirtualServer CRD) which is used to setup canary or A/B testing?**
+    **3.1 What is the name of the field (in the specification of the VirtualServer CRD) which is used to setup canary or A/B testing?**
+    | Tips: `here <https://docs.nginx.com/nginx-ingress-controller/configuration/virtualserver-and-virtualserverroute-resources/#split>`_
 
-
-    **2d.2 What is the name of the field which allow to define a percentage of traffic as part of the splits configuration?**
+    **3.2 What is the name of the field which allow to define a percentage of traffic as part of the splits configuration?**
+    | Tips: `here <https://docs.nginx.com/nginx-ingress-controller/configuration/virtualserver-and-virtualserverroute-resources/#split>`_
