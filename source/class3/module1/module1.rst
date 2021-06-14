@@ -50,36 +50,41 @@ Check the Environment is up and running
 *output:*
 
 .. code-block:: bash
-    :emphasize-lines: 3
+    :emphasize-lines: 10
 
         NAME                          STATUS   AGE
-        arcadia                       Active   2d3h
-        lab2-cafeapp                  Active   13s
-        default                       Active   2d7h
-        external-ingress-controller   Active   2d6h
-        internal-ingress-controller   Active   2d6h
-        kube-node-lease               Active   2d7h
-        kube-public                   Active   2d7h
-        kube-system                   Active   2d7h
+        debug                         Active   30d
+        default                       Active   39d
+        external-ingress-controller   Active   39d
+        infra-kibana                  Active   39d
+        kube-node-lease               Active   39d
+        kube-public                   Active   39d
+        kube-system                   Active   39d
+        lab1-arcadia                  Active   36d
+        lab2-cafeapp                  Active   12h
+        lab3-cafe                     Active   27d
+        lab4-sentence-api             Active   26d
+        lab4-sentence-front           Active   26d
 
 
-- Step2: You should have **3 running pods** in the namespace lab2-cafeapp (2 pods for the service coffee  and 1 Pod for service tea):
+- Step2: You should have **4 running pods** in the namespace lab2-cafeapp (2 pods for the service coffee and 2 Pods for service tea):
 
 *input:*
 
 .. code-block:: bash
 
-        kubectl get pods -n lab2-cafeapp
+        kubectl get pods -n lab2-cafeapp | grep v1
 
 
 *output:*
 
 .. code-block:: bash
 
-        NAME                      READY   STATUS    RESTARTS   AGE
-        coffee-6f4b79b975-pxjxp   1/1     Running   0          21s
-        coffee-6f4b79b975-xpfvr   1/1     Running   0          21s
-        tea-6fb46d899f-j2mqs      1/1     Running   0          21s
+        NAME                         READY   STATUS    RESTARTS   AGE
+        coffee-v1-6f4b79b975-pxjxp   1/1     Running   0          21s
+        coffee-v1-6f4b79b975-xpfvr   1/1     Running   0          21s
+        tea-v1-6fb46d899f-j2mqs      1/1     Running   0          21s
+        tea-v1-6fb46d899f-df5ge      1/1     Running   0          21s
 
 
 - Step3: You should have the services tea-svc and coffee-svc deployed:

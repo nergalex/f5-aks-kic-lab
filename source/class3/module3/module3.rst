@@ -8,19 +8,19 @@ Exercise 3: Canary or A/B Testing
 Description of the Environment for the Exercise
 ***********************************************************
 
-- A new version of the application cafe has been deployed.
-- That application has been deployed into the namespace cafe-ns.
-- That application has two versions of the service coffee-svc:
-    - service **coffee-v1-svc**
-    - service **coffee-v2-svc**
+- A new version of the application cafeapp has been deployed.
+- That application has been deployed into the namespace lab2-cafeapp.
+- That application has two versions of the service coffee:
+    - service **coffee-v1**
+    - service **coffee-v2**
 
 
 Objectives
 *******************************
 
 - Deploy the setup below by using the field **splits** available in the custom resource **VirtualServer**
-    - Pass 80% of requests to the coffee-v1-svc
-    - Pass the remaining 20% to coffee-v2-svc
+    - Pass 80% of requests to the coffee-v1
+    - Pass the remaining 20% to coffee-v2
 
 
 
@@ -33,7 +33,7 @@ Check the Environment is up and running
 
 .. code-block:: bash
 
-        kubectl get pods -n cafe-ns
+        kubectl get pods -n lab2-cafeapp
 
 
 *output*:
@@ -41,33 +41,32 @@ Check the Environment is up and running
 .. code-block:: bash
     :emphasize-lines: 4,5
 
-        NAME                         READY   STATUS    RESTARTS   AGE
-        coffee-6f4b79b975-4gqzg      1/1     Running   0          140m
-        coffee-6f4b79b975-5vmrd      1/1     Running   0          140m
-        coffee-v1-75869cf7ff-4jxc2   1/1     Running   0          13m
-        coffee-v2-67499ff985-7h88c   1/1     Running   0          13m
-        tea-6fb46d899f-k2sfc         1/1     Running   0          140m
+        NAME                            READY   STATUS    RESTARTS   AGE
+        coffee-v1-6f4b79b975-4gqzg      1/1     Running   0          140m
+        coffee-v1-6f4b79b975-5vmrd      1/1     Running   0          140m
+        coffee-v2-75869cf7ff-4jxc2      1/1     Running   0          140m
+        coffee-v2-67499ff985-7h88c      1/1     Running   0          140m
+        tea-v1-6fb46d899f-k2sfc         1/1     Running   0          140m
+        tea-v1-6fb46d899f-df5ge         1/1     Running   0          140m
 
-
-- Check the services coffee-v1-svc and coffee-v2-svc are correctly deployed:
+- Check the services coffee-v1 and coffee-v2 are correctly deployed:
 
 *input*:
 
 .. code-block:: bash
 
-        kubectl get services -n cafe-ns
+        kubectl get services -n lab2-cafeapp
 
 
 *output*:
 
 .. code-block:: bash
-    :emphasize-lines: 3,4
+    :emphasize-lines: 2,3
 
         NAME            TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE
-        coffee-svc      ClusterIP   10.200.0.100   <none>        80/TCP    63m
-        coffee-v1-svc   ClusterIP   10.200.0.32    <none>        80/TCP    9m57s
-        coffee-v2-svc   ClusterIP   10.200.0.76    <none>        80/TCP    9m56s
-        tea-svc         ClusterIP   10.200.0.51    <none>        80/TCP    63m
+        coffee-v1       ClusterIP   10.200.0.100   <none>        80/TCP    63m
+        coffee-v2       ClusterIP   10.200.0.32    <none>        80/TCP    9m57s
+        tea-v1          ClusterIP   10.200.0.51    <none>        80/TCP    63m
 
 
 
@@ -85,7 +84,7 @@ Step 1: Create a new manifest for the 80/20 traffic splitting
         kind: VirtualServer
         metadata:
           name: app-cafe
-          namespace: cafe-ns
+          namespace: lab2-cafeapp
         spec:
           ingressClassName: nginx-external
           host: lab2-cafe{{SITE_ID}}.com
@@ -132,7 +131,7 @@ Step 3: Check the status of the VirtualServer Resource
 
 .. code-block:: bash
 
-    kubectl describe virtualserver app-cafe -n cafe-ns
+    kubectl describe virtualserver app-cafe -n lab2-cafeapp
 
 
  *output*:
@@ -142,7 +141,7 @@ Step 3: Check the status of the VirtualServer Resource
         Events:
           Type    Reason          Age   From                      Message
           ----    ------          ----  ----                      -------
-          Normal  AddedOrUpdated  5s    nginx-ingress-controller  Configuration for cafe-ns/app-cafe was added or updated
+          Normal  AddedOrUpdated  5s    nginx-ingress-controller  Configuration for lab2-cafeapp/app-cafe was added or updated
 
 
 Step 4: Test the setup
