@@ -13,7 +13,7 @@ Objectives
     - if path is */redirect* then the action is **redirect** to http://www.nginx.com.
     - if path is */proxy* then the action is **proxy** to add/rewrite/ignore some headers.
     - if path is */return_page* then the action is **return** to reply with a custom web page.
-    - in each action, variables could be used like: $request_uri, $request_method, $request_body, $scheme, $host, $request_time, $request_length, $connection, $remote_addr, $remote_port, $ssl_cipher, $ssl_client_cert, etc
+    - in each action, some variables could be used like: $request_uri, $request_method, $request_body, $scheme, $host, etc (cf `here https://docs.nginx.com/nginx-ingress-controller/configuration/virtualserver-and-virtualserverroute-resources/#action-return>`_ for a complete list of available variables).
 |
 
 
@@ -29,19 +29,19 @@ Step 1: Create a new manifest for the deployment
         apiVersion: k8s.nginx.org/v1
         kind: VirtualServer
         metadata:
-          name: app-cafe
-          namespace: cafe-ns
+          name: cafeapp
+          namespace: lab2-cafeapp
         spec:
           ingressClassName: nginx-external
-          host: lab2-cafe{{SITE_ID}}.com
+          host: cafeapp{{SITE_ID}}.com
           tls:
-            secret: cafe-secret
+            secret: cafeapp-secret-tls
           upstreams:
           - name: tea
-            service: tea-svc
+            service: tea
             port: 80
           - name: coffee
-            service: coffee-svc
+            service: coffee
             port: 80
           routes:
           - path: /tea
@@ -101,7 +101,7 @@ Step 2: Deploy the manifest
 
 .. code-block:: bash
 
-        virtualserver.k8s.nginx.org/app-cafe configured
+        virtualserver.k8s.nginx.org/cafeapp configured
 
 
 Step 3: Check the compilation status of the VirtualServer
@@ -109,7 +109,7 @@ Step 3: Check the compilation status of the VirtualServer
 
 .. code-block:: bash
 
-        kubectl describe virtualserver app-cafe -n cafe-ns
+        kubectl describe virtualserver cafeapp -n lab2-cafeapp
 
 
 Step 4: Test the setup
@@ -118,34 +118,33 @@ Step 4: Test the setup
 - Test with the curl command below.
 - REPLACE {{SITE_ID}} in the field host by your allocated site ID.
 - Replace {{PATH}} with:
-    - https://lab2-cafe{{SITE_ID}}.com/coffee         -> request is sent to the service coffee
-    - https://lab2-cafe{{SITE_ID}}.com/tea            -> request is sent to the service tea
-    - https://lab2-cafe{{SITE_ID}}.com/redirect       -> client is redirected to www.nginx.com
-    - https://lab2-cafe{{SITE_ID}}.com/return_page    -> custom page Hello World is returned
-    - https://lab2-cafe{{SITE_ID}}.com/proxy          -> requests go to coffee you should see custom headers in the responses
+    - https://cafeapp{{SITE_ID}}.com/coffee         -> request is sent to the service coffee
+    - https://cafeapp{{SITE_ID}}.com/tea            -> request is sent to the service tea
+    - https://cafeapp{{SITE_ID}}.com/redirect       -> client is redirected to www.nginx.com
+    - https://cafeapp{{SITE_ID}}.com/return_page    -> custom page Hello World is returned
+    - https://cafeapp{{SITE_ID}}.com/proxy          -> requests go to coffee you should see custom headers in the responses
 
 
 
 .. code-block:: bash
 
-        curl {{PATH}} --insecure
+        curl {{PATH}}
 
 
-|
 |
 |
 **Capture The Flag**
 
-    **2c.1 What is the name of the action which forwards requests to an upstream?**
+    **2.1 What is the name of the action which forwards requests to an upstream?**
 
 
-    **2c.2 What is the name of the action which replies a preconfigured response?**
+    **2.2 What is the name of the action which replies a preconfigured response?**
 
 
-    **2c.3 What is the name of the action which passes requests to an upstream with the ability to modify the request/response (for example, rewrite the URI or modify the headers)?**
+    **2.3 What is the name of the action which passes requests to an upstream with the ability to modify the request/response (for example, rewrite the URI or modify the headers)?**
 
 
-    **2c.4 What is the name of the action which redirects requests to a provided URL?**
+    **2.4 What is the name of the action which redirects requests to a provided URL?**
 
 
 

@@ -256,7 +256,7 @@ Test the setup
 
 .. code-block:: bash
 
-        curl https://cafeapp{{SITE_ID}}.com/ --insecure
+        curl https://cafeapp{{SITE_ID}}.com/
 
 
 
