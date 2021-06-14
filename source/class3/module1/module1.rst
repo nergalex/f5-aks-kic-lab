@@ -1,156 +1,291 @@
-TO BE DELETED AFTER TEST Exercise 1: Exploring the K8S cluster
-###############################################################
+Exercise 1: Basic Content-Based Routing
+#############################################################
 
 .. contents:: Contents
     :local:
     :depth: 1
 
 
+Description of the Environment for the Exercise
+***********************************************************
 
-Step 1: Login to your attributed K8S Cluster
-*********************************************************
+- For that use case, the **application named cafe** has been deployed
+- The application cafe is composed of **2 services**: **cofee-svc** and **tea-svc**
+- The application has been deployed in the **NameSpace lab2-cafeapp**
+- For TLS, a certificate and keys have been deployed into the namespace lab2-cafeapp under the name of **cafeapp-secret-tls**
+- The Custom Resource Definitions (CRD) **VirtualServer** and **VirtualServerRoute** have been installed
 
-Follow `this link <https://f5-k8s-ctfd.docs.emea.f5se.com/en/latest/class2/module1/module1.html#exercise-1-jumphost>`_ to log into your lab System
+.. note::
+    | The **VirtualServer** and **VirtualServerRoute** resources are new resources for load balancing configuration, introduced in release 1.5 as an alternative to the Ingress resource.
+    | These new CRD enable use cases not supported with the Ingress resource, such as traffic splitting and advanced content-based routing.
+    |
 
 
 
-Step 2: Check the installed CRDs
-*********************************************************
+Objectives
+***********************************************************
+
+- Use the new resource **VirtualServer** to deploy the setup below:
+    - listens for hostname cafe.example.com
+    - TLS activated and uses a specified cert and key from a K8S secret resource
+    - request for /tea are sent to service tea
+    - request for /coffee are sent to service coffee
+
+
+
+
+Check the Environment is up and running
+*******************************************************
+
+- Step 1: Check namespace **lab2-cafeapp** has been deployed and is **Active**:
+
+
+*input:*
 
 .. code-block:: bash
 
-    kubectl get crds
+        kubectl get namespaces
+
+
+*output:*
+
+.. code-block:: bash
+    :emphasize-lines: 3
+
+        NAME                          STATUS   AGE
+        arcadia                       Active   2d3h
+        lab2-cafeapp                  Active   13s
+        default                       Active   2d7h
+        external-ingress-controller   Active   2d6h
+        internal-ingress-controller   Active   2d6h
+        kube-node-lease               Active   2d7h
+        kube-public                   Active   2d7h
+        kube-system                   Active   2d7h
+
+
+- Step2: You should have **3 running pods** in the namespace lab2-cafeapp (2 pods for the service coffee  and 1 Pod for service tea):
+
+*input:*
+
+.. code-block:: bash
+
+        kubectl get pods -n lab2-cafeapp
+
+
+*output:*
+
+.. code-block:: bash
+
+        NAME                      READY   STATUS    RESTARTS   AGE
+        coffee-6f4b79b975-pxjxp   1/1     Running   0          21s
+        coffee-6f4b79b975-xpfvr   1/1     Running   0          21s
+        tea-6fb46d899f-j2mqs      1/1     Running   0          21s
+
+
+- Step3: You should have the services tea-svc and coffee-svc deployed:
+
+*input:*
+
+.. code-block:: bash
+
+        kubectl get services -n lab2-cafeapp
+
+
+*output:*
+
+.. code-block:: bash
+
+        NAME         TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
+        coffee       ClusterIP   10.200.0.91   <none>        80/TCP    16m
+        tea          ClusterIP   10.200.0.88   <none>        80/TCP    16m
+
+
+
+- Step 4: Verify a certificate and keys have been deployed into the namespace lab2-cafeapp
+
+*input*:
+
+.. code-block:: bash
+
+        kubectl describe secret cafeapp-secret-tls -n lab2-cafeapp
+
+
+*output:*
+
+.. code-block:: bash
+
+        Name:         cafeapp-secret-tls
+        Namespace:    lab2-cafeapp
+        Labels:       <none>
+        Annotations:  <none>
+
+        Type:  kubernetes.io/tls
+
+        Data
+        ====
+        tls.crt:  1164 bytes
+        tls.key:  1675 bytes
+
+
+Deploy a Virtual Server for TLS with Content-Based Routing
+*************************************************************************
+
+- Step 1: Copy/Paste the manifest below into a new file named **cafe-virtual-server-lab2-ex1.yaml**.
+
+| That manifest uses the CRD **VirtualServer**.
+|
+| The deployment configure the **external NGINX+ Ingress Controller** via the usage of the Ingress Class Name **nginx-external**.
+|
+| For that first deployment, the setup is very simple :
+|
+|    - listens for hostname cafe.example.com
+|    - TLS is activated and use the cert and key from cafeapp-secret-tls
+|    - Simple Path Routing is done :
+|        - request for /tea are sent to service tea
+|        - request for /coffee are sent to service coffee
+|
+| A lot of features are available via the utilisation of the CRD *VirtualServer*.
+|
+| The list is quite long and is available in the `on-line manual <https://docs.nginx.com/nginx-ingress-controller/installation/building-ingress-controller-image/>`_. Some of those advanced features will be used later in the workshop.
+|
+| For this first deployment, we're going to use the specifications below:
+|    - tls: allows to attach a secret with a TLS certificate and key. The secret must belong to the same namespace as the VirtualServer.
+|    - route: defines rules for matching client requests to actions like passing a request to an upstream.
+
+
+**REPLACE {{SITE_ID}} in the field host by your allocated site ID before saving and applying the manifest below in cafe-virtual-server-lab2-ex1.yaml.**
+
+.. code-block:: yaml
+    :emphasize-lines: 8
+
+        apiVersion: k8s.nginx.org/v1
+        kind: VirtualServer
+        metadata:
+          name: cafeapp
+          namespace: lab2-cafeapp
+        spec:
+          ingressClassName: nginx-external
+          host: cafeapp{{SITE_ID}}.com
+          tls:
+            secret: cafeapp-secret-tls
+          upstreams:
+          - name: tea
+            service: tea
+            port: 80
+          - name: coffee
+            service: coffee
+            port: 80
+          routes:
+          - path: /tea
+            action:
+              pass: tea
+          - path: /coffee
+            action:
+              pass: coffee
+
+
+- step 2: Deploy the manifest:
+
+*input*:
+
+.. code-block:: bash
+
+        kubectl apply -f cafe-virtual-server-lab2-ex1.yaml
+
+*output*:
+
+.. code-block:: bash
+
+        virtualserver.k8s.nginx.org/cafeapp configured
+
+
+- step 3: Check the compilation status of the VirtualServer with the command below:
+
+*input*:
+
+.. code-block:: bash
+
+        kubectl describe virtualserver cafeapp -n lab2-cafeapp
+
+
+Test the setup
+*************************************************************
+
+- Run the curl command below.
+
+- Replace {{SITE_ID}} by your allocated site ID.
+
+*input*:
+
+.. code-block:: bash
+
+        curl https://cafeapp{{SITE_ID}}.com/coffee --insecure
 
 
 *output*:
 
 .. code-block:: bash
 
-    NAME                                 CREATED AT
-    aplogconfs.appprotect.f5.com         2021-03-08T10:00:03Z
-    appolicies.appprotect.f5.com         2021-03-08T10:00:03Z
-    apusersigs.appprotect.f5.com         2021-03-08T10:00:03Z
-    globalconfigurations.k8s.nginx.org   2021-03-08T10:00:03Z
-    policies.k8s.nginx.org               2021-03-08T10:00:03Z
-    transportservers.k8s.nginx.org       2021-03-08T10:00:03Z
-    virtualserverroutes.k8s.nginx.org    2021-03-08T10:00:03Z
-    virtualservers.k8s.nginx.org         2021-03-08T10:00:04Z
-
-.. note::
-    | The **VirtualServer** and **VirtualServerRoute** resources are new load balancing configuration, introduced in release 1.5 as an alternative to the Ingress resource.
-    | The resources enable use cases not supported with the Ingress resource, such as traffic splitting and advanced content-based routing.
-    | The resources are implemented as Custom Resource Definitions.
-    | The VirtualServer Custom Resource will be used in the labs 2.
-    |
-    |
+        Server address: 10.22.1.55:8080
+        Server name: coffee-6f4b79b975-5vmrd
+        Date: 05/May/2021:14:01:43 +0000
+        URI: /coffee
+        Request ID: 197d3c08b40fea8ba4428ab7d53440de
 
 
-Step 3: Check the NameSpaces of the cluster
-*********************************************************
+*input*:
 
 .. code-block:: bash
 
-        kubectl get ns
-
-*output:*
-
-.. code-block:: bash
-
-        NAME                          STATUS   AGE
-        arcadia                       Active   30d
-        default                       Active   30d
-        external-ingress-controller   Active   30d
-        internal-ingress-controller   Active   30d
-        kube-node-lease               Active   30d
-        kube-public                   Active   30d
-        kube-system                   Active   30d
-
-.. note::
-    | The namespace of interest for the Labs 2 is **external-ingress-controller**.
-    | That namespace includes the NGINX Ingress Controller which will be used during the labs.
-    | Some new namespaces will be created later during the labs.
-    | The namespace arcadia will be used during the lab 3 WAF.
-    |
-    |
+        curl https://cafeapp{{SITE_ID}}.com/tea --insecure
 
 
-Step 4: Check the pods in the NameSpace used for the NIC
-*********************************************************
+
+*output*:
 
 .. code-block:: bash
 
-        kubectl get pods -n external-ingress-controller
-
-*output:*
-
-.. code-block:: bash
-
-        NAME                                               READY   STATUS    RESTARTS   AGE
-        nap-external-ingress-controller-54db45d656-fg4tq   1/1     Running   0          30d
+        Server address: 10.22.1.31:8080
+        Server name: tea-6fb46d899f-k2sfc
+        Date: 05/May/2021:14:01:57 +0000
+        URI: /tea
+        Request ID: a7874c6a4389b72e75f608ce9ed0075b
 
 
-
-Step 5: Check the Ingress Class Name attached to the NIC
-*********************************************************
+*input*:
 
 .. code-block:: bash
 
-        kubectl describe pod nap-external-ingress-controller-54db45d656-fg4tq -n external-ingress-controller
-
-*output:*
-
-.. code-block:: bash
-    :emphasize-lines: 14
-
-        Name:         nap-external-ingress-controller-54db45d656-fg4tq
-        Namespace:    external-ingress-controller
-        .......
-        Containers:
-          external-nginx-plus-ingress-nginx-ingress:
-            .......
-            Ports:         80/TCP, 443/TCP, 9113/TCP, 8081/TCP
-            Host Ports:    0/TCP, 0/TCP, 0/TCP, 0/TCP
-            Args:
-              -nginx-plus=true
-              -nginx-reload-timeout=0
-              -enable-app-protect=true
-              .......
-              -ingress-class=nginx-external
-
-.. note::
-    | The Ingress Class Name **nginx-external**  will be used as a reference into the deployment of the manifests.
-    | It allows to indicate which Ingress Controller must be used for a specific deployment.
-
-
-Step 6: Check the Public IP address attached to the NIC
-*********************************************************
-
-.. code-block:: bash
-
-    kubectl get services -n external-ingress-controller
-
-*output:*
-
-.. code-block:: bash
-
-        NAME                         TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)                      AGE
-        elb-nap-ingress-controller   LoadBalancer   10.200.0.15   52.167.14.0   80:31613/TCP,443:31094/TCP   30d
+        curl https://cafeapp{{SITE_ID}}.com/ --insecure
 
 
 
-.. note::
-        | **Notice the EXTERNAL-IP address and write it somewhere.**
-        | **It will be used later in our labs.**
+*output*:
 
-|
+.. code-block:: html
+
+        <html>
+        <head><title>404 Not Found</title></head>
+        <body>
+        <center><h1>404 Not Found</h1></center>
+        <hr><center>nginx/1.19.5</center>
+        </body>
+        </html>
+
+
 |
 |
 **Capture The Flag**
 
-    **2a.1 What kind of K8S Resource Definition can be used with NGINX+ for simplicity and advanced configuration of load balancing?**
+    **1.1 What kind of K8S Resource Definition can be used with NGINX+ for simplicity and advanced configuration of load balancing?**
+    | Tips: Answer is an acronym in 3 letters
 
+    **1.2 What is the name of the CRD used for Advanced load balancing configuration and used as an alternative to the Ingress resource?**
+    | Tips: `here <https://docs.nginx.com/nginx-ingress-controller/configuration/virtualserver-and-virtualserverroute-resources/#virtualserver-specification>`_
 
-    **2a.2 What is the name of the Custom Resource used for Advanced load balancing configuration and used as an alternative to the Ingress resource?**
+    **1.3 What is the name of the field (in the specification of the VirtualServer CRD) which is used to implement SSL Offloading?**
+    | Tips: `here <https://docs.nginx.com/nginx-ingress-controller/configuration/virtualserver-and-virtualserverroute-resources/#virtualserver-tls>`_
 
-
+    **1.4 What is the name of the field (in the specification of the VirtualServer CRD) which is used to defines a rule of content-based load balancing?**
+    | Tips: `here <https://docs.nginx.com/nginx-ingress-controller/configuration/virtualserver-and-virtualserverroute-resources/#virtualserver-route>`_
 
