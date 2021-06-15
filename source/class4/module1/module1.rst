@@ -35,14 +35,6 @@ Security dashboards are available on Kibana. Mode details `here <https://github.
    :width: 900
    :alt: NAP logs
 
-- Download CA CRT `ca_demo.crt <https://raw.githubusercontent.com/nergalex/f5-aks-kic-lab/master/source/class2/module1/_files/ca_demo.crt>`_
-- Open ``ca_demo.crt`` >> ``Install Certificate...`` >> ``Current user`` >> Place certificate in ``Trusted Root Certification Authorities``
-
-.. image:: ./_pictures/CA_CRT.png
-   :align: center
-   :width: 700
-   :alt: CA CRT
-
 - Using your web browser, try to reach ELK UI ``https://kibana{{site_ID}}.f5app.dev``... Damn it's DOWN!
 - Restart the container using `docker commands <https://docs.docker.com/engine/reference/commandline/docker/>`_
 
@@ -90,7 +82,7 @@ and performs a series of tests to check TLS configuration and supporting protoco
     20.75.112.65:443: OPEN
     TLS is available: True
     Connecting to port 443 using HTTPS
-    Reading HTTP headers for kibana1.f5app.dev
+    Reading HTTP headers for kibana{{site_ID}}.f5app.dev
     Queueing TLS scans (this might take a little while...)
     Looking for HTTP/2
 
@@ -98,7 +90,7 @@ and performs a series of tests to check TLS configuration and supporting protoco
     -------------------------------------
     Total run time: 0:00:03.059256
 
-    Outputting data to ./kibana1.f5app.dev.json
+    Outputting data to ./kibana{{site_ID}}.f5app.dev.json
 
 - View evaluation results
 

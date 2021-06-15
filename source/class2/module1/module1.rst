@@ -65,11 +65,11 @@ Using a simple RESTful JSON interface, it’s very easy to connect these stats t
     NAME                                              READY   STATUS    RESTARTS   AGE
     nap-external-ingress-controller-7576b65b4-ps4ck   1/1     Running   0          8d
 
-- Get a IC POD's IP. Replace ``{{POD_name}}`
+- Get a IC POD's IP. Replace ``{{POD_name}}``
 
 .. code-block:: bash
 
-    kubectl describe pod -n external-ingress-controller ``{{POD_name}}`` | grep IP
+    kubectl describe pod -n external-ingress-controller {{POD_name}} | grep IP
 
 *output*
 
@@ -81,7 +81,7 @@ Using a simple RESTful JSON interface, it’s very easy to connect these stats t
 
 .. code-block:: bash
 
-    $ curl ``{{POD_ip}}``:8080/api/6/nginx/
+    curl {{POD_ip}}:8080/api/6/nginx/
 
 _______________________________________________________________________
 
