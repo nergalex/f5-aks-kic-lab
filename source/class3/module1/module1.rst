@@ -9,7 +9,7 @@ Exercise 1: Basic Content-Based Routing
 Description of the Environment for the Exercise
 ***********************************************************
 
-- For that use case, the **application named cafe** has been deployed
+- For that use case, the **application named cafeapp** has been deployed
 - The application cafe is composed of **2 services**: **cofee-svc** and **tea-svc**
 - The application has been deployed in the **NameSpace lab2-cafeapp**
 - For TLS, a certificate and keys have been deployed into the namespace lab2-cafeapp under the name of **cafeapp-secret-tls**
