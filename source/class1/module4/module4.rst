@@ -25,14 +25,14 @@ Pre-requisites
 
 Logging into your lab System:
 
-- Copy-paste private SSH key `here <https://raw.githubusercontent.com/nergalex/f5-aks-kic-lab/master/source/class2/module1/_files/jumphost.key>`_ to a local file ``jumphost.key``
+- Copy-paste private SSH key `here <https://raw.githubusercontent.com/nergalex/f5-aks-kic-lab/master/source/class1/module4/_files/jumphost.key>`_ to a local file ``jumphost.key``
 - On Mac/Linux, modify the rights of your local file ``jumphost.key`` with the command: below:
 
 .. code-block:: bash
 
     chmod 600 jumphost.key
 
-- On Windows use `SecureCRT <https://www.vandyke.com/cgi-bin/releases.php?product=securecrt>`_ or `Putty <https://www.putty.org/>`_: download `jumphost.ppk <https://raw.githubusercontent.com/nergalex/f5-aks-kic-lab/master/source/class2/module1/_files/jumphost.ppk>`_ for Putty.
+- On Windows use `SecureCRT <https://www.vandyke.com/cgi-bin/releases.php?product=securecrt>`_ or `Putty <https://www.putty.org/>`_: download `jumphost.ppk <https://raw.githubusercontent.com/nergalex/f5-aks-kic-lab/master/source/class1/module4/_files/jumphost.ppk>`_ for Putty.
 - Open an SSH session to ``jumphost-aksdistrict{{site_ID}}.{{region}}.cloudapp.azure.com``. Log in as user ``cyber`` authenticated with private key ``jumphost.key``.
 
 .. code-block:: bash
