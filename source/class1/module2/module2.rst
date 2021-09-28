@@ -17,7 +17,7 @@ NGINX Ingress Controller (NIC) comes in three different implementations:
     #. `NGINX Open Source (OSS) Ingress controller <https://github.com/nginxinc/docker-nginx>`_ maintained by NGINX
     #. `Community Ingress controller <https://kubernetes.github.io/ingress-nginx/>`_ maintained by the Kubernetes community and based on **NGINX Open Source**
 
-Check out this `article <https://github.com/nginxinc/kubernetes-ingress/blob/master/docs/nginx-ingress-controllers.md>`_ for differences between implementations.
+Check out this `article <https://www.nginx.com/blog/guide-to-choosing-ingress-controller-part-1-identify-requirements/>`_ to help you choosing an Ingress Controller.
 
 Why NGINX Plus?
 =========================================
