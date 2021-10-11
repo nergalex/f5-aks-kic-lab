@@ -44,7 +44,7 @@ VirtualServer(Route) aims to improve upon current standards like Ingress:
 
 .. image:: ./_pictures/api-model.png
    :align: center
-   :width: 800
+   :width: 600
    :alt: API gateway model
 
 Why does a role-oriented API matter?¶
