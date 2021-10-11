@@ -37,9 +37,10 @@ as explained by Mark Church (Product Manager at Google) in `this video <https://
 
 NGINX already implements the following design goals drive the `concepts of the Gateway API <https://gateway-api.sigs.k8s.io/>`_ in  `VirtualServer(Route) resources <https://docs.nginx.com/nginx-ingress-controller/configuration/virtualserver-and-virtualserverroute-resources/>`_.
 VirtualServer(Route) aims to improve upon current standards like Ingress:
-- **Role-oriented** - Gateway is composed of API resources which model organizational roles that use and configure Kubernetes service networking.
-- **Expressive** - Gateway API resources support core functionality for things like header-based matching, traffic weighting, and other capabilities that were only possible in Ingress through custom annotations.
-- **Shared Gateways and cross-Namespace support** - They allow the sharing of load balancers and VIPs by permitting independent Route resources to attach to the same Gateway. This allows teams (even across Namespaces) to share infrastructure safely without direct coordination.
+
+    - **Role-oriented** - Gateway is composed of API resources which model organizational roles that use and configure Kubernetes service networking.
+    - **Expressive** - Gateway API resources support core functionality for things like header-based matching, traffic weighting, and other capabilities that were only possible in Ingress through custom annotations.
+    - **Shared Gateways and cross-Namespace support** - They allow the sharing of load balancers and VIPs by permitting independent Route resources to attach to the same Gateway. This allows teams (even across Namespaces) to share infrastructure safely without direct coordination.
 
 .. image:: ./_pictures/api-model.png
    :align: center
