@@ -63,6 +63,8 @@ The following example shows how this works in practice.
 
 Which Ingress Controller?
 **********************************************************
+One great place to start your high‑level feature comparison is `learnk8s <https://learnk8s.io/>`_, which provides a `free comparison table <https://docs.google.com/spreadsheets/d/191WWNpjJ2za6-nbG4ZoUMXMpUK8KlCIosvQB0f-oq3k/>`_ of the Ingress controllers they’ve evaluated.
+
 NGINX Ingress Controller (NIC) comes in three different implementations:
 
     #. `NGINX Plus Ingress Controller <https://www.nginx.com/products/nginx-ingress-controller>`_ maintained by NGINX
