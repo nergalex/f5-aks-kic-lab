@@ -9,6 +9,22 @@ Ingress Controller
 .. contents:: Contents
     :local:
 
+API gateway
+=========================================
+API gateways are a general microservices design pattern.
+An API gateway sits between external clients and the microservices.
+It acts as a reverse proxy, routing requests from clients to microservices.
+It may also perform various cross-cutting tasks such as authentication, SSL termination, Web Application Firewall, anti-DoS and rate-limiting.
+
+In Kubernetes, the functionality of an API gateway is primarily handled by an Ingress controller.
+
+This reference implementation `here <https://github.com/mspnp/microservices-reference-implementation>`_, shown in the picture below, shows a set of best practices for building and running a microservices architecture on Microsoft Azure, using Kubernetes.
+
+.. image:: ./_pictures/aks_ref_architecture.png
+   :align: center
+   :width: 800
+   :alt: AKS ref design
+
 Which one?
 =========================================
 NGINX Ingress Controller (NIC) comes in three different implementations:

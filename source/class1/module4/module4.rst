@@ -45,4 +45,34 @@ Logging into your lab System:
 
     sudo su -
 
+5. Knowledge
+*********************
+The architecture of labs shows `microservices <https://docs.microsoft.com/en-us/azure/architecture/microservices/>`_ application deployed to Azure Kubernetes Service (AKS).
+It uses a basic AKS configuration that can be the starting point for most deployments.
+Participating to this lab assumes basic knowledge of Kubernetes.
 
+Please read `this article <https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/containers/aks-microservices/aks-microservices>`_ that introduce you to infrastructure and DevOps considerations of running a microservices architecture on AKS.
+
+Kubernetes components
+=====================
+
+.. image:: ./_pictures/k8s_cluster.svg
+   :align: center
+   :width: 800
+   :alt: K8S cluster
+
+Container, POD, Service
+=======================
+
+.. image:: ./_pictures/k8s_service.svg
+   :align: center
+   :width: 800
+   :alt: K8S Service
+
+Ingress Service
+=====================
+
+.. image:: ./_pictures/k8s_service.svg
+   :align: center
+   :width: 800
+   :alt: K8S Ingress
