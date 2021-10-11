@@ -10,7 +10,9 @@ Ingress Controller
     :local:
 
 API gateway
-=========================================
+**********************************************************
+Infrastructure
+=====================================
 API gateways are a general microservices design pattern.
 An API gateway sits between external clients and the microservices.
 It acts as a reverse proxy, routing requests from clients to microservices.
@@ -25,8 +27,41 @@ This reference implementation `here <https://github.com/mspnp/microservices-refe
    :width: 800
    :alt: AKS ref design
 
-Which one?
-=========================================
+Resource management
+=====================================
+Current standard to configure an API gateway is `Ingress <https://docs.nginx.com/nginx-ingress-controller/configuration/ingress-resources/>`_.
+
+NGINX is part of the Kubernetes Gateway API community,
+adding its leadership and vision to the future of Kubernetes Ingress,
+as explained by Mark Church (Product Manager at Google) in `this video <https://youtu.be/p51b6t5okCI?t=5888>`_.
+
+NGINX already implements the following design goals drive the `concepts of the Gateway API <https://gateway-api.sigs.k8s.io/>`_ in  `VirtualServer(Route) resources <https://docs.nginx.com/nginx-ingress-controller/configuration/virtualserver-and-virtualserverroute-resources/>`_.
+VirtualServer(Route) aims to improve upon current standards like Ingress:
+- **Role-oriented** - Gateway is composed of API resources which model organizational roles that use and configure Kubernetes service networking.
+- **Expressive** - Gateway API resources support core functionality for things like header-based matching, traffic weighting, and other capabilities that were only possible in Ingress through custom annotations.
+- **Shared Gateways and cross-Namespace support** - They allow the sharing of load balancers and VIPs by permitting independent Route resources to attach to the same Gateway. This allows teams (even across Namespaces) to share infrastructure safely without direct coordination.
+
+.. image:: ./_pictures/aks_ref_architecture.png
+   :align: center
+   :width: 800
+   :alt: API gateway model
+
+Why does a role-oriented API matter?¶
+=====================================
+Whether it’s roads, power, data centers, or Kubernetes clusters, infrastructure is built to be shared.
+However, shared infrastructure raises a common challenge - how to provide flexibility to users of the infrastructure while maintaining control by owners of the infrastructure?
+
+VirtualServer(Route) accomplishes this through a role-oriented design for Kubernetes service networking that strikes a balance between distributed flexibility and centralized control.
+It allows shared network infrastructure (hardware load balancers, cloud networking, cluster-hosted proxies etc) to be used by many different and non-coordinating teams, all bound by the **policies** and constraints set by cluster operators.
+The following example shows how this works in practice.
+
+.. image:: ./_pictures/gateway-roles.png
+   :align: center
+   :width: 800
+   :alt: API gateway model
+
+Which Ingress Controller?
+**********************************************************
 NGINX Ingress Controller (NIC) comes in three different implementations:
 
     #. `NGINX Plus Ingress Controller <https://www.nginx.com/products/nginx-ingress-controller>`_ maintained by NGINX
@@ -36,7 +71,7 @@ NGINX Ingress Controller (NIC) comes in three different implementations:
 Check out this `article <https://www.nginx.com/blog/guide-to-choosing-ingress-controller-part-1-identify-requirements/>`_ to help you choosing an Ingress Controller.
 
 Why NGINX Plus?
-=========================================
+**********************************************************
 This workshop enables NGINX Plus Ingress Controller because it provides a robust feature set to secure, strengthen, and scale your containerized apps, including:
 
 Additional features
@@ -133,10 +168,6 @@ The SLAs help customers achieve compliance with regulations, minimizing the risk
 
 An added wrinkle for NGINX Open Source is that many third‑party technologies leverage and embed it in their products.
 The providers of those technologies have their own processes for disclosing and patching software vulnerabilities when they are discovered.
-
-
-
-
 
 
 

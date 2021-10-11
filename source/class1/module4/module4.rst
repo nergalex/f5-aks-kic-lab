@@ -72,7 +72,7 @@ Container, POD, Service
 Ingress Service
 =====================
 
-.. image:: ./_pictures/k8s_service.svg
+.. image:: ./_pictures/k8s_ingress.svg
    :align: center
    :width: 800
    :alt: K8S Ingress
