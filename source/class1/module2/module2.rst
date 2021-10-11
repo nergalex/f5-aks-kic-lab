@@ -41,7 +41,7 @@ VirtualServer(Route) aims to improve upon current standards like Ingress:
 - **Expressive** - Gateway API resources support core functionality for things like header-based matching, traffic weighting, and other capabilities that were only possible in Ingress through custom annotations.
 - **Shared Gateways and cross-Namespace support** - They allow the sharing of load balancers and VIPs by permitting independent Route resources to attach to the same Gateway. This allows teams (even across Namespaces) to share infrastructure safely without direct coordination.
 
-.. image:: ./_pictures/aks_ref_architecture.png
+.. image:: ./_pictures/api-model.png
    :align: center
    :width: 800
    :alt: API gateway model
@@ -58,7 +58,7 @@ The following example shows how this works in practice.
 .. image:: ./_pictures/gateway-roles.png
    :align: center
    :width: 800
-   :alt: API gateway model
+   :alt: API gateway roles
 
 Which Ingress Controller?
 **********************************************************
