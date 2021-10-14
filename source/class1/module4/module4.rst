@@ -55,7 +55,7 @@ Logging into your lab System:
 *********************
 - Donwload Lens `here <https://k8slens.dev/>`_
 - Install and run Lens
-- Add your AKS cluster in Catalog
+- Add your AKS cluster in Catalog by copy-paste the output of ``cat .kube/config`` get in the previous step
 
 .. image:: ./_pictures/Lens_add_cluster.png
    :align: center
@@ -75,7 +75,6 @@ Logging into your lab System:
    :align: center
    :width: 800
    :alt: K8S cluster
-
 
 6. Knowledge
 *********************
