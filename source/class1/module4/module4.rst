@@ -45,7 +45,39 @@ Logging into your lab System:
 
     sudo su -
 
-5. Knowledge
+- Get your kubeconfig:
+
+.. code-block:: bash
+
+    cat .kube/config
+
+5. Lens
+*********************
+- Donwload Lens `here <https://k8slens.dev/>`_
+- Install and run Lens
+- Add your AKS cluster in Catalog
+
+.. image:: ./_pictures/Lens_add_cluster.png
+   :align: center
+   :width: 600
+   :alt: K8S cluster
+
+- Connect to cluster
+
+.. image:: ./_pictures/Lens_connect_to_cluster.png
+   :align: center
+   :width: 500
+   :alt: K8S cluster
+
+- Browse into your cluster
+
+.. image:: ./_pictures/Lens_browse_cluster.png
+   :align: center
+   :width: 800
+   :alt: K8S cluster
+
+
+6. Knowledge
 *********************
 The architecture of labs shows `microservices <https://docs.microsoft.com/en-us/azure/architecture/microservices/>`_ application deployed to Azure Kubernetes Service (AKS).
 It uses a basic AKS configuration that can be the starting point for most deployments.
