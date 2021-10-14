@@ -66,14 +66,14 @@ Logging into your lab System:
 
 .. image:: ./_pictures/Lens_connect_to_cluster.png
    :align: center
-   :width: 700
+   :width: 800
    :alt: K8S cluster
 
 - Browse into your cluster
 
 .. image:: ./_pictures/Lens_browse_cluster.png
    :align: center
-   :width: 1000
+   :width: 1100
    :alt: K8S cluster
 
 6. Knowledge
