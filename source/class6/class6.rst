@@ -5,11 +5,11 @@ This lab describes how to manage centrally a Security distributed across Applica
 
 - **High Resiliency**: WAAP containerized instances are managed across all of your K8S clusters... as well as VM instances
 - **Consistency of Security**: Applications reference WAF policies published in a central catalog
-- **Low Cost**: A simple economic model - based on Application - allows you to project on your budget with certainty
+- **True Forecast Cost**: A simple economic model - based on Application - allows you to project on your budget with certainty
 
 .. image:: ./_pictures/NGINX-Controller.png
    :align: center
-   :width: 900
+   :width: 1100
    :alt: NGINX Controller
 
 .. toctree::
