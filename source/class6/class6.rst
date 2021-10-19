@@ -1,4 +1,4 @@
-lab 4 - Controller
+lab 5 - Controller
 ##############################################################
 
 This lab describes how to manage centrally a Security distributed across Applicatives Spokes or/and hybrid-multi-cloud environment.
@@ -7,7 +7,7 @@ This lab describes how to manage centrally a Security distributed across Applica
 - **Consistency of Security**: Applications reference WAF policies published in a central catalog
 - **Low Cost**: A simple economic model - based on Application - allows you to project on your budget with certainty
 
-.. image:: ./_pictures/NGINX-Controller.svg
+.. image:: ./_pictures/NGINX-Controller.png
    :align: center
    :width: 900
    :alt: NGINX Controller
