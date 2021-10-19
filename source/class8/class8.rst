@@ -1,10 +1,7 @@
-future lab | Application Delivery Network
+future lab | API Management
 ##############################################################
 
-This lab describes how to :
-
-- simplify **internal API** consumption through K8S clusters hosted in multi Cloud Service Providers and On Prem / private Cloud using `VoltMesh <https://www.volterra.io/products/voltmesh>`_
-- publish **API** and PODs closest to consumers with `VoltStack <https://www.volterra.io/products/voltstack>`_.
+This lab describes how to manage all components (API GW, Developer Portal, WAF, Visibility) to publish API with `NGINX Controller <https://www.nginx.com/products/nginx-controller/api-management/>`_ .
 
 .. toctree::
    :maxdepth: 1
