@@ -1,4 +1,4 @@
-lab 2 - Content-Based Routing and Traffic Splitting
+lab 2 - Traffic Management
 ############################################################
 
 .. toctree::
