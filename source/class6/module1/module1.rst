@@ -10,6 +10,7 @@ Architecture
     :local:
     :depth: 1
 
+
 Application design
 *********************************************
 *Sentence* application is a monolithic application that has been elected to be `Refactored <https://www.clouddirect.net/five-rs-of-application-modernisation/>`_.
