@@ -11,17 +11,6 @@ Architecture
     :depth: 1
 
 
-Application design
-*********************************************
-*Sentence* application is a monolithic application that has been elected to be `Refactored <https://www.clouddirect.net/five-rs-of-application-modernisation/>`_.
-
-*Sentence* will serve differently two kinds of edge computing, as shown in the picture above:
-
-    - **traditional Web Browser** that access frontend web servers
-    - **Mobile App and modern Web Browser** that are computing the page rendering on end-user device and make lightweight API calls directly to API micro-services (colors, adjectives...)
-
-Frontend web servers make an API call to a micro-service named "generator" that then make API call to API micro-services (colors, adjectives...)
-
 Distributed points of control managed by One Controller
 ***************************************************************
 Security architect decided to distribute security across all subscriptions owned by each business unit.
@@ -61,30 +50,63 @@ In previous lab, Ingress was an `Ingress Controller <https://kubernetes.io/docs/
 An Ingress watch for specific resource type in one or all NamesSpaces (Ingress, VirtualServer, VirtualServerRoute, Policy...)
 and then dynamically reconfigure itself.
 
-In this lab, Ingress is managed by a remote Controller and configured by Controller.
+In this lab, containerized Ingress instances are managed and configured by remote Controller.
+
+.. image:: ./_pictures/sentence_config_Controller.svg
+   :align: center
+   :width: 900
+   :alt: Controller config
+
 
 Micro Proxy - API GW managed by K8S API
 =============================================
 DevOps are free to use Ingress provided by Infrastructure - Ingress Controller or managed by Controller - in order to configure an API GW.
+Traffic Management, Authentication and Authorization (oAuth OIDC, Rate Limit per API endpoint) can be handled by Controller with "API Management" module,
+it will be the intent of Lab 6.
 
 In this lab, DevOps decided to use a dedicated API GW deployed as an Ingress Controller inside the application's NameSpace ``sentence-api``.
 The picture below shows configuration Kubernetes objects.
-In grey the configuration objects deployed in `lab4 <https://f5-k8s-ctfd.docs.emea.f5se.com/en/latest/class5/module1/module1.html#micro-proxy-api-gw>`_
-
 
 .. image:: ./_pictures/sentence_k8s_config.svg
    :align: center
    :width: 900
    :alt: K8S config
 
-Traffic Management, Authentication and Authorization (oAuth OIDC, Rate Limit per API endpoint) can be handled by Controller with "API Management" module,
-as described in Lab 6.
+In `lab4 <https://f5-k8s-ctfd.docs.emea.f5se.com/en/latest/class5/module1/module1.html#micro-proxy-api-gw>`_,
+related configuration objects in order to publish Application on Edge Proxy *Ingress Controller* were hosted in NameSpaces ``sentence-api`` and ``sentence-api``.
+Because those configuration objects are now upsert on Controller, they are set in grey in the 2 pictures above.
+
+Application design
+*********************************************
+*Sentence* application is a monolithic application that has been elected to be `Refactored <https://www.clouddirect.net/five-rs-of-application-modernisation/>`_.
+
+*Sentence* will serve differently two kinds of edge computing, as shown in the picture above:
+
+    - **traditional Web Browser** that access frontend web servers
+
+.. image:: ./_pictures/sentence-front-flow.svg
+   :align: center
+   :width: 900
+   :alt: Sentence flow - legacy web browser
+
+    Frontend web servers make an API call to a micro-service named "generator" that then make API call to API micro-services (colors, adjectives...)
+
+    - **Mobile App and modern Web Browser** that are computing the page rendering on end-user device and make lightweight API calls directly to API micro-services (colors, adjectives...)
+
+.. image:: ./_pictures/sentence-api-flow.svg
+   :align: center
+   :width: 900
+   :alt: Sentence flow - mobile app and modern web browser
 
 
 
 
 
------------------------------------------------------------------------
+
+
+
+ToDo
+=============================================
 
 - **High Resiliency**: WAAP containerized instances are managed across all of your K8S clusters... as well as VM instances
 - **Consistency of Security**: Applications reference WAF policies published in a central catalog
