@@ -17,7 +17,7 @@ Pre-requisites
 3. Site ID and region
 *********************
 - A dedicated environment is created for each user
-- Ask F5 for your ``{{site_ID}}`` and your ``{{region}}``
+- Ask F5 instructor for your ``{{site_ID}}`` and your ``{{region}}``
 - During Labs, reuse those variables in command lines. For example replace ``{{site_ID}}`` by `1`
 
 4. Jumphost
@@ -76,7 +76,14 @@ Logging into your lab System:
    :width: 1100
    :alt: K8S cluster
 
-6. Knowledge
+5. NGINX Controller
+*********************
+- Share your Public IP address to F5 instructor using `monip.io <https://monip.io/>`_
+- F5 instructor will allow your Public IP
+- Connect to `NGINX Controller <https://nginxctrl1.eastus2.cloudapp.azure.com>`_
+- Login / Password: devops{{ site_ID }}@f5cloudbuilder.dev / NGINXC0ntroller!
+
+7. Knowledge
 *********************
 The architecture of labs shows `microservices <https://docs.microsoft.com/en-us/azure/architecture/microservices/>`_ application deployed to Azure Kubernetes Service (AKS).
 It uses a basic AKS configuration that can be the starting point for most deployments.

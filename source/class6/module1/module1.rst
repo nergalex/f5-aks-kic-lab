@@ -22,7 +22,7 @@ Application design
 
 Frontend web servers make an API call to a micro-service named "generator" that then make API call to API micro-services (colors, adjectives...)
 
-Distributed strategic points of control, One controller
+Distributed points of control managed by One Controller
 ***************************************************************
 Security architect decided to distribute security across all subscriptions owned by each business unit.
 Regarding Modern Application hosted on Kubernetes cluster, security is embedded inside the Kubernetes cluster.
@@ -49,6 +49,36 @@ This design was approved by DevOps and `SRE team <https://sre.google/>`_ because
     - **Observability - SLI**: SRE can consume metrics from *strategic points of control* as `SLIs <https://sre.google/sre-book/service-level-objectives/>`_ on their own tool by forwarding data centrally from Controller
     - **Observability - SLO**: for small Business Unit, SREs do not have their own tool and so they are free to use Analytics engine available to define SLOs + Alerts directly on Controller
 
+Edge Proxy & Micro Proxy design
+*********************************************
+
+Edge Proxy - Ingress managed by Controller
+=============================================
+A Kubernetes `Ingress <https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-controllers>`_ manages external access to the services in a cluster, typically HTTP.
+Ingress provides Traffic Management (load balancing, name-based virtual hosting...) and Security features (SSL offload, WAF, rate limit, oAuth OIDC...)
+
+In previous lab, Ingress was an `Ingress Controller <https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-controllers>`_.
+An Ingress watch for specific resource type in one or all NamesSpaces (Ingress, VirtualServer, VirtualServerRoute, Policy...)
+and then dynamically reconfigure itself.
+
+In this lab, Ingress is managed by a remote Controller and configured by Controller.
+
+Micro Proxy - API GW managed by K8S API
+=============================================
+DevOps are free to use Ingress provided by Infrastructure - Ingress Controller or managed by Controller - in order to configure an API GW.
+
+In this lab, DevOps decided to use a dedicated API GW deployed as an Ingress Controller inside the application's NameSpace ``sentence-api``.
+The picture below shows configuration Kubernetes objects.
+In grey the configuration objects deployed in `lab4 <https://f5-k8s-ctfd.docs.emea.f5se.com/en/latest/class5/module1/module1.html#micro-proxy-api-gw>`_
+
+
+.. image:: ./_pictures/sentence_k8s_config.svg
+   :align: center
+   :width: 900
+   :alt: K8S config
+
+Traffic Management, Authentication and Authorization (oAuth OIDC, Rate Limit per API endpoint) can be handled by Controller with "API Management" module,
+as described in Lab 6.
 
 
 
