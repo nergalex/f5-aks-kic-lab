@@ -82,16 +82,19 @@ Application design
 
 *Sentence* will serve differently two kinds of edge computing, as shown in the picture above:
 
-    - **traditional Web Browser** that access frontend web servers
+- **traditional Web Browser** that access frontend web servers
 
 .. image:: ./_pictures/sentence-front-flow.svg
    :align: center
    :width: 900
    :alt: Sentence flow - legacy web browser
 
-    Frontend web servers make an API call to a micro-service named "generator" that then make API call to API micro-services (colors, adjectives...)
 
-    - **Mobile App and modern Web Browser** that are computing the page rendering on end-user device and make lightweight API calls directly to API micro-services (colors, adjectives...)
+Frontend web servers make an API call to a micro-service named "generator" that then make API call to API micro-services (colors, adjectives...)
+
+
+- **Mobile App and modern Web Browser** that are computing the page rendering on end-user device and make lightweight API calls directly to API micro-services (colors, adjectives...)
+
 
 .. image:: ./_pictures/sentence-api-flow.svg
    :align: center
