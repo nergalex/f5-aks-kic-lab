@@ -76,7 +76,7 @@ Logging into your lab System:
    :width: 1100
    :alt: K8S cluster
 
-5. NGINX Controller
+6. NGINX Controller
 *********************
 - Share your Public IP address to F5 instructor using `monip.io <https://monip.io/>`_
 - F5 instructor will allow your Public IP
