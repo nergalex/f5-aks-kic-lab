@@ -2,18 +2,22 @@ Exercises
 #################################################################
 
 By the end of the lab you will be able to:
+
 - **Life Cycle Management**
+
     - Scale Out / Scale In
     - Upgrade NGINX App Protect version
     - Update the signatures and threats on NGINX App Protect
 
 - **False Positive Management**
+
     - Deploy an application
     - Start with a basic WAF policy and be reactive to handle False Positive
     - Create your standard policy and publish it in catalog
     - Update your standard policy and all attached applications
 
 - **Visibility**
+
     - Detect which Components have not a policy attached to it
 
 .. contents:: Contents
@@ -47,8 +51,10 @@ Exercise 1: Scale Out
 
 - Note the value of Controller's Instance-Group to be registered
 - In NGINX Controller, login as SuperNetOps
+
     - email:  supernetops@f5cloudbuilder.dev
     - password: NGINXC0ntroller!
+
 - User Role of a SuperNetOps allow a user to view, create and delete any instance-groups (FULL authorization)
 - Check if you see POD names of your Kubernetes cluster {{site_ID}}
 
@@ -66,7 +72,7 @@ Exercise 1: Scale Out
 
 - Scroll down to see Services running in this Instance
 
-.. image:: ./_pictures/Controller_instance_show.png
+.. image:: ./_pictures/Controller_instance_show_services.png
    :align: center
    :width: 900
    :alt: Show instance > Services
@@ -75,7 +81,7 @@ Exercise 1: Scale Out
 
 .. image:: ./_pictures/Lens_Deployment_Scale_3.png
    :align: center
-   :width: 400
+   :width: 800
    :alt: Scale Out
 
 - In Controller, see the instance registered in instance-group ``lab_k8s_{{site_ID}}``
@@ -160,6 +166,6 @@ Exercise 3: View all applications as a NetOps
 Exercise 4: Deploy an application
 ============================================
 
-- In NGINX Controller, login as DevOps of your site
+- In NGINX Controller, login as DevOps owner of your site
     - email:  devops{{ site_ID }}@f5cloudbuilder.dev
     - password: NGINXC0ntroller!
