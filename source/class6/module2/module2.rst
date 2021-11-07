@@ -144,6 +144,8 @@ Exercise 2: Upgrade Software and Signatures
 
     ToDo
 
+- View example for VM: https://github.com/nergalex/nap-azure-vmss/blob/master/install_managed_nap.sh
+
 False Positive Management
 *********************************************
 
