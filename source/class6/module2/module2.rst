@@ -49,7 +49,7 @@ Exercise 1: Scale Out
 - In NGINX Controller, login as SuperNetOps
     - email:  supernetops@f5cloudbuilder.dev
     - password: NGINXC0ntroller!
-- User Role of a SuperNetOps allow a user to view all instance-groups
+- User Role of a SuperNetOps allow a user to view, create and delete any instance-groups (FULL authorization)
 - Check if you see POD names of your Kubernetes cluster {{site_ID}}
 
 .. image:: ./_pictures/Controller_instances_show.png
@@ -138,5 +138,28 @@ Exercise 2: Upgrade Software and Signatures
 
     ToDo
 
-Life Cycle Management
+False Positive Management
 *********************************************
+
+Exercise 3: View all applications as a NetOps
+=============================================
+
+- In NGINX Controller, login as SuperNetOps
+    - email:  supernetops@f5cloudbuilder.dev
+    - password: NGINXC0ntroller!
+- User Role of a SuperNetOps allow a user to view all Services (READ authorization)
+- Go to ``Platform`` **>** ``User Role`` then see configuration PATHs and attached authorization level
+
+.. image:: ./_pictures/Controller_platform_user_role_supernetops.png
+   :align: center
+   :width: 900
+   :alt: User Role
+
+- Go to ``Services`` **>** ``Gateway``. You can see all gateways but edit none.
+
+Exercise 4: Deploy an application
+============================================
+
+- In NGINX Controller, login as DevOps of your site
+    - email:  devops{{ site_ID }}@f5cloudbuilder.dev
+    - password: NGINXC0ntroller!
