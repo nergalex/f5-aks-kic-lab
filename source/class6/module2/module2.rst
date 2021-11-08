@@ -89,12 +89,24 @@ Exercise 1: Scale Out
 Exercise 2: Upgrade Software and Signatures
 ============================================
 
-- View Software version
-    - Run on Jumphost ``sudo yum --showduplicates list app-protect``
-    - source: https://docs.nginx.com/nginx-app-protect/admin-guide/install/#centos-74-installation
+Oh my god, deployed image of NGINX App Protect contains a very old signature package.
+Upgrade with a fresh image that have been already built and uploaded to Azure Container Registry linked to your AKS cluster.
 
-- View default signature package
-    - Open a BASH on Lens >> POD NAP: ``cat /var/log/app_protect/compile_error_msg.json``
+- In Lens, go to ``Workloads`` **>** ``PODs`` **>** ``NameSpace: waap-managed`` **>** ``nginx-appprotect``
+- Open a shell
+
+.. image:: ./_pictures/Lens_POD_shell.png
+   :align: center
+   :width: 900
+   :alt: Scale Out
+
+- Show signature packages
+
+.. code-block:: bash
+
+    cat /var/log/app_protect/compile_error_msg.json
+
+*output*
 
 .. code-block:: json
     :emphasize-lines: 2,3,4
@@ -109,42 +121,71 @@ Exercise 2: Upgrade Software and Signatures
         "completed_successfully": true
     }
 
-    - See: **No** ThreatCampaign signature package, signature package of **2019-07-16**
+_______________________________________________________________________
 
-- View Signature versions
-    - Run on Jumphost ``sudo yum --showduplicates list app-protect-attack-signatures``
-    - Update to latest version or a specific version: https://docs.nginx.com/nginx-app-protect/admin-guide/install/#centos--rhel-74--amazon-linux-2
+**Capture The Flag**
 
-- View Signature versions
-    - Run on Jumphost ``sudo yum --showduplicates list app-protect-threat-campaigns``
-    - Update to latest version or a specific version: https://docs.nginx.com/nginx-app-protect/admin-guide/install/#centos--rhel-74--amazon-linux-2-
+    **2.1 What is the last update of signature package?**
 
-- Clone and update your own DockerFile: https://github.com/nginxinc/docker-nginx-controller/blob/master/centos/nap/Dockerfile
+    **2.2 What is the last update of Threat Campaign?**
 
-- *ToDo* Alexis *ToDo*
-    - do a DockerFile with latest signatures ``aksdistrict3.azurecr.io/nginx-agent:latest``
-    - build an image available in ACR
+_______________________________________________________________________
 
-- In Lens, edit Deployment of NAP instances and look for image key.
+- Show the last update of signature package
 
-.. image:: ./_pictures/Lens_Deployment_set_image.png
-   :align: center
-   :width: 900
-   :alt: Set image
+    .. code-block:: bash
 
-- Change value of *image* by ``aksdistrict3.azurecr.io/nginx-agent:latest`` then ``Save & Close``
+        sudo yum --showduplicates list app-protect-attack-signatures
 
-- View rolling upgrade of PODs by clicking on nginx-appprotect deployement
+- Show the last update of Threat Campaign
 
-- View signature package
-    - Open a BASH on Lens >> POD NAP: ``cat /var/log/app_protect/compile_error_msg.json``
+    .. code-block:: bash
+
+        sudo yum --showduplicates list app-protect-threat-campaigns
+
+- Go to ``Workloads`` **>** ``Deployments`` **>** ``NameSpace: waap-managed`` **>** ``nginx-appprotect``
+- Update specification using latest image of NGINX App Protect
 
 .. code-block:: json
-    :emphasize-lines: 1
+    :emphasize-lines: 8
 
-    ToDo
+    spec:
+      ...
+      template:
+        ...
+        spec:
+          containers:
+            - name: nginx-agent
+              image: 'aksdistrict2.azurecr.io/nginx-agent:latest'
 
-- View example for VM: https://github.com/nergalex/nap-azure-vmss/blob/master/install_managed_nap.sh
+-  View `rolling upgrade <https://kubernetes.io/docs/concepts/workloads/controllers/deployment/>`_ of PODs by clicking on ``nginx-appprotect`` deployment
+- Open a shell on a fresh POD
+- Show signature packages and see that packages are now up-to-date
+
+.. code-block:: bash
+
+    cat /var/log/app_protect/compile_error_msg.json
+
+*output*
+
+.. code-block:: json
+    :emphasize-lines: 7,13
+
+    {
+        "user_signatures_packages":
+        [],
+        "attack_signatures_package":
+        {
+            "revision_datetime": "2021-11-04T19:18:42Z",
+            "version": "2021.11.04"
+        },
+        "completed_successfully": true,
+        "threat_campaigns_package":
+        {
+            "revision_datetime": "2021-11-03T07:51:14Z",
+            "version": "2021.11.03"
+        }
+    }
 
 False Positive Management
 *********************************************
