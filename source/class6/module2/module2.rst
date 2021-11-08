@@ -1,6 +1,10 @@
 Exercises
 #################################################################
 
+.. contents:: Contents
+    :local:
+    :depth: 2
+
 By the end of the lab you will be able to:
 
 - **Life Cycle Management**
@@ -20,10 +24,6 @@ By the end of the lab you will be able to:
 
     - Detect which Components have not a policy attached to it
 
-.. contents:: Contents
-    :local:
-    :depth: 2
-
 Life Cycle Management
 *********************************************
 
@@ -36,7 +36,7 @@ Exercise 1: Scale Out
    :width: 900
    :alt: Show instances
 
-- Scroll to see the environment variable used to startup PODs
+- Scroll to see the environment variable when a POD starts
 
 .. code-block:: yaml
     :emphasize-lines: 3
@@ -135,13 +135,13 @@ _______________________________________________________________________
 
     .. code-block:: bash
 
-        sudo yum --showduplicates list app-protect-attack-signatures
+    sudo yum --showduplicates list app-protect-attack-signatures
 
 - Show the last update of Threat Campaign
 
     .. code-block:: bash
 
-        sudo yum --showduplicates list app-protect-threat-campaigns
+    sudo yum --showduplicates list app-protect-threat-campaigns
 
 - Go to ``Workloads`` **>** ``Deployments`` **>** ``NameSpace: waap-managed`` **>** ``nginx-appprotect``
 - Update specification using latest image of NGINX App Protect
@@ -187,18 +187,19 @@ _______________________________________________________________________
         }
     }
 
-False Positive Management
+Multi-Tenancy
 *********************************************
 
-Exercise 3: View all applications as a NetOps
+Exercise 3: SuperNetOps
 =============================================
+
+User Role of a SuperNetOps allow user to view all Services (READ authorization)
 
 - In NGINX Controller, login as SuperNetOps
 
     - email:  supernetops@f5cloudbuilder.dev
     - password: NGINXC0ntroller!
 
-- User Role of a SuperNetOps allow user to view all Services (READ authorization)
 - Go to ``Platform`` **>** ``User Role`` then see configuration PATHs and attached authorization levels
 
 .. image:: ./_pictures/Controller_platform_user_role_supernetops.png
@@ -208,15 +209,16 @@ Exercise 3: View all applications as a NetOps
 
 - Go to ``Services`` **>** ``Gateway``. You can see all gateways but edit none.
 
-Exercise 4: View application configuration
+Exercise 4: DevOps & Tenant
 ============================================
+
+User Role of a Devops allow user to create, update and delete Services (FULL authorization) of its own environment {{ site_ID }}
 
 - In NGINX Controller, login as DevOps owner of your site
 
     - email:  devops{{ site_ID }}@f5cloudbuilder.dev
     - password: NGINXC0ntroller!
 
-- User Role of a Devops allow user to create, update and delete Services (FULL authorization) of its own environment {{ site_ID }}
 - Go to ``Platform`` **>** ``User Role`` then see configuration PATHs and attached authorization levels
 
 .. image:: ./_pictures/Controller_platform_user_role_devops.png
@@ -233,11 +235,24 @@ Exercise 4: View application configuration
    :alt: User Role DevOps
 
     **Note**
-    NGINX Controller v4: specifics``instance-groups`` could be assign to a User Role
+    NGINX Controller v4: specific ``instance-groups`` could be assign to a User Role
 
 - In your web browser, go to ``https://sentence-front-managed{{ site_ID }}.f5app.dev`` and generate some traffic by refreshing 10 times the page
 - Go to ``Services`` **>** ``Apps`` **>** ``sentence-front-managed{{ site_ID }}.f5app.dev``
 - Update filter to ``Last 15 minutes``
 - Scroll down to ``Web (HTTP) Components`` and see graphs
 - Switch tab to ``Latency metrics``, click on compare to ``Prev week`` and see graphs
+
+Exercise 5: Super SecOps
+============================================
+
+- In NGINX Controller, login as SuperSecOps
+
+    - email:  supersecops@f5cloudbuilder.dev
+    - password: NGINXC0ntroller!
+
+
+
+
+
 
