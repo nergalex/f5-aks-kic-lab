@@ -153,21 +153,50 @@ Exercise 3: View all applications as a NetOps
 =============================================
 
 - In NGINX Controller, login as SuperNetOps
+
     - email:  supernetops@f5cloudbuilder.dev
     - password: NGINXC0ntroller!
-- User Role of a SuperNetOps allow a user to view all Services (READ authorization)
-- Go to ``Platform`` **>** ``User Role`` then see configuration PATHs and attached authorization level
+
+- User Role of a SuperNetOps allow user to view all Services (READ authorization)
+- Go to ``Platform`` **>** ``User Role`` then see configuration PATHs and attached authorization levels
 
 .. image:: ./_pictures/Controller_platform_user_role_supernetops.png
    :align: center
    :width: 900
-   :alt: User Role
+   :alt: User Role NetOps
 
 - Go to ``Services`` **>** ``Gateway``. You can see all gateways but edit none.
 
-Exercise 4: Deploy an application
+Exercise 4: View application configuration
 ============================================
 
 - In NGINX Controller, login as DevOps owner of your site
+
     - email:  devops{{ site_ID }}@f5cloudbuilder.dev
     - password: NGINXC0ntroller!
+
+- User Role of a Devops allow user to create, update and delete Services (FULL authorization) of its own environment {{ site_ID }}
+- Go to ``Platform`` **>** ``User Role`` then see configuration PATHs and attached authorization levels
+
+.. image:: ./_pictures/Controller_platform_user_role_devops.png
+   :align: center
+   :width: 900
+   :alt: User Role DevOps
+
+- Go to ``Services`` **>** ``Gateways`` **>** ``sentence-front-managed{{ site_ID }}.f5app.dev``
+- ``Edit Gateway`` **>** ``Placements``: show attached ``instance-group``
+
+.. image:: ./_pictures/Controller_service_gateway_placement_instance-group.png
+   :align: center
+   :width: 900
+   :alt: User Role DevOps
+
+    **Note**
+    NGINX Controller v4: specifics``instance-groups`` could be assign to a User Role
+
+- In your web browser, go to ``https://sentence-front-managed{{ site_ID }}.f5app.dev`` and generate some traffic by refreshing 10 times the page
+- Go to ``Services`` **>** ``Apps`` **>** ``sentence-front-managed{{ site_ID }}.f5app.dev``
+- Update filter to ``Last 15 minutes``
+- Scroll down to ``Web (HTTP) Components`` and see graphs
+- Switch tab to ``Latency metrics``, click on compare to ``Prev week`` and see graphs
+
