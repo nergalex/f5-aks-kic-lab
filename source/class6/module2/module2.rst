@@ -368,7 +368,7 @@ a good way is to
 
 .. image:: ./_pictures/Controller_service_component_security_balanced_default_blocking.png
    :align: center
-   :width: 700
+   :width: 900
    :alt: Set default Security strategy in Blocking mode
 
 - On your web browser, do an attack:
@@ -389,7 +389,7 @@ a good way is to
 
 .. image:: ./_pictures/Controller_service_component_security_balanced_default_blocking2.png
    :align: center
-   :width: 700
+   :width: 900
    :alt: Set default Security strategy in Blocking mode
 
 - On your web browser, repeat the attack and see that is not blocked anymore
