@@ -329,9 +329,12 @@ False Positive Management
 Exercise 6: Simple starting point
 ============================================
 If SecOps doesn't have time to specify a standard WAF policy,
-a good way is to use ``balanced_default`` - a pre-defined WAF policy - in Monitoring mode.
-During QA tests and then in Production, DevOps disable matched Signatures to prevent False Positives.
-After few weeks in Production, DevOps set policy in Blocking mode.
+a good way is to
+
+    1. use the pre-defined ``balanced_default`` WAF policy in Monitoring mode,
+    2. disable matched Signatures to prevent False Positives during QA tests and then in Production,
+    3. enable policy in Blocking mode after few weeks in Production
+    4. disable matched Signatures in case of complain from legitimate user
 
 - In NGINX Controller, login as DevOps owner of your site
 
@@ -356,10 +359,31 @@ After few weeks in Production, DevOps set policy in Blocking mode.
 
 - In Controller, show related Security event
 
+.. image:: ./_pictures/Controller_service_component_security_event.png
+   :align: center
+   :width: 700
+   :alt: Show Security event
 
-- Disable related signatures and set Security Strategy to blocking mode
+- Disable related signatures, set Security Strategy to blocking mode then *Submit*
 
 .. image:: ./_pictures/Controller_service_component_security_balanced_default_blocking.png
    :align: center
    :width: 700
-   :alt: Security Events
+   :alt: Set default Security strategy in Blocking mode
+
+- On your web browser, do an attack:
+
+.. code-block:: bash
+
+    https://sentence-front-managed{{ site_ID }}.f5app.dev/?a='1=1;cat /etc/password'
+
+- Note the *support ID* on the blocking page
+- In Controller, show related Security event by filtering on *support ID*
+
+.. image:: ./_pictures/Controller_service_component_security_event_filter.png
+   :align: center
+   :width: 700
+   :alt: Set default Security strategy in Blocking mode
+
+- Disable related signatures then *Submit*
+- On your web browser, repeat the attack and see that is not blocked anymore
