@@ -212,7 +212,7 @@ User Role of a SuperNetOps allow user to view all Services (READ authorization)
 
 - Go to ``Services`` **>** ``Gateway``. You can see all gateways but edit none.
 
-Exercise 4: DevOps & Tenant
+Exercise 4: DevOps
 ============================================
 
 User Role of a Devops allow user to create, update and delete Services (FULL authorization) of its own environment {{ site_ID }}
