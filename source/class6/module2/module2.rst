@@ -7,7 +7,7 @@ Exercises
 
 ----------------------------------------------------------------
 
-This lab demonstrates the value added feature of NGINX Controller:
+This lab demonstrates the value added feature of NGINX App Protect managed by Controller:
 
 - **Life Cycle Management**
 
