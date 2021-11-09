@@ -27,6 +27,8 @@ This lab demonstrates the value added feature of NGINX App Protect managed by Co
     - **Standard Policy**: Create your standard policy and publish it in catalog
     - **Specific Policy**: Update your standard policy for a specific application
 
+----------------------------------------------------------------
+
 Life Cycle Management
 *********************************************
 
