@@ -5,24 +5,27 @@ Exercises
     :local:
     :depth: 2
 
-By the end of the lab you will be able to:
+----------------------------------------------------------------
+
+This lab demonstrates the value added feature of NGINX Controller:
 
 - **Life Cycle Management**
 
-    - Scale Out / Scale In
-    - Upgrade NGINX App Protect version
-    - Update the signatures and threats on NGINX App Protect
+    - **Scaling policy**: Scale In / Scale Out using native Kubernetes feature
+    - **Upgrade**: Do Rolling Upgrade of NGINX App Protect instances using native Kubernetes feature
+    - **Security Update**: Update the signatures and threats using Kubernetes Rolling Upgrade
+
+- **Multi-Tenancy**
+
+    - **Segregation**: Isolate user roles (DevOps, NetOps, SecOps)
+    - **DevOps Self-Service**: Deploy an application consuming a Security policy available in a catalog
+    - **Visibility**: Define Service Level Indicators (SLI) and Define Service Objectives (SLO)
 
 - **False Positive Management**
 
-    - Deploy an application
-    - Start with a basic WAF policy and be reactive to handle False Positive
-    - Create your standard policy and publish it in catalog
-    - Update your standard policy and all attached applications
-
-- **Visibility**
-
-    - Detect which Components have not a policy attached to it
+    - **Simple starting point**: Start with a basic WAF policy and be reactive to handle False Positive
+    - **Standard Policy**: Create your standard policy and publish it in catalog
+    - **Specific Policy**: Update your standard policy for a specific application
 
 Life Cycle Management
 *********************************************
