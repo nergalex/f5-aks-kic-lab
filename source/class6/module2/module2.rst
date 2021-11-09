@@ -323,3 +323,43 @@ User Role "DevOps" allow user:
    :width: 900
    :alt: Component metrics
 
+False Positive Management
+*********************************************
+
+Exercise 6: Simple starting point
+============================================
+If SecOps doesn't have time to specify a standard WAF policy,
+a good way is to use ``balanced_default`` - a pre-defined WAF policy - in Monitoring mode.
+During QA tests and then in Production, DevOps disable matched Signatures to prevent False Positives.
+After few weeks in Production, DevOps set policy in Blocking mode.
+
+- In NGINX Controller, login as DevOps owner of your site
+
+    - email:  devops{{ site_ID }}@f5cloudbuilder.dev
+    - password: NGINXC0ntroller!
+
+- Go to ``Services`` **>** ``Apps`` **>** ``sentence-front-managed{{ site_ID }}.f5app.dev`` **>** ``Components`` **>** ``frontend``
+- Click on ``Edit component`` **>** ``Security``
+- Choose Security Strategy proposed by default: ``balanced_default`` then ``Submit``
+
+.. image:: ./_pictures/Controller_service_component_security_balanced_default_monitoring.png
+   :align: center
+   :width: 700
+   :alt: Set default Security strategy in Monitoring mode
+
+- Choose Strategy proposed by default: ``balanced_default`` then ``Submit``
+- On your web browser, do an attack:
+
+.. code-block:: bash
+
+    https://sentence-front-managed{{ site_ID }}.f5app.dev?a=<script>alert('This is an attack');</script>
+
+- In Controller, show related Security event
+
+
+- Disable related signatures and set Security Strategy to blocking mode
+
+.. image:: ./_pictures/Controller_service_component_security_balanced_default_blocking.png
+   :align: center
+   :width: 700
+   :alt: Security Events
