@@ -136,13 +136,13 @@ _______________________________________________________________________
 
 - Show the last update of signature package
 
-    .. code-block:: bash
+.. code-block:: bash
 
     sudo yum --showduplicates list app-protect-attack-signatures
 
 - Show the last update of Threat Campaign
 
-    .. code-block:: bash
+.. code-block:: bash
 
     sudo yum --showduplicates list app-protect-threat-campaigns
 
