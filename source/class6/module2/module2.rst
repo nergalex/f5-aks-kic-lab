@@ -89,7 +89,7 @@ Exercise 1: Scale Out
 
 - In Controller, see the instance registered in instance-group ``lab_k8s_{{site_ID}}``
 
-Exercise 2: Upgrade Software and Signatures
+Exercise 2: Upgrade Signatures
 ============================================
 
 Oh my god, deployed image of NGINX App Protect contains a very old signature package.
@@ -383,7 +383,17 @@ a good way is to
 .. image:: ./_pictures/Controller_service_component_security_event_filter.png
    :align: center
    :width: 700
-   :alt: Set default Security strategy in Blocking mode
+   :alt: Show Security event
 
 - Disable related signatures then *Submit*
+
+.. image:: ./_pictures/Controller_service_component_security_balanced_default_blocking2.png
+   :align: center
+   :width: 700
+   :alt: Set default Security strategy in Blocking mode
+
 - On your web browser, repeat the attack and see that is not blocked anymore
+
+.. code-block:: bash
+
+    https://sentence-front-managed{{ site_ID }}.f5app.dev/?a='1=1;cat /etc/password'
