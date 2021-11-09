@@ -260,16 +260,39 @@ User Role "DevOps" allow user:
    :alt: User Role DevOps
 
 --------------------------------------------
+
 - DevOps configure an Application using logical objects:
 
-    - **gateway**: a listener on TCP/UDP service or on HTTP(s) host(s)
-    - **application**: a group of Components
-    - **component**: a Traffic Management policy with a Security strategy attached
+    - **Environment**: a Tenant.
+        A DevOps user is assigned into one or multiple Tenants aka *Environment*
+
+    - **Gateway**: a listener on TCP/UDP service or on HTTP(s) host(s).
+        A *Gateway* is a configuration object within an *Environment*,
+        often used as the top level for defining how applications are delivered to customers – settings such as hostname, protocol, and TLS/SSL behavior –
+        though such settings can also be made at a lower level.
+        Gateways also employ the concept of *Placement* which is how you link Controller and the NGINX App Protect instances that receive the configurations and do the actual work (data-plane).
+
+    - **App**: a logical group of *Components*
+        App configuration object is where you begin to model applications and group traffic‑shaping behaviors.
+        You can use as many or as few Apps as needed to meet the needs of your organization.
+        The only requirement is that an App must be unique within an Environment.
+
+    - **Component**: a Traffic Management policy with a Security strategy attached.
+        Within an App, Components describe the desired traffic‑shaping behavior for the App.
+        In the simplest case, all the traffic for a given pathname is sent to the same group of servers.
+        But Components also control more advanced shaping like header manipulation, URL rewriting, backend load‑balancing behaviors, cookie handling, and other settings.
 
 .. image:: ./_pictures/Controller-App-Security-topology-for-WAF-policies.svg
    :align: center
-   :width: 900
+   :width: 800
    :alt: User Role DevOps
+
+- In case of an Application based on micro-services, teams works on different Components. For example, Sentence API is have different micro-services:
+
+.. image:: ./_pictures/Controller-object-relationship.svg
+   :align: center
+   :width: 800
+   :alt: Visual representation of the relationship between the configuration objects
 
 - Go to ``Services`` **>** ``Gateways`` **>** ``sentence-front-managed{{ site_ID }}.f5app.dev``
 - ``Edit Gateway`` **>** ``Placements``: show attached ``instance-group``
@@ -279,12 +302,11 @@ User Role "DevOps" allow user:
    :width: 900
    :alt: User Role DevOps
 
-    **Note**
-    NGINX Controller v4: specific ``instance-groups`` could be assign to a User Role
+**Note:** NGINX Controller v4: specific ``instance-groups`` could be assign to a User Role
 
 - In your web browser, go to ``https://sentence-front-managed{{ site_ID }}.f5app.dev`` and generate some traffic by refreshing 10 times the page
 - Go to ``Services`` **>** ``Apps`` **>** ``sentence-front-managed{{ site_ID }}.f5app.dev``
-- Update filter to ``Last 15 minutes``
+- Update filter to ``Last 5 minutes``
 - Switch tab to ``Latency metrics``, click on compare to ``Prev week`` and see graphs
 
 .. image:: ./_pictures/Controller_service_app_metrics.png
@@ -293,7 +315,7 @@ User Role "DevOps" allow user:
    :alt: App metrics
 
 - Go to ``Components`` **>** ``frontend``
-- Update filter to ``Last 15 minutes``
+- Update filter to ``Last 5 minutes``
 - Switch tab to ``Latency metrics``, click on compare to ``Prev week`` and see graphs
 
 .. image:: ./_pictures/Controller_service_component_metrics.png
