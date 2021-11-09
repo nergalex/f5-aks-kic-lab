@@ -27,8 +27,6 @@ This lab demonstrates the value added feature of NGINX App Protect managed by Co
     - **Standard Policy**: Create your standard policy and publish it in catalog
     - **Specific Policy**: Update your standard policy for a specific application
 
-----------------------------------------------------------------
-
 Life Cycle Management
 *********************************************
 
@@ -163,7 +161,7 @@ _______________________________________________________________________
             - name: nginx-agent
               image: 'aksdistrict2.azurecr.io/nginx-agent:latest'
 
--  View `rolling upgrade <https://kubernetes.io/docs/concepts/workloads/controllers/deployment/>`_ of PODs by clicking on ``nginx-appprotect`` deployment
+- View `rolling upgrade <https://kubernetes.io/docs/concepts/workloads/controllers/deployment/>`_ of PODs by clicking on ``nginx-appprotect`` deployment
 - Open a shell on a fresh POD
 - Show signature packages and see that packages are now up-to-date
 
@@ -198,7 +196,10 @@ Multi-Tenancy
 Exercise 3: SuperNetOps
 =============================================
 
-User Role of a SuperNetOps allow user to view all Services (READ authorization)
+User Role "SuperNetOps" allow user:
+
+    - to manage NGINX App Protect instances (FULL authorization)
+    - to view all Services (READ authorization)
 
 - In NGINX Controller, login as SuperNetOps
 
@@ -214,10 +215,37 @@ User Role of a SuperNetOps allow user to view all Services (READ authorization)
 
 - Go to ``Services`` **>** ``Gateway``. You can see all gateways but edit none.
 
-Exercise 4: DevOps
+Exercise 4: Super SecOps
 ============================================
 
-User Role of a Devops allow user to create, update and delete Services (FULL authorization) of its own environment {{ site_ID }}
+User Role "SuperSecOps" allow user:
+
+    - to manage all WAF policies (FULL authorization)
+    - to view all Services (READ authorization)
+
+
+- In NGINX Controller, login as SuperSecOps
+
+    - email:  supersecops@f5cloudbuilder.dev
+    - password: NGINXC0ntroller!
+
+- Go to ``Platform`` **>** ``User Role`` then see configuration PATHs and attached authorization levels
+
+.. image:: ./_pictures/Controller_platform_user_role_secops.png
+   :align: center
+   :width: 900
+   :alt: User Role SecOps
+
+- Go to ``Services`` **>** ``Security Strategies``
+- See all Security Strategies available for consumption by DevOps
+
+Exercise 5: DevOps
+============================================
+
+User Role "DevOps" allow user:
+
+    - to manage (FULL authorization) his applications inside his own environment {{ site_ID }} only
+    - to view all WAF policies (READ authorization)
 
 - In NGINX Controller, login as DevOps owner of your site
 
@@ -227,6 +255,18 @@ User Role of a Devops allow user to create, update and delete Services (FULL aut
 - Go to ``Platform`` **>** ``User Role`` then see configuration PATHs and attached authorization levels
 
 .. image:: ./_pictures/Controller_platform_user_role_devops.png
+   :align: center
+   :width: 900
+   :alt: User Role DevOps
+
+--------------------------------------------
+- DevOps configure an Application using logical objects:
+
+    - **gateway**: a listener on TCP/UDP service or on HTTP(s) host(s)
+    - **application**: a group of Components
+    - **component**: a Traffic Management policy with a Security strategy attached
+
+.. image:: ./_pictures/Controller-App-Security-topology-for-WAF-policies.svg
    :align: center
    :width: 900
    :alt: User Role DevOps
@@ -245,19 +285,19 @@ User Role of a Devops allow user to create, update and delete Services (FULL aut
 - In your web browser, go to ``https://sentence-front-managed{{ site_ID }}.f5app.dev`` and generate some traffic by refreshing 10 times the page
 - Go to ``Services`` **>** ``Apps`` **>** ``sentence-front-managed{{ site_ID }}.f5app.dev``
 - Update filter to ``Last 15 minutes``
-- Scroll down to ``Web (HTTP) Components`` and see graphs
 - Switch tab to ``Latency metrics``, click on compare to ``Prev week`` and see graphs
 
-Exercise 5: Super SecOps
-============================================
+.. image:: ./_pictures/Controller_service_app_metrics.png
+   :align: center
+   :width: 900
+   :alt: App metrics
 
-- In NGINX Controller, login as SuperSecOps
+- Go to ``Components`` **>** ``frontend``
+- Update filter to ``Last 15 minutes``
+- Switch tab to ``Latency metrics``, click on compare to ``Prev week`` and see graphs
 
-    - email:  supersecops@f5cloudbuilder.dev
-    - password: NGINXC0ntroller!
-
-
-
-
-
+.. image:: ./_pictures/Controller_service_component_metrics.png
+   :align: center
+   :width: 900
+   :alt: Component metrics
 
