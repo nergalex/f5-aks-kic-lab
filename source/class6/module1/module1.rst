@@ -112,9 +112,9 @@ Pricing model of NGINX Controller allows you to have **True Forecast Costs** wit
 
 .. image:: ./_pictures/Controller_pricing_model.png
    :align: left
-   :width: 700
+   :width: 800
    :alt: NGINX Controller pricing model
 
-- **Workloads**: offer predictable pricing aligned to the applications deployed
-- **Data**: offers predictable pricing to NetOps teams accustomed to it
+*Workloads*: offer predictable pricing aligned to the applications deployed
+*Data*: offers predictable pricing to NetOps teams accustomed to it
 

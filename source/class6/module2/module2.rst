@@ -24,8 +24,8 @@ This lab demonstrates the value added feature of NGINX App Protect managed by Co
 - **False Positive Management**
 
     - **Simple starting point**: Start with a basic WAF policy and be reactive to handle False Positive
-    - **Standard Policy**: Create your standard policy and publish it in catalog
-    - **Specific Policy**: Update your standard policy for a specific application
+    - **Standard policies**: Create your standard policy and publish it in catalog
+    - **App specific policy**: Update your standard policy for a specific application
 
 Life Cycle Management
 *********************************************
@@ -332,8 +332,7 @@ False Positive Management
 
 Exercise 6: Simple starting point
 ============================================
-If SecOps doesn't have time to specify a standard WAF policy,
-a good way is to
+If SecOps doesn't have time to specify a standard WAF policy, a good way is to
 
     1. use the pre-defined ``balanced_default`` WAF policy in Monitoring mode,
     2. disable matched Signatures to prevent False Positives during QA tests and then in Production,
@@ -401,3 +400,59 @@ a good way is to
 .. code-block:: bash
 
     https://sentence-front-managed{{ site_ID }}.f5app.dev/?a='1=1;cat /etc/password'
+
+Exercise 7: Standard and App specific policy
+============================================
+
+A good approach is to define few WAAP policies in order to cover Risk Prevalence by App Criticality.
+For example:
+
+    - Tier1:
+        Less Critical App with no user's persistent privacy data
+        Protect from software vulnerabilities and common attack vectors
+        Tier1 is is a generic policy
+
+    - Tier2:
+        Medium Critical App with user's persistent privacy data or generate a loss of revenue if App is out of service
+        Protect from targeted attacks and advanced threat actors
+        Tier2 should start using a generic policy and then be customized if needed
+
+    - Tier3:
+        Most Critical App that need an external communication of your company if an incident or a breach is encountered
+        Protect from advanced fraud and highly specialized techniques
+        Tier3 is clearly an App specific Policy
+
+3 ways to define a policy:
+
+**1. Prepare in BIG-IP UI**:
+
+    if SecOps used to define WAF policy on BIG-IP, he can still continue to define it using BIG-IP UI and import it in Controller by following `this guide <https://www.nginx.com/blog/bringing-f5-and-nginx-waf-policies-into-controller-app-security/#Preparing-F5-WAF-Policies-for-Controller-App-Security>`_
+
+.. image:: ./_pictures/bring-WAF-policy-Controller-App-Sec_convert-policy.svg
+   :align: center
+   :width: 700
+   :alt: Preparing F5 WAF Policies for Controller App Security
+
+    - Go to Jumphost
+
+.. code-block:: bash
+
+    mkdir /tmp/converter
+    cp /root/source_images/f5-nap-policies/policy/owasp_rdp.xml /tmp/converter/
+    docker run -v /tmp/converter/:/tmp/converter/ aksdistrict{{ site_ID }}.azurecr.io/nap_converter_tool /opt/app_protect/bin/convert-policy -i /tmp/converter/owasp_rdp.xml -o /tmp/converter/policy.json | jq
+
+    - The output warns you about features not implemented yet in NGINX App Protect
+
+**2. Prepare in WAFFLER**:
+
+    Use `this tool <https://waffler.dev/prod/>`_ to discover how to create a basic Declarative Policy through an UI
+
+**3. Advanced tuning**:
+
+    SecOps can tune his policy directly in the JSON file.
+    More explanation in `this guide <https://docs.nginx.com/nginx-app-protect/configuration/>`_
+    and all details in the `Schema reference <https://docs.nginx.com/nginx-app-protect/policy/>`_
+
+
+
+
