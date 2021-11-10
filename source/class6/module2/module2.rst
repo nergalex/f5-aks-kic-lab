@@ -385,7 +385,7 @@ a good way is to
    :width: 700
    :alt: Show Security event
 
-- Disable related signatures then *Submit*
+- Append related signatures to disabled list of signatures then *Submit*
 
 .. image:: ./_pictures/Controller_service_component_security_balanced_default_blocking2.png
    :align: center

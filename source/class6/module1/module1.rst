@@ -101,6 +101,18 @@ Frontend web servers make an API call to a micro-service named "generator" that 
    :width: 900
    :alt: Sentence flow - mobile app and modern web browser
 
+Application centric pricing
+*********************************************
+
+Pricing model of NGINX Controller allows you to have **True Forecast Costs** with an Application centric economic model :
+
+.. image:: ./_pictures/Controller_pricing_model.png
+   :align: center
+   :width: 700
+   :alt: NGINX Controller pricing model
+
+- *Workloads*: offer predictable pricing aligned to the applications deployed
+- *Data*: offers predictable pricing to NetOps teams accustomed to it
 
 
 
