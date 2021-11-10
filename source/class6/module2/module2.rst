@@ -427,7 +427,7 @@ For example:
 
 3 ways to define a policy:
 
-**1. Prepare in BIG-IP UI**:
+**1. Prepare in BIG-IP UI**
 
 if SecOps used to define WAF policy on BIG-IP, he can still continue to define it using BIG-IP UI and import it in Controller by following `this guide <https://www.nginx.com/blog/bringing-f5-and-nginx-waf-policies-into-controller-app-security/#Preparing-F5-WAF-Policies-for-Controller-App-Security>`_
 
@@ -446,7 +446,7 @@ if SecOps used to define WAF policy on BIG-IP, he can still continue to define i
 
 - The output warns you about features not implemented yet in NGINX App Protect
 
-**2. Prepare in WAFFLER**:
+**2. Prepare in WAFFLER**
 
 Use `this tool <https://waffler.dev/prod/>`_ to discover how to create a basic Declarative Policy through an UI
 
@@ -518,7 +518,7 @@ Use `this tool <https://waffler.dev/prod/>`_ to discover how to create a basic D
       }
     }
 
-**3. Advanced tuning**:
+**3. Advanced tuning**
 
 SecOps can tune his policy directly in the JSON file.
 More explanation in `this guide <https://docs.nginx.com/nginx-app-protect/configuration/>`_
