@@ -282,6 +282,10 @@ User Role "DevOps" allow user:
         In the simplest case, all the traffic for a given pathname is sent to the same group of servers.
         But Components also control more advanced shaping like header manipulation, URL rewriting, backend load‑balancing behaviors, cookie handling, and other settings.
 
+    - **Analytics**: auto-generated or custom dashboard offer observability (metrics, security event) at each object level
+        Application Insights offer a clear visibility into the number, performance, and ownership costs of your apps
+        With per‑app analytics, you gain new insights into app performance and reliability so you can pinpoint performance issues before they impact production.
+
 .. image:: ./_pictures/Controller-App-Security-topology-for-WAF-policies.svg
    :align: center
    :width: 800

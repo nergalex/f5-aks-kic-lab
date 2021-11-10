@@ -10,14 +10,14 @@ Architecture
     :local:
     :depth: 1
 
-
 Distributed points of control managed by One Controller
 ***************************************************************
-Security architect decided to distribute security across all subscriptions owned by each business unit.
+Security architect decided to distribute security across all subscriptions owned by each business unit,
+whatever the Security appliance (NGINX App Protect) is hosted on VM or Container.
 Regarding Modern Application hosted on Kubernetes cluster, security is embedded inside the Kubernetes cluster.
-This design allows to published application directly on Internet in a secured manner.
+This design allows to published application on Internet directly secured by a Ingress Security layer hosted into Kubernetes clusters.
 
-Those *strategic point of control* are controlled centrally by a Controller, as a Out of Band Control-Plane.
+Those *strategic point of control* are controlled centrally by a Controller (NGINX Controller), as a Out of Band Control-Plane.
 
 .. image:: ./_pictures/oob_controller.svg
    :align: center
@@ -57,6 +57,10 @@ In this lab, containerized Ingress instances are managed and configured by remot
    :width: 900
    :alt: Controller config
 
+Why? NGINX Controller eliminates friction by enforcing security throughout the application lifecycle without slowing developers down.
+
+How? The “WAAP-as-a-Service” is an app‑centric approach to enabling WAAP (WAF, anti-bot) in automated pipelines,
+along with traffic services managed with the Controller Application Delivery Module, for app Protection and Visibility.
 
 Micro Proxy - API GW managed by K8S API
 =============================================
@@ -114,21 +118,3 @@ Pricing model of NGINX Controller allows you to have **True Forecast Costs** wit
 - **Workloads**: offer predictable pricing aligned to the applications deployed
 - **Data**: offers predictable pricing to NetOps teams accustomed to it
 
-
-
-
-
-
-
-ToDo
-=============================================
-
-- **High Resiliency**: WAAP containerized instances are managed across all of your K8S clusters... as well as VM instances
-- **Consistency of Security**: Applications reference WAF policies published in a central catalog
-    - The Controller App Security add‑on eliminates friction by enforcing security throughout the application lifecycle without slowing developers down.
-    - How? Our “WAF-as-a-Service” is an app‑centric approach to enabling WAF in automated pipelines, along with traffic services managed with the Controller Application Delivery Module, for app protection and visibility.
-- **True Forecast Cost**: A simple economic model - based on Application - allows you to project on your budget with certainty
-    - Application Insights offer a clear visibility into the number, performance, and ownership costs of your apps
-    - With per‑app analytics, you gain new insights into app performance and reliability so you can pinpoint performance issues before they impact production.
-- **Granular RBAC**: Aspire to improve collaboration across your modern app teams to unleash their productivity and efficiency.
-    - All your teams – DevOps, NetOps, SecOps, and AppDev – can enjoy self‑service management and monitoring of their own apps through role‑based access control (RBAC).
