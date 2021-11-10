@@ -24,8 +24,8 @@ This lab demonstrates the value added feature of NGINX App Protect managed by Co
 - **False Positive Management**
 
     - **Simple starting point**: Start with a basic WAF policy and be reactive to handle False Positive
-    - **Standard policies**: Create your standard policy and publish it in catalog
-    - **App specific policy**: Update your standard policy for a specific application
+    - **Standard and App specific policies**: Bring your own policies and publish it in catalog
+    - **Update policy**: Update your policy and update automatically all Applications that reference it
 
 Life Cycle Management
 *********************************************
@@ -426,7 +426,7 @@ For example:
 
 **1. Prepare in BIG-IP UI**:
 
-    if SecOps used to define WAF policy on BIG-IP, he can still continue to define it using BIG-IP UI and import it in Controller by following `this guide <https://www.nginx.com/blog/bringing-f5-and-nginx-waf-policies-into-controller-app-security/#Preparing-F5-WAF-Policies-for-Controller-App-Security>`_
+if SecOps used to define WAF policy on BIG-IP, he can still continue to define it using BIG-IP UI and import it in Controller by following `this guide <https://www.nginx.com/blog/bringing-f5-and-nginx-waf-policies-into-controller-app-security/#Preparing-F5-WAF-Policies-for-Controller-App-Security>`_
 
 .. image:: ./_pictures/bring-WAF-policy-Controller-App-Sec_convert-policy.svg
    :align: center
@@ -441,18 +441,308 @@ For example:
     cp /root/source_images/f5-nap-policies/policy/owasp_rdp.xml /tmp/converter/
     docker run -v /tmp/converter/:/tmp/converter/ aksdistrict{{ site_ID }}.azurecr.io/nap_converter_tool /opt/app_protect/bin/convert-policy -i /tmp/converter/owasp_rdp.xml -o /tmp/converter/policy.json | jq
 
-    - The output warns you about features not implemented yet in NGINX App Protect
+- The output warns you about features not implemented yet in NGINX App Protect
 
 **2. Prepare in WAFFLER**:
 
-    Use `this tool <https://waffler.dev/prod/>`_ to discover how to create a basic Declarative Policy through an UI
+Use `this tool <https://waffler.dev/prod/>`_ to discover how to create a basic Declarative Policy through an UI
+
+- allow only ``server-technologies```: ``Nginx``, ``Node.js`` and ``Python``
+- In ``Blocking Settings``, alarm and block on violation ``Illegal file type``
+- In ``File Types``, add filetype ``md``
+- In ``Blocking Settings``, enable violation ``Illegal URL``
+- In ``URLs``, add wildcard url ``/admin*``
+
+*output*
+
+.. code-block:: json
+
+    {
+      "policy": {
+        "name": "policy_name",
+        "template": {
+          "name": "POLICY_TEMPLATE_NGINX_BASE"
+        },
+        "applicationLanguage": "utf-8",
+        "enforcementMode": "blocking",
+        "server-technologies": [
+          {
+            "serverTechnologyName": "Nginx"
+          },
+          {
+            "serverTechnologyName": "Node.js"
+          },
+          {
+            "serverTechnologyName": "Python"
+          }
+        ],
+        "bot-defense": {
+          "mitigations": {},
+          "settings": {
+            "isEnabled": false
+          }
+        },
+        "urls": [
+          {
+            "name": "/admin*",
+            "wildcardOrder": 0,
+            "protocol": "https",
+            "type": "wildcard",
+            "attackSignaturesCheck": true,
+            "metacharsOnUrlCheck": true
+          }
+        ],
+        "filetypes": [
+          {
+            "name": "md",
+            "wildcardOrder": 0
+          }
+        ],
+        "blocking-settings": {
+          "violations": [
+            {
+              "name": "VIOL_FILETYPE",
+              "alarm": true,
+              "block": true
+            },
+            {
+              "name": "VIOL_URL",
+              "block": true,
+              "alarm": true
+            }
+          ]
+        }
+      }
+    }
 
 **3. Advanced tuning**:
 
-    SecOps can tune his policy directly in the JSON file.
-    More explanation in `this guide <https://docs.nginx.com/nginx-app-protect/configuration/>`_
-    and all details in the `Schema reference <https://docs.nginx.com/nginx-app-protect/policy/>`_
+SecOps can tune his policy directly in the JSON file.
+More explanation in `this guide <https://docs.nginx.com/nginx-app-protect/configuration/>`_
+and all details in the `Schema reference <https://docs.nginx.com/nginx-app-protect/policy/>`_
 
+- go to `specification of filetypes key <https://docs.nginx.com/nginx-app-protect/policy/#policy/filetypes>`_
+- disallow filetype using ``allowed`` key with value ``false``
+- go to `specification of urls key <https://docs.nginx.com/nginx-app-protect/policy/#policy/urls>`_
+- disallow url using ``allowed`` key with value ``false``
+
+*output*
+
+.. code-block:: json
+    :emphasize-lines: 43,41
+
+    {
+      "policy": {
+        "name": "policy_name",
+        "template": {
+          "name": "POLICY_TEMPLATE_NGINX_BASE"
+        },
+        "applicationLanguage": "utf-8",
+        "enforcementMode": "blocking",
+        "server-technologies": [
+          {
+            "serverTechnologyName": "Nginx"
+          },
+          {
+            "serverTechnologyName": "Node.js"
+          },
+          {
+            "serverTechnologyName": "Python"
+          }
+        ],
+        "bot-defense": {
+          "mitigations": {},
+          "settings": {
+            "isEnabled": false
+          }
+        },
+        "urls": [
+          {
+            "name": "/admin*",
+            "wildcardOrder": 0,
+            "protocol": "https",
+            "type": "wildcard",
+            "attackSignaturesCheck": true,
+            "metacharsOnUrlCheck": true,
+            "isAllowed": false
+          }
+        ],
+        "filetypes": [
+          {
+            "name": "md",
+            "wildcardOrder": 0,
+            "allowed": false
+          }
+        ],
+        "blocking-settings": {
+          "violations": [
+            {
+              "name": "VIOL_FILETYPE",
+              "alarm": true,
+              "block": true
+            },
+            {
+              "name": "VIOL_URL",
+              "block": true,
+              "alarm": true
+            }
+          ]
+        }
+      }
+    }
+
+- save this policy in a file locally
+
+- In NGINX Controller, login as SuperSecOps
+
+    - email:  supersecops@f5cloudbuilder.dev
+    - password: NGINXC0ntroller!
+
+- Go to ``Services`` **>** ``Security Strategies``
+- Create a strategy named ``lab5_site{{site_ID}}`` that reference a policy named also ``lab5_site{{site_ID}}``
+- Import your file and check if JSON syntax is *green*
+
+.. image:: ./_pictures/Controller_security_policy_import.png
+   :align: center
+   :width: 500
+   :alt: Import OK
+
+- In NGINX Controller, login as DevOps owner of your site
+
+    - email:  devops{{ site_ID }}@f5cloudbuilder.dev
+    - password: NGINXC0ntroller!
+
+- Go to ``Services`` **>** ``Apps`` **>** ``sentence-front-managed{{ site_ID }}.f5app.dev`` **>** ``Components`` **>** ``frontend``
+- Click on ``Edit component`` **>** ``Security``
+- Choose Security Strategy: ``lab5_site{{site_ID}}``
+- On your browser, check that URLs below are blocked and retrieve ``support ID`` in Security events on Controller:
+
+.. code-block:: bash
+
+    https://sentence-front-managed{{site_ID}}.f5app.dev/README.md
+    https://sentence-front-managed{{site_ID}}.f5app.dev/admin
+
+.. image:: ./_pictures/Controller_service_component_security_event_logs.png
+   :align: center
+   :width: 900
+   :alt: Import OK
+
+Exercise 8: Update policy
+============================================
+
+- On Jumphost, try to impersonated the search engine googlebot:
+
+.. code-block:: bash
+
+    curl -k --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" https://sentence-front-managed{{site_ID}}.f5app.dev
+
+- go to `specification of anti-bot key <https://docs.nginx.com/nginx-app-protect/policy/#policy/bot-defense>`_
+- in ``settings``, enable anti-bot
+- in ``mitigations``, raise an ``alarm`` for bots that belong to  ``classes`` named ``trusted-bot`` and ``untrusted-bot``
+- and ``block`` bots that does not succeed the validation challenge, i.e. the  class named ``malicious-bot``
+
+*output*
+
+.. code-block:: json
+    :emphasize-lines: 20-40
+
+    {
+      "policy": {
+        "name": "policy_name",
+        "template": {
+          "name": "POLICY_TEMPLATE_NGINX_BASE"
+        },
+        "applicationLanguage": "utf-8",
+        "enforcementMode": "blocking",
+        "server-technologies": [
+          {
+            "serverTechnologyName": "Nginx"
+          },
+          {
+            "serverTechnologyName": "Node.js"
+          },
+          {
+            "serverTechnologyName": "Python"
+          }
+        ],
+        "bot-defense": {
+         "settings": {
+            "isEnabled": true
+         },
+         "mitigations": {
+            "classes": [
+               {
+                  "name": "trusted-bot",
+                  "action": "alarm"
+               },
+               {
+                  "name": "untrusted-bot",
+                  "action": "alarm"
+               },
+               {
+                  "name": "malicious-bot",
+                  "action": "block"
+               }
+            ]
+         }
+        },
+        "urls": [
+          {
+            "name": "/admin*",
+            "wildcardOrder": 0,
+            "protocol": "https",
+            "type": "wildcard",
+            "attackSignaturesCheck": true,
+            "metacharsOnUrlCheck": true,
+            "isAllowed": false
+          }
+        ],
+        "filetypes": [
+          {
+            "name": "md",
+            "wildcardOrder": 0,
+            "allowed": false
+          }
+        ],
+        "blocking-settings": {
+          "violations": [
+            {
+              "name": "VIOL_FILETYPE",
+              "alarm": true,
+              "block": true
+            },
+            {
+              "name": "VIOL_URL",
+              "block": true,
+              "alarm": true
+            }
+          ]
+        }
+      }
+    }
+
+- save this policy in a file locally
+
+- In NGINX Controller, login as SuperSecOps
+
+    - email:  supersecops@f5cloudbuilder.dev
+    - password: NGINXC0ntroller!
+
+- Go to ``Services`` **>** ``Security Strategies`` **>** ``Policies``
+- Edit ``lab5_site{{site_ID}}``, import your file and ``Submit``
+- All Components that reference this policy are automatically updated
+- On Jumphost, check that the Googlebot request is now blocked:
+
+.. code-block:: bash
+
+    curl -k --user-agent "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)" https://sentence-front-managed{{site_ID}}.f5app.dev
+
+- Retrieve the support ID and see details in Security events
+
+.. image:: ./_pictures/Controller_service_component_security_event_log_bot.png
+   :align: center
+   :width: 900
+   :alt: Fake googlebot blocked
 
 
 
