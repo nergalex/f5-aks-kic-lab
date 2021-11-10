@@ -25,7 +25,7 @@ This lab demonstrates the value added feature of NGINX App Protect managed by Co
 
     - **Simple starting point**: Start with a basic WAF policy and be reactive to handle False Positive
     - **Standard and App specific policies**: Bring your own policies and publish it in catalog
-    - **Update policy**: Update your policy and update automatically all Applications that reference it
+    - **Update a policy widely**: Update your policy and update automatically all Applications that reference it
 
 Life Cycle Management
 *********************************************
@@ -371,7 +371,7 @@ If SecOps doesn't have time to specify a standard WAF policy, a good way is to
 
 .. image:: ./_pictures/Controller_service_component_security_balanced_default_blocking.png
    :align: center
-   :width: 900
+   :width: 700
    :alt: Set default Security strategy in Blocking mode
 
 - On your web browser, do an attack:
@@ -385,14 +385,14 @@ If SecOps doesn't have time to specify a standard WAF policy, a good way is to
 
 .. image:: ./_pictures/Controller_service_component_security_event_filter.png
    :align: center
-   :width: 700
+   :width: 900
    :alt: Show Security event
 
 - Append related signatures to disabled list of signatures then *Submit*
 
 .. image:: ./_pictures/Controller_service_component_security_balanced_default_blocking2.png
    :align: center
-   :width: 900
+   :width: 700
    :alt: Set default Security strategy in Blocking mode
 
 - On your web browser, repeat the attack and see that is not blocked anymore
@@ -407,20 +407,23 @@ Exercise 7: Standard and App specific policy
 A good approach is to define few WAAP policies in order to cover Risk Prevalence by App Criticality.
 For example:
 
-    - Tier1:
-        Less Critical App with no user's persistent privacy data
-        Protect from software vulnerabilities and common attack vectors
-        Tier1 is is a generic policy
+**Tier1**
 
-    - Tier2:
-        Medium Critical App with user's persistent privacy data or generate a loss of revenue if App is out of service
-        Protect from targeted attacks and advanced threat actors
-        Tier2 should start using a generic policy and then be customized if needed
+    Less Critical App with no user's persistent privacy data
+    Protect from software vulnerabilities and common attack vectors
+    Tier1 is is a generic policy
 
-    - Tier3:
-        Most Critical App that need an external communication of your company if an incident or a breach is encountered
-        Protect from advanced fraud and highly specialized techniques
-        Tier3 is clearly an App specific Policy
+**Tier2**
+
+    Medium Critical App with user's persistent privacy data or generate a loss of revenue if App is out of service
+    Protect from targeted attacks and advanced threat actors
+    Tier2 should start using a generic policy and then be customized if needed
+
+**Tier3**
+
+    Most Critical App that need an external communication of your company if an incident or a breach is encountered
+    Protect from advanced fraud and highly specialized techniques
+    Tier3 is clearly an App specific Policy
 
 3 ways to define a policy:
 
@@ -433,7 +436,7 @@ if SecOps used to define WAF policy on BIG-IP, he can still continue to define i
    :width: 700
    :alt: Preparing F5 WAF Policies for Controller App Security
 
-    - Go to Jumphost
+- Go to Jumphost
 
 .. code-block:: bash
 
@@ -529,7 +532,7 @@ and all details in the `Schema reference <https://docs.nginx.com/nginx-app-prote
 *output*
 
 .. code-block:: json
-    :emphasize-lines: 43,41
+    :emphasize-lines: 34,41
 
     {
       "policy": {
@@ -627,7 +630,7 @@ and all details in the `Schema reference <https://docs.nginx.com/nginx-app-prote
    :width: 900
    :alt: Import OK
 
-Exercise 8: Update policy
+Exercise 8: Update a policy widely
 ============================================
 
 - On Jumphost, try to impersonated the search engine googlebot:
