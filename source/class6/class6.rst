@@ -8,6 +8,8 @@ This lab describes how to manage centrally App Security for a wide variety of we
    :width: 1100
    :alt: NGINX Controller
 
+**Contents**
+
 .. toctree::
    :maxdepth: 1
    :glob:
