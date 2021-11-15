@@ -108,7 +108,7 @@ Frontend web servers make an API call to a micro-service named "generator" that 
 Application centric pricing
 *********************************************
 
-Pricing model of NGINX Controller allows you to have **True Forecast Costs** with an Application centric economic model :
+Pricing model of NGINX Controller allows you to have **Simple and Predictable Consumption** with a per Application pricing :
 
 .. image:: ./_pictures/Controller_pricing_model.png
    :align: left
