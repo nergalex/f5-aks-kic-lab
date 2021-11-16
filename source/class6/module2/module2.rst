@@ -129,7 +129,7 @@ Upgrade with a fresh image that have been already built and uploaded to Azure Co
 
 .. code-block:: bash
 
-    cat /var/log/app_protect/compile_error_msg.json
+    cat /var/log/app_protect/compile_error_msg.json | python -m json.tool
 
 *output*
 
@@ -472,11 +472,12 @@ if SecOps used to define WAF policy on BIG-IP, he can still continue to define i
 
 Use `this tool <https://waffler.dev/prod/>`_ to discover how to create a basic Declarative Policy through an UI
 
-- allow only ``server-technologies```: ``Nginx``, ``Node.js`` and ``Python``
+- allow only ``server-technologies``: ``Nginx``, ``Node.js`` and ``Python``
 - In ``Blocking Settings``, alarm and block on violation ``Illegal file type``
 - In ``File Types``, add filetype ``md``
 - In ``Blocking Settings``, enable violation ``Illegal URL``
 - In ``URLs``, add wildcard url ``/admin*``
+- In ``whitelist-ips``, add a public ip address and ``always`` block it
 
 *output*
 
@@ -523,6 +524,14 @@ Use `this tool <https://waffler.dev/prod/>`_ to discover how to create a basic D
             "wildcardOrder": 0
           }
         ],
+        "whitelist-ips":
+        [
+            {
+                "blockRequests": "always",
+                "ipAddress": "1.1.1.1",
+                "ipNetmask": "255.255.255.255"
+            }
+        ],
         "blocking-settings": {
           "violations": [
             {
@@ -557,63 +566,86 @@ and all details in the `Schema reference <https://docs.nginx.com/nginx-app-prote
     :emphasize-lines: 34,41
 
     {
-      "policy": {
-        "name": "policy_name",
-        "template": {
-          "name": "POLICY_TEMPLATE_NGINX_BASE"
-        },
-        "applicationLanguage": "utf-8",
-        "enforcementMode": "blocking",
-        "server-technologies": [
-          {
-            "serverTechnologyName": "Nginx"
-          },
-          {
-            "serverTechnologyName": "Node.js"
-          },
-          {
-            "serverTechnologyName": "Python"
-          }
-        ],
-        "bot-defense": {
-          "mitigations": {},
-          "settings": {
-            "isEnabled": false
-          }
-        },
-        "urls": [
-          {
-            "name": "/admin*",
-            "wildcardOrder": 0,
-            "protocol": "https",
-            "type": "wildcard",
-            "attackSignaturesCheck": true,
-            "metacharsOnUrlCheck": true,
-            "isAllowed": false
-          }
-        ],
-        "filetypes": [
-          {
-            "name": "md",
-            "wildcardOrder": 0,
-            "allowed": false
-          }
-        ],
-        "blocking-settings": {
-          "violations": [
+        "policy":
+        {
+            "name": "policy_name",
+            "template":
             {
-              "name": "VIOL_FILETYPE",
-              "alarm": true,
-              "block": true
+                "name": "POLICY_TEMPLATE_NGINX_BASE"
             },
+            "applicationLanguage": "utf-8",
+            "enforcementMode": "blocking",
+            "server-technologies":
+            [
+                {
+                    "serverTechnologyName": "Nginx"
+                },
+                {
+                    "serverTechnologyName": "Node.js"
+                },
+                {
+                    "serverTechnologyName": "Python"
+                }
+            ],
+            "urls":
+            [
+                {
+                    "name": "/admin*",
+                    "wildcardOrder": 0,
+                    "protocol": "https",
+                    "type": "wildcard",
+                    "attackSignaturesCheck": true,
+                    "metacharsOnUrlCheck": true,
+                    "isAllowed": false
+                }
+            ],
+            "filetypes":
+            [
+                {
+                    "name": "md",
+                    "wildcardOrder": 0,
+                    "allowed": false
+                }
+            ],
+            "whitelist-ips":
+            [
+                {
+                    "blockRequests": "always",
+                    "ipAddress": "1.1.1.1",
+                    "ipNetmask": "255.255.255.255"
+                }
+            ],
+            "blocking-settings":
             {
-              "name": "VIOL_URL",
-              "block": true,
-              "alarm": true
-            }
-          ]
+                "violations":
+                [
+                    {
+                        "name": "VIOL_FILETYPE",
+                        "alarm": true,
+                        "block": true
+                    },
+                    {
+                        "name": "VIOL_URL",
+                        "block": true,
+                        "alarm": true
+                    },
+                    {
+                        "name": "VIOL_BLACKLISTED_IP",
+                        "block": true,
+                        "alarm": true
+                    }
+                ]
+            },
+            "response-pages":
+            [
+                {
+                    "responseContent": "<html><head><title>NGINX workshop</title></head><body><h1>Blocking page</h1><br><br>Support = <%TS.request.ID()%></body></html>",
+                    "responseHeader": "HTTP/1.1 200 OK\r\nConnection: close",
+                    "responseActionType": "custom",
+                    "responsePageType": "default"
+                }
+            ]
         }
-      }
     }
 
 - save this policy in a file locally
@@ -655,6 +687,8 @@ and all details in the `Schema reference <https://docs.nginx.com/nginx-app-prote
 Exercise 8: Update a policy widely
 ============================================
 
+SecOps needs **Enhance Security** by enable bot defense due to a Web Scrapping attack done from fake Google bot
+
 - On Jumphost, try to impersonated the search engine googlebot:
 
 .. code-block:: bash
@@ -663,87 +697,121 @@ Exercise 8: Update a policy widely
 
 - go to `specification of anti-bot key <https://docs.nginx.com/nginx-app-protect/policy/#policy/bot-defense>`_
 - in ``settings``, enable anti-bot
-- in ``mitigations``, raise an ``alarm`` for bots that belong to  ``classes`` named ``trusted-bot`` and ``untrusted-bot``
-- and ``block`` bots that does not succeed the validation challenge, i.e. the  class named ``malicious-bot``
+- in ``mitigations``, raise an ``alarm`` for bots that belong to  ``classes`` named ``trusted-bot`` and ``untrusted-bot`` ;
+- ``block`` bots that does not succeed the validation challenge, i.e. the  class named ``malicious-bot`` ;
+- in ``response-pages``, define your own response page ;
 
 *output*
 
 .. code-block:: json
-    :emphasize-lines: 20-40
+    :emphasize-lines: 23-47,97-105
 
     {
-      "policy": {
-        "name": "policy_name",
-        "template": {
-          "name": "POLICY_TEMPLATE_NGINX_BASE"
-        },
-        "applicationLanguage": "utf-8",
-        "enforcementMode": "blocking",
-        "server-technologies": [
-          {
-            "serverTechnologyName": "Nginx"
-          },
-          {
-            "serverTechnologyName": "Node.js"
-          },
-          {
-            "serverTechnologyName": "Python"
-          }
-        ],
-        "bot-defense": {
-         "settings": {
-            "isEnabled": true
-         },
-         "mitigations": {
-            "classes": [
-               {
-                  "name": "trusted-bot",
-                  "action": "alarm"
-               },
-               {
-                  "name": "untrusted-bot",
-                  "action": "alarm"
-               },
-               {
-                  "name": "malicious-bot",
-                  "action": "block"
-               }
-            ]
-         }
-        },
-        "urls": [
-          {
-            "name": "/admin*",
-            "wildcardOrder": 0,
-            "protocol": "https",
-            "type": "wildcard",
-            "attackSignaturesCheck": true,
-            "metacharsOnUrlCheck": true,
-            "isAllowed": false
-          }
-        ],
-        "filetypes": [
-          {
-            "name": "md",
-            "wildcardOrder": 0,
-            "allowed": false
-          }
-        ],
-        "blocking-settings": {
-          "violations": [
+        "policy":
+        {
+            "name": "policy_name",
+            "template":
             {
-              "name": "VIOL_FILETYPE",
-              "alarm": true,
-              "block": true
+                "name": "POLICY_TEMPLATE_NGINX_BASE"
             },
+            "applicationLanguage": "utf-8",
+            "enforcementMode": "blocking",
+            "server-technologies":
+            [
+                {
+                    "serverTechnologyName": "Nginx"
+                },
+                {
+                    "serverTechnologyName": "Node.js"
+                },
+                {
+                    "serverTechnologyName": "Python"
+                }
+            ],
+            "bot-defense":
             {
-              "name": "VIOL_URL",
-              "block": true,
-              "alarm": true
-            }
-          ]
+                "settings":
+                {
+                    "isEnabled": true
+                },
+                "mitigations":
+                {
+                    "classes":
+                    [
+                        {
+                            "name": "trusted-bot",
+                            "action": "alarm"
+                        },
+                        {
+                            "name": "untrusted-bot",
+                            "action": "alarm"
+                        },
+                        {
+                            "name": "malicious-bot",
+                            "action": "block"
+                        }
+                    ]
+                }
+            },
+            "urls":
+            [
+                {
+                    "name": "/admin*",
+                    "wildcardOrder": 0,
+                    "protocol": "https",
+                    "type": "wildcard",
+                    "attackSignaturesCheck": true,
+                    "metacharsOnUrlCheck": true,
+                    "isAllowed": false
+                }
+            ],
+            "filetypes":
+            [
+                {
+                    "name": "md",
+                    "wildcardOrder": 0,
+                    "allowed": false
+                }
+            ],
+            "whitelist-ips":
+            [
+                {
+                    "blockRequests": "always",
+                    "ipAddress": "1.1.1.1",
+                    "ipNetmask": "255.255.255.255"
+                }
+            ],
+            "blocking-settings":
+            {
+                "violations":
+                [
+                    {
+                        "name": "VIOL_FILETYPE",
+                        "alarm": true,
+                        "block": true
+                    },
+                    {
+                        "name": "VIOL_URL",
+                        "block": true,
+                        "alarm": true
+                    },
+                    {
+                        "name": "VIOL_BLACKLISTED_IP",
+                        "block": true,
+                        "alarm": true
+                    }
+                ]
+            },
+            "response-pages":
+            [
+                {
+                    "responseContent": "<html><head><title>NGINX workshop</title></head><body><h1>Blocking page</h1><br><br>Support = <%TS.request.ID()%></body></html>",
+                    "responseHeader": "HTTP/1.1 200 OK\r\nConnection: close",
+                    "responseActionType": "custom",
+                    "responsePageType": "default"
+                }
+            ]
         }
-      }
     }
 
 - save this policy in a file locally
@@ -769,5 +837,152 @@ Exercise 8: Update a policy widely
    :width: 900
    :alt: Fake googlebot blocked
 
+Exercise 9: False Positive > Update a specific policy
+=====================================================
+
+SecOps needs to update a policy for a Specific App due to a **False Positive**.
+During functional test in QA environment, a signature were raised.
+SQUAD asked to their "Security Coach" to tag them as False Positive.
+Application Developers will update their code in next dev Sprint, update task is added in backlog.
+For this current Sprint, the new App feature must be deployed in Production as is.
+
+- Check `here <https://clouddocs.f5.com/cloud-services/latest/f5-cloud-services-Essential.App.Protect-Details.html#attack-signatures>`_ the risk level associate to signature 200009283
+
+.. image:: ./_pictures/AWAF_Risk.png
+   :align: center
+   :width: 600
+   :alt: https://techdocs.f5.com/en-us/bigip-15-1-0/big-ip-asm-attack-and-bot-signatures/assigning-attack-signatures-to-security-policies.html
+
+- Append a ``modification`` block in order to disable signature 200009283
+
+.. code-block:: json
+    :emphasize-lines: 107-121
+
+    {
+        "policy":
+        {
+            "name": "policy_name",
+            "template":
+            {
+                "name": "POLICY_TEMPLATE_NGINX_BASE"
+            },
+            "applicationLanguage": "utf-8",
+            "enforcementMode": "blocking",
+            "server-technologies":
+            [
+                {
+                    "serverTechnologyName": "Nginx"
+                },
+                {
+                    "serverTechnologyName": "Node.js"
+                },
+                {
+                    "serverTechnologyName": "Python"
+                }
+            ],
+            "bot-defense":
+            {
+                "settings":
+                {
+                    "isEnabled": true
+                },
+                "mitigations":
+                {
+                    "classes":
+                    [
+                        {
+                            "name": "trusted-bot",
+                            "action": "alarm"
+                        },
+                        {
+                            "name": "untrusted-bot",
+                            "action": "alarm"
+                        },
+                        {
+                            "name": "malicious-bot",
+                            "action": "block"
+                        }
+                    ]
+                }
+            },
+            "urls":
+            [
+                {
+                    "name": "/admin*",
+                    "wildcardOrder": 0,
+                    "protocol": "https",
+                    "type": "wildcard",
+                    "attackSignaturesCheck": true,
+                    "metacharsOnUrlCheck": true,
+                    "isAllowed": false
+                }
+            ],
+            "filetypes":
+            [
+                {
+                    "name": "md",
+                    "wildcardOrder": 0,
+                    "allowed": false
+                }
+            ],
+            "whitelist-ips":
+            [
+                {
+                    "blockRequests": "always",
+                    "ipAddress": "1.1.1.1",
+                    "ipNetmask": "255.255.255.255"
+                }
+            ],
+            "blocking-settings":
+            {
+                "violations":
+                [
+                    {
+                        "name": "VIOL_FILETYPE",
+                        "alarm": true,
+                        "block": true
+                    },
+                    {
+                        "name": "VIOL_URL",
+                        "block": true,
+                        "alarm": true
+                    },
+                    {
+                        "name": "VIOL_BLACKLISTED_IP",
+                        "block": true,
+                        "alarm": true
+                    }
+                ]
+            },
+            "response-pages":
+            [
+                {
+                    "responseContent": "<html><head><title>NGINX workshop</title></head><body><h1>Blocking page</h1><br><br>Support = <%TS.request.ID()%></body></html>",
+                    "responseHeader": "HTTP/1.1 200 OK\r\nConnection: close",
+                    "responseActionType": "custom",
+                    "responsePageType": "default"
+                }
+            ]
+        },
+        "modifications":
+        [
+            {
+                "entityType": "signature",
+                "entity":
+                {
+                    "signatureId": 200001475
+                },
+                "entityChanges":
+                {
+                    "enabled": false
+                },
+                "action": "add-or-update"
+            }
+        ]
+    }
+
+*extra time* :
+As describe in `Exercise 7 <https://f5-k8s-ctfd.docs.emea.f5se.com/en/latest/class6/module2/module2.html#exercise-7-standard-and-app-specific-policy>`_,
+create a new strategy and attach it to component
 
 
