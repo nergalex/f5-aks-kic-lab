@@ -53,12 +53,12 @@ Exercise 1: Scale Out
               value: '10.0.0.12:443'
 
 - Note the value of Controller's Instance-Group to be registered
-- In NGINX Controller, login as SuperNetOps
+- In `NGINX Controller <https://nginxctrl1.eastus2.cloudapp.azure.com>`_, login as SuperNetOps
 
     - email:  supernetops@f5cloudbuilder.dev
     - password: NGINXC0ntroller!
 
-- User Role of a SuperNetOps allow a user to view, create and delete any instance-groups (FULL authorization)
+- User Role of a SuperNetOps allows a user to view, create and delete any instance-groups (FULL authorization)
 - Check if you see POD names of your Kubernetes cluster {{site_ID}}
 
 .. image:: ./_pictures/Controller_instances_show.png
@@ -196,12 +196,12 @@ Multi-Tenancy
 Exercise 3: Super NetOps
 =============================================
 
-User Role "SuperNetOps" allow user:
+User Role "SuperNetOps" allows user:
 
     - to manage NGINX App Protect instances (FULL authorization)
     - to view all Services (READ authorization)
 
-- In NGINX Controller, login as SuperNetOps
+- In `NGINX Controller <https://nginxctrl1.eastus2.cloudapp.azure.com>`_, login as SuperNetOps
 
     - email:  supernetops@f5cloudbuilder.dev
     - password: NGINXC0ntroller!
@@ -218,13 +218,13 @@ User Role "SuperNetOps" allow user:
 Exercise 4: Super SecOps
 ============================================
 
-User Role "SuperSecOps" allow user:
+User Role "SuperSecOps" allows user:
 
     - to manage all WAF policies (FULL authorization)
     - to view all Services (READ authorization)
 
 
-- In NGINX Controller, login as SuperSecOps
+- In `NGINX Controller <https://nginxctrl1.eastus2.cloudapp.azure.com>`_, login as SuperSecOps
 
     - email:  supersecops@f5cloudbuilder.dev
     - password: NGINXC0ntroller!
@@ -242,12 +242,12 @@ User Role "SuperSecOps" allow user:
 Exercise 5: DevOps
 ============================================
 
-User Role "DevOps" allow user:
+User Role "DevOps" allows user:
 
     - to manage (FULL authorization) his applications inside his own environment {{ site_ID }} only
     - to view all WAF policies (READ authorization)
 
-- In NGINX Controller, login as DevOps owner of your site
+- In `NGINX Controller <https://nginxctrl1.eastus2.cloudapp.azure.com>`_, login as DevOps owner of your site
 
     - email:  devops{{ site_ID }}@f5cloudbuilder.dev
     - password: NGINXC0ntroller!
@@ -339,7 +339,7 @@ If SecOps doesn't have time to specify a standard WAF policy, a good way is to
     3. enable policy in Blocking mode after few weeks in Production
     4. disable matched Signatures in case of complain from legitimate user
 
-- In NGINX Controller, login as DevOps owner of your site
+- In `NGINX Controller <https://nginxctrl1.eastus2.cloudapp.azure.com>`_, login as DevOps owner of your site
 
     - email:  devops{{ site_ID }}@f5cloudbuilder.dev
     - password: NGINXC0ntroller!
@@ -596,7 +596,7 @@ and all details in the `Schema reference <https://docs.nginx.com/nginx-app-prote
 
 - save this policy in a file locally
 
-- In NGINX Controller, login as SuperSecOps
+- In `NGINX Controller <https://nginxctrl1.eastus2.cloudapp.azure.com>`_, login as SuperSecOps
 
     - email:  supersecops@f5cloudbuilder.dev
     - password: NGINXC0ntroller!
@@ -610,7 +610,7 @@ and all details in the `Schema reference <https://docs.nginx.com/nginx-app-prote
    :width: 500
    :alt: Import OK
 
-- In NGINX Controller, login as DevOps owner of your site
+- In `NGINX Controller <https://nginxctrl1.eastus2.cloudapp.azure.com>`_, login as DevOps owner of your site
 
     - email:  devops{{ site_ID }}@f5cloudbuilder.dev
     - password: NGINXC0ntroller!
@@ -726,7 +726,7 @@ Exercise 8: Update a policy widely
 
 - save this policy in a file locally
 
-- In NGINX Controller, login as SuperSecOps
+- In `NGINX Controller <https://nginxctrl1.eastus2.cloudapp.azure.com>`_, login as SuperSecOps
 
     - email:  supersecops@f5cloudbuilder.dev
     - password: NGINXC0ntroller!
