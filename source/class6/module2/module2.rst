@@ -11,7 +11,7 @@ This lab demonstrates the value added feature of NGINX App Protect managed by Co
 
 - **Life Cycle Management**
 
-    - **Scaling policy**: Scale In / Scale Out using native Kubernetes feature
+    - **Scaling Policy**: manual or auto Scale In / Scale Out using native Kubernetes features
     - **Upgrade**: Do Rolling Upgrade of NGINX App Protect instances using native Kubernetes feature
     - **Security Update**: Update the signatures and threats using Kubernetes Rolling Upgrade
 
@@ -30,7 +30,7 @@ This lab demonstrates the value added feature of NGINX App Protect managed by Co
 Life Cycle Management
 *********************************************
 
-Exercise 1: Scale Out
+Exercise 1: Scaling Policy
 ============================================
 - In Lens, edit Deployment of NGINX App Protect instances:  ``Workloads`` **>** ``Deployments`` **>** ``NameSpace: waap-managed`` **>** ``nginx-appprotect``
 
@@ -80,7 +80,7 @@ Exercise 1: Scale Out
    :width: 900
    :alt: Show instance > Services
 
-- In Lens, scale out Deployment of NGINX App Protect to 3 replicas (instances)
+- In Lens, manually scale out Deployment of NGINX App Protect to 3 replicas (instances)
 
 .. image:: ./_pictures/Lens_Deployment_Scale_3.png
    :align: center
@@ -88,6 +88,28 @@ Exercise 1: Scale Out
    :alt: Scale Out
 
 - In Controller, see the instance registered in instance-group ``lab_k8s_{{site_ID}}``
+
+- In Lens, go to the auto-scaling policy in ``Configuration`` **>** ``HPA`` (*Horizontal Pod Autoscaler*)
+
+.. image:: ./_pictures/Lens_HPA.png
+   :align: center
+   :width: 900
+   :alt: Scaling Policy
+
+- HPA will increase and decrease the number of replicas (via the deployment) to maintain an average CPU utilization across all Pods of 80%. See `here <https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#algorithm-details>`_ for more details on the algorithm.
+
+_______________________________________________________________________
+
+**Capture The Flag**
+
+    **1.1 What is the threshold of CPU usage that raises a Scale Out?**
+
+_______________________________________________________________________
+
+- Go back after 300 seconds, you will see 2 running replicas. See `here <https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#default-behavior>`_ for more details on the default behavior.
+
+    *Note*: in Controller v4, Scale In action will also unregister instance on POD termination. Today, the instance is still present and viewed as *offline*.
+
 
 Exercise 2: Upgrade Signatures
 ============================================
