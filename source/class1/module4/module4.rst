@@ -60,7 +60,23 @@ Logging into your lab System:
 .. image:: ./_pictures/Lens_add_cluster.png
    :align: center
    :width: 800
-   :alt: K8S cluster
+   :alt: add K8S cluster
+
+- Edit cluster settings
+
+.. image:: ./_pictures/Lens_get_cluster.png
+   :align: center
+   :width: 900
+   :alt: set K8S cluster settings
+
+- Edit ``metrics``:
+    - PROMETHEUS: ``Prometheus Operator``
+    - PROMETHEUS SERVICE ADDRESS: ``monitoring/prometheus-kube-prometheus-prometheus:9090``
+
+.. image:: ./_pictures/Lens_set_prometheus.png
+   :align: center
+   :width: 500
+   :alt: set PROMETHEUS setting
 
 - Connect to cluster
 
