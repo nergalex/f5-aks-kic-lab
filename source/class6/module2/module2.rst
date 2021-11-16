@@ -246,7 +246,7 @@ User Role "SuperSecOps" allows user:
     - to view all Services (READ authorization)
 
 
-- In `NGINX Controller <https://nginxctrl1.eastus2.cloudapp.azure.com>`_, login as SuperSecOps
+- In `NGINX Controller <https://nginxctrl1.eastus2.cloudapp.azure.com>`_, login as SuperSecOps in a different web browser if you can
 
     - email:  supersecops@f5cloudbuilder.dev
     - password: NGINXC0ntroller!
@@ -313,7 +313,7 @@ User Role "DevOps" allows user:
    :width: 800
    :alt: User Role DevOps
 
-- In case of an Application based on micro-services, teams works on different Components. For example, Sentence API is have different micro-services:
+- In case of an Application based on micro-services, teams works on different Components. For example, Sentence API has different micro-services:
 
 .. image:: ./_pictures/Controller-object-relationship.svg
    :align: center

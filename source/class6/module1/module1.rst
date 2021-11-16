@@ -29,7 +29,7 @@ This design allows Operational Security team (SecOps) to have across subscriptio
     - **Consistency**: standard security policies
     - **Simplicity**: standard security policies available in a catalog consumed by Operational Developer team (DevOps) responsible to publish applications
     - **Visibility** of Security events in order to understand the threat that targets widely the company or a specific application
-    - **Reactivity**: when SecOps `Decides <https://en.wikipedia.org/wiki/OODA_loop>`_ to mitigate an `Observed <https://en.wikipedia.org/wiki/OODA_loop>`_ threat, stop a lateral movement that exploit a CVE for example, SecOps have to act quickly and widely by updating a standard seciurity policy that will apply to all protected applications
+    - **Reactivity**: when SecOps `Decides <https://en.wikipedia.org/wiki/OODA_loop>`_ to mitigate an `Observed <https://en.wikipedia.org/wiki/OODA_loop>`_ threat, stop a lateral movement that exploit a CVE for example, SecOps have to act quickly and widely by updating a standard security policy that will apply to all protected applications
 
 This design was approved by DevOps and `SRE team <https://sre.google/>`_ because they also find value added propositions:
 
