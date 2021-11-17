@@ -7,7 +7,7 @@ Breaking room
    :alt: Coffee time
 
 
-        **Grab a cup of coffee and play with us in** `this room <http://powerline.io/#2cbw>`_
+**Grab a cup of coffee and play with us in** `this room <http://powerline.io/#2cbw>`_
 
 
 
