@@ -689,7 +689,7 @@ and all details in the `Schema reference <https://docs.nginx.com/nginx-app-prote
 
 .. image:: ./_pictures/Controller_service_component_security_event_logs.png
    :align: center
-   :width: 900
+   :width: 1100
    :alt: Import OK
 
 Exercise 8: Update a policy widely
@@ -707,12 +707,11 @@ SecOps needs **Enhance Security** by enable bot defense due to a Web Scrapping a
 - in ``settings``, enable anti-bot
 - in ``mitigations``, raise an ``alarm`` for bots that belong to  ``classes`` named ``trusted-bot`` and ``untrusted-bot`` ;
 - ``block`` bots that does not succeed the validation challenge, i.e. the  class named ``malicious-bot`` ;
-- in ``response-pages``, define your own response page ;
 
 *output*
 
 .. code-block:: json
-    :emphasize-lines: 23-47,97-105
+    :emphasize-lines: 23-47
 
     {
         "policy":
@@ -842,7 +841,7 @@ SecOps needs **Enhance Security** by enable bot defense due to a Web Scrapping a
 
 .. image:: ./_pictures/Controller_service_component_security_event_log_bot.png
    :align: center
-   :width: 900
+   :width: 1100
    :alt: Fake googlebot blocked
 
 Exercise 9: False Positive > Update a specific policy
@@ -858,7 +857,7 @@ For this current Sprint, the new App feature must be deployed in Production as i
 
 .. image:: ./_pictures/AWAF_Risk.png
    :align: center
-   :width: 600
+   :width: 700
    :alt: https://techdocs.f5.com/en-us/bigip-15-1-0/big-ip-asm-attack-and-bot-signatures/assigning-attack-signatures-to-security-policies.html
 
 - Append a ``modification`` block in order to disable signature 200009283
