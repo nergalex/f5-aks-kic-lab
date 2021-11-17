@@ -36,7 +36,7 @@ Exercise 1: Scaling Policy
 
 .. image:: ./_pictures/Lens_Deployment_show.png
    :align: center
-   :width: 900
+   :width: 1000
    :alt: Show instances
 
 - Scroll to see the environment variable when a POD starts

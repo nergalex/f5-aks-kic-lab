@@ -1,7 +1,7 @@
 Architecture
 #################################################################
 
-.. image:: ./_pictures/logical_data_path.svg
+.. image:: ./_pictures/logical_data_path.png
    :align: center
    :width: 900
    :alt: Application design
@@ -19,9 +19,9 @@ This design allows to published application on Internet directly secured by a In
 
 Those *strategic point of control* are controlled centrally by a Controller (NGINX Controller), as a Out of Band Control-Plane.
 
-.. image:: ./_pictures/oob_controller.svg
+.. image:: ./_pictures/oob_controller.png
    :align: center
-   :width: 900
+   :width: 1000
    :alt: Architecture Security
 
 This design allows Operational Security team (SecOps) to have across subscription:
@@ -52,9 +52,9 @@ and then dynamically reconfigure itself.
 
 In this lab, containerized Ingress instances are managed and configured by remote Controller.
 
-.. image:: ./_pictures/sentence_config_Controller.svg
+.. image:: ./_pictures/sentence_config_Controller.png
    :align: center
-   :width: 900
+   :width: 1000
    :alt: Controller config
 
 Why? NGINX Controller eliminates friction by enforcing security throughout the application lifecycle without slowing developers down.
@@ -71,9 +71,9 @@ it will be the intent of Lab 6.
 In this lab, DevOps decided to use a dedicated API GW deployed as an Ingress Controller inside the application's NameSpace ``sentence-api``.
 The picture below shows configuration Kubernetes objects.
 
-.. image:: ./_pictures/sentence_k8s_config.svg
+.. image:: ./_pictures/sentence_k8s_config.png
    :align: center
-   :width: 900
+   :width: 1000
    :alt: K8S config
 
 In `lab4 <https://f5-k8s-ctfd.docs.emea.f5se.com/en/latest/class5/module1/module1.html#micro-proxy-api-gw>`_,
@@ -88,9 +88,9 @@ Application design
 
 - **traditional Web Browser** that access frontend web servers
 
-.. image:: ./_pictures/sentence-front-flow.svg
+.. image:: ./_pictures/sentence-front-flow.png
    :align: center
-   :width: 900
+   :width: 1000
    :alt: Sentence flow - legacy web browser
 
 
@@ -100,9 +100,9 @@ Frontend web servers make an API call to a micro-service named "generator" that 
 - **Mobile App and modern Web Browser** that are computing the page rendering on end-user device and make lightweight API calls directly to API micro-services (colors, adjectives...)
 
 
-.. image:: ./_pictures/sentence-api-flow.svg
+.. image:: ./_pictures/sentence-api-flow.png
    :align: center
-   :width: 900
+   :width: 1000
    :alt: Sentence flow - mobile app and modern web browser
 
 Application centric pricing
