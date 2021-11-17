@@ -108,7 +108,7 @@ _______________________________________________________________________
 
 - Go back after 300 seconds, you will see 2 running replicas. See `here <https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#default-behavior>`_ for more details on the default behavior.
 
-    *Note*: in Controller v4, Scale In action will also unregister instance on POD termination. Today, the instance is still present and viewed as *offline*.
+*Note*: in Controller v4, Scale In action will also unregister instance on POD termination. Today, the instance is still present and viewed as *offline*.
 
 
 Exercise 2: Upgrade Signatures
@@ -168,8 +168,8 @@ _______________________________________________________________________
 
     sudo yum --showduplicates list app-protect-threat-campaigns
 
-- Go to ``Workloads`` **>** ``Deployments`` **>** ``NameSpace: waap-managed`` **>** ``nginx-appprotect``
-- Update specification using latest image of NGINX App Protect
+- Go to ``Workloads`` **>** ``Deployments`` **>** ``NameSpace: waap-managed`` **>** ``nginx-appprotect`` **>** *Edit*
+- Update specification using latest image of NGINX App Protect (use CTRL+F on word *image*)
 
 .. code-block:: json
     :emphasize-lines: 8
@@ -477,6 +477,7 @@ Use `this tool <https://waffler.dev/prod/>`_ to discover how to create a basic D
 - In ``File Types``, add filetype ``md``
 - In ``Blocking Settings``, enable violation ``Illegal URL``
 - In ``URLs``, add wildcard url ``/admin*``
+- In ``Blocking Settings``, enable violation ``IP is in the deny list``
 - In ``whitelist-ips``, add a public ip address and ``always`` block it
 
 *output*
@@ -543,6 +544,11 @@ Use `this tool <https://waffler.dev/prod/>`_ to discover how to create a basic D
               "name": "VIOL_URL",
               "block": true,
               "alarm": true
+            },
+            {
+              "name": "VIOL_BLACKLISTED_IP",
+              "block": true,
+              "alarm": true
             }
           ]
         }
@@ -559,11 +565,13 @@ and all details in the `Schema reference <https://docs.nginx.com/nginx-app-prote
 - disallow filetype using ``allowed`` key with value ``false``
 - go to `specification of urls key <https://docs.nginx.com/nginx-app-protect/policy/#policy/urls>`_
 - disallow url using ``allowed`` key with value ``false``
+- go to `specification of response page <https://docs.nginx.com/nginx-app-protect/policy/#policy/response-pages>`_
+- define you own ``responseContent`` as shown at the end dof the JSON example below
 
 *output*
 
 .. code-block:: json
-    :emphasize-lines: 34,41
+    :emphasize-lines: 32,40,72-80
 
     {
         "policy":
