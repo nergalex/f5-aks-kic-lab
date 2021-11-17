@@ -1,18 +1,15 @@
-Breaking room
+future lab | Application Delivery Network
 ##############################################################
 
-.. image:: ./_pictures/wbr-Controller-and-Coffee-wbr-tv-500x376-1.png
-   :align: center
-   :width: 400
-   :alt: Coffee time
+This lab describes how to :
 
-.. class:: center
+- simplify **internal API** consumption through K8S clusters hosted in multi Cloud Service Providers and On Prem / private Cloud using `VoltMesh <https://www.volterra.io/products/voltmesh>`_
+- publish **API** and PODs closest to consumers with `VoltStack <https://www.volterra.io/products/voltstack>`_.
 
-    **Grab a cup of coffee and play with us in** `this room <http://powerline.io/#2cbw>`_
+.. toctree::
+   :maxdepth: 1
+   :glob:
+
+   module*/module*
 
 
-
-.. image:: ./_pictures/powerline.png
-   :align: center
-   :width: 500
-   :alt: powerline
