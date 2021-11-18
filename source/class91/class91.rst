@@ -10,7 +10,7 @@ Breaking room
 
 - Choose your **20$ gift** in `our store <https://swag-nginx.com/>`_
 
-- Then meet us in `this room <http://powerline.io/#2cbw>`_ to play: Good Luck and **Have Fun!**
+- Then meet us in `this room <http://powerline.io/#2clc>`_ to play: Good Luck and **Have Fun!**
 
 
 
