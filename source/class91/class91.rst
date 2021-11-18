@@ -12,7 +12,3 @@ Breaking room
 
 - Then meet us in `this room <http://powerline.io/#2clc>`_ to play: Good Luck and **Have Fun!**
 
-
-
-
-
