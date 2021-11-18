@@ -6,11 +6,11 @@ Breaking room
    :width: 400
    :alt: Coffee time
 
+    - **Grab a cup of coffee**
 
-**Grab a cup of coffee and play with us in** `this room <http://powerline.io/#2cbw>`_
+    - **Choose your 20$ gift in** `our store <https://swag-nginx.com/>`_
 
-
-
+    - **Then meet us in** `this room <http://powerline.io/#2cbw>`_ **to play: Good Luck and Have Fun!**
 
 
 
