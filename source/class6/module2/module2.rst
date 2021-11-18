@@ -108,9 +108,6 @@ _______________________________________________________________________
 
 - Go back after 300 seconds, you will see 2 running replicas. See `here <https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#default-behavior>`_ for more details on the default behavior.
 
-*Note*: in Controller v4, Scale In action will also unregister instance on POD termination. Today, the instance is still present and viewed as *offline*.
-
-
 Exercise 2: Upgrade Signatures
 ============================================
 
