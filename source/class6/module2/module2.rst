@@ -681,7 +681,7 @@ and all details in the `Schema reference <https://docs.nginx.com/nginx-app-prote
 
 - Go to ``Services`` **>** ``Apps`` **>** ``sentence-front-managed{{ site_ID }}.f5app.dev`` **>** ``Components`` **>** ``frontend``
 - Click on ``Edit component`` **>** ``Security``
-- Choose Security Strategy: ``lab5_site{{site_ID}}``
+- Choose Security Strategy: ``lab5_site{{site_ID}}``  then ``Submit``
 - On your browser, check that URLs below are blocked and retrieve ``support ID`` in Security events on Controller:
 
 .. code-block:: bash
@@ -994,4 +994,161 @@ For this current Sprint, the new App feature must be deployed in Production as i
 As describe in `Exercise 7 <https://f5-k8s-ctfd.docs.emea.f5se.com/en/latest/class6/module2/module2.html#exercise-7-standard-and-app-specific-policy>`_,
 create a new strategy and attach it to component
 
+Extra time: API Protection
+=====================================================
 
+Sentence API is wide opened on Internet, please do something to protect it!
+Developpers have saved their API specification in `this repository <https://github.com/nergalex/f5-nap-policies/blob/master/policy/open-api-files/sentence-api.f5app.dev.yaml>`_
+
+- Create a local file on your computer
+- Copy paste the policy below.
+
+*Note* Only the emphasize lines are specific for each API Protection policy, the others are generic (source: ``NGINX App Protect API Security template Policy`` file)
+
+.. code-block:: json
+    :emphasize-lines: 4,6,108-113
+
+    {
+        "policy":
+        {
+            "name": "sentence-api",
+            "description": "Based on NGINX App Protect API Security template Policy",
+            "enforcementMode": "blocking",
+            "template":
+            {
+                "name": "POLICY_TEMPLATE_NGINX_BASE"
+            },
+            "urls":
+            [
+                {
+                    "name": "/_codexch",
+                    "type": "explicit",
+                    "isAllowed": true,
+                    "wildcardOrder": 0,
+                    "attackSignaturesCheck": false,
+                    "metacharsOnUrlCheck": false
+                }
+            ],
+            "blocking-settings":
+            {
+                "violations":
+                [
+                    {
+                        "block": true,
+                        "description": "Disallowed file upload content detected in body",
+                        "name": "VIOL_FILE_UPLOAD_IN_BODY"
+                    },
+                    {
+                        "block": true,
+                        "description": "Mandatory request body is missing",
+                        "name": "VIOL_MANDATORY_REQUEST_BODY"
+                    },
+                    {
+                        "block": true,
+                        "description": "Illegal parameter location",
+                        "name": "VIOL_PARAMETER_LOCATION"
+                    },
+                    {
+                        "block": true,
+                        "description": "Mandatory parameter is missing",
+                        "name": "VIOL_MANDATORY_PARAMETER"
+                    },
+                    {
+                        "block": true,
+                        "description": "JSON data does not comply with JSON schema",
+                        "name": "VIOL_JSON_SCHEMA"
+                    },
+                    {
+                        "block": true,
+                        "description": "Illegal Base64 value",
+                        "name": "VIOL_PARAMETER_VALUE_BASE64"
+                    },
+                    {
+                        "block": true,
+                        "description": "Disallowed file upload content detected",
+                        "name": "VIOL_FILE_UPLOAD"
+                    },
+                    {
+                        "block": true,
+                        "description": "Illegal request content type",
+                        "name": "VIOL_URL_CONTENT_TYPE"
+                    },
+                    {
+                        "block": true,
+                        "description": "Illegal static parameter value",
+                        "name": "VIOL_PARAMETER_STATIC_VALUE"
+                    },
+                    {
+                        "block": true,
+                        "description": "Illegal parameter value length",
+                        "name": "VIOL_PARAMETER_VALUE_LENGTH"
+                    },
+                    {
+                        "block": true,
+                        "description": "Illegal parameter data type",
+                        "name": "VIOL_PARAMETER_DATA_TYPE"
+                    },
+                    {
+                        "block": true,
+                        "description": "Illegal parameter numeric value",
+                        "name": "VIOL_PARAMETER_NUMERIC_VALUE"
+                    },
+                    {
+                        "block": true,
+                        "description": "Illegal URL",
+                        "name": "VIOL_URL"
+                    },
+                    {
+                        "block": true,
+                        "description": "Illegal parameter",
+                        "name": "VIOL_PARAMETER"
+                    },
+                    {
+                        "block": true,
+                        "description": "Illegal empty parameter value",
+                        "name": "VIOL_PARAMETER_EMPTY_VALUE"
+                    },
+                    {
+                        "block": true,
+                        "description": "Illegal repeated parameter name",
+                        "name": "VIOL_PARAMETER_REPEATED"
+                    }
+                ]
+            },
+            "open-api-files":
+            [
+                {
+                    "link": "https://raw.githubusercontent.com/nergalex/f5-nap-policies/master/policy/open-api-files/sentence-api.f5app.dev.yaml"
+                }
+            ]
+        }
+    }
+
+- In `NGINX Controller <https://nginxctrl1.eastus2.cloudapp.azure.com>`_, login as SuperSecOps
+
+    - email:  supersecops@f5cloudbuilder.dev
+    - password: NGINXC0ntroller!
+
+- Go to ``Services`` **>** ``Security Strategies``
+- Create a strategy named ``lab5_site{{site_ID}}_api`` that reference a policy named also ``lab5_site{{site_ID}}_api``
+- Import your file and check if JSON syntax is *green*
+
+- In `NGINX Controller <https://nginxctrl1.eastus2.cloudapp.azure.com>`_, login as DevOps owner of your site
+
+    - email:  devops{{ site_ID }}@f5cloudbuilder.dev
+    - password: NGINXC0ntroller!
+
+- Go to ``Services`` **>** ``Apps`` **>** ``sentence-api-managed{{ site_ID }}.f5app.dev`` **>** ``Components``
+
+*ToDo* Remove all components during creation and create only one named "main" based on '/'
+
+- Delete all components except name
+- Click on ``Edit component`` **>** ``URIs`` **>** ``/name`` and rename uri as ``/``
+- Click on ``Edit component`` **>** ``Security``
+- Choose Security Strategy: ``lab5_site{{site_ID}}_api`` then ``Submit``
+- On your browser, check that URLs below are blocked and retrieve ``support ID`` in Security events on Controller:
+
+.. code-block:: bash
+
+    https://sentence-front-api{{site_ID}}.f5app.dev/README.md
+    https://sentence-front-api{{site_ID}}.f5app.dev/admin
