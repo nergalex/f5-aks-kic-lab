@@ -995,7 +995,7 @@ As describe in `Exercise 7 <https://f5-k8s-ctfd.docs.emea.f5se.com/en/latest/cla
 create a new strategy and attach it to component
 
 Extra time: API Protection
-=====================================================
+*********************************************
 
 Sentence API is wide opened on Internet, please do something to protect it!
 Developpers have saved their API specification in `this repository <https://github.com/nergalex/f5-nap-policies/blob/master/policy/open-api-files/sentence-api.f5app.dev.yaml>`_
@@ -1003,7 +1003,7 @@ Developpers have saved their API specification in `this repository <https://gith
 - Create a local file on your computer
 - Copy paste the policy below.
 
-*Note* Only the emphasize lines are specific for each API Protection policy, the others are generic (source: ``NGINX App Protect API Security template Policy`` file)
+**Note** Only the emphasize lines are specific for each API Protection policy, the others are generic (source: ``NGINX App Protect API Security template Policy`` file)
 
 .. code-block:: json
     :emphasize-lines: 4,6,108-113
