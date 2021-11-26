@@ -59,6 +59,15 @@ Exercise 1: Scaling Policy
     - password: NGINXC0ntroller!
 
 - User Role of a SuperNetOps allows a user to view, create and delete any instance-groups (FULL authorization)
+
+- Click on ``N`` on the top left in order to switch to menu ``infrastructure``
+
+.. image:: ./_pictures/Controller_switch_menu.png
+   :align: center
+   :width: 900
+   :alt: Switch menu
+
+- Click ``Instance Groups``
 - Check if you see POD names of your Kubernetes cluster {{site_ID}}
 
 .. image:: ./_pictures/Controller_instances_show.png
@@ -80,28 +89,31 @@ Exercise 1: Scaling Policy
    :width: 900
    :alt: Show instance > Services
 
-- In Lens, manually scale out Deployment of NGINX App Protect to 3 replicas (instances)
+- In Lens, you COULD manually scale out Deployment of NGINX App Protect instances BUT do not do that because an auto-scaling policy is in place
 
 .. image:: ./_pictures/Lens_Deployment_Scale_3.png
    :align: center
    :width: 800
    :alt: Scale Out
 
-- In Controller, see the instance registered in instance-group ``lab_k8s_{{site_ID}}``
-
-- In Lens, go to the auto-scaling policy in ``Configuration`` **>** ``HPA`` (*Horizontal Pod Autoscaler*)
+- *Horizontal Pod Autoscaler* (HPA) manage the auto-scaling policy. Here, HPA is configured to maintain an average CPU utilization across all Pods less than 80%. See `here <https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#algorithm-details>`_ for more details on the algorithm.
+- In Lens, go to ``Configuration`` **>** ``HPA`` (*Horizontal Pod Autoscaler*)
 
 .. image:: ./_pictures/Lens_HPA.png
    :align: center
    :width: 900
    :alt: Scaling Policy
 
-- HPA will increase and decrease the number of replicas (via the deployment) to maintain an average CPU utilization across all Pods of 80%. See `here <https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#algorithm-details>`_ for more details on the algorithm.
+- Set ``minReplicas`` value to `3` then click on *Save & Close*
+
+- HPA will increase the number of replicas (via the deployment)
 
 .. image:: ./_pictures/Lens_HPA_scale_in.png
    :align: center
    :width: 900
    :alt: Scale In event
+
+- In Controller, see the new instance registered in instance-group ``lab_k8s_{{site_ID}}``
 
 _______________________________________________________________________
 
