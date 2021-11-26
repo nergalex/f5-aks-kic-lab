@@ -19,7 +19,7 @@ This lab demonstrates the value added feature of NGINX App Protect managed by Co
 
     - **Segregation**: Isolate user roles (DevOps, NetOps, SecOps)
     - **DevOps Self-Service**: Deploy an application consuming a Security policy available in a catalog
-    - **Visibility**: Define Service Level Indicators (SLI) and Define Service Objectives (SLO)
+    - **Visibility**: Define Service Level Indicators (SLI) and Service Level Objectives (SLO)
 
 - **False Positive Management**
 
