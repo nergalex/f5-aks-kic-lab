@@ -62,6 +62,13 @@ Logging into your lab System:
    :width: 800
    :alt: add K8S cluster
 
+- If you see any charts for CPU, Memory as shown in the picture below, stop here. If **not**, you are running an older version of Lens, so continue further steps.
+
+.. image:: ./_pictures/Lens_charts.png
+   :align: center
+   :width: 800
+   :alt: Metrics
+
 - Edit cluster settings
 
 .. image:: ./_pictures/Lens_get_cluster.png
