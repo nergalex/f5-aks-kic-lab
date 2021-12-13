@@ -107,7 +107,7 @@ Partner API access
 Flows 2-7: Functional view
 =============================================
 
-Partner API access enable OpenID Connect integration for NGINX Plus as described `here <https://github.com/fchmainy/nginx-aks-demo/blob/main/Docker/generator-via-api-gw/generator.py#L57>`_.
+Partner API access enable OpenID Connect integration for NGINX Plus as described `here <https://github.com/nginxinc/nginx-openid-connect>`_.
 
 .. image:: ./_pictures/OIDC_overview.svg
    :align: center
