@@ -110,9 +110,9 @@ Logging into your lab System:
 *********************
 The architecture of labs shows `microservices <https://docs.microsoft.com/en-us/azure/architecture/microservices/>`_ application deployed to Azure Kubernetes Service (AKS).
 It uses a basic AKS configuration that can be the starting point for most deployments.
-Participating to this lab assumes basic knowledge of Kubernetes.
+Participating to this lab assumes a basic knowledge of Kubernetes as described in this `Kubernetes Networking 101 <https://www.nginx.com/blog/kubernetes-networking-101/>`_ lesson.
 
-Please read `this article <https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/containers/aks-microservices/aks-microservices>`_ that introduce you to infrastructure and DevOps considerations of running a microservices architecture on AKS.
+Optionaly, you can also read `this article <https://docs.microsoft.com/en-us/azure/architecture/reference-architectures/containers/aks-microservices/aks-microservices>`_ that introduce you to infrastructure and DevOps considerations of running a microservices architecture on AKS.
 
 Kubernetes components
 =====================
