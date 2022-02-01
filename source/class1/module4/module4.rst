@@ -103,7 +103,7 @@ Logging into your lab System:
 *********************
 - Share your Public IP address to F5 instructor using `monip.io <https://monip.io/>`_
 - F5 instructor will allow your Public IP
-- Connect to `NGINX Controller <https://nginxctrl1.eastus2.cloudapp.azure.com>`_
+- Connect to `NGINX Controller <https://nginxctrl2.eastus2.cloudapp.azure.com>`_
 - Login / Password: devops{{ site_ID }}@f5cloudbuilder.dev / NGINXC0ntroller!
 
 7. Knowledge
