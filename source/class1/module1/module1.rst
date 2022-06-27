@@ -66,11 +66,13 @@ Side Car Proxy - Secured API GW GW on a Per‑Pod Basis
    :alt: Side Car Proxy
 
 Finally, you may also deploy an API GW in a Pod, acting as an ingress proxy for the application running in the Pod.
-In this case, the API GW effectively becomes part of the application.
-This deployment supports only configuration applied in ``nginx.conf``, i.e. not Kubernetes API.
+In this case, the API GW effectively **becomes part of the application**.
 
 Deploying a WAF as a Per‑Pod Basis allows easily to bind the security policy and the application closely together,
 for example so that the application is deployed with the WAF policy at all points in the development pipeline
-and API Security policy imports the OpenAPI spec file of the current build release of the application.
+and API Security policy imports the **OpenAPI spec file of the current build release of the application**.
+
+This deployment supports only configuration applied in ``nginx.conf``, i.e. not Kubernetes API.
+
 
 
