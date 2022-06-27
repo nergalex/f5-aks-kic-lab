@@ -19,8 +19,8 @@ Let’s take web application firewall (WAF) as an example.
 WAF policies implement advanced security measures to inspect and block undesirable traffic,
 but these policies often need to be fine‑tuned for specific applications in order to minimize the number of false positives.
 
-WAF on the Ingress Controller
-=========================================
+Edge Proxy - Secured API GW on the Ingress Controller
+=====================================================
 
 .. image:: ./_pictures/app-services-Kubernetes-pt2_Ingress-controller.png
    :align: center
@@ -42,8 +42,8 @@ and the **DevOps** team **responsible for the Ingress controller** can then assi
 The NGINX App Protect WAF module is deployed directly on the Ingress Controller.
 All WAF configuration is managed using *Ingress* resources [lab #3] or *VirtualServer(Route)* resources [lab #3-4], configured through the Kubernetes API.
 
-API GW on a Per‑Service Basis
-=========================================
+Micro Proxy - Secured API GW GW on a Per‑Service Basis
+======================================================
 
 .. image:: ./_pictures/app-services-Kubernetes-pt2_per-service.png
    :align: center
@@ -57,5 +57,20 @@ therefore that require an **API GW** with authentication based on **oAuth / Open
 This API GW is also used to publish one or more specific services **internally**, i.e. published to other PODs hosted into Kubernetes,
 that do not require a security policy but require **advanced delivery** features.
 
+Side Car Proxy - Secured API GW GW on a Per‑Pod Basis
+=====================================================
+
+.. image:: ./_pictures/app-services-Kubernetes-pt2_per-Pod.png
+   :align: center
+   :width: 600
+   :alt: Side Car Proxy
+
+Finally, you may also deploy an API GW in a Pod, acting as an ingress proxy for the application running in the Pod.
+In this case, the API GW effectively becomes part of the application.
+This deployment supports only configuration applied in ``nginx.conf``, i.e. not Kubernetes API.
+
+Deploying a WAF as a Per‑Pod Basis allows easily to bind the security policy and the application closely together,
+for example so that the application is deployed with the WAF policy at all points in the development pipeline
+and API Security policy imports the OpenAPI spec file of the current build release of the application.
 
 
