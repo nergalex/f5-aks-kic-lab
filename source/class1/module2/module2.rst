@@ -39,7 +39,7 @@ NGINX already implements `concepts of the Gateway API <https://gateway-api.sigs.
 VirtualServer(Route) aims to improve upon current standards like Ingress:
 
     - `Multi-Tenancy and Namespace Isolation in Kubernetes <https://www.nginx.com/blog/enabling-multi-tenancy-namespace-isolation-in-kubernetes-with-nginx/>`_: Gateway is composed of API resources which model organizational roles that use and configure Kubernetes service networking.
-    - `Expressive declaration <https://www.nginx.com/blog/migrating-from-community-ingress-controller-to-f5-nginx-ingress-controller/>`_: - Gateway API resources support core functionality for things like header-based matching, traffic weighting, and other capabilities that were only possible in Ingress through custom annotations.
+    - `Expressive declaration <https://www.nginx.com/blog/migrating-from-community-ingress-controller-to-f5-nginx-ingress-controller/>`_: - Gateway API resources support core functionality like header-based matching, traffic weighting, OIDC,... that were only possible in Ingress through custom annotations and snippets that makes manifests difficult to read, increase risk of error and time to repair.
     - `Load Balancing TCP and UDP Traffic <https://www.nginx.com/blog/load-balancing-tcp-and-udp-traffic-in-kubernetes-with-nginx/>`_: - Gateway API resources support core functionality for things like header-based matching, traffic weighting, and other capabilities that were only possible in Ingress through custom annotations.
 
 .. image:: ./_pictures/api-model.png
