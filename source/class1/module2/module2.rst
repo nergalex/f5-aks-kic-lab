@@ -35,12 +35,12 @@ NGINX is part of the Kubernetes Gateway API community,
 adding its leadership and vision to the future of Kubernetes Ingress,
 as explained by Mark Church (Product Manager at Google) in `this video <https://youtu.be/p51b6t5okCI?t=5888>`_.
 
-NGINX already implements `concepts of the Gateway API <https://gateway-api.sigs.k8s.io/>`_ in  `VirtualServer(Route) resources <https://docs.nginx.com/nginx-ingress-controller/configuration/virtualserver-and-virtualserverroute-resources/>`_.
+NGINX already implements the following design goals drive the `concepts of the Gateway API <https://gateway-api.sigs.k8s.io/>`_ in  `VirtualServer(Route) resources <https://docs.nginx.com/nginx-ingress-controller/configuration/virtualserver-and-virtualserverroute-resources/>`_.
 VirtualServer(Route) aims to improve upon current standards like Ingress:
 
-    - `Multi-Tenancy and Namespace Isolation in Kubernetes <https://www.nginx.com/blog/enabling-multi-tenancy-namespace-isolation-in-kubernetes-with-nginx/>`_: Gateway is composed of API resources which model organizational roles that use and configure Kubernetes service networking.
-    - `Expressive declaration <https://www.nginx.com/blog/migrating-from-community-ingress-controller-to-f5-nginx-ingress-controller/>`_: - Gateway API resources support core functionality for things like header-based matching, traffic weighting, and other capabilities that were only possible in Ingress through custom annotations.
-    - `Load Balancing TCP and UDP Traffic <https://www.nginx.com/blog/load-balancing-tcp-and-udp-traffic-in-kubernetes-with-nginx/>`_: - Along with HTTP traffic, NGINX Ingress Controller load balances TCP and UDP traffic, so you can use it to manage traffic for a wide range of apps and utilities based on those protocols.
+    - **Role-oriented** - Gateway is composed of API resources which model organizational roles that use and configure Kubernetes service networking.
+    - **Expressive** - Gateway API resources support core functionality for things like header-based matching, traffic weighting, and other capabilities that were only possible in Ingress through custom annotations.
+    - **Shared Gateways and cross-Namespace support** - They allow the sharing of load balancers and VIPs by permitting independent Route resources to attach to the same Gateway. This allows teams (even across Namespaces) to share infrastructure safely without direct coordination.
 
 .. image:: ./_pictures/api-model.png
    :align: center
