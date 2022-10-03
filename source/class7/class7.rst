@@ -9,7 +9,7 @@ This Lab shows a deployment of API GWs and Devportals managed by ACM and hosted 
 
 .. image:: ./_pictures/NMS_ACM_feature_view.svg
    :align: center
-   :width: 700
+   :width: 800
    :alt: NGINX API Connectivity Manager
 
 .. toctree::
