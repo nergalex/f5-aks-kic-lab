@@ -3,7 +3,7 @@ In Progress - Architecture
 
 .. image:: ./_pictures/functional_view_3_pillars.png
    :align: center
-   :width: 300
+   :width: 400
    :alt: Architecture 3 pillars
 
 .. contents:: Contents
@@ -46,7 +46,7 @@ A Developer Portal enables internal and external Producers to rapidly discover, 
 
 .. image:: ./_pictures/devportal.png
    :align: center
-   :width: 500
+   :width: 700
    :alt: NIM
 
 3) Control-Plane & Management-Plane | Central Manager
@@ -58,14 +58,15 @@ Central Manager is the product `NGINX Management Suite <https://www.nginx.com/bl
 
 .. image:: ./_pictures/NSM-Instance-Mgr_topology.png
    :align: center
-   :width: 500
+   :width: 600
    :alt: NIM
+
 
     2. **Management-Plane | API Connectivity Manager**: simplifies governance of API in your organization, delivers API across your NGINX fleet and enforce consistent API Security.
 
 .. image:: ./_pictures/NSM-API-Connectivity-Mgr_topology.png
    :align: center
-   :width: 500
+   :width: 600
    :alt: NCM
 
 
