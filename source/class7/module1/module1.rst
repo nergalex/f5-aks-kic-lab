@@ -3,7 +3,7 @@ In Progress - Architecture
 
 .. image:: ./_pictures/functional_view_3_pillars.png
    :align: center
-   :width: 700
+   :width: 500
    :alt: Architecture 3 pillars
 
 .. contents:: Contents
@@ -17,6 +17,26 @@ The F5 API Management solution includes 3 components:
 1) Data-Plane | API Gateways (GW)
 =============================================
 An API GW is a NGINX Plus instance that delivers microservices with reliability, speed and security across multiple environments (baremetal, VM, K8S container).
+
+.. image:: ./_pictures/API_GW.png
+   :align: center
+   :width: 500
+   :alt: API Gateway
+
+Key API Gateways Tasks:
+    - **Authenticate API calls** (AuthN): Control authentication with Basic Auth, OAuth 2.0/OIDC, JSON Web Tokens (JWT)
+    - **Control access to resources** (AuthZ): Use JSON Web Tokens (JWT), API keys
+    - **Route and manage API traffic**: Apply rate limiting, quotas, TLS and more to control and route traffic through the gateway
+    - **Gain visibility into API traffic**: Create logs for monitoring and visibility into API traffic
+
+*Why NGINX Plus?*
+
+Regarding Gigaom report `here<https://www.nginx.com/blog/benchmarking-api-management-solutions-nginx-kong-amazon-real-time-apis/>`_, N+ deliver APIs with lower latency and higher through-put than competitors
+
+.. image:: ./_pictures/nginx_api_gw_gigaom.png
+   :align: center
+   :width: 500
+   :alt: Gigaom
 
 2) Data-Plane | Developer Portal
 =============================================
