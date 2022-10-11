@@ -76,7 +76,7 @@ For this Lab, components are deployed in Microsoft Azure and across different re
 
 .. image:: ./_pictures/Architecture_global_view.png
    :align: center
-   :width: 600
+   :width: 800
    :alt: NCM
 
 XC Global Infrastructure
