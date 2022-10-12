@@ -46,24 +46,22 @@ Comparing performance of WAF solutions is important, it will determine impact on
 
 **WAF COMPARISON**
 
-`GigaOm report <https://www.nginx.com/resources/library/high-performance-app-security-testing/>`_ presents the results of its performance testing on three WAFs:
-NGINX App Protect, ModSecurity on NGINX and AWS WAF.
+`GigaOm report <https://research.gigaom.com/report/high-performance-web-application-firewall-testing/>`_ presents the results of its performance testing on WAF products:
+NGINX App Protect, AWS WAF, Azure WAF, Cloudflare WAF and NGINX Plus without WAF as a referential.
 
-- **user experience**: NGINX App Protect produced 82% lower latency than AWS WAF at 1,000 tps on the 5% bad request test. Latency differences were minimal until the 90th percentile, with a significant difference witnessed at the 99th percentile and above.
+- **user experience**: With 10% bad traffic, Cloudflare WAF consistently produced greater latency than NGINX App Protect WAF. At 500 rps of combined good and bad traffic, the latency gap was 150 times at the 99th percentile.
 
 .. image:: ./_pictures/report_latency.png
    :align: center
    :width: 700
    :alt: report latency
 
+- **compute**: The chart below highlights the maximum throughput achieved with 100% success and no 5xx or 429 errors and with less than 30ms maximum latency. Here NGINX App Protect WAF supported 19,000 tps, about one-third greater than the throughput of runner up Cloudflare WAF (14,000 transactions).
 
-- **compute**: The maximum transaction throughput achieved with 100% success (no 5xx or 429 errors) and with less than 30ms maximum latency with our tiny AWS c5n.large (2 CPU and 5.25 GB RAM) instance was approximately 5,000 requests per second for NGINX App Protect. By comparison, ModSecurity began to produce errors at the 2,000 requests per second threshold.
-
-.. image:: ./_pictures/report_throughput.png
+.. image:: ./_pictures/nginx-latency-charts-09.webp
    :align: center
    :width: 600
    :alt: report throughput
-
 
 Lower rate of False Positive and more protection
 ==================================================
