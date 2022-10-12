@@ -71,9 +71,9 @@ Central Manager is the product `NGINX Management Suite <https://www.nginx.com/bl
    :width: 600
    :alt: NCM
 
-Infrastructure
+Infrastructure & Flows
 ***************************************************************
-For this Lab, components are deployed in Microsoft Azure and across different regions.
+For this Lab, components are deployed on Microsoft Azure and across different regions.
 
 .. image:: ./_pictures/Architecture_global_view.png
    :align: center
@@ -87,10 +87,15 @@ that creates a virtual Backbone between ``sites``:
     - **Regional Edges (RE)** or `F5 POPs <https://www.f5cloudstatus.com/>`_ that interconnect Internet Service Providers, Cloud Service Providers and Customer Private Links
     - **Customer Edges (CE)** that are hosted in customer landing zones (On Premise, Private or Public Cloud) and are interconnected to REs via secured VPN tunnels
 
+.. image:: ./_pictures/RE_CE.png
+   :align: center
+   :width: 800
+   :alt: MCNS
+
 XC App Stack
 ========================================================
 Each ``site`` (RE or CE) is a Kubernetes clusters of 1 or 3+ nodes.
-A ``virtual site`` is a logical group of ``site`` with same labels set.
+A ``virtual site`` is a logical group of ``sites`` with same label(s) set.
 F5 Distributed Cloud (XC) AppStack is a Virtual Kubernetes (vK8S) cluster deployed across a ``virtual site``.
 
 Short demo video that shows sites, a virtual site and vK8S:
@@ -99,13 +104,65 @@ Short demo video that shows sites, a virtual site and vK8S:
 
     <a href="http://www.youtube.com/watch?v=1Ti1WlYRu_I"><img src="http://img.youtube.com/vi/1Ti1WlYRu_I/0.jpg" width="600" height="300" title="sites, a virtual site and vK8S" alt="sites, a virtual site and vK8S"></a>
 
-
 1) Central Manager
 ========================================================
+NGINX Management Suite (NMS) is hosted on a VM and accessible from API owners on Internet.
+NMS UI/API is published and secured by F5 XC.
+
+.. image:: ./_pictures/api_owner_to_nms.png
+   :align: center
+   :width: 800
+   :alt: API owner <> NMS
+
+2) API GWs
+========================================================
+API gateway instances are hosted on Containers and deployed on vK8S, in closest regions where consumers are present.
+A consumer can be a endpoint/edge on Internet or another micro-service present in vK8S.
+Application Services are published and secured by F5 XC.
+
+.. image:: ./_pictures/api_gw_consumer.png
+   :align: center
+   :width: 800
+   :alt: Consumer <> API GW
+
+NMS communicates with managed API gateways through a GRPC session initiated by a ``nginx-agent`` installed on API gateways.
+Communications are forwarded through F5 XC virtual backbone.
+
+.. image:: ./_pictures/api_gw_nms.png
+   :align: center
+   :width: 800
+   :alt: Consumer <> API GW
 
 
+3) Developer Portal
+========================================================
+Developer Portal instances are hosted on Containers and deployed on vK8S, in closest regions where developers are present.
+Developer Portals are published and secured by F5 XC.
 
+.. image:: ./_pictures/devportal_developer.png
+   :align: center
+   :width: 800
+   :alt: Developer >> DevPortal
 
+NMS communicates with managed Developer Portals through:
+    - ``nginx-agent`` sessions, as seen for API GWs,
+    - and a ``nginx-devportal`` service: NMS initiates REST API calls to a ``nginx-devportal`` service that is published and secured by F5 XC.
+
+.. image:: ./_pictures/devportal_nginx-devportal.png
+   :align: center
+   :width: 800
+   :alt: NMS >> DevPortal
+
+Persistent data of Developer Portals, from all regions, are stored in a PaaS DB (Azure Database for PostgreSQL) available in only one region.
+Communications are forwarded through F5 XC virtual backbone.
+
+.. image:: ./_pictures/devportal-pass_db.png
+   :align: center
+   :width: 800
+   :alt: DevPortal >> PaaS DB
+
+ToDo
 For this Lab, API GWs and Developer Portals are deployed on virtual Kubernetes,
 a `F5 Distributed Cloud App Stack <https://www.f5.com/pdf/data-sheets/f5-distributed-cloud-app-stack-ds.pdf>`_ service.
 
+`here <https://nms.f5dc.dev>`_ is the
