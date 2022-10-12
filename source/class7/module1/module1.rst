@@ -1,4 +1,4 @@
-In Progress - Architecture
+Architecture
 #################################################################
 
 .. contents:: Contents
@@ -161,8 +161,48 @@ Communications are forwarded through F5 XC virtual backbone.
    :width: 800
    :alt: DevPortal >> PaaS DB
 
-ToDo
-For this Lab, API GWs and Developer Portals are deployed on virtual Kubernetes,
-a `F5 Distributed Cloud App Stack <https://www.f5.com/pdf/data-sheets/f5-distributed-cloud-app-stack-ds.pdf>`_ service.
+Sentence app
+***************************************************************
+For this lab, `Sentence application  <https://gitlab.com/sentence-app>`_ is deployed.
 
-`here <https://nms.f5dc.dev>`_ is the
+Components
+========================================================
+Sentence is based on multiple decoupled services:
+
+    - **frontend**: Web UI that generates an HTML page and delivers a Single Page Application (JavaScript).
+    - **background**: a micro-service that returns (GET) a *background* image
+    - **generator**: a micro-service that generates a *Sentence* by aggregating an *adjective*, an *animal*, a *color* and a *location*
+    - **adjectives**: a micro-service that returns (GET) an *adjective*
+    - **animals**: a micro-service that returns (GET) an *animal*
+    - **colors**: a micro-service that returns (GET) an *color*
+    - **locations**: a micro-service that returns (GET) an *location*
+
+.. image:: ./_pictures/sentence_global_view.png
+   :align: center
+   :width: 800
+   :alt: Sentence App
+
+End user authentication | oAuth OIDC + PKCE
+========================================================
+End user must be authenticated to CREATE a new *adjective*, *animal*, *color* or *location*.
+Authentication is handled by API GW that leverages Okta as an Identity Provider.
+
+.. image:: ./_pictures/sentence_POST.png
+   :align: center
+   :width: 800
+   :alt: Sentence App
+
+`oAuth/OIDC <https://developer.okta.com/docs/concepts/oauth-openid/>`_ flow is described in picture below and `here <https://github.com/nginxinc/nginx-openid-connect>`_.
+
+.. image:: ./_pictures/API_GW_PKCE.png
+   :align: center
+   :width: 800
+   :alt: Sentence App
+
+PKCE is used to make Sentence apps more secure, see explanations `here  <https://developer.okta.com/blog/2019/08/22/okta-authjs-pkce#use-pkce-to-make-your-apps-more-secure>`_.
+
+Client authentication | API Key
+========================================================
+Client, for example a mobile app, must be authenticated to CREATE a new *color*.
+Authentication is handled by API GW and it is based on an API key.
+
