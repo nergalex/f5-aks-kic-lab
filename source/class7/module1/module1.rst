@@ -29,10 +29,11 @@ Key API Gateways Tasks:
     - **Route and manage API traffic**: Apply rate limiting, quotas, TLS and more to control and route traffic through the gateway
     - **Gain visibility into API traffic**: Create logs for monitoring and visibility into API traffic
 
+------------------------------------------------------------------------------------------------------------------------
 
 *Why NGINX Plus?*
 
-Regarding Gigaom report `here<https://www.nginx.com/blog/benchmarking-api-management-solutions-nginx-kong-amazon-real-time-apis/>`_, N+ deliver APIs with lower latency and higher through-put than competitors
+Regarding Gigaom report `here <https://www.nginx.com/blog/benchmarking-api-management-solutions-nginx-kong-amazon-real-time-apis/>`_, N+ deliver APIs with lower latency and higher through-put than competitors
 
 .. image:: ./_pictures/nginx_api_gw_gigaom.png
    :align: center
@@ -96,7 +97,7 @@ Short demo video that shows sites, a virtual site and vK8S:
 
 .. raw:: html
 
-    <a href="http://www.youtube.com/watch?v=1Ti1WlYRu_I"><img src="http://img.youtube.com/vi/1Ti1WlYRu_I/0.jpg" width="500" height="300" title="sites, a virtual site and vK8S" alt="sites, a virtual site and vK8S"></a>
+    <a href="http://www.youtube.com/watch?v=1Ti1WlYRu_I"><img src="http://img.youtube.com/vi/1Ti1WlYRu_I/0.jpg" width="600" height="300" title="sites, a virtual site and vK8S" alt="sites, a virtual site and vK8S"></a>
 
 
 1) Central Manager
