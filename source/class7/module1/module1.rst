@@ -1,11 +1,6 @@
 In Progress - Architecture
 #################################################################
 
-.. image:: ./_pictures/functional_view_3_pillars.png
-   :align: center
-   :width: 400
-   :alt: Architecture 3 pillars
-
 .. contents:: Contents
     :local:
     :depth: 1
@@ -13,6 +8,11 @@ In Progress - Architecture
 Components of API Management
 ***************************************************************
 The F5 API Management solution includes 3 components:
+
+.. image:: ./_pictures/functional_view_3_pillars.png
+   :align: center
+   :width: 400
+   :alt: Architecture 3 pillars
 
 1) Data-Plane | API Gateways (GW)
 =============================================

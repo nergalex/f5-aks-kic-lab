@@ -51,7 +51,7 @@ NGINX App Protect, AWS WAF, Azure WAF, Cloudflare WAF and NGINX Plus without WAF
 
 - **user experience**: With 10% bad traffic, Cloudflare WAF consistently produced greater latency than NGINX App Protect WAF. At 500 rps of combined good and bad traffic, the latency gap was 150 times at the 99th percentile.
 
-.. image:: ./_pictures/report_latency.png
+.. image:: ./_pictures/nginx-latency-charts-07.webp
    :align: center
    :width: 700
    :alt: report latency
