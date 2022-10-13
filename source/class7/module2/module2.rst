@@ -1,4 +1,4 @@
-In Progress - Exercises
+Exercises
 #################################################################
 
 .. contents:: Contents
@@ -75,33 +75,54 @@ _______________________________________________________________________
 
 Exercise 3: Authentication | Client / Single Page Application / Mobile App
 ==========================================================================
+**Create an Application Credential**
+
 - Connect to NMS `here <https://nms.f5dc.dev>`_
 - Check that *APIKey Authentication* is enabled on *Colors* micro-service: ``API Connectivity Manager`` **>** ``Services``  **>** ``Workspaces`` **>** ``sentence{{ site_ID }}`` **>** ``API Proxies`` **>** ``colors-non-prod`` **>** ``...`` **>** ``Edit proxy`` **>** ``Policies`` **>** ``APIKey Authentication``
 - Check that there is no APIKey registered: ``APIKey Authentication`` **>** ``Policies`` **>** ``Credentials``
 - Note the Developer Portal name where *colors*'s API is published: ``API Proxies`` **>** ``colors-non-prod`` **>** ``Edit proxy`` **>** ``Configuration`` **>** ``Developer Portal`` **>** ``Portal Proxy Hostname``
 - Check that the status of the Developer Portal is UP: ``API Connectivity Manager`` **>** ``Infrastructure``  **>** ``Workspaces`` **>** ``sentence{{ site_ID }}`` **>** ``Environment`` **>** ``sentence{{ site_ID }}-non-prod`` **>** ``Developer Portal Clusters`` **>** ``Sentence{{ site_ID }}-non-prod-devportal`` **>** ``Instances``
 - Click on the top link in order to be redirected to ``sentence{{ site_ID }}-non-prod-devportal.f5dc.dev``
+- Login with user credential ``producer{{ site_ID }}@acme.com`` / ``F5-NGINX-lab!``
+- Click on ``App Credentials`` **>** ``Create organization`` **>** ``Create credential``
+- ACM is reconfiguring API GW, please wait 30s. Click on ``APIs`` and browse available APIs. After 30s, go back to your ``App Credential`` in your ``Organization``.
+- Click on the arrow of your ``App name`` and copy your ``API Key``
 
+------------------------------------------------------------------------------------------------------------------------
 
+**Set your Application Credential in the Single Page Application**
 
-- Check that oAuth Policy is configured to return the ID token to the client: ``Policies`` **>** ``Manage`` **>** ``OpenID Connect Relying Party`` **>** ``...`` **>** ``Edit policy`` **>** ``Select the token to return to client upon login``
 - Connect to ``sentence{{ site_ID }}-non-prod.f5dc.dev`` using your web browser
 - Click on login button on the top right of the page
 - Use user credential: producer{{ site_ID }}@acme.com / F5-NGINX-lab!
-- Click on the `+` button under the *adjective* of the sentence
-- A success should appear
+- Open Dev Tools in your browser or press ``CTRL + SHIFT + i`` then open the sheet ``network``
+- Click on the `+` button under the *colors* of the sentence
+- Create a new *color* name
+- You will receive a ``403`` HTTP code
 
-**End User Authentication demo**
+.. image:: ./_pictures/api_key_403.png
+   :align: center
+   :width: 800
+   :alt: 403 Forbidden
+
+- On Dev Tools, open the sheet ``Sources``
+- In ``script.js`` line 245, replace ``myApiKey`` with your API Key then **SAVE** (``CTRL + s``)
+- Open the sheet ``network``
+- Test to create a new *color*
+- You will receive a ``200`` HTTP code
 
 .. raw:: html
 
-    <a href="http://www.youtube.com/watch?v=f3jQuDWSaxQ"><img src="http://img.youtube.com/vi/f3jQuDWSaxQ/0.jpg" width="600" height="300" title="Scale Out" alt="Scale Out"></a>
+    <a href="http://www.youtube.com/watch?v=hbfVIN4CduQ"><img src="http://img.youtube.com/vi/hbfVIN4CduQ/0.jpg" width="600" height="300" title="App credential" alt="App credential"></a>
+
 _______________________________________________________________________
 
 **Capture The Flag**
 
-    **2.1. What is the parameter name returned by the API GW after login flow?**
-    **2.2. What are the cookie name added by the application?**
-    **2.3. What are the cookie names added by the API GW?**
+    **3. What is the name of the API token header in the request?**
 
 _______________________________________________________________________
+
+
+
+
