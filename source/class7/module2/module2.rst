@@ -7,10 +7,10 @@ Exercises
 
 ----------------------------------------------------------------
 
-NGINX Management Suite >> Instance Manager
+1. Inventory in NGINX Instance Manager
 *********************************************
 
-Exercise 1: Inventory
+1.1. Scale Out
 ============================================
 - Connect to NMS `here <https://nms.f5dc.dev>`_
 - Check that instances are UP: ``Instance Manager`` **>** ``Instances``
@@ -22,16 +22,18 @@ Exercise 1: Inventory
 - In NMS, check that new instances are well automatically discovered: ``Instance Manager`` **>** ``Instances``
 - Check that new instances are well automatically attached the Instance Group name noted before: ``Instance Manager`` **>** ``Instance Group``
 
-**Scale Out demo**
+**demo**
 
 .. raw:: html
 
     <a href="http://www.youtube.com/watch?v=p-xUuhJ7tBg"><img src="http://img.youtube.com/vi/p-xUuhJ7tBg/0.jpg" width="600" height="300" title="Scale Out" alt="Scale Out"></a>
 
+1.2. Scale In
+============================================
 - In Lens, Scale In by modifying the value of ``spec.replicas`` to `1` per Site, then ``Save & Close``
 - In NMS, check that new instances are well automatically unregistered after 150 seconds
 
-**Scale In demo**
+**demo**
 
 .. raw:: html
 
@@ -45,8 +47,8 @@ _______________________________________________________________________
 
 _______________________________________________________________________
 
-Exercise 2: Authentication | oAuth OIDC + PKCE
-==============================================
+2. Authentication | oAuth OIDC + PKCE
+**********************************************
 - Connect to NMS `here <https://nms.f5dc.dev>`_
 - Check that instances are UP: ``API Connectivity Manager`` **>** ``Infrastructure``  **>** ``Workspaces`` **>** ``sentence{{ site_ID }}`` **>** ``Environment`` **>** ``sentence{{ site_ID }}-non-prod`` **>** ``API Gateway Cluster`` **>** ``Sentence{{ site_ID }}-non-prod`` **>** ``Instances``
 - Check that oAuth Policy is configured to return the ID token to the client: ``Policies`` **>** ``Manage`` **>** ``OpenID Connect Relying Party`` **>** ``...`` **>** ``Edit policy`` **>** ``Select the token to return to client upon login``
@@ -56,7 +58,7 @@ Exercise 2: Authentication | oAuth OIDC + PKCE
 - Click on the `+` button under the *adjective* of the sentence
 - A success should appear
 
-**End User Authentication demo**
+**demo**
 
 .. raw:: html
 
@@ -72,9 +74,11 @@ _______________________________________________________________________
 
 _______________________________________________________________________
 
-Exercise 3: Authentication | Client / Single Page Application / Mobile App
-==========================================================================
-**Create an Application Credential**
+3. Authentication | Client / Single Page Application / Mobile App
+*************************************************************************
+
+3.1 Create an Application Credential
+============================================
 
 - Connect to NMS `here <https://nms.f5dc.dev>`_
 - Check that *APIKey Authentication* is enabled on *Colors* micro-service: ``API Connectivity Manager`` **>** ``Services``  **>** ``Workspaces`` **>** ``sentence{{ site_ID }}`` **>** ``API Proxies`` **>** ``colors-non-prod`` **>** ``...`` **>** ``Edit proxy`` **>** ``Policies`` **>** ``APIKey Authentication``
@@ -87,9 +91,8 @@ Exercise 3: Authentication | Client / Single Page Application / Mobile App
 - ACM is reconfiguring API GW, please wait 30s. Click on ``APIs`` and browse available APIs. After 30s, go back to your ``App Credential`` in your ``Organization``.
 - Click on the arrow of your ``App name`` and copy your ``API Key``
 
-------------------------------------------------------------------------------------------------------------------------
-
-**Set your Application Credential in the Single Page Application**
+3.2. Set your Application Credential in the Single Page Application
+=====================================================================
 
 - Connect to ``sentence{{ site_ID }}-non-prod.f5dc.dev`` using your web browser
 - Click on login button on the top right of the page
