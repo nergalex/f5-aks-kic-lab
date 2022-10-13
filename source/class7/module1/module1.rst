@@ -71,7 +71,7 @@ Central Manager is the product `NGINX Management Suite <https://www.nginx.com/bl
    :width: 600
    :alt: NCM
 
-Infrastructure & Flows
+Infrastructure & flows
 ***************************************************************
 For this Lab, components are deployed on Microsoft Azure and across different regions.
 
@@ -104,7 +104,7 @@ Short demo video that shows sites, a virtual site and vK8S:
 
     <a href="http://www.youtube.com/watch?v=1Ti1WlYRu_I"><img src="http://img.youtube.com/vi/1Ti1WlYRu_I/0.jpg" width="600" height="300" title="sites, a virtual site and vK8S" alt="sites, a virtual site and vK8S"></a>
 
-1) Central Manager
+Central Manager
 ========================================================
 NGINX Management Suite (NMS) is hosted on a VM and accessible from API owners on Internet.
 NMS UI/API is published and secured by F5 XC.
@@ -114,7 +114,7 @@ NMS UI/API is published and secured by F5 XC.
    :width: 800
    :alt: API owner <> NMS
 
-2) API GWs
+API GWs
 ========================================================
 API gateway instances are hosted on Containers and deployed on vK8S, in closest regions where consumers are present.
 A consumer can be a endpoint/edge on Internet or another micro-service present in vK8S.
@@ -134,7 +134,7 @@ Communications are forwarded through F5 XC virtual backbone.
    :alt: Consumer <> API GW
 
 
-3) Developer Portal
+Developer Portal
 ========================================================
 Developer Portal instances are hosted on Containers and deployed on vK8S, in closest regions where developers are present.
 Developer Portals are published and secured by F5 XC.
