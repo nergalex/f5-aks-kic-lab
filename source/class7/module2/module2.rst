@@ -7,7 +7,6 @@ Exercises
 
 ----------------------------------------------------------------
 
-
 NGINX Management Suite >> Instance Manager
 *********************************************
 
@@ -113,7 +112,7 @@ Exercise 3: Authentication | Client / Single Page Application / Mobile App
 
 .. raw:: html
 
-    <a href="http://www.youtube.com/watch?v=hbfVIN4CduQ"><img src="http://img.youtube.com/vi/hbfVIN4CduQ/0.jpg" width="600" height="300" title="App credential" alt="App credential"></a>
+    <a href="http://www.youtube.com/watch?v=OWLFoDRHMS0"><img src="http://img.youtube.com/vi/OWLFoDRHMS0/0.jpg" width="600" height="300" title="App credential" alt="App credential"></a>
 
 _______________________________________________________________________
 

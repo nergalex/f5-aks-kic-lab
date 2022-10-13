@@ -201,8 +201,8 @@ Authentication is handled by API GW that leverages Okta as an Identity Provider.
 
 PKCE is used to make Sentence apps more secure, see explanations `here  <https://developer.okta.com/blog/2019/08/22/okta-authjs-pkce#use-pkce-to-make-your-apps-more-secure>`_.
 
-Client authentication | API Key
+Application authentication | API Key
 ========================================================
 Client, for example a mobile app, must be authenticated to CREATE a new *color*.
-Authentication is handled by API GW and it is based on an API key.
+Authentication is handled by API GW and authentication is based on API key provided by the application.
 
