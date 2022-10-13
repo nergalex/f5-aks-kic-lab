@@ -1,10 +1,14 @@
 lab 6 | API Connectivity + virtual K8S
 ##############################################################
 
+------------------------------------------------------------------------------------------------------------------------
+
 .. image:: ./_pictures/NMS_ACM_feature_view.svg
    :align: center
    :width: 800
    :alt: NGINX API Connectivity Manager
+
+------------------------------------------------------------------------------------------------------------------------
 
 Part of `NGINX Management Suite <https://www.nginx.com/products/nginx-management-suite/>`_,
 the `API Connectivity <https://www.nginx.com/products/nginx-management-suite/api-connectivity-manager/>`_ module (ACM) simplifies the complexity of governing and managing APIs in multi-cloud environments.
