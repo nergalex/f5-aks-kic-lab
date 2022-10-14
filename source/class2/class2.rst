@@ -1,4 +1,4 @@
-lab 1 - Ingress
+lab 1 | Ingress
 ##########################################################
 
 This section presents an Application published and secured using an Ingress resource.

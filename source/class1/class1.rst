@@ -1,7 +1,7 @@
-Introduction
+Back to basics
 ##########################################################
 
-This section introduce the benefits of the solution.
+This section introduces the common architecture principles and their benefits.
 
 **Contents**
 

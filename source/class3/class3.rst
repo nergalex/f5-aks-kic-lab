@@ -1,4 +1,4 @@
-lab 2 - Traffic Management
+lab 2 | Traffic Management
 ############################################################
 
 **Contents**

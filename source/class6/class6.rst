@@ -1,4 +1,4 @@
-lab 5 - Controller (v3)
+lab 5 | Controller (v3)
 ##############################################################
 
 This lab describes how to manage centrally App Security for a wide variety of web apps, APIs, located in a central Secure Edge or/and distributed across hybrid-multi-cloud environments.

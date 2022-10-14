@@ -1,4 +1,4 @@
-lab 3 - WAF
+lab 3 | WAF
 ##########################################################
 
 NGINX App Protect provides web application firewall (WAF) security protection for your web applications,
