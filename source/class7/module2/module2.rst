@@ -72,6 +72,7 @@ _______________________________________________________________________
     **2.2. What are the cookie name added by the application?**
     **2.3. What are the cookie names added by the API GW?**
 
+
 _______________________________________________________________________
 
 3. Authentication | Client / Single Page Application / Mobile App
@@ -96,7 +97,7 @@ _______________________________________________________________________
 
 - Connect to ``sentence{{ site_ID }}-non-prod.f5dc.dev`` using your web browser
 - Click on login button on the top right of the page
-- Use user credential: producer{{ site_ID }}@acme.com / F5-NGINX-lab!
+- Use user credential: ``consumer{{ site_ID }}@acme.com / F5-NGINX-lab!``
 - Open Dev Tools in your browser or press ``CTRL + SHIFT + i`` then open the sheet ``network``
 - Click on the `+` button under the *colors* of the sentence
 - Create a new *color* name
