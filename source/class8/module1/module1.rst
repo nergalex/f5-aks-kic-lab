@@ -76,6 +76,10 @@ MetaDefender ICAP Server provides HTTP interface, a NGINX connector, on top of M
 MetaDefender Core prevents malicious file uploads on web applications that bypass sandboxes and other detection-based security solutions.
 It also helps protect confidential data, minimize data breaches, and prevent privacy violations with Proactive DLP.
 
+MetaDefender Core requires a remote postgre DataBase.
+
+For this Lab, this database is hosted on Microsoft Azure PaaS DB.
+
 3) Control-Plane & Management-Plane | Central Manager
 ========================================================
 A Central Manager provides provides consistent configuration and oversight for NGINX+ instances hosted anywhere.
@@ -135,7 +139,8 @@ For vK8S point of view, dataplane components are deployed on Node ``cloudbuilder
    :width: 800
    :alt: App Traffic
 
-Service Mesh feature of F5 XC AppStack monitor traffic between components of the solution:
+Service Mesh feature of F5 XC AppStack monitor traffic between components of the solution.
+See demo video:
 
 .. raw:: html
 
@@ -143,103 +148,61 @@ Service Mesh feature of F5 XC AppStack monitor traffic between components of the
 
 Central Manager
 ========================================================
-NGINX Management Suite (NMS) is hosted on a VM and accessible from API owners on Internet.
+NGINX Management Suite (NMS) is hosted on a VM and accessible from SecOps and Customer support team (SRE Ops).
 NMS UI/API is published and secured by F5 XC.
 
-.. image:: ./_pictures/api_owner_to_nms.png
+.. image:: ./_pictures/Architecture_NMS_access.png
    :align: center
    :width: 800
-   :alt: API owner <> NMS
+   :alt: SecOps > NMS
 
-API GWs
+Configuration of all NGINX+ instance is managed by NIM module hosted on NMS server.
+When a NGINX+ instance starts, it retrieves its configuration from NMS.
+Metrics of NGINX+ instances are collected centrally in NIM.
+
+.. image:: ./_pictures/Architecture_nginx_agent_nim.png
+   :align: center
+   :width: 800
+   :alt: nginx-agent > NIM
+
+See demo video:
+
+.. raw:: html
+
+    <a href="http://www.youtube.com/watch?v=1vcApl5NC0o"><img src="http://img.youtube.com/vi/1vcApl5NC0o/0.jpg" width="600" height="300" title="NIM"></a>
+
+Malware analysis
 ========================================================
-API gateway instances are hosted on Containers and deployed on vK8S, in closest regions where consumers are present.
-A consumer can be a endpoint/edge on Internet or another micro-service present in vK8S.
-Application Services are published and secured by F5 XC.
+On F5 XC, a HTTP LB manages content routing for a protected domain:
 
-.. image:: ./_pictures/api_gw_consumer.png
+    - HTTP PATH and methods (POST + PUT) are forwarded to NGINX + pool
+    - by default, all others transactions are directly forwarded to backend pool that are application's origin servers
+
+The picture below shows a transaction with NO file uploaded
+
+.. image:: ./_pictures/Architecture_App_direct_access.png
    :align: center
    :width: 800
-   :alt: Consumer <> API GW
+   :alt: Consumer > App with no uploaded file
 
-NMS communicates with managed API gateways through a GRPC session initiated by a ``nginx-agent`` installed on API gateways.
-Communications are forwarded through F5 XC virtual backbone.
+The picture below shows a transaction with a file uploaded
 
-.. image:: ./_pictures/api_gw_nms.png
+.. image:: ./_pictures/Architecture_malware_analysis.png
    :align: center
    :width: 800
-   :alt: Consumer <> API GW
+   :alt: Consumer > App with no uploaded file
 
+When a file is uploaded, steps are:
 
-Developer Portal
-========================================================
-Developer Portal instances are hosted on Containers and deployed on vK8S, in closest regions where developers are present.
-Developer Portals are published and secured by F5 XC.
+    1. Request is forwarded to NGINX+ pool
+    2. Request is forwarded to MetaDefender ICAP server pool
+    3. Payload of the request is extracted and passed to MetaDefender CORE for analysis. Verdict is sent back to MD ICAP. Request is sent back to NGINX.
+    4. Request is forwarded to a internal HTTP LB that does content routing based on host header and forwards traffic to the remote application.
 
-.. image:: ./_pictures/devportal_developer.png
-   :align: center
-   :width: 800
-   :alt: Developer >> DevPortal
+If a malware is present in the uploaded file, there is no step 4 because NGINX generates a response that notifies client of the blocking request.
 
-NMS communicates with managed Developer Portals through:
-    - ``nginx-agent`` sessions, as seen for API GWs,
-    - and a ``nginx-devportal`` service: NMS initiates REST API calls to a ``nginx-devportal`` service that is published and secured by F5 XC.
+See demo video:
 
-.. image:: ./_pictures/devportal_nginx-devportal.png
-   :align: center
-   :width: 800
-   :alt: NMS >> DevPortal
+.. raw:: html
 
-Persistent data of Developer Portals, from all regions, are stored in a PaaS DB (Azure Database for PostgreSQL) available in only one region.
-Communications are forwarded through F5 XC virtual backbone.
-
-.. image:: ./_pictures/devportal-pass_db.png
-   :align: center
-   :width: 800
-   :alt: DevPortal >> PaaS DB
-
-Sentence app
-***************************************************************
-For this lab, `Sentence application  <https://gitlab.com/sentence-app>`_ is deployed.
-
-Components
-========================================================
-Sentence is based on multiple decoupled services:
-
-    - **frontend**: Web UI that generates an HTML page and delivers a Single Page Application (JavaScript).
-    - **background**: a micro-service that returns (GET) a *background* image
-    - **generator**: a micro-service that generates a *Sentence* by aggregating an *adjective*, an *animal*, a *color* and a *location*
-    - **adjectives**: a micro-service that returns (GET) an *adjective*
-    - **animals**: a micro-service that returns (GET) an *animal*
-    - **colors**: a micro-service that returns (GET) an *color*
-    - **locations**: a micro-service that returns (GET) an *location*
-
-.. image:: ./_pictures/sentence_global_view.png
-   :align: center
-   :width: 800
-   :alt: Sentence App
-
-End user authentication | oAuth OIDC + PKCE
-========================================================
-End user must be authenticated to CREATE a new *adjective*, *animal*, *color* or *location*.
-Authentication is handled by API GW that leverages Okta as an Identity Provider.
-
-.. image:: ./_pictures/sentence_POST.png
-   :align: center
-   :width: 800
-   :alt: Sentence App
-
-`oAuth/OIDC <https://developer.okta.com/docs/concepts/oauth-openid/>`_ flow is described in picture below and `here <https://github.com/nginxinc/nginx-openid-connect>`_.
-
-.. image:: ./_pictures/API_GW_PKCE.png
-   :align: center
-   :width: 800
-   :alt: Sentence App
-
-PKCE is used to make Sentence apps more secure, see explanations `here  <https://developer.okta.com/blog/2019/08/22/okta-authjs-pkce#use-pkce-to-make-your-apps-more-secure>`_.
-
-Application authentication | API Key
-========================================================
-Client, for example a mobile app, must be authenticated to CREATE a new *color*.
-Authentication is handled by API GW and authentication is based on API key provided by the application.
-
+    <a href="http://www.youtube.com/watch?v=bV-iFqOp8xA"><img src="http://img.youtube.com/vi/bV-iFqOp8xA/0.jpg" width="600" height="300" title="Malware analysis"></a>
