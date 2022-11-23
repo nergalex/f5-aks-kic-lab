@@ -169,7 +169,7 @@ See demo video:
 
 .. raw:: html
 
-    <a href="http://www.youtube.com/watch?v=1vcApl5NC0o"><img src="http://img.youtube.com/vi/1vcApl5NC0o/0.jpg" width="600" height="300" title="NIM"></a>
+    <a href="http://www.youtube.com/watch?v=1vcApl5NC0o"><img src="http://img.youtube.com/vi/1vcApl5NC0o/1.jpg" width="600" height="300" title="NIM"></a>
 
 Malware analysis
 ========================================================
