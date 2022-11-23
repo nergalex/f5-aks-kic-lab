@@ -7,7 +7,7 @@ Architecture
 
 Components
 ***************************************************************
-Solution architecture is based on F5 Distributed Cloud that hosts 3 components:
+Solution architecture is based on 3 components:
 
 .. image:: ./_pictures/components.png
    :align: center
@@ -79,9 +79,9 @@ It also helps protect confidential data, minimize data breaches, and prevent pri
 3) Control-Plane & Management-Plane | Central Manager
 ========================================================
 A Central Manager provides provides consistent configuration and oversight for NGINX+ instances hosted anywhere.
-Central Manager is the product `NGINX Management Suite <https://www.nginx.com/blog/connect-scale-secure-apps-apis-with-f5-nginx-management-suite/>`_ that includes the module:
+Central Manager is the product `NGINX Management Suite <https://www.nginx.com/blog/connect-scale-secure-apps-apis-with-f5-nginx-management-suite/>`_ that includes only this module for handling this use case:
 
-    1. **Control-Plane | Instance Manager**: represents the core functionality of NGINX Management Suite. Operating within the control plane, Instance Manager simplifies configuration and monitoring of your NGINX fleet.
+    **Instance Manager**: represents the core functionality of NGINX Management Suite. Operating within the control plane, Instance Manager manages configuration and monitoring of your NGINX fleet.
 
 .. image:: ./_pictures/NSM-Instance-Mgr_topology.png
    :align: center
@@ -91,12 +91,20 @@ Central Manager is the product `NGINX Management Suite <https://www.nginx.com/bl
 
 Infrastructure & flows
 ***************************************************************
-For this Lab, components are deployed on Microsoft Azure and across different regions.
+Components of the solution, described above, are deployed as containers and are hosted in a distributed Kubernetes cluster managed by F5 Distributed Cloud (XC),
+named *Virtual Kubernetes* (vK8S).
+Nodes of vK8S are grouped by *Customer Edge* (CE).
+Two types of functional site are deployed for this solution:
 
-.. image:: ./_pictures/Architecture_global_view.png
+    **1. Administration & SRE tooling**: CE located in Administration zone or Out of Band zone
+    **2. Application workload**: CE located in applicative landing zone(s)
+
+.. image:: ./_pictures/Architecture_overview.png
    :align: center
    :width: 800
-   :alt: NCM
+   :alt: Overview
+
+For this lab, one CE of each type described below are deployed on Microsoft Azure and in 2 different regions.
 
 XC Global Infrastructure
 ========================================================
@@ -105,22 +113,33 @@ that creates a virtual Backbone between ``sites``:
     - **Regional Edges (RE)** or `F5 POPs <https://www.f5cloudstatus.com/>`_ that interconnect Internet Service Providers, Cloud Service Providers and Customer Private Links
     - **Customer Edges (CE)** that are hosted in customer landing zones (On Premise, Private or Public Cloud) and are interconnected to REs via secured VPN tunnels
 
-.. image:: ./_pictures/RE_CE.png
+.. image:: ./_pictures/app_traffic.png
    :align: center
    :width: 800
-   :alt: MCNS
+   :alt: App Traffic
+
+For this lab, CEs are named ``cloudbuilder-x``.
 
 XC App Stack
 ========================================================
-Each ``site`` (RE or CE) is a Kubernetes clusters of 1 or 3+ nodes.
+Each ``site`` (RE or CE) is a local Kubernetes clusters of 1 or 3+ nodes.
 A ``virtual site`` is a logical group of ``sites`` with same label(s) set.
 F5 Distributed Cloud (XC) AppStack is a Virtual Kubernetes (vK8S) cluster deployed across a ``virtual site``.
+Each Node of a site is seen as a node of vK8S cluster.
 
-Short demo video that shows sites, a virtual site and vK8S:
+For this lab, dataplane components are all deployed on one CE ``cloudbuilder-x`` and have only one replica on node ``master-0``.
+For vK8S point of view, dataplane components are deployed on Node ``cloudbuilder-x-master-0``
+
+.. image:: ./_pictures/vk8s_nodes.png
+   :align: center
+   :width: 800
+   :alt: App Traffic
+
+Service Mesh feature of F5 XC AppStack monitor traffic between components of the solution:
 
 .. raw:: html
 
-    <a href="http://www.youtube.com/watch?v=1Ti1WlYRu_I"><img src="http://img.youtube.com/vi/1Ti1WlYRu_I/0.jpg" width="600" height="300" title="sites, a virtual site and vK8S" alt="sites, a virtual site and vK8S"></a>
+    <a href="http://www.youtube.com/watch?v=XInA_Hm5Xlc"><img src="http://img.youtube.com/vi/XInA_Hm5Xlc/0.jpg" width="600" height="300" title="Service Mesh view"></a>
 
 Central Manager
 ========================================================
