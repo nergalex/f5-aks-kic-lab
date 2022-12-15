@@ -46,7 +46,7 @@ Comparing performance of WAF solutions is important, it will determine impact on
 
 **WAF COMPARISON**
 
-`GigaOm report <https://research.gigaom.com/report/high-performance-web-application-firewall-testing/>`_ presents the results of its performance testing on WAF products:
+`GigaOm report <https://www.nginx.com/resources/library/high-performance-web-application-firewall-testing/>`_ shows performance test results of WAF products:
 NGINX App Protect, AWS WAF, Azure WAF, Cloudflare WAF and NGINX Plus without WAF as a referential.
 
 - **user experience**: With 10% bad traffic, Cloudflare WAF consistently produced greater latency than NGINX App Protect WAF. At 500 rps of combined good and bad traffic, the latency gap was 150 times at the 99th percentile.
