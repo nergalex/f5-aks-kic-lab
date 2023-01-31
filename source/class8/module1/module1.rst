@@ -140,11 +140,12 @@ For vK8S point of view, dataplane components are deployed on Node ``cloudbuilder
    :alt: App Traffic
 
 Service Mesh feature of F5 XC AppStack monitor traffic between components of the solution.
-See demo video:
+
+**Demo video:**
 
 .. raw:: html
 
-    <a href="http://www.youtube.com/watch?v=XInA_Hm5Xlc"><img src="http://img.youtube.com/vi/XInA_Hm5Xlc/0.jpg" width="600" height="300" title="Service Mesh view"></a>
+    <a href="http://www.youtube.com/watch?v=DJoYL5dgg7E"><img src="http://img.youtube.com/vi/DJoYL5dgg7E/0.jpg" width="600" height="300" title="Service Mesh view"></a>
 
 Central Manager
 ========================================================
@@ -165,7 +166,7 @@ Metrics of NGINX+ instances are collected centrally in NIM.
    :width: 800
    :alt: nginx-agent > NIM
 
-See demo video:
+**Demo video:**
 
 .. raw:: html
 
@@ -201,7 +202,7 @@ When a file is uploaded, steps are:
 
 If a malware is present in the uploaded file, there is no step 4 because NGINX generates a response that notifies client of the blocking request.
 
-See demo video:
+**Demo video:**
 
 .. raw:: html
 
