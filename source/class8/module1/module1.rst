@@ -1,9 +1,16 @@
-Architecture
+Malware Analysis
 #################################################################
 
 .. contents:: Contents
     :local:
     :depth: 1
+
+OPSWAT MetaDefender ICAP Server offers scalable solutions to protect your networks and applications from known malware and unknown (zero-day) malicious file content.
+MetaDefender ICAP Server delivers more than 30 commercial anti-malware engines,
+Deep CDR (Content Disarm and Reconstruction), Proactive DLP (Data Loss Prevention),
+and other advanced technologies as a native NGINX integration to empower security architects in critical environments.
+
+This Lab shows a deployment of NGINX+ and OPSWAT hosted in a XC Customer Edge.
 
 Components
 ***************************************************************
