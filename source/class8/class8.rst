@@ -28,8 +28,6 @@ Edges of F5 XC ADN are:
     - F5 **Regional Edges** (RE): F5's Points of Presence, based hardware managed by F5
     - or/and **Customer Edges** (CE): Customer's Points of Presence (or ``site``), based hardware managed by customer or by a Cloud Service Provider
 
----------------------------------------------------------------
-
 Interconnections between Edges, as described `here <https://docs.cloud.f5.com/docs/ves-concepts/system-overview>`_ , are:
     - `F5 private backbone <https://docs.cloud.f5.com/docs/services/mesh/secure-backbone>`_: REs are interconnected using a multi-terabit, dedicated and redundant private backbone for maximum performance. These PoPs are densely peered and connected with multiple Tier1 transit providers to deliver high-quality internet access for applications and consumers. REs are directly connected to multiple cloud providers from these locations to provide a reliable and predictable experience across cloud providers.
     - `Tunneling <https://docs.cloud.f5.com/docs/how-to/advanced-networking/tunneling>`_: REs-CEs and CEs-CEs are interconnected using tunnels IP over IP, IPsec or TLS depending on the trust of the underlay network.
