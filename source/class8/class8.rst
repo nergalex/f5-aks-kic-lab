@@ -70,6 +70,7 @@ These containers can be :
    :width: 800
    :alt: PaaS
 
+For PaaS deployment on F5 XC REs, the restrictions `here <https://docs.cloud.f5.com/docs/how-to/app-management/vk8s-deployment#restrictions>`_ apply.
 
 
 
