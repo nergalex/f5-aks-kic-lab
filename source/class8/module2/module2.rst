@@ -1,17 +1,17 @@
 Secure Access
 #################################################################
 
-.. image:: ./_pictures/illo-SolutionsZeroTrust-450x400-1.svg
-   :align: center
-   :width: 400
-   :alt: Secure Access
-
 Powered by the most popular data plane in the world,
 NGINX's *Secure Access* PaaS solution improves your security posture:
     - **Minimize attack surface**: Reduce the accessible attack surface through **access control**
     - **Prevent unauthorized activity**: Automatically block ongoing attacks through constant authentication, identity validation and detection of behavioral anomalies coupling with `F5 XC Malicious User <https://docs.cloud.f5.com/docs/how-to/advanced-security/malicious-users>`_ feature based on IA/ML.
     - **Protect apps from N clouds to One edge**: Make security independent of all other variables, including environment and geography
     - **Single Sign-On**: enable Single Sign-On (SSO) for your proxied applications by integrating with your Identity Provider and OpenID Connect
+
+.. image:: ./_pictures/illo-SolutionsZeroTrust-450x400-1.svg
+   :align: center
+   :width: 300
+   :alt: Secure Access
 
 .. contents:: Contents
     :local:
@@ -24,16 +24,10 @@ both the client and NGINX Plus communicate directly with the IdP at different st
 
 .. image:: ./_pictures/high_level_flow.svg
    :align: center
-   :width: 500
+   :width: 400
    :alt: Flow high level
 
 NGINX Plus is configured to perform OpenID Connect authentication:
-
-.. image:: ./_pictures/flow.svg
-   :align: center
-   :width: 700
-   :alt: Flow
-
     - **1.** Upon a first visit to a protected resource,
     - **2.** NGINX Plus initiates the OpenID Connect authorization code flow and redirects the client to the OpenID Connect provider (IdP).
     - **3-5.** The IdP verify the identity of the end-user.
@@ -44,6 +38,12 @@ NGINX Plus is configured to perform OpenID Connect authentication:
     - **11.** Subsequent requests to protected resources are authenticated by exchanging the session cookie for the ID Token in the key-value store.
     - **12.** JWT validation is performed on **each request**, as normal, so that the ID Token validity period is enforced.
 
+.. image:: ./_pictures/flow.svg
+   :align: center
+   :width: 700
+   :alt: Flow
+
+----------------------------------------------------
 *demo video:*
 
 .. raw:: html

@@ -4,7 +4,7 @@ lab 7 | XC PaaS
 `F5 Distributed Cloud (XC) <https://www.f5.com/cloud>`_ is a SaaS-based platform
 that enables Network and Security services in data path to your application.
 If customer desires to add also custom Security services in the data path,
-customer will deploy **Platform as a Services** (PaaS), a container based solution (NGINX you said?).
+customer will deploy **Platform as a Services** (PaaS), a container based solution.
 
 This folder shares some typical customer use cases of PaaS:
 
