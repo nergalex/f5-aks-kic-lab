@@ -43,6 +43,7 @@ NGINX Plus is configured to perform OpenID Connect authentication:
    :alt: Flow
 
 ----------------------------------------------------
+
 *demo video:*
 
 .. raw:: html
@@ -61,6 +62,7 @@ IT and security operations teams can enforce strong access policies from login t
 including step-up challenges for suspect behavior.
 
 ----------------------------------------------------
+
 *demo video:*
 
 .. raw:: html
