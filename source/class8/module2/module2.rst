@@ -75,7 +75,7 @@ Detection
 
 .. image:: ./_pictures/Malicious_User_detection.png
    :align: center
-   :width: 700
+   :width: 500
    :alt: Detection
 
 Mitigation
@@ -106,7 +106,7 @@ Therefore, even if the client changes his IP address, his behavior will be track
 
 .. image:: ./_pictures/User_Identifier.png
    :align: center
-   :width: 700
+   :width: 500
    :alt: User Identifier
 
 Supported Identity Providers
