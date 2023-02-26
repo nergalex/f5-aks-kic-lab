@@ -88,7 +88,7 @@ The system tags the users into threat levels High, Medium, and Low.
 
 .. image:: ./_pictures/Malicious_User_mitigation.png
    :align: center
-   :width: 700
+   :width: 800
    :alt: Mitigation
 
 If the client succeed to resolve challenges and continues to tries to access resources with insufficient privileges,
@@ -116,5 +116,5 @@ Any Identity Provider that supports OpenID Connect 1.0.
 Implementation of *NGINX Secure Access* assumes that your IdP knows F5 XC as a confidential client or a public client using PKCE.
 By following the steps in `this guide <https://docs.nginx.com/nginx/deployment-guides/single-sign-on/okta/>`_,
 you will learn how to set up SSO using OpenID Connect as the authentication mechanism with well known IdPs and NGINX Plus as the relying party.
-For Azure AD as an IdP, follow `this guide <https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow#request-an-authorization-code>`_.
+For Azure AD, follow `this guide <https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow#request-an-authorization-code>`_.
 
