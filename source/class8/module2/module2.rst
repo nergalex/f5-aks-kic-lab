@@ -116,5 +116,123 @@ Any Identity Provider that supports OpenID Connect 1.0.
 Implementation of *NGINX Secure Access* assumes that your IdP knows F5 XC as a confidential client or a public client using PKCE.
 By following the steps in `this guide <https://docs.nginx.com/nginx/deployment-guides/single-sign-on/okta/>`_,
 you will learn how to set up SSO using OpenID Connect as the authentication mechanism with well known IdPs and NGINX Plus as the relying party.
-For Azure AD, follow `this guide <https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow#request-an-authorization-code>`_.
+
+PaaS configuration files can be edited in F5 XC Console directly.
+
+.. image:: ./_pictures/paas_configuration_files.png
+   :align: center
+   :width: 500
+   :alt: Configuration files
+
+See bellow some configuration examples for the use of
+`auth code flow paired with Proof Key for Code Exchange (PKCE) and OpenID Connect (OIDC) <https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow#request-an-authorization-code>`_
+to get access tokens and ID tokens in these types of apps:
+    - Single Page Application (SPA)
+    - Standard (server-based) web application
+    - Desktop and mobile apps
+
+Azure AD
+=============================================
+
+A guide `here <https://learn.microsoft.com/en-us/azure/active-directory/develop/scenario-spa-app-registration>`_ to configure a SPA with Azure AD.
+After registering your 'PaaS Secure Access' instance as an Application in Azure AD, you will obtain a *Client ID*,
+or ``$oidc_client``, a Public identifier for the client that is required for all OAuth flows.
+
+*Secure Access* configuration file ``openid_connect_configuration.conf``:
+
+.. code-block:: nginx
+    :emphasize-lines: 2,3,4
+
+        map $host $oidc_authz_endpoint {
+            default "https://login.microsoftonline.com/MyAzureTenantID/oauth2/v2.0/authorize";
+        }
+        map $host $oidc_token_endpoint {
+            default "https://login.microsoftonline.com/MyAzureTenantID/oauth2/v2.0/token";
+        }
+        map $host $oidc_jwt_keyfile {
+            default "https://login.microsoftonline.com/MyAzureTenantID/discovery/keys";
+        }
+        map $host $oidc_client {
+            default "MyClientID";
+        }
+        map $host $oidc_pkce_enable {
+            default 1;
+        }
+
+------------------------------------------------------------------
+
+*Secure Access* configuration file ``openid_connect.server_conf``:
+
+.. code-block:: nginx
+    :emphasize-lines: 2,3,5,7,8,9,13,14,15
+
+    location = /_jwks_uri {
+        proxy_set_header Host "login.microsoftonline.com";
+        proxy_ssl_name        "login.microsoftonline.com";
+        ...
+    }
+    location = /_token {
+        proxy_set_header      Origin $host;
+        proxy_set_header Host "login.microsoftonline.com";
+        proxy_ssl_name        "login.microsoftonline.com";
+        ...
+   }
+    location = /_refresh {
+        proxy_set_header      Origin $host;
+        proxy_set_header Host "login.microsoftonline.com";
+        proxy_ssl_name        "login.microsoftonline.com";
+        ...
+    }
+
+Then, for each Application to protect by your 'PaaS Secure Access',
+allows the App's FQDN in *Redirect URIs* using the suffix ``/_codexch``.
+A wildcard can be used as described `here <https://learn.microsoft.com/en-us/azure/active-directory/develop/reply-url#restrictions-on-wildcards-in-redirect-uris>`_.
+
+Example:
+
+.. image:: ./_pictures/azure_ad_login_uri.png
+   :align: center
+   :width: 500
+   :alt: User Identifier
+
+Okta
+=============================================
+
+A guide `here <https://github.com/nginx-openid-connect/nginx-oidc-core/tree/main/docs/oidc-pkce#pkce-setup-with-okta>`_ to configure a SPA with Okta.
+After registering your 'PaaS Secure Access' instance as an Application in Okta, you will obtain a *Client ID*,
+or ``$oidc_client``, a Public identifier for the client that is required for all OAuth flows.
+
+*Secure Access* configuration file ``openid_connect_configuration.conf``:
+
+.. code-block:: nginx
+    :emphasize-lines: 2,3,4
+
+        map $host $oidc_authz_endpoint {
+            default "https://MyOktaTenant.okta.com/oauth2/MyAuthorizationServerID/v1/authorize";
+        }
+        map $host $oidc_token_endpoint {
+            default "https://MyOktaTenant.okta.com/oauth2/MyAuthorizationServerID/v1/token";
+        }
+        map $host $oidc_jwt_keyfile {
+            default "https://MyOktaTenant.okta.com/oauth2/MyAuthorizationServerID/v1/keys";
+        }
+        map $host $oidc_client {
+            default "MyClientID";
+        }
+        map $host $oidc_pkce_enable {
+            default 1;
+        }
+
+
+Then, for each Application to protect by your 'PaaS Secure Access',
+allows the App's FQDN in *Sign-in redirect URIs* using the suffix ``/_codexch`` and *Sign-out redirect URIs* lists in Okta.
+A wildcard can be used.
+
+Example:
+
+.. image:: ./_pictures/okta_login_uri.png
+   :align: center
+   :width: 500
+   :alt: User Identifier
+
 
