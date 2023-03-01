@@ -141,7 +141,7 @@ or ``$oidc_client``, a Public identifier for the client that is required for all
 *Secure Access* configuration file ``openid_connect_configuration.conf``:
 
 .. code-block:: nginx
-    :emphasize-lines: 2,3,4
+    :emphasize-lines: 1-15
 
         map $host $oidc_authz_endpoint {
             default "https://login.microsoftonline.com/MyAzureTenantID/oauth2/v2.0/authorize";
@@ -164,7 +164,7 @@ or ``$oidc_client``, a Public identifier for the client that is required for all
 *Secure Access* configuration file ``openid_connect.server_conf``:
 
 .. code-block:: nginx
-    :emphasize-lines: 2,3,5,7,8,9,13,14,15
+    :emphasize-lines: 1-17
 
     location = /_jwks_uri {
         proxy_set_header Host "login.microsoftonline.com";
@@ -205,7 +205,7 @@ or ``$oidc_client``, a Public identifier for the client that is required for all
 *Secure Access* configuration file ``openid_connect_configuration.conf``:
 
 .. code-block:: nginx
-    :emphasize-lines: 2,3,4
+    :emphasize-lines: 1-15
 
         map $host $oidc_authz_endpoint {
             default "https://MyOktaTenant.okta.com/oauth2/MyAuthorizationServerID/v1/authorize";
