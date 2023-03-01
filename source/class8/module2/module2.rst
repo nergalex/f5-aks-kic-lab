@@ -170,7 +170,7 @@ or ``$oidc_client``, a Public identifier for the client that is required for all
 *Secure Access* configuration file ``openid_connect.server_conf``:
 
 .. code-block:: nginx
-    :emphasize-lines: 1-17
+    :emphasize-lines: 1-16
 
     location = /_jwks_uri {
         proxy_set_header Host "login.microsoftonline.com";
@@ -189,6 +189,7 @@ or ``$oidc_client``, a Public identifier for the client that is required for all
         proxy_ssl_name        "login.microsoftonline.com";
         ...
     }
+
 
 Then, for each Application to protect by your 'PaaS Secure Access',
 allows the App's FQDN in *Redirect URIs* using the suffix ``/_codexch``.
