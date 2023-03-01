@@ -134,6 +134,12 @@ to get access tokens and ID tokens in these types of apps:
 Azure AD
 =============================================
 
+*demo video:*
+
+.. raw:: html
+
+    <a href="http://www.youtube.com/watch?v=0OfIQUqWw6g"><img src="http://img.youtube.com/vi/0OfIQUqWw6g/0.jpg" width="600" height="300" title="XC Secure GW - Azure AD"></a>
+
 A guide `here <https://learn.microsoft.com/en-us/azure/active-directory/develop/scenario-spa-app-registration>`_ to configure a SPA with Azure AD.
 After registering your 'PaaS Secure Access' instance as an Application in Azure AD, you will obtain a *Client ID*,
 or ``$oidc_client``, a Public identifier for the client that is required for all OAuth flows.
