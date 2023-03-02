@@ -170,7 +170,6 @@ or ``$oidc_client``, a Public identifier for the client that is required for all
 *Secure Access* configuration file ``openid_connect.server_conf``:
 
 .. code-block:: nginx
-    :emphasize-lines: 1-15
 
     location = /_jwks_uri {
         proxy_set_header Host "login.microsoftonline.com";
