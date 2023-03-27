@@ -78,7 +78,7 @@ indicates the ability of the attack signature to identify the attack including s
     - *Medium*: Indicates some likelihood of false positives.
     - *High*: Indicates a low likelihood of false positives.
 
-**High violation rating**
+**Violation rating**
 
 Low accuracy signatures have a lot of chance to generate False Positive alone but,
 if a transaction match multiple low signatures, there is a lot of chance to encounter a real threat!
