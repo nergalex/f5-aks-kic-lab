@@ -20,12 +20,17 @@ It may also perform various cross-cutting tasks such as authentication, SSL term
 
 In Kubernetes, the functionality of an API gateway is primarily handled by an Ingress controller.
 
-This reference implementation `here <https://github.com/mspnp/microservices-reference-implementation>`_, shown in the picture below, shows a set of best practices for building and running a microservices architecture on Microsoft Azure, using Kubernetes.
+This reference implementation `here <https://github.com/mspnp/microservices-reference-implementation>`_,
+shown in the picture below,
+shows a set of best practices for building and running a microservices architecture on Microsoft Azure, using Kubernetes.
 
 .. image:: ./_pictures/aks_ref_architecture.png
    :align: center
    :width: 800
    :alt: AKS ref design
+
+The blog `here <https://techcommunity.microsoft.com/t5/containers/improving-customer-experiences-with-f5-nginx-and-windows-on/ba-p/3820344>`_
+describes how to implement NGINX Ingress Controller in an AKS environment.
 
 Resource management
 =====================================
