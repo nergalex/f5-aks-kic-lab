@@ -3,12 +3,6 @@ DDoS App Protect
 
 *DDoS App Protect* defends, adapts, and mitigates against Layer 7 denial-of-service attacks on your apps and APIs.
 
-Powered by the most popular data plane in the world,
-NGINX's *Secure Access* PaaS solution improves your security posture:
-    - **Minimize attack surface**: Reduce the accessible attack surface through **access control**
-    - **Prevent unauthorized activity**: Automatically block ongoing attacks through constant authentication, identity validation and detection of behavioral anomalies coupling with `F5 XC Malicious User <https://docs.cloud.f5.com/docs/how-to/advanced-security/malicious-users>`_ feature based on IA/ML.
-    - **Single Sign-On**: enable Single Sign-On (SSO) for your proxied applications by integrating with your Identity Provider and OpenID Connect
-
 .. image:: ./_pictures/intro.png
    :align: center
    :width: 800
@@ -49,7 +43,9 @@ Cost-effective
 
 
 ----------------------------------------------------
-Notes
+
+In Progress
+
 ----------------------------------------------------
 
 No-touch policy configuration
