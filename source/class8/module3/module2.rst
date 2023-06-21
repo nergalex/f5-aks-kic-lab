@@ -5,7 +5,7 @@ DDoS App Protect
 
 .. image:: ./_pictures/intro.png
    :align: center
-   :width: 800
+   :width: 1000
    :alt: Introduction
 
 .. contents:: Contents
@@ -21,7 +21,7 @@ F5 Distributed Cloud (XC) offers a multi-Layered DDoS protection:
 
 .. image:: ./_pictures/oignon-multi-layered-ddos-protection.png
    :align: center
-   :width: 900
+   :width: 1000
    :alt: Onion
 
 Benefits
