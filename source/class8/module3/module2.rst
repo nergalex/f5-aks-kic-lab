@@ -11,7 +11,7 @@ NGINX's *Secure Access* PaaS solution improves your security posture:
 
 .. image:: ./_pictures/intro.png
    :align: center
-   :width: 700
+   :width: 800
    :alt: Introduction
 
 .. contents:: Contents
@@ -27,7 +27,7 @@ F5 Distributed Cloud (XC) offers a multi-Layered DDoS protection:
 
 .. image:: ./_pictures/oignon-multi-layered-ddos-protection.png
    :align: center
-   :width: 700
+   :width: 900
    :alt: Onion
 
 Benefits
