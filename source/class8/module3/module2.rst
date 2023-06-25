@@ -1,7 +1,7 @@
-DDoS App Protect
+App Protect DDoS
 #################################################################
 
-*DDoS App Protect*,
+*App Protect DDoS*,
 a F5 Distributed Cloud (XC) Platform as a Service (PaaS),
 defends, adapts, and mitigates against Layer 7 denial-of-service attacks on your apps and APIs.
 
@@ -40,15 +40,17 @@ With bad bot traffic stealthily hiding among legitimate customer traffic, Layer 
 
 Overview of the XC Multi-Layered DDoS protection
 ***************************************************************
-F5 Distributed Cloud (XC) offers a multi-Layered DDoS protection:
-    - **1. Volumetric network DDoS protection**: leveraging IP anycast, `highly BGP peered to metro networks <https://bgp.he.net/report/peers>`_ and F5 XC private global network, XC "Transit DDoS" mitigates volumetric DDoS attacks up to 20 Tbps.
-    - **2. TLS based DDoS protection**: when you publish an application on XC, using an HTTP LB object, a native L7 DDoS protection detects attacks leveraging Machine Learning and automatically mitigates attacks identified by the botnet's TLS fingerprint.
-    - **2. HTTP headers based DDoS protection**: *DDoS App Protect* analyzes client behavior and application health to model normal traffic patterns, uses unique algorithms to create a dynamic statistical model that provides the most accurate protections, and deploys dynamic signatures to automatically mitigate attacks.
 
 .. image:: ./_pictures/oignon-multi-layered-ddos-protection.png
    :align: center
    :width: 1000
    :alt: Onion
+
+F5 Distributed Cloud (XC) offers a multi-Layered DDoS protection:
+    - **1. Volumetric network DDoS protection**: leveraging IP anycast, `highly BGP peered to metro networks <https://bgp.he.net/report/peers>`_ and F5 XC private global network, XC "Transit DDoS" mitigates volumetric DDoS attacks up to 20 Tbps.
+    - **2. TLS based DDoS protection**: when you publish an application on XC, using an HTTP LB object, a native L7 DDoS protection detects attacks leveraging Machine Learning and automatically mitigates attacks identified by the botnet's TLS fingerprint.
+    - **2. HTTP headers based DDoS protection**: *App Protect DDoS* analyzes client behavior and application health to model normal traffic patterns, uses unique algorithms to create a dynamic statistical model that provides the most accurate protections, and deploys dynamic signatures to automatically mitigate attacks.
+
 
 L7 DDoS protection, a Modern Solution for a Modern Problem
 ***************************************************************
@@ -58,52 +60,47 @@ On a basic level,
 you need a tool that recognizes when your site is under attack
 – something that’s able to distinguish between “good guys” (legitimate traffic) and “bad guys” (malicious traffic).
 
-PaaS *DDoS App Protect* is a **fire and forget** solution,
+PaaS *App Protect DDoS* is a **fire and forget** solution,
 that can be **deployed everywhere** on the globe
 and blocks traffic **closest to attackers**
 and **only requests that cause harm**.
 
 Seamless integration
 =============================================
-*DDoS App Protect* is a native PaaS deployed in F5 XC Edges:
+*App Protect DDoS* is a native PaaS deployed in F5 XC Edges:
     - in F5 managed infrastructure (Regional Edge)
     - or/and in Customer Private / Public Clouds (Customer Edge)
 
 Components of the solution are:
-    1. **Data-plane / gateways** workload: gateways learn traffic, enforce security rules and notify the arbitrator of ongoing attacks
-    2. **Control-plane / the arbitrator** workload: the arbitrator is aware of all ongoing attacks and synchronise gateways to enforce security rules of all ongoing attacks
-    3. **Analytics plane / log collector / SIEM**: customer is free to forward metrics and security event from gateways to a his own log collector or SIEM solution. `Here <https://github.com/f5devcentral/nap-dos-elk-dashboards>`_ a simple ELK dashboard used for the demo.
 
 .. image:: ./_pictures/components.png
    :align: center
    :width: 1000
    :alt: components
 
-*demo video:*
+    1. **Data-plane / gateways** workload: gateways learn traffic, enforce security rules and notify the arbitrator of ongoing attacks
+    2. **Control-plane / the arbitrator** workload: the arbitrator is aware of all ongoing attacks and synchronise gateways to enforce security rules of all ongoing attacks
+    3. **Analytics plane / log collector / SIEM**: customer is free to forward metrics and security event from gateways to a his own log collector or SIEM solution. `Here <https://github.com/f5devcentral/nap-dos-elk-dashboards>`_ a simple ELK dashboard used for the demo.
 
-** Workloads **
 .. raw:: html
 
-    <a href="http://www.youtube.com/watch?v=cO2bbAVtTdw"><img src="http://img.youtube.com/vi/cO2bbAVtTdw/0.jpg" width="600" height="300" title="XC PaaS DDoS App Protect - components"></a>
+    <a href="http://www.youtube.com/watch?v=cO2bbAVtTdw"><img src="http://img.youtube.com/vi/cO2bbAVtTdw/0.jpg" width="600" height="300" title="XC PaaS App Protect DDoS - components"></a>
 
 Monitoring of the solution
 =============================================
 
 F5 XC offers native *Service Mesh* dashboards:
     **1. Data-plane**: health of the data-plane service per location and key metrics of users traffic
+
+.. raw:: html
+
+    <a href="http://www.youtube.com/watch?v=WtT1W45Oid4"><img src="http://img.youtube.com/vi/WtT1W45Oid4/0.jpg" width="600" height="300" title="XC PaaS App Protect DDoS - Service Mesh - data-plane"></a>
+
     **2. Control-plane**: health of the control-plane services per location and key metrics of operational traffic
 
-*demo video:*
-
-** Service Mesh dashboard of Data-plane **
 .. raw:: html
 
-    <a href="http://www.youtube.com/watch?v=WtT1W45Oid4"><img src="http://img.youtube.com/vi/WtT1W45Oid4/0.jpg" width="600" height="300" title="XC PaaS DDoS App Protect - Service Mesh - data-plane"></a>
-
-** Service Mesh dashboard of Control-plane **
-.. raw:: html
-
-    <a href="http://www.youtube.com/watch?v=yDj0WBGCVDE"><img src="http://img.youtube.com/vi/yDj0WBGCVDE/0.jpg" width="600" height="300" title="XC PaaS DDoS App Protect - Service Mesh - control-plane"></a>
+    <a href="http://www.youtube.com/watch?v=yDj0WBGCVDE"><img src="http://img.youtube.com/vi/yDj0WBGCVDE/0.jpg" width="600" height="300" title="XC PaaS App Protect DDoS - Service Mesh - control-plane"></a>
 
 
 
