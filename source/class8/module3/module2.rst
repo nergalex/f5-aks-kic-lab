@@ -70,11 +70,7 @@ and **only requests that cause harm**.
 
 Seamless integration
 =============================================
-*App Protect DDoS* is a native PaaS deployed in F5 XC Edges:
-    - in F5 managed infrastructure (Regional Edge)
-    - or/and in Customer Private / Public Clouds (Customer Edge)
-
-Components of the solution are:
+Components of the *App Protect DDoS* solution are:
     1. **Data-plane / gateways** workload: gateways learn traffic, enforce security rules and notify the arbitrator of ongoing attacks
     2. **Control-plane / the arbitrator** workload: the arbitrator is aware of all ongoing attacks and synchronise gateways to enforce security rules of all ongoing attacks
     3. **Analytics plane / log collector / SIEM**: customer is free to forward metrics and security event from gateways to his own log collector or SIEM solution. `Here <https://github.com/f5devcentral/nap-dos-elk-dashboards>`_ a simple ELK dashboard used for the demo.
@@ -135,7 +131,16 @@ The next layer of defense blocks requests that match the signatures generated in
 The App Protect DDoS *gateway* notifies the App Protect DDoS *arbitrator*, then he synchronized all other *gateways* to enforce the signatures.
 Finally, if an App Protect DDoS gateway find the first two layers of defense are insufficient, it applies global rate limiting for a short period.
 
-Because this protection is managed automatically by the IA/ML engine, it results to have a simple policy to configure `here <https://docs.nginx.com/nginx-app-protect-dos/directives-and-policy/learn-about-directives-and-policy/#policy-directive-app_protect_dos_policy_file>`_ .
+*demo video:
+
+.. raw:: html
+
+    <a href="http://www.youtube.com/watch?v=yDj0WBGCVDE"><img src="http://img.youtube.com/vi/yDj0WBGCVDE/0.jpg" width="600" height="300" title="XC PaaS App Protect DDoS - Service Mesh - control-plane"></a>
+
+--------------------------------------------
+
+**No-touch policy configuration**
+Because this protection is managed automatically by the IA/ML engine, it results to configure one time the `protection policy <https://docs.nginx.com/nginx-app-protect-dos/directives-and-policy/learn-about-directives-and-policy/#policy-directive-app_protect_dos_policy_file>`_.
 Example of a protection policy:
 
 .. code-block:: json
@@ -196,51 +201,28 @@ So instead of rate limiting requests from all clients,
 an App Protect DDoS gateway first sends an HTTP redirection and then a snippet of JavaScript to be processed.
 Scripted bots cannot successfully respond, but a browser can enabling the App Protect DDoS gateway to block traffic from scripts while allowing browser traffic through.
 
-
-
-
-
-
-
-
-
-
-The first step in the process is capturing user and application behavior during a time when we know the site isn’t under attack, to create a statistical site model which captures a baseline of typical behavior. NGINX App Protect DoS tracks 320 user and app metrics for a comprehensive view of your app deployment. It also dynamically updates the statistical site model as it observes traffic. This frees you from the need to adjust system thresholds manually, while also guaranteeing that NGINX App Protect DoS takes into account the changes in traffic patterns that inevitably occur over time.
-
-One class of tracked metrics concern HTTP request characteristics – the HTTP method, the value of the User-Agent header, and others like those shown in the graphic.
-
-
-
-These features enable NGINX App Protect DoS to mitigate highly distributed DoS attacks, where each attacking request looks completely legal and a single attacker might even generate less traffic than the average legitimate user. With its adaptive technology, NGINX App Protect DoS protects modern infrastructures not only against today’s attacks but also those that will evolve in the future.
-
-
-Cost-effective
+Sizing and boundless scaling
 =============================================
+Because App Protect DDoS is deployed on the modern infrastructure of F5 Distributed Cloud,
+`Application Deivery Network <https://f5-k8s-ctfd.docs.emea.f5se.com/en/latest/class8/class8.html#application-delivery-network-adn>`_ (ADN),
+and its unique technology ``virtual Kubernetes`` (vK8S), it mitigates attacks that are highly distributed.
+
+App Protect DDoS *gateways* are containers deployed in F5 XC Edges:
+    - **Regional Edges**, fully managed by F5
+    - or/and **Customer Edges** hosted in Customer's Private / Public Clouds. Underlying infrastructure could be F5 hardware, baremetal or VM.
+
+Each *gateway* container, sized with 2 CPU / 2 GB RAM, can handle up to 30K concurrent connections.
+
+Therefore, the light footprint of a gateway and the availability of edge locations
+allow customer to create one distributed defense layer with adaptive resources, to scale when the threat appears,
+and deployed closest to the source of the threat.
+
+*demo video*
+
+.. raw:: html
+
+    <a href="http://www.youtube.com/watch?v=yDj0WBGCVDE"><img src="http://img.youtube.com/vi/yDj0WBGCVDE/0.jpg" width="600" height="300" title="XC PaaS App Protect DDoS - Service Mesh - control-plane"></a>
 
 
 
-----------------------------------------------------
 
-In Progress
-
-----------------------------------------------------
-
-
-
-
-
-
-Boundless scaling
-=============================================
-Better the attack is distributed,
-more difficult will be the detection, based on a small portion of the traffic,
-and the mitigation too, because it requires a synchronization between all security sensors.
-your protection
-
-
-
-Closest to the attackers
-
-
-No-touch policy configuration
-a **zero touch** solution
