@@ -131,7 +131,7 @@ The next layer of defense blocks requests that match the signatures generated in
 The App Protect DDoS *gateway* notifies the App Protect DDoS *arbitrator*, then he synchronized all other *gateways* to enforce the signatures.
 Finally, if an App Protect DDoS gateway find the first two layers of defense are insufficient, it applies global rate limiting for a short period.
 
-*demo video*:
+*demo video*: ``TO DO``
 
 .. raw:: html
 
@@ -217,7 +217,7 @@ Therefore, the light footprint of a gateway and the availability of edge locatio
 allow customer to create one distributed defense layer with adaptive resources, to scale when the threat appears,
 and deployed closest to the source of the threat.
 
-*demo video*
+*demo video* ``TO DO``
 
 .. raw:: html
 
