@@ -85,7 +85,7 @@ Components of the *App Protect DDoS* solution are:
 
 .. raw:: html
 
-    <a href="http://www.youtube.com/watch?v=cO2bbAVtTdw"><img src="http://img.youtube.com/vi/cO2bbAVtTdw/0.jpg" width="600" height="300" title="XC PaaS App Protect DDoS - components"></a>
+    <a href="http://www.youtube.com/watch?v=Y0bWvEBiXjw"><img src="http://img.youtube.com/vi/Y0bWvEBiXjw/0.jpg" width="600" height="300" title="XC PaaS App Protect DDoS - Attack and mitigation"></a>
 
 Distributed gateways, Central Monitoring
 =============================================
