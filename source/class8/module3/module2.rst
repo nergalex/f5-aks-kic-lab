@@ -131,7 +131,7 @@ The next layer of defense blocks requests that match the signatures generated in
 The App Protect DDoS *gateway* notifies the App Protect DDoS *arbitrator*, then he synchronized all other *gateways* to enforce the signatures.
 Finally, if an App Protect DDoS gateway find the first two layers of defense are insufficient, it applies global rate limiting for a short period.
 
-*demo video:
+*demo video*:
 
 .. raw:: html
 
