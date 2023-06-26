@@ -136,7 +136,7 @@ Finally, if an App Protect DDoS gateway find the first two layers of defense are
 
 .. raw:: html
 
-    <a href="http://www.youtube.com/watch?v=Y0bWvEBiXjw"><img src="http://img.youtube.com/vi/Y0bWvEBiXjw/0.jpg" width="600" height="300" title="XC PaaS App Protect DDoS - Attack and Mitigation"></a>
+    <a href="http://www.youtube.com/watch?v=QGgA330CgQg"><img src="http://img.youtube.com/vi/QGgA330CgQg/0.jpg" width="600" height="300" title="XC PaaS App Protect DDoS - Attack and Mitigation"></a>
 
 --------------------------------------------
 
