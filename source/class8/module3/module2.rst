@@ -85,7 +85,8 @@ Components of the *App Protect DDoS* solution are:
 
 .. raw:: html
 
-    <a href="http://www.youtube.com/watch?v=Y0bWvEBiXjw"><img src="http://img.youtube.com/vi/Y0bWvEBiXjw/0.jpg" width="600" height="300" title="XC PaaS App Protect DDoS - Attack and mitigation"></a>
+    <a href="http://www.youtube.com/watch?v=cO2bbAVtTdw"><img src="http://img.youtube.com/vi/cO2bbAVtTdw/0.jpg" width="600" height="300" title="XC PaaS App Protect DDoS - components"></a>
+
 
 Distributed gateways, Central Monitoring
 =============================================
@@ -131,11 +132,11 @@ The next layer of defense blocks requests that match the signatures generated in
 The App Protect DDoS *gateway* notifies the App Protect DDoS *arbitrator*, then he synchronized all other *gateways* to enforce the signatures.
 Finally, if an App Protect DDoS gateway find the first two layers of defense are insufficient, it applies global rate limiting for a short period.
 
-*demo video*: ``TO DO``
+*demo video*:
 
 .. raw:: html
 
-    <a href="http://www.youtube.com/watch?v=yDj0WBGCVDE"><img src="http://img.youtube.com/vi/yDj0WBGCVDE/0.jpg" width="600" height="300" title="XC PaaS App Protect DDoS - Service Mesh - control-plane"></a>
+    <a href="http://www.youtube.com/watch?v=Y0bWvEBiXjw"><img src="http://img.youtube.com/vi/Y0bWvEBiXjw/0.jpg" width="600" height="300" title="XC PaaS App Protect DDoS - Attack and Mitigation"></a>
 
 --------------------------------------------
 
