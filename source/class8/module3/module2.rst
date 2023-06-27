@@ -211,7 +211,7 @@ These differences in capability between scripts and browsers help App Protect DD
 
 So instead of rate limiting requests from all clients,
 an App Protect DDoS gateway first sends an HTTP redirection and then a snippet of JavaScript to be processed.
-Scripted bots cannot successfully respond, but a browser can enabling the App Protect DDoS gateway to block traffic from scripts while allowing browser traffic through.
+Scripted bots cannot successfully respond, but a browser can. This enables the App Protect DDoS gateway to block traffic from scripts while allowing browser traffic through.
 
 Sizing and boundless scaling
 =============================================
