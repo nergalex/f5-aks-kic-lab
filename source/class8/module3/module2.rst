@@ -155,6 +155,7 @@ Because this protection is managed automatically by the IA/ML engine, it results
 Example of a protection policy:
 
 .. code-block:: json
+    :emphasize-lines: 1-6
 
     {
         "mitigation_mode": "standard",
