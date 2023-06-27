@@ -81,6 +81,7 @@ Components of the *App Protect DDoS* solution are:
    :alt: components
 
 ----------------------------------------------
+
 **demo video, click on the picture:**
 
 .. raw:: html
@@ -96,6 +97,7 @@ F5 XC offers native *Service Mesh* dashboards to monitor this distributed soluti
     **1. Data-plane**: health of the data-plane service per location and key metrics of users traffic
 
 ----------------------------------------------
+
 **demo video, click on the picture:**
 
 .. raw:: html
@@ -139,6 +141,7 @@ The App Protect DDoS *gateway* notifies the App Protect DDoS *arbitrator*, then 
 Finally, if an App Protect DDoS gateway find the first two layers of defense are insufficient, it applies global rate limiting for a short period.
 
 ----------------------------------------------
+
 **demo video, click on the picture:**
 
 .. raw:: html
@@ -227,6 +230,7 @@ allow customer to create one distributed defense layer with adaptive resources, 
 and deployed closest to the source of the threat.
 
 ----------------------------------------------
+
 **demo video, click on the picture:**
 
 .. raw:: html
@@ -303,7 +307,7 @@ Image : `here <https://github.com/nergalex/docker-nap-dos>`_
             listen 8080;
 
             set $loggable '1';
-            access_log syslog:server=nap-dos-elk-syslog-udp:5561 log_dos; # if=$loggable;
+            access_log syslog:server=nap-dos-elk-syslog-udp:5561 log_dos if=$loggable;
 
             location / {
                 app_protect_dos_enable on;
