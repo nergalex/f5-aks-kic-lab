@@ -136,7 +136,7 @@ Finally, if an App Protect DDoS gateway find the first two layers of defense are
 
 .. raw:: html
 
-    <a href="http://www.youtube.com/watch?v=QGgA330CgQg"><img src="http://img.youtube.com/vi/QGgA330CgQg/0.jpg" width="600" height="300" title="XC PaaS App Protect DDoS - Attack and Mitigation"></a>
+    <a href="http://www.youtube.com/watch?v=RbSub52TBE0"><img src="http://img.youtube.com/vi/RbSub52TBE0/0.jpg" width="600" height="300" title="XC PaaS App Protect DDoS - Attack and Mitigation"></a>
 
 --------------------------------------------
 
@@ -218,11 +218,11 @@ Therefore, the light footprint of a gateway and the availability of edge locatio
 allow customer to create one distributed defense layer with adaptive resources, to scale when the threat appears,
 and deployed closest to the source of the threat.
 
-*demo video* ``TO DO``
+*demo video:*
 
 .. raw:: html
 
-    <a href="http://www.youtube.com/watch?v=yDj0WBGCVDE"><img src="http://img.youtube.com/vi/yDj0WBGCVDE/0.jpg" width="600" height="300" title="XC PaaS App Protect DDoS - Service Mesh - control-plane"></a>
+    <a href="http://www.youtube.com/watch?v=lBursDr6PXU"><img src="http://img.youtube.com/vi/lBursDr6PXU/0.jpg" width="600" height="300" title="XC PaaS App Protect DDoS - Scale Out"></a>
 
 Demo lab
 *********************************************************************************************************
