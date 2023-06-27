@@ -81,7 +81,7 @@ Components of the *App Protect DDoS* solution are:
    :alt: components
 
 ----------------------------------------------
-*demo video:*
+**demo video, click on the picture:**
 
 .. raw:: html
 
@@ -95,6 +95,9 @@ F5 XC offers native *Service Mesh* dashboards to monitor this distributed soluti
 
     **1. Data-plane**: health of the data-plane service per location and key metrics of users traffic
 
+----------------------------------------------
+**demo video, click on the picture:**
+
 .. raw:: html
 
     <a href="http://www.youtube.com/watch?v=WtT1W45Oid4"><img src="http://img.youtube.com/vi/WtT1W45Oid4/0.jpg" width="600" height="300" title="XC PaaS App Protect DDoS - Service Mesh - data-plane"></a>
@@ -102,6 +105,9 @@ F5 XC offers native *Service Mesh* dashboards to monitor this distributed soluti
 ----------------------------------------------
 
     **2. Control-plane**: health of the control-plane services per location and key metrics of operational traffic
+
+----------------------------------------------
+**demo video, click on the picture:**
 
 .. raw:: html
 
@@ -132,7 +138,8 @@ The next layer of defense blocks requests that match the signatures generated in
 The App Protect DDoS *gateway* notifies the App Protect DDoS *arbitrator*, then he synchronized all other *gateways* to enforce the signatures.
 Finally, if an App Protect DDoS gateway find the first two layers of defense are insufficient, it applies global rate limiting for a short period.
 
-*demo video*:
+----------------------------------------------
+**demo video, click on the picture:**
 
 .. raw:: html
 
@@ -182,6 +189,7 @@ The App Protect DDoS gateway then kicks off two procedures that run in parallel:
     2. Generating a list of rules that describe attack traffic without blocking legitimate users – real‑time signatures for zero‑day attack protection. Signatures generated during previous attacks can be reused. The generated signatures identify HTTP attributes associated with the attack, as in this example below. The **signature** contains 11 attributes that cover all aspects: method, path, headers and payload. Such a level of granularity and reaction time is not feasible neither for volumetric vectors nor a SOC operator armed with a regex engine.
 
 .. code-block:: bash
+    :emphasize-lines: 1-3
 
     http.request.method eq GET and http.user_agent contains Chrome and
     http.uri_parameters eq 6 and http.accept_header_exists eq false and
@@ -218,7 +226,8 @@ Therefore, the light footprint of a gateway and the availability of edge locatio
 allow customer to create one distributed defense layer with adaptive resources, to scale when the threat appears,
 and deployed closest to the source of the threat.
 
-*demo video:*
+----------------------------------------------
+**demo video, click on the picture:**
 
 .. raw:: html
 
