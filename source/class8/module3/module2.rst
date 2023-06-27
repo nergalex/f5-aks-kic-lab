@@ -51,7 +51,7 @@ Overview of the XC Multi-Layered DDoS protection
 
 F5 Distributed Cloud (XC) offers a multi-Layered DDoS protection:
     - **1. Volumetric network DDoS protection**: leveraging IP anycast, `highly BGP peered to metro networks <https://bgp.he.net/report/peers>`_ and F5 XC private global network, XC "Transit DDoS" mitigates volumetric DDoS attacks up to 20 Tbps.
-    - **2. TLS based DDoS protection**: when you publish an application on XC, using an HTTP LB object, a native L7 DDoS protection detects attacks leveraging Machine Learning and automatically mitigates attacks identified by the botnet's TLS fingerprint.
+    - **2. TLS based DDoS protection**: when you publish an application on XC, using a HTTP LB object, a native L7 DDoS protection detects attacks leveraging Machine Learning and automatically mitigates attacks identified by the botnet's TLS fingerprint.
     - **2. HTTP headers based DDoS protection**: *App Protect DDoS* analyzes client behavior and application health to model normal traffic patterns, uses unique algorithms to create a dynamic statistical model that provides the most accurate protections, and deploys dynamic signatures to automatically mitigate attacks.
 
 
@@ -171,7 +171,7 @@ The following items explain more in details each point discussed above.
 **1. CHECKING SERVICE HEALTH**
 Many Layer 7 DoS mitigation tools pay attention only to client traffic patterns.
 For superior attack detection, App Protect DDoS gateways actively check service health in addition.
-A App Protect DDoS gateway mimics human behavior by measuring latency for every single transaction and calculates the level of stress for a service.
+An App Protect DDoS gateway mimics human behavior by measuring latency for every single transaction and calculates the level of stress for a service.
 It tracks multiple server performance metrics such as response time and proportion of dropped requests.
 Worsening values for these metrics indicate that an application is “under stress”, possibly because of an attack.
 
@@ -188,7 +188,7 @@ the pattern of responses to health checks helps identify when the attack started
 *Identifying Malicious Actors and Request Patterns*
 
 The App Protect DDoS gateway then kicks off two procedures that run in parallel:
-    1. Analyzing the behavior of individual users to detect who created or contributed to the anomaly. The App Protect gateway initially treats all users as suspects and analyzes their behavior. It’s unlikely that every user is an attacker, but measuring the behavior of all of them enables the App Protect gateway to create a statistical picture that reveals who did and did not contribute to the attack. Detected **bad actors** are identified using their IP address or the X-Forwarded-For header in their requests.
+    1. Analyzing the behavior of individual users to detect who created or contributed to the anomaly. The App Protect gateway initially treats all users as suspects and analyzes their behavior. It’s unlikely that every user is an attacker, but measuring the behavior of all of them enables the App Protect gateway to create a statistical picture that reveals who did and did not contribute to the attack. Detected **bad actors** are identified using their IP addresses or the X-Forwarded-For header in their requests.
     2. Generating a list of rules that describe attack traffic without blocking legitimate users – real‑time signatures for zero‑day attack protection. Signatures generated during previous attacks can be reused. The generated signatures identify HTTP attributes associated with the attack, as in this example below. The **signature** contains 11 attributes that cover all aspects: method, path, headers and payload. Such a level of granularity and reaction time is not feasible neither for volumetric vectors nor a SOC operator armed with a regex engine.
 
 .. code-block:: bash
@@ -202,7 +202,7 @@ The App Protect DDoS gateway then kicks off two procedures that run in parallel:
 
 **3. STANDARD MITIGATION and CHALLENGES**
 
-When a App Protect DDoS gateway applies global rate limiting,
+When an App Protect DDoS gateway applies global rate limiting,
 there is a chance that requests from legitimate users get blocked – a false positive.
 Gateways can reduce false positives based on the fact that a typical DoS attack is created using scripts run by a botnet controller (malware on infected computers),
 not directly by humans.
@@ -216,7 +216,7 @@ Scripted bots cannot successfully respond, but a browser can enabling the App Pr
 Sizing and boundless scaling
 =============================================
 Because App Protect DDoS is deployed on the modern infrastructure of F5 Distributed Cloud,
-`Application Deivery Network <https://f5-k8s-ctfd.docs.emea.f5se.com/en/latest/class8/class8.html#application-delivery-network-adn>`_ (ADN),
+`Application Delivery Network <https://f5-k8s-ctfd.docs.emea.f5se.com/en/latest/class8/class8.html#application-delivery-network-adn>`_ (ADN),
 and its unique technology ``virtual Kubernetes`` (vK8S), it mitigates attacks that are highly distributed.
 
 App Protect DDoS *gateways* are containers deployed in F5 XC Edges:
@@ -262,6 +262,7 @@ gateway / NGINX App Protect DoS
 Image : `here <https://github.com/nergalex/docker-nap-dos>`_
 
 .. code-block:: nginx
+    :emphasize-lines: 1-63
 
     load_module /usr/lib/nginx/modules/ngx_http_app_protect_dos_module.so;
 
