@@ -232,7 +232,7 @@ Architecture
 
 .. image:: ./_pictures/architecture.png
    :align: center
-   :width: 800
+   :width: 1000
    :alt: architecture
 
 Services
@@ -240,7 +240,7 @@ Services
 
 .. image:: ./_pictures/services.png
    :align: center
-   :width: 800
+   :width: 1000
    :alt: architecture
 
 gateway / NGINX App Protect DoS
