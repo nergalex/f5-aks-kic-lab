@@ -259,8 +259,8 @@ Services
 gateway / NGINX App Protect DoS
 =============================================
 
-Image : `here <https://github.com/nergalex/docker-nap-dos>`_
-
+- Docker image: `here <https://github.com/nergalex/docker-nap-dos>`_
+- nginx.conf:
 .. code-block:: nginx
     :emphasize-lines: 1-63
 
