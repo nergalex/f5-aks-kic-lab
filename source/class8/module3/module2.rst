@@ -224,6 +224,93 @@ and deployed closest to the source of the threat.
 
     <a href="http://www.youtube.com/watch?v=yDj0WBGCVDE"><img src="http://img.youtube.com/vi/yDj0WBGCVDE/0.jpg" width="600" height="300" title="XC PaaS App Protect DDoS - Service Mesh - control-plane"></a>
 
+Demo lab
+*********************************************************************************************************
 
+Architecture
+=============================================
 
+.. image:: ./_pictures/architecture.png
+   :align: center
+   :width: 800
+   :alt: architecture
 
+Services
+=============================================
+
+.. image:: ./_pictures/services.png
+   :align: center
+   :width: 800
+   :alt: architecture
+
+gateway / NGINX App Protect DoS
+=============================================
+
+Image : `here <https://github.com/nergalex/docker-nap-dos>`_
+
+.. code-block:: nginx
+
+    load_module /usr/lib/nginx/modules/ngx_http_app_protect_dos_module.so;
+
+    worker_processes  auto;
+    error_log /nginx/var/log/nginx/error.log debug;
+    pid /nginx-tmp/nginx.pid;
+
+    events {
+        worker_connections 4096;
+    }
+
+    http {
+        scgi_temp_path /nginx-cache/scgi_temp;
+        uwsgi_temp_path /nginx-cache/uwsgi_temp;
+        fastcgi_temp_path /nginx-cache/fastcgi_temp;
+        proxy_temp_path /nginx-cache/proxy_temp;
+        client_body_temp_path /nginx-cache/client_temp;
+        default_type  application/octet-stream;
+
+        client_max_body_size 1000M;
+        log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                          '$status $body_bytes_sent "$http_referer" '
+                          '"$http_user_agent" "$http_x_forwarded_for"';
+        access_log  /nginx/var/log/nginx/access.log  main;
+        resolver 100.127.192.10; # F5 XC vK8S DNS resolver. Used for DNS lookup of $host;
+        proxy_set_header Host $host;
+
+        # NAP-DOS
+        log_format log_dos ', vs_name_al=$app_protect_dos_vs_name, ip=$http_x_forwarded_for, tls_fp=$app_protect_dos_tls_fp, outcome=$app_protect_dos_outcome, reason=$app_protect_dos_outcome_reason, ip_tls=$http_x_forwarded_for:$app_protect_dos_tls_fp, ';
+        app_protect_dos_security_log_enable on;
+        app_protect_dos_security_log "/nginx/etc/nginx/log-profiles/generic-log.json" syslog:server=nap-dos-elk-syslog:5261;
+        app_protect_dos_arb_fqdn nap-dos-arbitrator-re;
+        app_protect_dos_readiness on uri:/readiness port:8090;
+        app_protect_dos_liveness on uri:/liveness port:8090;
+
+        # Trust XFF
+        set_real_ip_from  100.0.0.0/8;
+        real_ip_header    X-Forwarded-For;
+        real_ip_recursive on;
+
+        server {
+            server_name juiceshop.f5cloudbuilder.dev;
+            listen 8080;
+
+            set $loggable '1';
+            access_log syslog:server=nap-dos-elk-syslog-udp:5561 log_dos; # if=$loggable;
+
+            location / {
+                app_protect_dos_enable on;
+                app_protect_dos_policy_file "/nginx/etc/nginx/policies/generic-policy.json";
+                app_protect_dos_name "vs-juiceshop-f5cloudbuilder-dev";
+                app_protect_dos_monitor uri=http://juiceshop.f5cloudbuilder.dev:8080/;
+                proxy_pass http://$host;
+            }
+        }
+        server {
+            listen 8090;
+            location /api {
+                app_protect_dos_api;
+            }
+            location = /dashboard-dos.html {
+                root   /nginx/usr/share/nginx/html;
+            }
+        }
+    }
