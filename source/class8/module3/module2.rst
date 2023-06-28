@@ -155,7 +155,7 @@ Because this protection is managed automatically by the IA/ML engine, it results
 Example of a protection policy:
 
 .. code-block:: json
-    :emphasize-lines: 1-6
+    :emphasize-lines: 1-7
 
     {
         "mitigation_mode": "standard",
@@ -190,7 +190,7 @@ the pattern of responses to health checks helps identify when the attack started
 
 The App Protect DDoS gateway then kicks off two procedures that run in parallel:
     1. Analyzing the behavior of individual users to detect who created or contributed to the anomaly. The App Protect gateway initially treats all users as suspects and analyzes their behavior. It’s unlikely that every user is an attacker, but measuring the behavior of all of them enables the App Protect gateway to create a statistical picture that reveals who did and did not contribute to the attack. Detected **bad actors** are identified using their IP addresses or the X-Forwarded-For header in their requests.
-    2. Generating a list of rules that describe attack traffic without blocking legitimate users – real‑time signatures for zero‑day attack protection. Signatures generated during previous attacks can be reused. The generated signatures identify HTTP attributes associated with the attack, as in this example below. The **signature** contains 11 attributes that cover all aspects: method, path, headers and payload. Such a level of granularity and reaction time is not feasible neither for volumetric vectors nor a SOC operator armed with a regex engine.
+    2. Generating a list of rules that describe attack traffic without blocking legitimate users – real‑time signatures for zero‑day attack protection. Signatures generated during previous attacks can be reused. The generated signatures identify HTTP attributes associated with the attack, as in this example below. A **signature** contains 11 attributes that cover all aspects: method, path, headers and payload. Such a level of granularity and reaction time is not feasible neither for volumetric vectors nor a SOC operator armed with a regex engine.
 
 .. code-block:: bash
     :emphasize-lines: 1-3
@@ -263,7 +263,7 @@ gateway / NGINX App Protect DoS
 - Docker image: `here <https://github.com/nergalex/docker-nap-dos>`_
 - nginx.conf:
 .. code-block:: nginx
-    :emphasize-lines: 1-63
+    :emphasize-lines: 1-64
 
     load_module /usr/lib/nginx/modules/ngx_http_app_protect_dos_module.so;
 
