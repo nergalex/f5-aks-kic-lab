@@ -26,11 +26,17 @@ Source: `DBIR 2023 <https://www.verizon.com/business/fr-fr/resources/reports/dbi
    :width: 600
    :alt: Patterns over time in incidents
 
-This `blog <https://www.nginx.com/blog/defending-applications-complex-modern-attacks/>`_ describes
+This `blog <https://www.nginx.com/blog/defending-applications-complex-modern-attacks/>`_
+and `Market Guide for DDoS Mitigation Solutions <https://www.gartner.com/en/documents/3994568>`_ describe
 volumetric denial-of-service (DoS) and distributed DoS (DDoS) attacks at the network and transport levels (Layers 3 and 4),
 which exhaust servers’ available bandwidth by flooding them with TCP/UDP connection requests.
 Now attackers have added a new tool to their arsenal – DoS and DDoS attacks that use HTTP requests
 or API calls to exhaust resources at the application level (Layer 7).
+
+.. image:: ./_pictures/gartner-ddos-attack-type.png
+   :align: center
+   :width: 800
+   :alt: Gartner
 
 Layer 7 attacks are more complex to design than network attacks,
 and many tools that can handle Layer 3/4 attacks are ineffective at protecting modern application architectures.
