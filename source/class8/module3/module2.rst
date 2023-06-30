@@ -102,7 +102,6 @@ F5 XC offers native *Service Mesh* dashboards to monitor this distributed soluti
 
     **1. Data-plane**: health of the data-plane service per location and key metrics of users traffic
 
-----------------------------------------------
 
 **demo video, click on the picture:**
 
@@ -114,7 +113,6 @@ F5 XC offers native *Service Mesh* dashboards to monitor this distributed soluti
 
     **2. Control-plane**: health of the control-plane services per location and key metrics of operational traffic
 
-----------------------------------------------
 
 **demo video, click on the picture:**
 
