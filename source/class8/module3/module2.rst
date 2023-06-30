@@ -120,6 +120,7 @@ F5 XC offers native *Service Mesh* dashboards to monitor this distributed soluti
 
     <a href="http://www.youtube.com/watch?v=yDj0WBGCVDE"><img src="http://img.youtube.com/vi/yDj0WBGCVDE/0.jpg" width="600" height="300" title="XC PaaS App Protect DDoS - Service Mesh - control-plane"></a>
 
+----------------------------------------------
 
 Lowest False Positive
 =============================================
@@ -145,19 +146,7 @@ The next layer of defense blocks requests that match the signatures generated in
 The App Protect DDoS *gateway* notifies the App Protect DDoS *arbitrator*, then he synchronized all other *gateways* to enforce the signatures.
 Finally, if an App Protect DDoS gateway find the first two layers of defense are insufficient, it applies global rate limiting for a short period.
 
-----------------------------------------------
-
-**demo video, click on the picture:**
-
-.. raw:: html
-
-    <a href="http://www.youtube.com/watch?v=RbSub52TBE0"><img src="http://img.youtube.com/vi/RbSub52TBE0/0.jpg" width="600" height="300" title="XC PaaS App Protect DDoS - Attack and Mitigation"></a>
-
---------------------------------------------
-
-**No-touch policy configuration**
-Because this protection is managed automatically by the IA/ML engine, it results to configure one time the `protection policy <https://docs.nginx.com/nginx-app-protect-dos/directives-and-policy/learn-about-directives-and-policy/#policy-directive-app_protect_dos_policy_file>`_.
-Example of a protection policy:
+    **No-touch policy configuration**: Because this protection is managed automatically by the IA/ML engine, it results to configure one time the `protection policy <https://docs.nginx.com/nginx-app-protect-dos/directives-and-policy/learn-about-directives-and-policy/#policy-directive-app_protect_dos_policy_file>`_. Example of a protection policy:
 
 .. code-block:: json
     :emphasize-lines: 1-7
@@ -170,7 +159,12 @@ Example of a protection policy:
         "tls_fingerprint" : "on"
     }
 
-The following items explain more in details each point discussed above.
+**demo video, click on the picture:**
+
+.. raw:: html
+
+    <a href="http://www.youtube.com/watch?v=RbSub52TBE0"><img src="http://img.youtube.com/vi/RbSub52TBE0/0.jpg" width="600" height="300" title="XC PaaS App Protect DDoS - Attack and Mitigation"></a>
+
 
 ----------------------------------------------
 
@@ -219,6 +213,8 @@ So instead of rate limiting requests from all clients,
 an App Protect DDoS gateway first sends an HTTP redirection and then a snippet of JavaScript to be processed.
 Scripted bots cannot successfully respond, but a browser can. This enables the App Protect DDoS gateway to block traffic from scripts while allowing browser traffic through.
 
+----------------------------------------------
+
 Sizing and boundless scaling
 =============================================
 Because App Protect DDoS is deployed on the modern infrastructure of F5 Distributed Cloud,
@@ -235,13 +231,13 @@ Therefore, the light footprint of a gateway and the availability of edge locatio
 allow customer to create one distributed defense layer with adaptive resources, to scale when the threat appears,
 and deployed closest to the source of the threat.
 
-----------------------------------------------
-
 **demo video, click on the picture:**
 
 .. raw:: html
 
     <a href="http://www.youtube.com/watch?v=lBursDr6PXU"><img src="http://img.youtube.com/vi/lBursDr6PXU/0.jpg" width="600" height="300" title="XC PaaS App Protect DDoS - Scale Out"></a>
+
+----------------------------------------------
 
 Demo lab
 *********************************************************************************************************
