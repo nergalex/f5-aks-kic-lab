@@ -27,7 +27,7 @@ Source: `DBIR 2023 <https://www.verizon.com/business/fr-fr/resources/reports/dbi
    :alt: Patterns over time in incidents
 
 This `blog <https://www.nginx.com/blog/defending-applications-complex-modern-attacks/>`_
-and `Market Guide for DDoS Mitigation Solutions <https://www.gartner.com/en/documents/3994568>`_ describe
+and the `Market Guide for DDoS Mitigation Solutions <https://www.gartner.com/en/documents/3994568>`_ describe
 volumetric denial-of-service (DoS) and distributed DoS (DDoS) attacks at the network and transport levels (Layers 3 and 4),
 which exhaust servers’ available bandwidth by flooding them with TCP/UDP connection requests.
 Now attackers have added a new tool to their arsenal – DoS and DDoS attacks that use HTTP requests
