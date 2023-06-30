@@ -24,8 +24,8 @@ from sphinx.errors import VersionRequirementError
 # -- Project information -----------------------------------------------------
 
 project = u'F5 AKS KIC lab'
-copyright = u'2020, F5 SE'
-author = u'F5 SE'
+copyright = u'F5'
+author = u'Alexis DA COSTA'
 
 # The short X.Y version
 version = u''
@@ -107,7 +107,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'f5-aks-kic-lab-doc'
+htmlhelp_basename = 'f5-nginx-workshop-doc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -134,8 +134,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'f5-aks-kic-lab.tex', u'F5 AKS KIC lab Documentation',
-     u'F5 SE', 'manual'),
+    (master_doc, 'f5-nginx-workshop.tex', u'F5 NGINX workshop user guide',
+     u'F5', 'manual'),
 ]
 
 
@@ -144,7 +144,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'f5-aks-kic-lab', u'F5 AKS KIC lab Documentation',
+    (master_doc, 'f5-nginx-workshop', u'F5 NGINX workshop user guide',
      [author], 1)
 ]
 
@@ -155,8 +155,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'f5-aks-kic-lab', u'F5 AKS KIC lab Documentation',
-     author, 'f5-aks-kic-lab', 'One line description of project.',
+    (master_doc, 'f5-nginx-workshop', u'F5 NGINX workshop user guide',
+     author, 'f5-nginx-workshop', 'One line description of project.',
      'Miscellaneous'),
 ]
 
