@@ -3,11 +3,12 @@ Architecture
 
 .. contents:: Contents
     :local:
-    :depth: 1
+    :depth: 2
 
-Components of API Management
+Components of API Connectivity Manager
 ***************************************************************
-The F5 API Management solution includes 3 components:
+The F5 API Connectivity Manager (ACM) is a solution to manage NGINX API Gateways (API GW).
+It includes 3 components:
 
 .. image:: ./_pictures/functional_view_3_pillars.png
    :align: center
