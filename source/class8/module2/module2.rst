@@ -16,7 +16,7 @@ NGINX's *Secure Access* PaaS solution improves your security posture:
     :local:
     :depth: 1
 
-A PaaS as relying party for OpenID Connect authentication
+Secure Access as relying party for OpenID Connect authentication
 ***************************************************************
 With *NGINX Secure Access*,
 the client and NGINX Plus communicate directly with the IdP at different stages during the initial authentication event.
@@ -55,7 +55,7 @@ please refer to it `here <https://github.com/nginxinc/nginx-openid-connect>`_ fo
 
 For more information on OpenID Connect and JWT validation with NGINX Plus, see `Authenticating Users to Existing Applications with OpenID Connect and NGINX Plus <https://www.nginx.com/blog/authenticating-users-existing-applications-openid-connect-nginx-plus/>`_.
 
-A PaaS as a Shared Service
+Secure Access as a Shared Service
 ***************************************************************
 F5 Distributed Cloud (XC), as a Multi-Cloud Networking Software (MCNS),
 allows to insert any container based service in the data-path,
