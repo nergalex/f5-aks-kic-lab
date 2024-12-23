@@ -81,7 +81,7 @@ these may require authentication by different IdPs.
 Separate IdPs can be configured, with each one matching on an attribute of the HTTP request,
 e.g. hostname or part of the URI path for example.
 
-.. image:: ./_pictures/paas_configuration_files.png
+.. image:: ./_pictures/http_route.png
    :align: center
    :width: 500
    :alt: Public HTTP LB Route
@@ -93,7 +93,7 @@ And a custom header ``x-my-idp`` is added (or replaced if existing) to define th
    :width: 500
    :alt: Public HTTP LB Route
 
-NGINX One | Secure Access gateways managed by the F5 XC SaaS Console
+Secure Access gateways managed by the F5 XC SaaS console
 ********************************************************************
 
 *Secure Access* PaaS is NGINX+ enterprise grade instances, deployed in F5 Edges
