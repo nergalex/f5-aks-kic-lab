@@ -75,7 +75,7 @@ Once authenticated, the *Secure Access PaaS* gateway forward the request to the 
 
 Multiple IdPs support
 ***************************************************************
-*Secure Access* PaaS support any Identity Provider that supports OpenID Connect 1.0.
+*Secure Access* PaaS supports any Identity Provider that supports OpenID Connect 1.0.
 Where *Secure Access* PaaS is configured to proxy requests for multiple websites or applications, or user groups,
 these may require authentication by different IdPs.
 Separate IdPs can be configured, with each one matching on an attribute of the HTTP request,
@@ -92,6 +92,25 @@ And a custom header ``x-my-idp`` is added (or replaced if existing) to define th
    :align: center
    :width: 500
    :alt: Public HTTP LB Route
+
+Custom scope per App
+***************************************************************
+Same as done for IdP selection mechanism,
+the App owner can define the scope to be allowed for a DNS domain or per Path.
+For example: ``/admin`` for administrator scope only.
+The App owner defines set the Scope value in a custom header `x-my-scope`, at the HTTP Route level:
+
+.. image:: ./_pictures/x-my-scope.png
+   :align: center
+   :width: 500
+   :alt: x-my-scope
+
+This custom header ``x-my-idp`` content will be used by the *Secure Access* gateway during the authentication.
+
+.. image:: ./_pictures/x-my-scope-n1.png
+   :align: center
+   :width: 500
+   :alt: NGINX One dynamic scope
 
 Secure Access gateways managed by the F5 XC SaaS console
 ********************************************************************
