@@ -3,21 +3,26 @@ Secure Access
 
 Powered by the most popular data plane in the world,
 NGINX's *Secure Access* PaaS solution improves your security posture:
-    - **Minimize attack surface**: Reduce the accessible attack surface through **access control**
-    - **Prevent unauthorized activity**: Automatically block ongoing attacks through constant authentication, identity validation and detection of behavioral anomalies coupling with `F5 XC Malicious User <https://docs.cloud.f5.com/docs/how-to/advanced-security/malicious-users>`_ feature based on AI/ML.
-    - **Single Sign-On**: enable Single Sign-On (SSO) for your proxied applications by integrating with your Identity Provider (IdP) and OpenID Connect
+    - **Minimize attack surface**: Reduce the attack surface by leveraging **access control**
+    - **Prevent unauthorized activity**: Automatically block ongoing attacks through constant authentication, identity validation and detection of behavioral anomalies coupled with `F5 XC Malicious User <https://docs.cloud.f5.com/docs/how-to/advanced-security/malicious-users>`_ feature based on AI/ML.
+    - **Single Sign-On**: enable Single Sign-On (SSO) for your proxied applications
 
 .. image:: ./_pictures/illo-SolutionsZeroTrust-450x400-1.svg
    :align: center
    :width: 300
    :alt: Secure Access
 
+This solution offers 3 services:
+
 .. contents:: Contents
     :local:
     :depth: 1
 
-Secure Access as relying party for OpenID Connect authentication
+1. oAuth/OIDC authentication, for user access
 ***************************************************************
+
+Secure Access as relying party for OpenID Connect authentication
+================================================================
 With *NGINX Secure Access*,
 the client and NGINX Plus communicate directly with the IdP at different stages during the initial authentication event.
 
@@ -56,7 +61,7 @@ please refer to it `here <https://github.com/nginxinc/nginx-openid-connect>`_ fo
 For more information on OpenID Connect and JWT validation with NGINX Plus, see `Authenticating Users to Existing Applications with OpenID Connect and NGINX Plus <https://www.nginx.com/blog/authenticating-users-existing-applications-openid-connect-nginx-plus/>`_.
 
 Secure Access as a Shared Service
-***************************************************************
+================================================================
 F5 Distributed Cloud (XC), as a Multi-Cloud Networking Software (MCNS),
 allows to insert any container based service in the data-path,
 named **Platform as a Service** (PaaS).
@@ -74,7 +79,7 @@ How to? In the Public HTTP LB (blue) Route configuration, the selected Origin Po
 Once authenticated, the *Secure Access PaaS* gateway forward the request to the internal HTTP LB (pink).
 
 Multiple IdPs support
-***************************************************************
+================================================================
 *Secure Access* PaaS supports any Identity Provider that supports OpenID Connect 1.0.
 Where *Secure Access* PaaS is configured to proxy requests for multiple websites or applications, or user groups,
 these may require authentication by different IdPs.
@@ -94,7 +99,7 @@ And a custom header ``x-my-idp`` is added (or replaced if existing) to define th
    :alt: Public HTTP LB Route
 
 Custom scope per App
-***************************************************************
+================================================================
 Same as done for IdP selection mechanism,
 the App owner can define the scope to be allowed for a DNS domain or per Path.
 For example: ``/admin`` for administrator scope only.
@@ -113,8 +118,7 @@ This custom header ``x-my-idp`` content will be used by the *Secure Access* gate
    :alt: NGINX One dynamic scope
 
 Secure Access gateways managed by the F5 XC SaaS console
-********************************************************************
-
+================================================================
 *Secure Access* PaaS is NGINX+ enterprise grade instances, deployed in F5 Edges
 hosted anywhere (Public Cloud, Private Cloud, F5 hardware, VM),
 and managed centrally in `NGINX One console <https://www.f5.com/fr_fr/products/nginx/one>`_.
@@ -126,8 +130,11 @@ and managed centrally in `NGINX One console <https://www.f5.com/fr_fr/products/n
    :alt: Configuration files
 
 
-Malicious User
+2. oAuth JWT validation, for API key access
 ***************************************************************
+
+3. Behavioral based prevention, for Malicious User access and activities
+************************************************************************
 Combined with `F5 XC Malicious User <https://docs.cloud.f5.com/docs/how-to/advanced-security/malicious-users>`_ feature,
 IT and security operations teams can enforce strong access policies from login to logout,
 including step-up challenges for suspect behavior.
@@ -141,7 +148,7 @@ including step-up challenges for suspect behavior.
     <a href="http://www.youtube.com/watch?v=-F-QV-IJI9o"><img src="http://img.youtube.com/vi/-F-QV-IJI9o/0.jpg" width="600" height="300" title="XC - Malicious User + Client Side Defense"></a>
 
 Detection
-=============================================
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 *Malicious User* is part of the `F5 XC User Behavior Analysis <https://docs.cloud.f5.com/docs/how-to/app-security/user-behavior-analysis>`_ that detects suspect behavior based on watching several dimensions:
 
 .. image:: ./_pictures/Malicious_User_detection.png
@@ -150,7 +157,7 @@ Detection
    :alt: Detection
 
 Mitigation
-=============================================
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 If a client tries to access resources with insufficient privileges,
 NGINX gateway will return a 401 response code.
 After several attempts (10 by default),
@@ -170,7 +177,7 @@ This period indicates how long it takes to reduce from High threat level to Low.
 The system executes a score decay mechanism over a period of time for this to happen.
 
 User Identifier
-=============================================
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 By default, the identifier for a malicious user is Client IP address.
 If end user is already logged in, the user identifier is the NGINX session cookie (see step 11 in § *Access control*).
 Therefore, even if the client changes his IP address, his behavior will be tracked, based on its session cookie.
