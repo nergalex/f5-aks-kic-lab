@@ -3,15 +3,15 @@ Secure Access
 
 JSON Web Tokens (JWTs, pronounced “jots”) are a compact and highly portable means of exchanging identity information.
 The JWT specification has been an important underpinning of OpenID Connect,
-providing a single sign‑on token for the OAuth 2.0 ecosystem.
+providing a Single Sign‑On (SSO) token for the OAuth 2.0 ecosystem.
 JWTs can also be used as authentication credentials in their own right
 and are a better way to control access to web‑based APIs than traditional API keys.
 
 Powered by the most popular data plane in the world,
 F5 Distributed Cloud (XC) *Secure Access* improves your security posture:
     - **Reduce the attack surface**: Require **access control** for Web and API based Application
-    - **Least Privilege**: Validate the claimed Scope against per App or micro-service security policy
-    - **Prevent malicious activity**: Track identified user activities, detect behavioral anomalies and auto-mitigate with `F5 XC Malicious User <https://docs.cloud.f5.com/docs/how-to/advanced-security/malicious-users>`_ feature.
+    - **Grant least privileges**: Define an allowed **Scope** per App or micro-service
+    - **Prevent malicious activity**: Track identified user activities, detect behavioral anomalies and auto-mitigate them with `F5 XC Malicious User <https://docs.cloud.f5.com/docs/how-to/advanced-security/malicious-users>`_ feature.
 
 .. image:: ./_pictures/illo-SolutionsZeroTrust-450x400-1.svg
    :align: center
@@ -22,23 +22,88 @@ F5 Distributed Cloud (XC) *Secure Access* improves your security posture:
     :local:
     :depth: 2
 
+Design overview
+***************************************************************
+
+*Secure Access* is deployed as a **Shared Service** consumed by any Application namespaces.
+
+.. image:: ./_pictures/design.png
+   :align: center
+   :width: 700
+   :alt: vK8S
+
+From their dedicated Namespace, Landing Zone A for example,
+the Applicative Squad is free to consume the *Secure Access* shared services :
+    - oAuth/OIDC authentication
+    - or/and JWT validation
+
+These services can be consumed:
+    - per application (XC LB)
+    - per service (DNS domain/hostname/FQDN)
+    - or per micro-service/API Group (PATH).
+For example the private part of a web site ``/my-account`` requires to be authenticated.
+
+How to? In the Public HTTP LB (in blue in the diagram),
+a HTTP Route is configured to forward traffic to a service of the *Secure Access* gateway
+
+.. image:: ./_pictures/flow_design.svg
+   :align: center
+   :width: 700
+   :alt: LLD Flow
+
+Once authenticated, the *Secure Access* gateway forwards the request back to the Application namespace,
+to the internal HTTP LB (in pink in the diagram).
+
+
+
+
+----------------------------------------------------
+
+*demo video:*
+
+.. raw:: html
+
+    <a href="http://www.youtube.com/watch?v=_SOcDFslFl4"><img src="http://img.youtube.com/vi/_SOcDFslFl4/0.jpg" width="600" height="300" title="XC - PaaS NGINX Secure Access"></a>
+
+The *Secure Access* is built using the reference implementation of NGINX Plus as relying party for OpenID Connect authentication,
+please refer to it `here <https://github.com/nginxinc/nginx-openid-connect>`_ for more details.
+
+For more information on OpenID Connect and JWT validation with NGINX Plus, see `Authenticating Users to Existing Applications with OpenID Connect and NGINX Plus <https://www.nginx.com/blog/authenticating-users-existing-applications-openid-connect-nginx-plus/>`_.
+
+
+F5 Distributed Cloud (XC), as a Multi-Cloud Networking Software (MCNS),
+allows to insert any container based service in the data-path,
+named **Container as a Service** (CaaS).
+
+The *Secure Access* is a deployment of NGINX containers,
+with no configuration at startup,
+that gather their configuration in
+
+
+Secure Access as a Shared Service
+================================================================
+
+
+
+
+
 What is an OAuth 2.0 Grant Type?
 ***************************************************************
 In OAuth 2.0, the term “grant type” refers to the way an application gets an access token.
-OAuth 2.0 defines several grant types, including the authorization code flow.
+OAuth 2.0 defines several grant types, including the **authorization code** flow.
 Each grant type is optimized for a particular use case,
 whether that’s a web app, a native app, a device without the ability to launch a web browser,
 or server-to-server applications.
 
-oAuth/OIDC authentication for user access [Authorization Code]
+oAuth/OIDC authentication, for user access
 ***************************************************************
 *Secure Access* implementation assumes the following environment:
     - The Identity Provider (IdP) supports OpenID Connect 1.0
-    - The **authorization code** flow is in use
-    - F5 XC is seen as a relying party
-    - The IdP knows F5 XC as a confidential client or a public client using PKCE
+    - The *authorization code* flow is in use
+    - F5 XC is used as a *relying party*
+    - The IdP knows F5 XC as a trusted client using *PKCE*
 
-The Authorization Code Flow
+Authorization Code Flow
 ================================================================
 The Authorization Code grant type is used by web and mobile apps.
 It differs from most of the other grant types by first requiring the app launch a browser to begin the flow.
@@ -48,8 +113,8 @@ At a high level, the flow has the following steps:
     - The user is redirected back to the application with an authorization code in the query string
     - The application exchanges the authorization code for an access token
 
-All these steps above are managed by F5 XC *secure access*, exactly by the NGINX gateway as a relying party,
-that free up the application about implementing this authentication feature.
+All these steps above are managed by F5 XC *secure access*, exactly by the NGINX gateway, as a **relying party**,
+that free up the application about implementing the authentication mechanism.
 
 Relying party
 ================================================================
@@ -77,43 +142,12 @@ NGINX Plus is configured to perform OpenID Connect authentication:
    :width: 700
    :alt: Flow
 
-----------------------------------------------------
-
-*demo video:*
-
-.. raw:: html
-
-    <a href="http://www.youtube.com/watch?v=_SOcDFslFl4"><img src="http://img.youtube.com/vi/_SOcDFslFl4/0.jpg" width="600" height="300" title="XC - PaaS NGINX Secure Access"></a>
-
-The *Secure Access* PaaS is built using the reference implementation of NGINX Plus as relying party for OpenID Connect authentication,
-please refer to it `here <https://github.com/nginxinc/nginx-openid-connect>`_ for more details.
-
-For more information on OpenID Connect and JWT validation with NGINX Plus, see `Authenticating Users to Existing Applications with OpenID Connect and NGINX Plus <https://www.nginx.com/blog/authenticating-users-existing-applications-openid-connect-nginx-plus/>`_.
-
-Secure Access as a Shared Service
-================================================================
-F5 Distributed Cloud (XC), as a Multi-Cloud Networking Software (MCNS),
-allows to insert any container based service in the data-path,
-named **Platform as a Service** (PaaS).
-
-The *Secure Access* PaaS can be deployed per Application namespace or as **Shared Service** consumed by any  Application namespace.
-The App owner is free to leverage the *Secure Access* (oAuth/OIDC authentication) for the whole web site (per HTTP LB, per FQDN)
-or per micro-service (per FQDN, per PATH, per client source). For example the private part of a web site ``/my-account`` requires to be authenticated.
-How to? In the Public HTTP LB (blue) Route configuration, the selected Origin Pool is the *Secure Access PaaS* service
-
-.. image:: ./_pictures/flow_design.svg
-   :align: center
-   :width: 700
-   :alt: LLD Flow
-
-Once authenticated, the *Secure Access PaaS* gateway forward the request to the internal HTTP LB (pink).
-
 Multiple IdPs support
 ================================================================
-*Secure Access* PaaS supports any Identity Provider that supports OpenID Connect 1.0.
-Where *Secure Access* PaaS is configured to proxy requests for multiple websites or applications, or user groups,
-these may require authentication by different IdPs.
-Separate IdPs can be configured, with each one matching on an attribute of the HTTP request,
+*Secure Access* support multiple IdPs.
+Each Application is free to define the IdP to use,
+in the Public LB
+Different IdPs can be configured, with each one matching on an attribute of the HTTP request,
 e.g. hostname or part of the URI path for example.
 
 .. image:: ./_pictures/http_route.png
@@ -224,6 +258,7 @@ Therefore, even if the client changes his IP address, his behavior will be track
    :align: center
    :width: 500
    :alt: User Identifier
+
 
 
 
