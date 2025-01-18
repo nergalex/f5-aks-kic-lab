@@ -1,30 +1,60 @@
 Secure Access
 #################################################################
 
+JSON Web Tokens (JWTs, pronounced “jots”) are a compact and highly portable means of exchanging identity information.
+The JWT specification has been an important underpinning of OpenID Connect,
+providing a single sign‑on token for the OAuth 2.0 ecosystem.
+JWTs can also be used as authentication credentials in their own right
+and are a better way to control access to web‑based APIs than traditional API keys.
+
 Powered by the most popular data plane in the world,
-NGINX's *Secure Access* PaaS solution improves your security posture:
-    - **Minimize attack surface**: Reduce the attack surface by leveraging **access control**
-    - **Prevent unauthorized activity**: Automatically block ongoing attacks through constant authentication, identity validation and detection of behavioral anomalies coupled with `F5 XC Malicious User <https://docs.cloud.f5.com/docs/how-to/advanced-security/malicious-users>`_ feature based on AI/ML.
-    - **Single Sign-On**: enable Single Sign-On (SSO) for your proxied applications
+F5 Distributed Cloud (XC) *Secure Access* improves your security posture:
+    - **Reduce the attack surface**: Require **access control** for Web and API based Application
+    - **Least Privilege**: Validate the claimed Scope against per App or micro-service security policy
+    - **Prevent malicious activity**: Track identified user activities, detect behavioral anomalies and auto-mitigate with `F5 XC Malicious User <https://docs.cloud.f5.com/docs/how-to/advanced-security/malicious-users>`_ feature.
 
 .. image:: ./_pictures/illo-SolutionsZeroTrust-450x400-1.svg
    :align: center
    :width: 300
    :alt: Secure Access
 
-This solution offers 3 services:
-
 .. contents:: Contents
     :local:
-    :depth: 1
+    :depth: 2
 
-1. oAuth/OIDC authentication, for user access
+What is an OAuth 2.0 Grant Type?
 ***************************************************************
+In OAuth 2.0, the term “grant type” refers to the way an application gets an access token.
+OAuth 2.0 defines several grant types, including the authorization code flow.
+Each grant type is optimized for a particular use case,
+whether that’s a web app, a native app, a device without the ability to launch a web browser,
+or server-to-server applications.
 
-Secure Access as relying party for OpenID Connect authentication
+oAuth/OIDC authentication for user access [Authorization Code]
+***************************************************************
+*Secure Access* implementation assumes the following environment:
+    - The Identity Provider (IdP) supports OpenID Connect 1.0
+    - The **authorization code** flow is in use
+    - F5 XC is seen as a relying party
+    - The IdP knows F5 XC as a confidential client or a public client using PKCE
+
+The Authorization Code Flow
 ================================================================
-With *NGINX Secure Access*,
-the client and NGINX Plus communicate directly with the IdP at different stages during the initial authentication event.
+The Authorization Code grant type is used by web and mobile apps.
+It differs from most of the other grant types by first requiring the app launch a browser to begin the flow.
+At a high level, the flow has the following steps:
+    - The application opens a browser to send the user to the OAuth server
+    - The user sees the authorization prompt and approves the app’s request
+    - The user is redirected back to the application with an authorization code in the query string
+    - The application exchanges the authorization code for an access token
+
+All these steps above are managed by F5 XC *secure access*, exactly by the NGINX gateway as a relying party,
+that free up the application about implementing this authentication feature.
+
+Relying party
+================================================================
+With F5 XC *Secure Access*,
+both the client and the NGINX gateway communicate directly with the IdP at different stages during the initial authentication event.
 
 .. image:: ./_pictures/high_level_flow.svg
    :align: center
@@ -98,6 +128,14 @@ And a custom header ``x-my-idp`` is added (or replaced if existing) to define th
    :width: 500
    :alt: Public HTTP LB Route
 
+Grant limited access to applications
+================================================================
+OAuth is all about enabling users to grant limited access to applications.
+The application first needs to decide which permissions it is requesting,
+then send the user to a browser to get their permission.
+
+The application defines the permission to request, **scope**, in their F5 XC Public LB.
+
 Custom scope per App
 ================================================================
 Same as done for IdP selection mechanism,
@@ -130,10 +168,10 @@ and managed centrally in `NGINX One console <https://www.f5.com/fr_fr/products/n
    :alt: Configuration files
 
 
-2. oAuth JWT validation, for API key access
+oAuth JWT validation, for API key access
 ***************************************************************
 
-3. Behavioral based prevention, for Malicious User access and activities
+Behavioral based prevention, for Malicious User access and activities
 ************************************************************************
 Combined with `F5 XC Malicious User <https://docs.cloud.f5.com/docs/how-to/advanced-security/malicious-users>`_ feature,
 IT and security operations teams can enforce strong access policies from login to logout,
