@@ -22,76 +22,6 @@ F5 Distributed Cloud (XC) *Secure Access* improves your security posture:
     :local:
     :depth: 2
 
-Design overview
-***************************************************************
-Shared Services
-================================================================
-*Secure Access* is deployed as a **Shared Service** consumed by any Application namespaces.
-
-.. image:: ./_pictures/design.png
-   :align: center
-   :width: 1100
-   :alt: vK8S
-
-From a dedicated Namespace, Landing Zone A for example,
-the Applicative Squad is free to consume the *Secure Access* shared services :
-    - oAuth/OIDC authentication
-    - or/and JWT validation
-
-
-These services can be consumed:
-    - per application (XC LB)
-    - per service (DNS domain)
-    - per micro-service or API Group (HTTP PATH).
-For example the private part ``/my-account`` of a web site can require to authenticate user access.
-
-**How to consume a Shared service?**
-
-In the Public HTTP LB (in blue in the diagram),
-a HTTP Route is configured to forward the traffic to a service of the *Secure Access* gateway.
-Once authenticated, the *Secure Access* gateway forwards the request back to the Application namespace,
-i.e. to the internal HTTP LB (in pink in the diagram).
-
-.. image:: ./_pictures/flow_design.svg
-   :align: center
-   :width: 700
-   :alt: LLD Flow
-
-Secure Access GateWay
-================================================================
-The *oAuth/OIDC authentication* and the *JWT validation* are featured by a NGINX gateway.
-
-F5 XC, as a Multi-Cloud Networking Software (MCNS),
-allows to insert any container based service in the data-path,
-named **Container as a Service** (CaaS). For example, an NGINX gateway.
-
-The whole configuration of the *Secure Access GateWay* is stored in the XC `NGINX One console <https://docs.nginx.com/nginx-one>`_.
-At the container startup, `NGINX Agent <https://docs.nginx.com/nginx-agent/overview/>`_
-is retrieving the *Secure Access GateWay* configuration from NGINX One console.
-
-.. image:: ./_pictures/nginx-agent.png
-   :align: center
-   :width: 700
-   :alt: NGINX agent
-
-Therefore, the *Secure Access GateWay* is a Platform as a Service (PaaS),
-based on supported NGINX containers and managed by NGINX One console,
-that makes it easy to manage NGINX instances across locations and environments.
-The console lets you monitor and control your NGINX fleet from one place:
-    - read or/and update the configuration
-    - track performance metrics
-    - identify security vulnerabilities
-
-Dynamic configuration
-================================================================
-Some parts of the NGINX configuration is dynamic to allow the Application to specify:
-    - the Identity Provider to select in the allowed list of the company
-    - the Application ID to use, for OIDC
-    - the granted Scope to clients
-
-This specifications (IdP, App-ID, Scope) are set as custom HTTP headers in a Public HTTP LB,
-exactly per HTTP Route, managed by the applicative Squad.
-
 
 What is an OAuth 2.0 Grant Type?
 ***************************************************************
@@ -147,65 +77,6 @@ NGINX Plus is configured to perform OpenID Connect authentication:
    :align: center
    :width: 700
    :alt: Flow
-
-Multiple IdPs support
-================================================================
-*Secure Access* support multiple IdPs.
-Each Application is free to define the IdP to use,
-in the Public LB
-Different IdPs can be configured, with each one matching on an attribute of the HTTP request,
-e.g. hostname or part of the URI path for example.
-
-.. image:: ./_pictures/http_route.png
-   :align: center
-   :width: 500
-   :alt: Public HTTP LB Route
-
-And a custom header ``x-my-idp`` is added (or replaced if existing) to define the IdP name that the *Secure Access* gateway will use then to authenticate the user.
-
-.. image:: ./_pictures/header-my-idp.png
-   :align: center
-   :width: 500
-   :alt: Public HTTP LB Route
-
-Grant limited access to applications
-================================================================
-OAuth is all about enabling users to grant limited access to applications.
-The application first needs to decide which permissions it is requesting,
-then send the user to a browser to get their permission.
-
-The application defines the permission to request, **scope**, in their F5 XC Public LB.
-
-Custom scope per App
-================================================================
-Same as done for IdP selection mechanism,
-the App owner can define the scope to be allowed for a DNS domain or per Path.
-For example: ``/admin`` for administrator scope only.
-The App owner defines set the Scope value in a custom header `x-my-scope`, at the HTTP Route level:
-
-.. image:: ./_pictures/x-my-scope.png
-   :align: center
-   :width: 500
-   :alt: x-my-scope
-
-This custom header ``x-my-idp`` content will be used by the *Secure Access* gateway during the authentication.
-
-.. image:: ./_pictures/x-my-scope-n1.png
-   :align: center
-   :width: 500
-   :alt: NGINX One dynamic scope
-
-Secure Access gateways managed by the F5 XC SaaS console
-================================================================
-*Secure Access* PaaS is NGINX+ enterprise grade instances, deployed in F5 Edges
-hosted anywhere (Public Cloud, Private Cloud, F5 hardware, VM),
-and managed centrally in `NGINX One console <https://www.f5.com/fr_fr/products/nginx/one>`_.
-
-
-.. image:: ./_pictures/nginx-one.png
-   :align: center
-   :width: 1200
-   :alt: Configuration files
 
 
 oAuth JWT validation, for API key access
@@ -266,6 +137,126 @@ Therefore, even if the client changes his IP address, his behavior will be track
    :alt: User Identifier
 
 
+Design overview
+***************************************************************
+Shared Services
+================================================================
+*Secure Access* is deployed as a **Shared Service** that can be consumed by any Application namespace.
+
+.. image:: ./_pictures/design.png
+   :align: center
+   :width: 1100
+   :alt: vK8S
+
+From a app Namespace, *Landing-Zone-A* for example,
+the Applicative Squad is free to consume the *Secure Access* shared services :
+- oAuth/OIDC authentication
+- or/and JWT validation
+
+These services can be consumed:
+    - per application (XC LB)
+    - per service (DNS domain)
+    - per micro-service or API Group (HTTP PATH).
+For example the private part ``/my-account`` of a web site can require to authenticate user access.
+
+**How to consume a Shared service?**
+
+In the Public HTTP LB (in blue in the diagram),
+a HTTP Route is configured to forward the traffic to a service of the *Secure Access* gateway.
+Once authenticated, the *Secure Access* gateway forwards the request back to the Application namespace,
+i.e. to the internal HTTP LB (in pink in the diagram).
+
+### ToDo change the Keys to update Public LB
+
+.. image:: ./_pictures/flow_design.svg
+   :align: center
+   :width: 1100
+   :alt: LLD Flow
+
+----------------------------------------------------------------
+
+Secure Access GateWay
+================================================================
+The *oAuth/OIDC authentication* and the *JWT validation* are featured by a NGINX gateway.
+
+F5 XC, as a Multi-Cloud Networking Software (MCNS),
+allows to insert any container based service in the data-path,
+named **Container as a Service** (CaaS). For example, an NGINX gateway.
+
+The whole configuration of the *Secure Access GateWay* is stored in `NGINX One console <https://docs.nginx.com/nginx-one>`_.
+At the container startup, `NGINX Agent <https://docs.nginx.com/nginx-agent/overview/>`_
+is retrieving the *Secure Access GateWay* configuration from NGINX One console.
+
+.. image:: ./_pictures/nginx-agent.png
+   :align: center
+   :width: 700
+   :alt: NGINX agent
+
+Therefore, the *Secure Access GateWay* is a **Platform as a Service** (PaaS),
+based on supported NGINX+ containers and managed by NGINX One console,
+that makes easy to manage NGINX instances across locations (Regional Edge, Customer Edge or other platform factor).
+The console lets you monitor and control your NGINX fleet from one place:
+    - read or/and update the configuration
+    - track performance metrics
+    - identify security vulnerabilities
+
+----------------------------------------------------------------
+
+Dynamic configuration
+================================================================
+Some parts of the NGINX configuration is dynamic to allow the Application to specify:
+    - the selected Identity Provider in the allow list of the company
+    - the Application ID to use, for OIDC
+    - the granted Scope to clients
+
+This specifications (IdP, App-ID, Scope) are set as custom HTTP headers in the Public HTTP LB,
+exactly per HTTP Route, managed by the applicative Squad.
+
+Multiple IdPs support
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+*Secure Access* supports multiple IdPs.
+Each Application is free to define the IdP to use,
+in the Public LB
+Different IdPs can be configured, with each one matching on an attribute of the HTTP request,
+e.g. hostname or part of the URI path for example.
+
+.. image:: ./_pictures/http_route.png
+   :align: center
+   :width: 500
+   :alt: Public HTTP LB Route
+
+And a custom header ``x-my-idp`` is added (or replaced if existing) to define the IdP name that the *Secure Access* gateway will use then to authenticate the user.
+
+.. image:: ./_pictures/header-my-idp.png
+   :align: center
+   :width: 500
+   :alt: Public HTTP LB Route
+
+Grant limited access to applications
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OAuth is all about enabling users to grant limited access to applications.
+The application first needs to decide which permissions it is requesting,
+then send the user to a browser to get their permission.
+
+The application defines the permission to request, **scope**, in the Public LB.
+Same as done for IdP selection mechanism,
+the applicative Squad defines the scope to be allowed for a DNS domain or per Path.
+For example: ``/admin`` for administrator scope only.
+The App owner defines set the Scope value in a custom header `x-my-scope`, at the HTTP Route level:
+
+.. image:: ./_pictures/x-my-scope.png
+   :align: center
+   :width: 500
+   :alt: x-my-scope
+
+This custom header ``x-my-idp`` content will be used by the *Secure Access* gateway during the authentication.
+
+.. image:: ./_pictures/x-my-scope-n1.png
+   :align: center
+   :width: 500
+   :alt: NGINX One dynamic scope
+
+----------------------------------------------------------------
 
 
 them with `F5 XC Malicious User <https://docs.cloud.f5.com/docs/how-to/advanced-security/malicious-users>`_ feature
