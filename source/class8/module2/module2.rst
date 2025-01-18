@@ -31,6 +31,8 @@ Each grant type is optimized for a particular use case,
 whether that’s a web app, a native app, a device without the ability to launch a web browser,
 or server-to-server applications.
 
+OAuth is all about enabling users to grant limited access to applications.
+
 oAuth/OIDC authentication, for user access
 ***************************************************************
 *Secure Access* implementation assumes the following environment:
@@ -43,6 +45,9 @@ Authorization Code Flow
 ================================================================
 The Authorization Code grant type is used by web and mobile apps.
 It differs from most of the other grant types by first requiring the app launch a browser to begin the flow.
+The application first needs to decide which permissions it is requesting, the ``scope``,
+then send the user to a browser to get their permission.
+
 At a high level, the flow has the following steps:
     - The application opens a browser to send the user to the OAuth server
     - The user sees the authorization prompt and approves the app’s request
@@ -78,6 +83,8 @@ NGINX Plus is configured to perform OpenID Connect authentication:
    :width: 700
    :alt: Flow
 
+For a more detailled diagram on OpenID Connect and NGINX,
+please visit the repository `here <https://github.com/nginxinc/nginx-openid-connect>`_.
 
 oAuth JWT validation, for API key access
 ***************************************************************
@@ -200,6 +207,7 @@ The console lets you monitor and control your NGINX fleet from one place:
     - track performance metrics
     - identify security vulnerabilities
 
+
 ----------------------------------------------------------------
 
 Dynamic configuration
@@ -209,52 +217,34 @@ Some parts of the NGINX configuration is dynamic to allow the Application to spe
     - the Application ID to use, for OIDC
     - the granted Scope to clients
 
-This specifications (IdP, App-ID, Scope) are set as custom HTTP headers in the Public HTTP LB,
+These specifications (IdP, App-ID, Scope) are set as custom HTTP headers in the Public HTTP LB,
 exactly per HTTP Route, managed by the applicative Squad.
 
-Multiple IdPs support
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-*Secure Access* supports multiple IdPs.
-Each Application is free to define the IdP to use,
-in the Public LB
-Different IdPs can be configured, with each one matching on an attribute of the HTTP request,
-e.g. hostname or part of the URI path for example.
+**HTTP Route:**
 
 .. image:: ./_pictures/http_route.png
    :align: center
    :width: 500
    :alt: Public HTTP LB Route
 
-And a custom header ``x-my-idp`` is added (or replaced if existing) to define the IdP name that the *Secure Access* gateway will use then to authenticate the user.
-
-.. image:: ./_pictures/header-my-idp.png
-   :align: center
-   :width: 500
-   :alt: Public HTTP LB Route
-
-Grant limited access to applications
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-OAuth is all about enabling users to grant limited access to applications.
-The application first needs to decide which permissions it is requesting,
-then send the user to a browser to get their permission.
-
-The application defines the permission to request, **scope**, in the Public LB.
-Same as done for IdP selection mechanism,
-the applicative Squad defines the scope to be allowed for a DNS domain or per Path.
-For example: ``/admin`` for administrator scope only.
-The App owner defines set the Scope value in a custom header `x-my-scope`, at the HTTP Route level:
+**Custom Headers**
 
 .. image:: ./_pictures/x-my-scope.png
    :align: center
    :width: 500
    :alt: x-my-scope
 
-This custom header ``x-my-idp`` content will be used by the *Secure Access* gateway during the authentication.
+**Variable in NGINX configuration**
 
 .. image:: ./_pictures/x-my-scope-n1.png
    :align: center
    :width: 500
    :alt: NGINX One dynamic scope
+
+
+
+
+
 
 ----------------------------------------------------------------
 
