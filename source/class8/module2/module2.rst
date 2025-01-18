@@ -7,11 +7,11 @@ providing a Single Sign‑On (SSO) token for the OAuth 2.0 ecosystem.
 JWTs can also be used as authentication credentials in their own right
 and are a better way to control access to web‑based APIs than traditional API keys.
 
-Powered by the most popular data plane in the world,
+Powered by the most popular Reverse-Proxy, NGINX,
 F5 Distributed Cloud (XC) *Secure Access* improves your security posture:
     - **Reduce the attack surface**: Require **access control** for Web and API based Application
     - **Grant least privileges**: Define an allowed **Scope** per App or micro-service
-    - **Prevent malicious activity**: Track identified user activities, detect behavioral anomalies and auto-mitigate them with `F5 XC Malicious User <https://docs.cloud.f5.com/docs/how-to/advanced-security/malicious-users>`_ feature.
+    - **Prevent malicious activity**: Track identified user activities, detect **behavioral** anomalies and auto-mitigate.
 
 .. image:: ./_pictures/illo-SolutionsZeroTrust-450x400-1.svg
    :align: center
@@ -24,67 +24,73 @@ F5 Distributed Cloud (XC) *Secure Access* improves your security posture:
 
 Design overview
 ***************************************************************
-
+Shared Services
+================================================================
 *Secure Access* is deployed as a **Shared Service** consumed by any Application namespaces.
 
 .. image:: ./_pictures/design.png
    :align: center
-   :width: 700
+   :width: 1100
    :alt: vK8S
 
-From their dedicated Namespace, Landing Zone A for example,
+From a dedicated Namespace, Landing Zone A for example,
 the Applicative Squad is free to consume the *Secure Access* shared services :
     - oAuth/OIDC authentication
     - or/and JWT validation
 
+
 These services can be consumed:
     - per application (XC LB)
-    - per service (DNS domain/hostname/FQDN)
-    - or per micro-service/API Group (PATH).
-For example the private part of a web site ``/my-account`` requires to be authenticated.
+    - per service (DNS domain)
+    - per micro-service or API Group (HTTP PATH).
+For example the private part ``/my-account`` of a web site can require to authenticate user access.
 
-How to? In the Public HTTP LB (in blue in the diagram),
-a HTTP Route is configured to forward traffic to a service of the *Secure Access* gateway
+**How to consume a Shared service?**
+
+In the Public HTTP LB (in blue in the diagram),
+a HTTP Route is configured to forward the traffic to a service of the *Secure Access* gateway.
+Once authenticated, the *Secure Access* gateway forwards the request back to the Application namespace,
+i.e. to the internal HTTP LB (in pink in the diagram).
 
 .. image:: ./_pictures/flow_design.svg
    :align: center
    :width: 700
    :alt: LLD Flow
 
-Once authenticated, the *Secure Access* gateway forwards the request back to the Application namespace,
-to the internal HTTP LB (in pink in the diagram).
-
-
-
-
-----------------------------------------------------
-
-*demo video:*
-
-.. raw:: html
-
-    <a href="http://www.youtube.com/watch?v=_SOcDFslFl4"><img src="http://img.youtube.com/vi/_SOcDFslFl4/0.jpg" width="600" height="300" title="XC - PaaS NGINX Secure Access"></a>
-
-The *Secure Access* is built using the reference implementation of NGINX Plus as relying party for OpenID Connect authentication,
-please refer to it `here <https://github.com/nginxinc/nginx-openid-connect>`_ for more details.
-
-For more information on OpenID Connect and JWT validation with NGINX Plus, see `Authenticating Users to Existing Applications with OpenID Connect and NGINX Plus <https://www.nginx.com/blog/authenticating-users-existing-applications-openid-connect-nginx-plus/>`_.
-
-
-F5 Distributed Cloud (XC), as a Multi-Cloud Networking Software (MCNS),
-allows to insert any container based service in the data-path,
-named **Container as a Service** (CaaS).
-
-The *Secure Access* is a deployment of NGINX containers,
-with no configuration at startup,
-that gather their configuration in
-
-
-Secure Access as a Shared Service
+Secure Access GateWay
 ================================================================
+The *oAuth/OIDC authentication* and the *JWT validation* are featured by a NGINX gateway.
 
+F5 XC, as a Multi-Cloud Networking Software (MCNS),
+allows to insert any container based service in the data-path,
+named **Container as a Service** (CaaS). For example, an NGINX gateway.
 
+The whole configuration of the *Secure Access GateWay* is stored in the XC `NGINX One console <https://docs.nginx.com/nginx-one>`_.
+At the container startup, `NGINX Agent <https://docs.nginx.com/nginx-agent/overview/>`_
+is retrieving the *Secure Access GateWay* configuration from NGINX One console.
 
+.. image:: ./_pictures/nginx-agent.png
+   :align: center
+   :width: 700
+   :alt: NGINX agent
+
+Therefore, the *Secure Access GateWay* is a Platform as a Service (PaaS),
+based on supported NGINX containers and managed by NGINX One console,
+that makes it easy to manage NGINX instances across locations and environments.
+The console lets you monitor and control your NGINX fleet from one place:
+    - read or/and update the configuration
+    - track performance metrics
+    - identify security vulnerabilities
+
+Dynamic configuration
+================================================================
+Some parts of the NGINX configuration is dynamic to allow the Application to specify:
+    - the Identity Provider to select in the allowed list of the company
+    - the Application ID to use, for OIDC
+    - the granted Scope to clients
+
+This specifications (IdP, App-ID, Scope) are set as custom HTTP headers in a Public HTTP LB,
+exactly per HTTP Route, managed by the applicative Squad.
 
 
 What is an OAuth 2.0 Grant Type?
@@ -262,3 +268,15 @@ Therefore, even if the client changes his IP address, his behavior will be track
 
 
 
+them with `F5 XC Malicious User <https://docs.cloud.f5.com/docs/how-to/advanced-security/malicious-users>`_ feature
+
+*demo video:*
+
+.. raw:: html
+
+    <a href="http://www.youtube.com/watch?v=_SOcDFslFl4"><img src="http://img.youtube.com/vi/_SOcDFslFl4/0.jpg" width="600" height="300" title="XC - PaaS NGINX Secure Access"></a>
+
+The *Secure Access* is built using the reference implementation of NGINX Plus as relying party for OpenID Connect authentication,
+please refer to it `here <https://github.com/nginxinc/nginx-openid-connect>`_ for more details.
+
+For more information on OpenID Connect and JWT validation with NGINX Plus, see `Authenticating Users to Existing Applications with OpenID Connect and NGINX Plus <https://www.nginx.com/blog/authenticating-users-existing-applications-openid-connect-nginx-plus/>`_.
