@@ -112,9 +112,10 @@ combining best‑practice authentication technology with a standards‑based sch
 Validating JWT signature
 ================================================================
 NGINX *Secure Access* gateway is validating the JWT signature.
-The signature is verified (for JWS) or payload is decrypted (for JWE) with the key found in the ``auth_jwt_key_request``.
+The signature is verified (for JWS) or payload is decrypted (for JWE)
+with the JSON Web Key Sets (JWKS) URIs of the allowed IdPs.
 
-.. image:: ./_pictures/authenticating-API-clients-JWT-NGINX-Plus_jwt.png
+.. image:: ./_pictures/NGINX-jwt-validation.png
    :align: center
    :width: 700
    :alt: NGINX Plus validates the JWT before passing the request to the API endpoints
@@ -131,7 +132,7 @@ The App SQUAD defines fine grained ``scope`` as required in the Public LB routin
 
 .. image:: ./_pictures/LB_route_scope.png
    :align: center
-   :width: 700
+   :width: 500
    :alt: Route policy entry
 
 Then the NGINX gateway will compare the validated JWT against the expected ``scope`` defined in the customer header,
@@ -169,11 +170,13 @@ and cannot be differentiated by IP address.
    :width: 700
    :alt: User Identifier
 
+----------------------------------------------------
+
 Behavioral based prevention, for Malicious User access and activities
 ************************************************************************
 Combined with `F5 XC Malicious User <https://docs.cloud.f5.com/docs/how-to/advanced-security/malicious-users>`_ feature,
-IT and security operations teams can enforce strong access policies from login to logout,
-including step-up challenges for suspect behavior.
+SecOps teams can enforce strong access policies from login to logout,
+including step-up challenges for suspect behaviors.
 
 ----------------------------------------------------
 
@@ -205,18 +208,18 @@ The system tags the users into threat levels High, Medium, and Low.
    :width: 800
    :alt: Mitigation
 
-If the client succeed to resolve challenges and continues to tries to access resources with insufficient privileges,
-then client will be blocked.
-The system automatically reduces the score when there is no malicious behavior detected for the user for a period of time.
+If the client that manages to resolve challenges and tries to access resources with insufficient privileges,
+then this client will be blocked.
+The system automatically lower the score when there is no malicious behavior detected for this Identified User for a certain period of time.
 This is known as the ``Cooling Off Period``.
-This period indicates how long it takes to reduce from High threat level to Low.
+This period indicates how long it takes to lower from High threat level to Low.
 The system executes a score decay mechanism over a period of time for this to happen.
 
 User Identifier
 ================================================================
-By default, the identifier for a malicious user is Client IP address.
-If end user is already logged in, the user identifier is the NGINX session cookie (see step 11 in § *Access control*).
-Therefore, even if the client changes his IP address, his behavior will be tracked, based on its session cookie.
+The User is identified by a Claim of its JWT, ``email`` for example.
+If not present, the ``Bearer Token`` is used, else a *Secure Access* cookie.
+The User Identifier is customizable by the App SQUAD and per Application (LB).
 
 .. image:: ./_pictures/User_Identifier.png
    :align: center
