@@ -117,7 +117,7 @@ with the JSON Web Key Sets (JWKS) URIs of the allowed IdPs.
 
 .. image:: ./_pictures/NGINX-jwt-validation.png
    :align: center
-   :width: 700
+   :width: 900
    :alt: NGINX Plus validates the JWT before passing the request to the API endpoints
 
 Validating the Claimed Scope
@@ -132,7 +132,7 @@ The App SQUAD defines fine grained ``scope`` as required in the Public LB routin
 
 .. image:: ./_pictures/LB_route_scope.png
    :align: center
-   :width: 500
+   :width: 300
    :alt: Route policy entry
 
 Then the NGINX gateway will compare the validated JWT against the expected ``scope`` defined in the customer header,
@@ -140,7 +140,7 @@ Then the NGINX gateway will compare the validated JWT against the expected ``sco
 
 .. image:: ./_pictures/nginx_scope_validation.png
    :align: center
-   :width: 700
+   :width: 900
    :alt: NGINX scope validation
 
 Leveraging JWT Claims as User Identifier
@@ -192,7 +192,7 @@ Detection
 
 .. image:: ./_pictures/Malicious_User_detection.png
    :align: center
-   :width: 500
+   :width: 400
    :alt: Detection
 
 Mitigation
@@ -223,7 +223,7 @@ The User Identifier is customizable by the App SQUAD and per Application (LB).
 
 .. image:: ./_pictures/User_Identifier.png
    :align: center
-   :width: 500
+   :width: 700
    :alt: User Identifier
 
 ----------------------------------------------------------------
@@ -236,7 +236,7 @@ Shared Services
 
 .. image:: ./_pictures/design.png
    :align: center
-   :width: 1100
+   :width: 1000
    :alt: vK8S
 
 From a app Namespace, *Landing-Zone-A* for example,
@@ -326,7 +326,8 @@ exactly per HTTP Route, managed by the applicative Squad.
 
 ----------------------------------------------------------------
 
-*demo video:*
+Demo video
+================================================================
 
 .. raw:: html
 
