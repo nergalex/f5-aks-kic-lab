@@ -22,7 +22,6 @@ F5 Distributed Cloud (XC) *Secure Access* improves your security posture:
     :local:
     :depth: 2
 
-
 What is an OAuth 2.0 Grant Type?
 ***************************************************************
 In OAuth 2.0, the term “grant type” refers to the way an application gets an access token.
@@ -31,7 +30,9 @@ Each grant type is optimized for a particular use case,
 whether that’s a web app, a native app, a device without the ability to launch a web browser,
 or server-to-server applications.
 
-OAuth is all about enabling users to grant limited access to applications.
+OAuth is all about enabling users or clients to grant limited access to applications.
+
+---------------------------------------------------------------
 
 oAuth/OIDC authentication, for user access
 ***************************************************************
@@ -86,8 +87,87 @@ NGINX Plus is configured to perform OpenID Connect authentication:
 For a more detailled diagram on OpenID Connect and NGINX,
 please visit the repository `here <https://github.com/nginxinc/nginx-openid-connect>`_.
 
+----------------------------------------------------------------
+
 oAuth JWT validation, for API key access
 ***************************************************************
+
+JWTs can also be used as authentication credentials in their own right
+and are a better way to control access to web‑based APIs than traditional API keys.
+NGINX *Secure Access* gateway can validate JWTs directly.
+
+.. image:: ./_pictures/authenticating-API-clients-JWT-NGINX-Plus_jwt.png
+   :align: center
+   :width: 700
+   :alt: NGINX Plus validates the JWT before passing the request to the API endpoints
+
+It is common to apply different access controls and policies to different API clients.
+With traditional API keys, this requires a lookup to match the API key with a set of attributes.
+Performing this lookup on each and every request has an understandable impact on the overall latency of the system.
+With JWT, these attributes are embedded, negating the need for a separate lookup.
+
+Using JWT as the API key provides a high‑performance alternative to traditional API keys,
+combining best‑practice authentication technology with a standards‑based schema for exchanging identity attributes.
+
+Validating JWT signature
+================================================================
+NGINX *Secure Access* gateway is validating the JWT signature.
+The signature is verified (for JWS) or payload is decrypted (for JWE) with the key found in the ``auth_jwt_key_request``.
+
+.. image:: ./_pictures/authenticating-API-clients-JWT-NGINX-Plus_jwt.png
+   :align: center
+   :width: 700
+   :alt: NGINX Plus validates the JWT before passing the request to the API endpoints
+
+Validating the Claimed Scope
+================================================================
+NGINX *Secure Access* gateway provides support for JWT authentication
+and sophisticated configuration solutions based on the information contained within the JWT itself.
+The App SQUAD defines fine grained ``scope`` as required in the Public LB routing policy, for example:
+    - per App: Public LB default HTTP route,
+    - per Service: Public LB specific HTTP route that matches a Host
+    - per micro-service: Public specific HTTP route that matches a PATH
+    - per HTTP method ``GET``, ``POST``, ``UPDATE``, ``DELETE`` to filter ``Create``, ``Read``, ``Update``, ``Delete`` (CRUD) rights
+
+.. image:: ./_pictures/LB_route_scope.png
+   :align: center
+   :width: 700
+   :alt: Route policy entry
+
+Then the NGINX gateway will compare the validated JWT against the expected ``scope`` defined in the customer header,
+``x-my-scope`` here.
+
+.. image:: ./_pictures/nginx_scope_validation.png
+   :align: center
+   :width: 700
+   :alt: NGINX scope validation
+
+Leveraging JWT Claims as User Identifier
+================================================================
+One of the primary advantages of JWTs as authentication credentials is that they convey “claims”,
+which represent entities associated with the JWT and its payload
+(its issuer, the user to whom it was issued, and the intended recipient, for example).
+After validating the JWT, NGINX gateway and XC LB has access to all of the fields present in the header and the payload.
+
+For example, *Secure Access* is leveraging JWT Claims to Identify a User,
+and track their activities with `XC Malicious User <https://docs.cloud.f5.com/docs/how-to/advanced-security/malicious-users>`_,
+and Rate Limiting per Identified User.
+
+In this example below,
+we’re also using claim-based variables to provide API rate limiting per API client,
+instead of per IP address.
+This is particularly useful when multiple API clients are embedded in a single portal
+and cannot be differentiated by IP address.
+
+.. image:: ./_pictures/rate-limit-per-user-identifier.png
+   :align: center
+   :width: 700
+   :alt: Rate Limiter
+
+.. image:: ./_pictures/User-identifier-jwt.png
+   :align: center
+   :width: 700
+   :alt: User Identifier
 
 Behavioral based prevention, for Malicious User access and activities
 ************************************************************************
@@ -104,7 +184,7 @@ including step-up challenges for suspect behavior.
     <a href="http://www.youtube.com/watch?v=-F-QV-IJI9o"><img src="http://img.youtube.com/vi/-F-QV-IJI9o/0.jpg" width="600" height="300" title="XC - Malicious User + Client Side Defense"></a>
 
 Detection
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+================================================================
 *Malicious User* is part of the `F5 XC User Behavior Analysis <https://docs.cloud.f5.com/docs/how-to/app-security/user-behavior-analysis>`_ that detects suspect behavior based on watching several dimensions:
 
 .. image:: ./_pictures/Malicious_User_detection.png
@@ -113,7 +193,7 @@ Detection
    :alt: Detection
 
 Mitigation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+================================================================
 If a client tries to access resources with insufficient privileges,
 NGINX gateway will return a 401 response code.
 After several attempts (10 by default),
@@ -133,7 +213,7 @@ This period indicates how long it takes to reduce from High threat level to Low.
 The system executes a score decay mechanism over a period of time for this to happen.
 
 User Identifier
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+================================================================
 By default, the identifier for a malicious user is Client IP address.
 If end user is already logged in, the user identifier is the NGINX session cookie (see step 11 in § *Access control*).
 Therefore, even if the client changes his IP address, his behavior will be tracked, based on its session cookie.
@@ -143,6 +223,7 @@ Therefore, even if the client changes his IP address, his behavior will be track
    :width: 500
    :alt: User Identifier
 
+----------------------------------------------------------------
 
 Design overview
 ***************************************************************
@@ -207,7 +288,6 @@ The console lets you monitor and control your NGINX fleet from one place:
     - track performance metrics
     - identify security vulnerabilities
 
-
 ----------------------------------------------------------------
 
 Dynamic configuration
@@ -224,32 +304,24 @@ exactly per HTTP Route, managed by the applicative Squad.
 
 .. image:: ./_pictures/http_route.png
    :align: center
-   :width: 500
+   :width: 700
    :alt: Public HTTP LB Route
 
 **Custom Headers**
 
 .. image:: ./_pictures/x-my-scope.png
    :align: center
-   :width: 500
+   :width: 700
    :alt: x-my-scope
 
 **Variable in NGINX configuration**
 
 .. image:: ./_pictures/x-my-scope-n1.png
    :align: center
-   :width: 500
+   :width: 700
    :alt: NGINX One dynamic scope
 
-
-
-
-
-
 ----------------------------------------------------------------
-
-
-them with `F5 XC Malicious User <https://docs.cloud.f5.com/docs/how-to/advanced-security/malicious-users>`_ feature
 
 *demo video:*
 
@@ -257,7 +329,4 @@ them with `F5 XC Malicious User <https://docs.cloud.f5.com/docs/how-to/advanced-
 
     <a href="http://www.youtube.com/watch?v=_SOcDFslFl4"><img src="http://img.youtube.com/vi/_SOcDFslFl4/0.jpg" width="600" height="300" title="XC - PaaS NGINX Secure Access"></a>
 
-The *Secure Access* is built using the reference implementation of NGINX Plus as relying party for OpenID Connect authentication,
-please refer to it `here <https://github.com/nginxinc/nginx-openid-connect>`_ for more details.
 
-For more information on OpenID Connect and JWT validation with NGINX Plus, see `Authenticating Users to Existing Applications with OpenID Connect and NGINX Plus <https://www.nginx.com/blog/authenticating-users-existing-applications-openid-connect-nginx-plus/>`_.
