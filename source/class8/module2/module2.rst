@@ -10,7 +10,7 @@ and are a better way to control access to web‑based APIs than traditional API 
 Powered by the most popular Reverse-Proxy, NGINX,
 F5 Distributed Cloud (XC) *Secure Access* improves your security posture:
     - **Reduce the attack surface**: Require **access control** for Web and API based Application
-    - **Grant least privileges**: Define an allowed **Scope** per App or micro-service
+    - **Grant least privileges**: Define an allowed **Scope** and **Audience** per App or micro-service
     - **Prevent malicious activity**: Track identified user activities, detect **behavioral** anomalies and auto-mitigate.
 
 .. image:: ./_pictures/illo-SolutionsZeroTrust-450x400-1.svg
@@ -120,11 +120,11 @@ with the JSON Web Key Sets (JWKS) URIs of the allowed IdPs.
    :width: 900
    :alt: NGINX Plus validates the JWT before passing the request to the API endpoints
 
-Validating the Claimed Scope
+Validating the Claimed Scope and Audience
 ================================================================
 NGINX *Secure Access* gateway provides support for JWT authentication
 and sophisticated configuration solutions based on the information contained within the JWT itself.
-The App SQUAD defines fine grained ``scope`` as required in the Public LB routing policy, for example:
+The App SQUAD defines fine grained ``scope`` and ``Audience`` as required in the Public LB routing policy, for example:
     - per App: Public LB default HTTP route,
     - per Service: Public LB specific HTTP route that matches a Host
     - per micro-service: Public specific HTTP route that matches a PATH
@@ -298,9 +298,9 @@ Dynamic configuration
 Some parts of the NGINX configuration is dynamic to allow the Application to specify:
     - the selected Identity Provider in the allow list of the company
     - the Application ID to use, for OIDC
-    - the granted Scope to clients
+    - the granted Scope and Audience to clients
 
-These specifications (IdP, App-ID, Scope) are set as custom HTTP headers in the Public HTTP LB,
+These specifications (IdP, App-ID, Scope, Audience) are set as custom HTTP headers in the Public HTTP LB,
 exactly per HTTP Route, managed by the applicative Squad.
 
 **HTTP Route:**
